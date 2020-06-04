@@ -8,7 +8,7 @@ useradd -u 500 -g admin admin && \
 mkdir -p /home/admin && \
 chmod +rx -R /home/admin
 
-COPY ./target/${APP_NAME}.jar /home/admin/${APP_NAME}/target/${APP_NAME}.jar
+COPY ./target/${APP_NAME}.jar /home/admin/${APP_NAME}.jar
 COPY ./start.sh /home/admin/start.sh
 
 RUN chmod +x /home/admin/*.sh
