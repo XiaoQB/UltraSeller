@@ -1,12 +1,7 @@
-FROM openjdk:8
+FROM registry.cn-hangzhou.aliyuncs.com/devcloud_base_image/openjdk:8
 
 ARG APP_NAME
 ENV APP_NAME=${APP_NAME}
-
-RUN groupadd -g 500 admin && \
-useradd -u 500 -g admin admin && \
-mkdir -p /home/admin && \
-chmod +rx -R /home/admin
 
 COPY ./target/${APP_NAME}.jar /home/admin/${APP_NAME}.jar
 COPY ./start.sh /home/admin/start.sh
