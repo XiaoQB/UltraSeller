@@ -12,6 +12,7 @@ for item in $*
 do
   let index+=1
   if [ $index -ge 2 ]; then
+    echo "环境变量： ${item}"
     echo "export ${item}" >> start.sh
   fi
 done

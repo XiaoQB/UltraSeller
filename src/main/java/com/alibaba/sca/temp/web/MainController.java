@@ -11,12 +11,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MainController {
 
-    @Value("${test.user.name}")
+    @Value("${test_user_name}")
     private String userName;
+    @Value("${test_nas_path:没读出来}")
+    private String nasPath;
+    @Value("${abc:没读出来}")
+    private String abc;
 
-    @RequestMapping("/hello")
+    @RequestMapping("/")
     @ResponseBody
     public String hello() {
-        return "Hello world!!, I'm " + userName;
+        String rtnVal =  "Hello world!!, I'm " + userName;
+        
+        rtnVal += "<br>" + "test_nas_path=" +  nasPath;
+        rtnVal += "<br>" + "abc=" +  abc;
+        
+        return rtnVal;
     }
+	
 }
