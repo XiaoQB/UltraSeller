@@ -8,9 +8,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/**
- * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>
- */
 @RestController
 public class NatEipController {
 
