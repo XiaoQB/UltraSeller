@@ -3,6 +3,7 @@ package com.alibaba.sca.temp.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,8 @@ public class MainController {
         rtnVal += "<br>" + "abc=" +  abc;
         
         logger.info("输出日志： {}",  rtnVal );
+        String homePath = System.getProperty("user.home");
+        logger.info("user.home={}",homePath);
         
         return rtnVal;
     }

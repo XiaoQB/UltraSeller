@@ -17,4 +17,4 @@ do
   fi
 done
 
-echo "java -Dserver.port=8080 -Dspring.profiles.active=dev -jar ${APP_NAME}.jar" >> start.sh
+echo "java -Dserver.port=8080 -Dspring.profiles.active=prod -jar ${APP_NAME}.jar" >> start.sh
