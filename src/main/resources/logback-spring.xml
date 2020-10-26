@@ -3,7 +3,13 @@
     <!-- https://github.com/spring-projects/spring-boot/blob/v1.5.13.RELEASE/spring-boot/src/main/resources/org/springframework/boot/logging/logback/defaults.xml -->
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
 
-	<property name="LOG_PATH" value="${user.home}/logs" />
+	<springProfile name="dev">
+        <property name="LOG_PATH" value="${user.home}/logs" />
+    </springProfile>
+    <springProfile name="prod">
+        <property name="LOG_PATH" value="/home/admin/logs" />
+    </springProfile>
+	
 	<property name="LOG_APP_LOG" value="${LOG_PATH}/app.log" />
 	
 	<!-- Console 输出格式 -->
