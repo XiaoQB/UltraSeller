@@ -28,7 +28,7 @@ import com.mongodb.client.result.UpdateResult;
 @Service
 public class MongoDbService {
 
-	@Autowired
+	@Autowired( required= false )
 	private MongoTemplate mongoTemplate;
 
 	/**

@@ -46,7 +46,6 @@ public class MongoDbAutoConfigure {
 				.connectionsPerHost( dbConfig.getPoolsize() )
 				.threadsAllowedToBlockForConnectionMultiplier( dbConfig.getWaitqueuesize() )
 				.build();
-		
 		MongoClient mongoClient = new MongoClient(address, credentials, options );
 		
 		return mongoClient;

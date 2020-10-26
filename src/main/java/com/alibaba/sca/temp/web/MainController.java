@@ -1,5 +1,7 @@
 package com.alibaba.sca.temp.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class MainController {
+	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @Value("${test_user_name}")
     private String userName;
@@ -25,6 +28,8 @@ public class MainController {
         
         rtnVal += "<br>" + "test_nas_path=" +  nasPath;
         rtnVal += "<br>" + "abc=" +  abc;
+        
+        logger.info("输出日志： {}",  rtnVal );
         
         return rtnVal;
     }
