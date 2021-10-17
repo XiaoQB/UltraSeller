@@ -16,4 +16,8 @@ spring:
       username: root
 
 
+mybatis:
+  mapper-locations: classpath:user/mapper/xml/*Mapper.xml
+  type-aliases-package: user.domain.entity
+
 
