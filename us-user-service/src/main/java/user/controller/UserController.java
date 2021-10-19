@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import user.domain.entity.User;
+import user.result.R;
+import user.result.ResultCode;
 import user.service.impl.UserServiceImpl;
 import user.utils.JwtUtil;
 
@@ -21,8 +23,8 @@ public class UserController {
 
     //测试路由
     @GetMapping("/user/get")
-    public String forTest(){
-        return "user route test";
+    public R<String> forTest(String test){
+        return new R<String>(400,"message",test);
     }
 
     //测试token
@@ -45,6 +47,9 @@ public class UserController {
         //}
        // return  "账号或者密码错误";
     }
+
+
+
 
 
 
