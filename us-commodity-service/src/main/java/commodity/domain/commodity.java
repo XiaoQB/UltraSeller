@@ -11,7 +11,7 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "商品信息")
-public class commodity {
+public class Commodity {
     @Id
     private long id;
     @ApiModelProperty(value = "商品名")
