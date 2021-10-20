@@ -22,11 +22,11 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public String findByUsername(String userName,String password,String role) {
-        User user = userDao.getUserbyName(userName,role);
-        if (user != null ) {
+    public String findByUsername(String userName, String password, String role) {
+        User user = userDao.getUserbyName(userName, role);
+        if (user != null) {
             String pwd = DigestUtils.md5Hex(password);
-            if(pwd.equals(user.getPassword())){
+            if (pwd.equals(user.getPassword())) {
                 Map<String, Object> info = new HashMap<String, Object>();
                 //jwt载荷选择
                 info.put("role", role);
@@ -41,11 +41,10 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @Override
     public boolean insertUser(User user) {
         String password = DigestUtils.md5Hex(user.getPassword());
-        return userDao.insertUser(user,password);
+        return userDao.insertUser(user, password);
     }
 
     @Override

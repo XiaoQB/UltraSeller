@@ -8,5 +8,5 @@ public interface UserService {
 
     String logout(String userName);
 
-    String findByUsername(String userName,String password,String role);
+    String findByUsername(String userName, String password, String role);
 }

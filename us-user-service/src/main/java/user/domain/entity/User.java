@@ -7,10 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value="用户基础信息")
+@ApiModel(value = "用户基础信息")
 public class User {
     @ApiModelProperty(value = "姓名")
     private String userName;
