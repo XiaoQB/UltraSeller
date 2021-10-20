@@ -1,9 +1,14 @@
 package user.controller;
 
-import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import user.domain.entity.Admin;
 import user.domain.entity.User;
+import user.result.R;
+import user.result.ResultCode;
+import user.service.UserService;
 import user.service.impl.UserServiceImpl;
 import user.utils.JwtUtil;
 
@@ -13,56 +18,74 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
+@Slf4j
 public class UserController {
 
-    private UserServiceImpl userServiceImpl;
+    private UserService userService;
 
     //测试路由
     @GetMapping("/user/get")
-    public String forTest(){
-        return "user route test";
+    public R<String> forTest(String test) {
+        return new R<>(400, "message", test);
     }
 
     //测试token
     @GetMapping("/user/login")
-    public String login(String userName,String password,String role){
-        //User user = userService.findByUsername(userName);
-
-        //密码解密正确
-        //if(user!=null && BCrypt.checkpw(password,user.getPassword())){
-            //设置令牌信息
-            Map<String,Object> info = new HashMap<String,Object>();
-            //jwt载荷选择
-            info.put("role",role);
-            info.put("success","SUCCESS");
-            info.put("username",userName);
-            //生成令牌
-            String jwt = JwtUtil.createJWT(UUID.randomUUID().toString(), JSON.toJSONString(info),null);
-
-            return jwt;
-        //}
-       // return  "账号或者密码错误";
+    public R<String> login(String userName, String password, String role) {
+        String jwt = userService.findByUsername(userName, password, role);
+        if (StringUtils.isEmpty(jwt)) {
+            return new R<>(ResultCode.LOGIN_FAIL.getCode(), ResultCode.LOGIN_FAIL.getMessage(), null);
+        }
+        return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), jwt);
     }
 
-    @GetMapping("/userInfo/buyer")
-    public List<Map<Object,Object>> getUserListPaging(@RequestParam(value = "num",defaultValue = "0") String numString,
-                                        @RequestParam(value = "page",defaultValue = "1") String pageString){
-        System.out.println(numString+"              "+pageString);
-        int num= Integer.valueOf(numString);
-        int page=Integer.valueOf(pageString);
-        List<Map<Object,Object>> users=userServiceImpl.getUserListPaging(num,page);
-        return users;
+    @GetMapping("/user/info")
+    public R<List<User>> getUserList(String role,Integer num,Integer page){
+        if(num<=0||page<=0){
+            log.info("info 查询数值错误");
+            return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
+        }
+        List<User> results = userService.getUserList(role,num,page);
+        if(results==null){
+            return new R<>(ResultCode.QUERY_FAIL.getCode(), ResultCode.QUERY_FAIL.getMessage(), null);
+        }
+        return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), results);
     }
 
-    @GetMapping("/test")
-    public String getTest(){
-        String result=userServiceImpl.getTest();
-        return result;
+    @DeleteMapping("/user/delete")
+    public R<Integer> deleteUser(String role,String username){
+        if(role==null||username==null){
+            log.info("info 删除数值错误");
+            return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
+        }
+        Integer deleteResult = userService.deleteUser(role,username);
+        if(deleteResult==0){
+            return new R<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage(), null);
+        }
+        return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), deleteResult);
     }
 
-    @Autowired
-    public void setUserServiceImpl(UserServiceImpl userServiceImpl){
-        this.userServiceImpl=userServiceImpl;
+    @PostMapping("/user/register")
+    public R<String> register(@RequestBody User user) {
+        if (user == null) {
+            log.info("user 参数为空");
+            return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
+        }
+        boolean result = userService.insertUser(user);
+        if (result) {
+            return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
+        }
+        return new R<>(ResultCode.REGISTER_FAIL.getCode(), ResultCode.REGISTER_FAIL.getMessage(), null);
+    }
+
+    @DeleteMapping("/user/logout")
+    public R<String> register(String userName) {
+        if (userName == null) {
+            log.info("username 参数为空");
+            return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
+        }
+        return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), userService.logout(userName));
+
     }
 
 }

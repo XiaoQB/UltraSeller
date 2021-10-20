@@ -15,7 +15,7 @@ spring:
       url: jdbc:mysql://47.102.97.229:3306/ultra_seller?characterEncoding=utf8&useSSL=false&allowMultiQueries=true&autoReconnect=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
       username: root
 mybatis:
-  mapper-locations: classpath:user/mapper/xml/*Mapper.xml
   type-aliases-package: user.domain.entity
+  mapper-locations: classpath:mapper/*Mapper.xml
 
 

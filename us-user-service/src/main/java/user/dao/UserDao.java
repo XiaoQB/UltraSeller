@@ -1,6 +1,8 @@
 package user.dao;
 
 import org.apache.ibatis.session.SqlSession;
+import lombok.experimental.PackagePrivate;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import user.domain.entity.User;
@@ -8,10 +10,12 @@ import user.mapper.UserMapper;
 import user.utils.DBUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Repository
+@Slf4j
 public class UserDao {
 
     private UserMapper userMapper;
@@ -21,42 +25,87 @@ public class UserDao {
         this.userMapper=userMapper;
     }
 
-    //page为第一个参数，num为每页展示个数
-    public List<Map<Object,Object>> getUserListPaging(int num, int page) {
-        SqlSession sqlSession = null;
-        List<Map<Object,Object>> userList=null;
+
+    public boolean insertUser(User user, String password) {
+        String role = user.getRole();
+        boolean exist = false;
         try {
-            sqlSession = DBUtils.openSqlSession();
-            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            userList = userMapper.getUserListPaging(num,page);
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            sqlSession.rollback();
-        } finally {
-            if (sqlSession != null) {
-                sqlSession.close();
+            switch (role) {
+                case "admin":
+                    exist = userMapper.isExistAdmin(user.getUserName()) > 0;
+                    if (exist) return false;
+                    userMapper.insertAdmin(user.getUserName(), password);
+                    break;
+                case "saler":
+                    exist = userMapper.isExistSaler(user.getUserName()) > 0;
+                    if (exist) return false;
+                    userMapper.insertSaler(user.getUserName(), user.getEmail(), user.getPhone(), password);
+                    break;
+                case "buyer":
+                    exist = userMapper.isExistBuyer(user.getUserName()) > 0;
+                    if (exist) return false;
+                    userMapper.insertBuyer(user.getUserName(), user.getEmail(), user.getPhone(), password);
+                    break;
+                default:
+                    break;
             }
+        } catch (Exception e) {
+            log.info("插入用户失败");
+            return false;
         }
-        return userList;
+        return true;
     }
 
-    public String getTest(){
-        SqlSession sqlSession = null;
-        String res = "";
-        try {
-            sqlSession = DBUtils.openSqlSession();
-            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            res = userMapper.getTest();
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            sqlSession.rollback();
-        } finally {
-            if (sqlSession != null) {
-                sqlSession.close();
-            }
+
+    public User getUserbyName(String userName, String role) {
+        User user = new User();
+        switch (role) {
+            case "admin":
+                user = userMapper.getAdminByName(userName);
+                break;
+            case "buyer":
+                user = userMapper.getBuyerByName(userName);
+                break;
+            case "saler":
+                user = userMapper.getSalerByName(userName);
+            default:
+                break;
         }
-        return res;
+        return user;
     }
+
+    public List<User> getUserList(String role,Integer num,Integer page){
+        List<User> users=new ArrayList<>();
+        switch (role) {
+            case "admin":
+                users = userMapper.getAdmins(num,page);
+                break;
+            case "buyer":
+                users = userMapper.getBuyers(num,page);
+                break;
+            case "saler":
+                users = userMapper.getSalers(num,page);
+            default:
+                break;
+        }
+        return users;
+    }
+
+    public Integer deleteUser(String role,String username){
+        Integer integer= 0;
+        switch (role) {
+            case "admin":
+                integer = userMapper.deleteAdmin(username);
+                break;
+            case "buyer":
+                integer = userMapper.deleteBuyer(username);
+                break;
+            case "saler":
+                integer = userMapper.deleteSaler(username);
+            default:
+                break;
+        }
+        return integer;
+    }
+
 }
