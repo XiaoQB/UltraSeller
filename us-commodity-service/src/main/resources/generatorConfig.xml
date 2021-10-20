@@ -26,7 +26,7 @@
         </javaTypeResolver>
 
         <!--指定生成javabean的位置-->
-        <javaModelGenerator targetPackage="commodity.pojo" targetProject=".\src\main\java">
+        <javaModelGenerator targetPackage="commodity.domain" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
