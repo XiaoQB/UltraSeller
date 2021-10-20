@@ -1,0 +1,43 @@
+server:
+  port: 8001
+eureka:
+  instance:
+    hostname: 127.0.0.1
+  client:
+    service-url:
+
+      defaultZone: http://${eureka.instance.hostname}:8000/eureka/
+spring:
+  application:
+    name: us-gateway-service
+  datasource:
+    password: root
+    url: jdbc:mysql://47.102.97.229:3306/ultra_seller?characterEncoding=utf8&useSSL=false&allowMultiQueries=true&autoReconnect=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+    username: root
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]': # 匹配所有请求
+            allowedOrigins: "*" #跨域处理 允许所有的域
+            allowedMethods: # 支持的方法
+              - GET
+              - POST
+              - PUT
+              - DELETE
+      routes:
+        - id: us_user_route
+          uri: http://localhost:8002
+          predicates:
+            - Path=/user/**
+
+
+
+
+management:
+  endpoint:
+    gateway:
+      enabled: true
+    web:
+      exposure:
+        include: true

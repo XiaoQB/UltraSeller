@@ -7,9 +7,10 @@
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>us-consumer-service</module>
         <module>us-commodity-service</module>
         <module>us-user-service</module>
+        <module>us-gateway-service</module>
+        <module>us-eureka-service</module>
     </modules>
     <name>UltraSeller</name>
     <description>Demo project for Spring Boot</description>
