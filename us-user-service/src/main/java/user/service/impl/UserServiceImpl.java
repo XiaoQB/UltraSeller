@@ -2,12 +2,13 @@ package user.service.impl;
 
 import com.alibaba.fastjson.JSON;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import user.dao.UserDao;
 import user.domain.entity.User;
-import user.mapper.UserMapper;
 import user.service.UserService;
 import user.utils.JwtUtil;
 
@@ -24,9 +25,8 @@ public class UserServiceImpl implements UserService {
     public String findByUsername(String userName,String password,String role) {
         User user = userDao.getUserbyName(userName,role);
         if (user != null ) {
-            String pwd = BCrypt.hashpw(password,BCrypt.gensalt());
-            boolean checkpw = BCrypt.checkpw(pwd, password);
-            if(checkpw){
+            String pwd = DigestUtils.md5Hex(password);
+            if(pwd.equals(user.getPassword())){
                 Map<String, Object> info = new HashMap<String, Object>();
                 //jwt载荷选择
                 info.put("role", role);
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean insertUser(User user) {
-        String password = BCrypt.hashpw(user.getPassword(),BCrypt.gensalt());
+        String password = DigestUtils.md5Hex(user.getPassword());
         return userDao.insertUser(user,password);
     }
 

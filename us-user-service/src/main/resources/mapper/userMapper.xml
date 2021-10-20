@@ -10,11 +10,11 @@
     </insert>
     <insert id="insertSaler">
         insert into us_saler(username,password,phone,email)
-        values(#{userName},#{passworrd},#{phone},#{email})
+        values(#{userName},#{password},#{phone},#{email})
     </insert>
     <insert id="insertBuyer">
         insert into us_buyer(username,password,phone,email)
-        values(#{userName},#{passworrd},#{phone},#{email})
+        values(#{userName},#{password},#{phone},#{email})
     </insert>
     <select id="isExistAdmin" resultType="java.lang.Integer" parameterType="java.lang.String">
         select count(id) from us_admin
