@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value="账号基础信息")
-public class User extends BaseInfo{
+@ApiModel(value="用户基础信息")
+public class User {
     @ApiModelProperty(value = "姓名")
     private String userName;
     @ApiModelProperty(value = "密码")
@@ -22,6 +22,8 @@ public class User extends BaseInfo{
 
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
+
     private Integer phone;
+
     private String email;
 }
