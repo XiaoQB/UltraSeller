@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@MapperScan("commodity.mapper")
+//@MapperScan(basePackages = {"commodity.mapper"})
 public class CommodityServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(CommodityServiceApplication.class, args);
