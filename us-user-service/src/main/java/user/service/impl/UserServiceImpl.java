@@ -24,6 +24,12 @@ public class UserServiceImpl implements UserService {
         page=(page-1)*num;
         return userDao.getUserListPaging(num,page);
     }
+
+    @Override
+    public List<User> getUserListPaging1(int num, int page){
+        page=(page-1)*num;
+        return userDao.getUserListPaging1(num,page);
+    }
     @Override
     public String getTest(){
         return userDao.getTest();

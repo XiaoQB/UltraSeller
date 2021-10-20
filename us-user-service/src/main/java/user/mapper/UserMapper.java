@@ -19,5 +19,7 @@ public interface UserMapper {
      */
     List<Map<Object,Object>> getUserListPaging(@Param("num")int num, @Param("page")int page);
 
+    List<User> getUserListPaging1(@Param("num")int num, @Param("page")int page);
+
     String getTest();
 }

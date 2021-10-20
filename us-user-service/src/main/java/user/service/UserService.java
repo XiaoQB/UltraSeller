@@ -10,5 +10,7 @@ public interface UserService {
 
     List<Map<Object,Object>> getUserListPaging(int num, int page);
 
+    List<User> getUserListPaging1(int num, int page);
+
     String getTest();
 }

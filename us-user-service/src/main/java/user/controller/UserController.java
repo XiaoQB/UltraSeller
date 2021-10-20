@@ -54,6 +54,19 @@ public class UserController {
         return users;
     }
 
+    @GetMapping("/userInfo/buyer1")
+    public List<User> getUserListPaging1(@RequestParam(value = "num",defaultValue = "0") String numString,
+                                                      @RequestParam(value = "page",defaultValue = "1") String pageString){
+        System.out.println(numString+"              "+pageString);
+        int num= Integer.valueOf(numString);
+        int page=Integer.valueOf(pageString);
+        List<User> users=userServiceImpl.getUserListPaging1(num,page);
+        System.out.println("              "+users.get(0).getUserName());
+        return users;
+    }
+
+
+
     @GetMapping("/test")
     public String getTest(){
         String result=userServiceImpl.getTest();

@@ -18,11 +18,11 @@
         LIMIT #{page},#{num}
     </select>
 
-<!--    <select id="getUserListPaging" resultMap="user">-->
-<!--        select username,password,phone,email,create_time,update_time-->
-<!--        from ultra_seller.us_buyer-->
-<!--        LIMIT #{page},#{num}-->
-<!--    </select>-->
+    <select id="getUserListPaging1" resultMap="user">
+        select username,password,phone,email,create_time,update_time
+        from ultra_seller.us_buyer
+        LIMIT #{page},#{num}
+    </select>
 
     <select id="getTest" resultType="String">
         select username
