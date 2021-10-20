@@ -1,11 +1,12 @@
 package commodity.service;
 
 import commodity.domain.Commodity;
+import commodity.util.PagedGridResult;
 
 import java.util.List;
 
 public interface CommodityService {
-    public List<Commodity> selectAll();
+    public PagedGridResult selectAll(String username,int page, int pagesize, int seq);
 
     public Commodity singleCommodity(long commodityId);
 

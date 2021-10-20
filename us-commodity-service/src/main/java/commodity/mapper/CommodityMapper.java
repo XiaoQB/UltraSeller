@@ -3,6 +3,7 @@ package commodity.mapper;
 import commodity.domain.Commodity;
 import commodity.domain.CommodityExample;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -96,4 +97,7 @@ public interface CommodityMapper {
      * @mbggenerated Tue Oct 19 23:18:53 CST 2021
      */
     int updateByPrimaryKey(Commodity record);
+
+    List<Map<String, Object>> selectAllCommodity(String username, int page, int pagesize, int seq);
+
 }

@@ -1,13 +1,17 @@
 package commodity.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import commodity.domain.CommodityExample;
 import commodity.mapper.CommodityMapper;
 import commodity.domain.Commodity;
 import commodity.service.CommodityService;
+import commodity.util.PagedGridResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommodityServiceImpl implements CommodityService {
@@ -15,8 +19,10 @@ public class CommodityServiceImpl implements CommodityService {
     CommodityMapper commodityMapper;
 
     @Override
-    public List<Commodity> selectAll() {
-        return null;
+    public PagedGridResult selectAll(String username,int page, int pagesize, int seq) {
+        PageHelper.startPage(page, pagesize);
+        List<Map<String, Object>> result =  commodityMapper.selectAllCommodity(username, page, pagesize, seq);
+        return setterPagedGrid(result, 1);
     }
 
     public String test() { // 这是一个CommodityExample用于查询的例子, 相当于where后面的条件, https://zhuanlan.zhihu.com/p/42411540
@@ -61,5 +67,15 @@ public class CommodityServiceImpl implements CommodityService {
     public List<Commodity> searchList(String role, String searchWords){
         
         return null;
+    }
+
+    private PagedGridResult setterPagedGrid(List<?> list, Integer page) {
+        PageInfo<?> pageList = new PageInfo<>(list);
+        PagedGridResult grid = new PagedGridResult();
+        grid.setPage(page);
+        grid.setRows(list);
+        grid.setTotal(pageList.getPages());
+        grid.setRecords(pageList.getTotal());
+        return grid;
     }
 }
