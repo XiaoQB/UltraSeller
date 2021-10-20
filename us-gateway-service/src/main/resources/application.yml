@@ -5,7 +5,6 @@ eureka:
     hostname: 127.0.0.1
   client:
     service-url:
-
       defaultZone: http://${eureka.instance.hostname}:8000/eureka/
 spring:
   application:
@@ -30,12 +29,12 @@ spring:
           uri: http://localhost:8002
           predicates:
             - Path=/user/**
-        - id: us_admin_route
-          uri: http://localhost:8003
-          predicates:
-            - Path=/admin/commodity
-          filters:
-            - RewritePath=/admin(?<segment>/?.*), $\{segment}
+        #- id: us_admin_route
+          #uri: http://localhost:8003
+          #predicates:
+          # - Path=/admin/commodity
+          #filters:
+          #  - RewritePath=/admin(?<segment>/?.*), $\{segment}
         - id: us_goods_route
           uri: http://localhost:8003
           predicates:

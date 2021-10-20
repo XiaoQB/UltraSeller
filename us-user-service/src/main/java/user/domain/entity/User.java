@@ -23,7 +23,9 @@ public class User {
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
 
-    private Integer phone;
+    private String phone;
 
     private String email;
+
+    private String role;
 }

@@ -17,7 +17,7 @@ spring:
 
 
 mybatis:
-  mapper-locations: classpath:user/mapper/xml/*Mapper.xml
   type-aliases-package: user.domain.entity
+  mapper-locations: classpath:mapper/*Mapper.xml
 
 
