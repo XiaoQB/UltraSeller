@@ -2,22 +2,20 @@ package user.controller;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import user.domain.entity.User;
 import user.service.impl.UserServiceImpl;
 import user.utils.JwtUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 @RestController
 public class UserController {
-    @Autowired
-    private UserServiceImpl userService;
+
+    private UserServiceImpl userServiceImpl;
 
     //测试路由
     @GetMapping("/user/get")
@@ -46,6 +44,25 @@ public class UserController {
        // return  "账号或者密码错误";
     }
 
+    @GetMapping("/userInfo/buyer")
+    public List<Map<Object,Object>> getUserListPaging(@RequestParam(value = "num",defaultValue = "0") String numString,
+                                        @RequestParam(value = "page",defaultValue = "1") String pageString){
+        System.out.println(numString+"              "+pageString);
+        int num= Integer.valueOf(numString);
+        int page=Integer.valueOf(pageString);
+        List<Map<Object,Object>> users=userServiceImpl.getUserListPaging(num,page);
+        return users;
+    }
 
+    @GetMapping("/test")
+    public String getTest(){
+        String result=userServiceImpl.getTest();
+        return result;
+    }
+
+    @Autowired
+    public void setUserServiceImpl(UserServiceImpl userServiceImpl){
+        this.userServiceImpl=userServiceImpl;
+    }
 
 }

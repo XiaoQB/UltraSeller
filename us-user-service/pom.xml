@@ -117,9 +117,10 @@
             <version>2.3.0-b170127.1453</version>
         </dependency>
         <dependency>
-             <groupId>org.projectlombok</groupId>
-             <artifactId>lombok</artifactId>
-             <version>1.16.18</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+            <version>1.16.18</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -146,6 +147,31 @@
     </dependencyManagement>
 
     <build>
+        <!--将mapper文件打包进去-->
+        <resources>
+            <resource>
+                <!--指定根目录 到源文件夹 一般如下-->
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>**/*.yaml</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+            <resource> <!--指定根目录 到源文件夹 一般如下-->
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>**/*.yaml</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -153,4 +179,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

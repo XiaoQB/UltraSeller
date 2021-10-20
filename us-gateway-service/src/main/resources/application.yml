@@ -5,8 +5,9 @@ eureka:
     hostname: 127.0.0.1
   client:
     service-url:
-
       defaultZone: http://${eureka.instance.hostname}:8000/eureka/
+    registerWithEureka: false   #是否将自己注册到 Eureka-Server 中，默认的为 true   registerWithEureka等同于register_with_eureka
+    fetchRegistry: false        #是否需要拉取服务信息，默认为true       fetchRegistry等同于 fetch-registry
 spring:
   application:
     name: us-gateway-service
