@@ -29,4 +29,37 @@ public class CommodityServiceImpl implements CommodityService {
         System.out.println("zpw ok ok ok ok !!!");
         return "ok";
     }
+
+    @Override
+    public Commodity singleCommodity(long commodityId){
+        return commodityMapper.selectByPrimaryKey(commodityId+"");
+        //return null;
+    }
+
+    @Override
+    public void update(Commodity commodity){
+        CommodityExample example = new CommodityExample();
+        CommodityExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(commodity.getId()+"");
+        commodityMapper.updateByExampleSelective(commodity, example);
+    }
+
+    @Override
+    public void create(Commodity commodity){
+        commodityMapper.insert(commodity);
+    }
+
+    @Override
+    public void delete(long itemId){
+        CommodityExample example = new CommodityExample();
+        CommodityExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(itemId+"");
+        commodityMapper.deleteByExample(example);
+    }
+
+    @Override
+    public List<Commodity> searchList(String role, String searchWords){
+        
+        return null;
+    }
 }

@@ -16,11 +16,11 @@ import javax.persistence.Entity;
 @ApiModel(value = "商品信息")
 public class Commodity {
     @Id
-    private long id;
+    private String id;
     @ApiModelProperty(value = "商品名")
     public String name;
     @ApiModelProperty(value = "商品图片")
-    public String imgLink;
+    private String imgLink;
     @ApiModelProperty(value = "价格")
     private long price;
     @ApiModelProperty(value = "介绍")
@@ -29,6 +29,8 @@ public class Commodity {
     private long inventory;
     @ApiModelProperty(value = "商家")
     private String vendorName;
-    @ApiModelProperty(value = "关键字")
-    private String keywords;
+
+    public String getId() {
+        return id;
+    }
 }
