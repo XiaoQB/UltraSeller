@@ -22,15 +22,13 @@ public class Commodity {
     @ApiModelProperty(value = "商品图片")
     private String imgLink;
     @ApiModelProperty(value = "价格")
-    private long price;
+    private float price;
     @ApiModelProperty(value = "介绍")
     private String description;
     @ApiModelProperty(value = "库存")
     private long inventory;
     @ApiModelProperty(value = "商家")
     private String vendorName;
-
-    public String getId() {
-        return id;
-    }
+    @ApiModelProperty(value = "关键字")
+    private String keywords;
 }
