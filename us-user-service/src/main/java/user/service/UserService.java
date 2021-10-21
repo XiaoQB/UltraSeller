@@ -1,9 +1,7 @@
 package user.service;
 
 import user.domain.entity.User;
-
 import java.util.List;
-
 
 public interface UserService {
 
@@ -16,5 +14,7 @@ public interface UserService {
     List<User> getUserList(String role, Integer num, Integer page);
 
     Integer deleteUser(String role,String username);
+
+    Integer modifyUser(String userName,String newData,String type,String role);
 
 }

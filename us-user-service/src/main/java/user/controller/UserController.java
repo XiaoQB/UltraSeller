@@ -2,20 +2,12 @@ package user.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import user.domain.entity.Admin;
 import user.domain.entity.User;
 import user.result.R;
 import user.result.ResultCode;
 import user.service.UserService;
-import user.service.impl.UserServiceImpl;
-
-import user.utils.JwtUtil;
-
-import java.util.HashMap;
 import java.util.List;
-
 
 @RestController
 @Slf4j
@@ -38,7 +30,6 @@ public class UserController {
         }
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), jwt);
     }
-
 
     @GetMapping("/user/info")
     public R<List<User>> getUserList(String role,Integer num,Integer page){
@@ -64,6 +55,20 @@ public class UserController {
             return new R<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage(), null);
         }
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), deleteResult);
+    }
+
+    @PutMapping("/user/modify")
+    public R<Integer> modifyUser(String userName,String newData,String type,String role){
+        if(userName==null||newData==null||role==null){
+            log.info("info 修改时数值错误");
+            return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
+        }
+        Integer modifyResult=userService.modifyUser(userName,newData,type,role);
+        if(modifyResult==0){
+            return new R<>(ResultCode.MODIFY_FAIL.getCode(), ResultCode.MODIFY_FAIL.getMessage(), null);
+        }
+        return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), modifyResult);
+
     }
 
     @PostMapping("/user/register")

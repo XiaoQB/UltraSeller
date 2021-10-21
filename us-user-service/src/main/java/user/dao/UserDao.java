@@ -1,17 +1,12 @@
 package user.dao;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import user.domain.entity.User;
 import user.mapper.UserMapper;
-
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Repository
 @Slf4j
@@ -101,6 +96,48 @@ public class UserDao {
                 break;
             case "saler":
                 integer = userMapper.deleteSaler(username);
+                break;
+            default:
+                break;
+        }
+        return integer;
+    }
+
+    public Integer modifyUser(String userName,String newData,String type,String role){
+        Integer integer=0;
+        switch (role) {
+            case "admin":
+                integer = userMapper.updateAdmin(userName,newData);
+                break;
+            case "buyer":
+                switch (type){
+                    case "password":
+                        integer=userMapper.updateBuyerPassword(userName,newData);
+                        break;
+                    case "phone":
+                        integer=userMapper.updateBuyerPhone(userName,newData);
+                        break;
+                    case "email":
+                        integer=userMapper.updateBuyerEmail(userName,newData);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "saler":
+                switch (type){
+                    case "password":
+                        integer=userMapper.updateSalerPassword(userName,newData);
+                        break;
+                    case "phone":
+                        integer=userMapper.updateSalerPhone(userName,newData);
+                        break;
+                    case "email":
+                        integer=userMapper.updateSalerEmail(userName,newData);
+                        break;
+                    default:
+                        break;
+                }
                 break;
             default:
                 break;

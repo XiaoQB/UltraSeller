@@ -9,7 +9,6 @@ import user.dao.UserDao;
 import user.domain.entity.User;
 import user.service.UserService;
 import user.utils.JwtUtil;
-
 import java.util.*;
 import java.util.Map;
 
@@ -48,7 +47,6 @@ public class UserServiceImpl implements UserService {
         return userDao.insertUser(user, password);
     }
 
-
     @Override
     public List<User> getUserList(String role,Integer num,Integer page){
         page=(page-1)*num;
@@ -57,10 +55,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Integer modifyUser(String userName,String newData,String type,String role){
+        return userDao.modifyUser(userName,newData,type,role);
+    }
+
+    @Override
     public String logout(String userName) {
         return null;
     }
-
 
     @Autowired
     public void setUserDao(UserDao userDao){
