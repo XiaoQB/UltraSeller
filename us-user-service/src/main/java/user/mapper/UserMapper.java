@@ -5,21 +5,26 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import user.domain.entity.User;
 
-import java.util.List;
-import java.util.Map;
-
 @Repository
 @Mapper
 public interface UserMapper {
 
-    /**
-     * @param num 每页数量
-     * @param page 第几页
-     * @return list of buyers
-     */
-    List<Map<Object,Object>> getUserListPaging(@Param("num")int num, @Param("page")int page);
 
-    List<User> getUserListPaging1(@Param("num")int num, @Param("page")int page);
+    boolean insertAdmin(String userName, String password);
 
-    String getTest();
+    boolean insertSaler(String userName, String email, String phone, String password);
+
+    boolean insertBuyer(String userName, String email, String phone, String password);
+
+    Integer isExistAdmin(String userName);
+
+    Integer isExistSaler(String userName);
+
+    Integer isExistBuyer(String userName);
+
+    User getAdminByName(String userName);
+
+    User getBuyerByName(String userName);
+
+    User getSalerByName(String userName);
 }

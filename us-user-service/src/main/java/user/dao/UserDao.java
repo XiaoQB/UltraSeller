@@ -1,33 +1,66 @@
 package user.dao;
 
-import org.apache.ibatis.session.SqlSession;
+
+import lombok.experimental.PackagePrivate;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import user.domain.entity.User;
 import user.mapper.UserMapper;
 
-import java.util.List;
-import java.util.Map;
 
 @Repository
+@Slf4j
 public class UserDao {
-
+    @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    public void setUserMapper(UserMapper userMapper){
-        this.userMapper=userMapper;
+    public boolean insertUser(User user, String password) {
+        String role = user.getRole();
+        boolean exist = false;
+        try {
+            switch (role) {
+                case "admin":
+                    exist = userMapper.isExistAdmin(user.getUserName()) > 0;
+                    if (exist) return false;
+                    userMapper.insertAdmin(user.getUserName(), password);
+                    break;
+                case "saler":
+                    exist = userMapper.isExistSaler(user.getUserName()) > 0;
+                    if (exist) return false;
+                    userMapper.insertSaler(user.getUserName(), user.getEmail(), user.getPhone(), password);
+                    break;
+                case "buyer":
+                    exist = userMapper.isExistBuyer(user.getUserName()) > 0;
+                    if (exist) return false;
+                    userMapper.insertBuyer(user.getUserName(), user.getEmail(), user.getPhone(), password);
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            log.info("插入用户失败");
+            return false;
+        }
+        return true;
     }
 
-    //page为第一个参数，num为每页展示个数
-    public List<Map<Object,Object>> getUserListPaging(int num, int page) {
-         return userMapper.getUserListPaging(num,page);
-    }
-    public List<User> getUserListPaging1(int num, int page) {
-        return userMapper.getUserListPaging1(num,page);
-    }
 
-    public String getTest(){
-        return userMapper.getTest();
+    public User getUserbyName(String userName, String role) {
+        User user = new User();
+        switch (role) {
+            case "admin":
+                user = userMapper.getAdminByName(userName);
+                break;
+            case "buyer":
+                user = userMapper.getBuyerByName(userName);
+                break;
+            case "saler":
+                user = userMapper.getSalerByName(userName);
+            default:
+                break;
+        }
+        return user;
     }
 }

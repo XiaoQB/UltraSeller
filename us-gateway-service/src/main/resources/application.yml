@@ -31,9 +31,16 @@ spring:
           uri: http://localhost:8002
           predicates:
             - Path=/user/**
-
-
-
+        #- id: us_admin_route
+          #uri: http://localhost:8003
+          #predicates:
+          # - Path=/admin/commodity
+          #filters:
+          #  - RewritePath=/admin(?<segment>/?.*), $\{segment}
+        - id: us_goods_route
+          uri: http://localhost:8003
+          predicates:
+            - Path=/commodity/**
 
 management:
   endpoint:
