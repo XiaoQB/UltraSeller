@@ -119,6 +119,7 @@
         </dependency>
         <dependency>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>compile</scope>
@@ -128,6 +129,13 @@
                     <artifactId>lombok</artifactId>
                     <version>1.18.16</version>
 >>>>>>> d394d3fa5bc22346c3690a40d49c6f2b5382ead3
+=======
+
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok</artifactId>
+                    <version>1.18.16</version>
+
+>>>>>>> userTest
         </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

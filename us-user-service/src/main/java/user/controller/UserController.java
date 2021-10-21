@@ -4,25 +4,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import user.domain.entity.Admin;
 import user.domain.entity.User;
 import user.result.R;
 import user.result.ResultCode;
+import user.service.UserService;
 import user.service.impl.UserServiceImpl;
-<<<<<<< HEAD
+
 import user.utils.JwtUtil;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-=======
->>>>>>> d394d3fa5bc22346c3690a40d49c6f2b5382ead3
+
 
 @RestController
 @Slf4j
 public class UserController {
 
-    private UserServiceImpl userServiceImpl;
+    private UserService userService;
 
     //测试路由
     @GetMapping("/user/get")
@@ -40,29 +39,33 @@ public class UserController {
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), jwt);
     }
 
-<<<<<<< HEAD
-    @GetMapping("/userInfo/buyer")
-    public List<Map<Object,Object>> getUserListPaging(@RequestParam(value = "num",defaultValue = "0") String numString,
-                                        @RequestParam(value = "page",defaultValue = "1") String pageString){
-        System.out.println(numString+"              "+pageString);
-        int num= Integer.valueOf(numString);
-        int page=Integer.valueOf(pageString);
-        List<Map<Object,Object>> users=userServiceImpl.getUserListPaging(num,page);
-        return users;
+
+    @GetMapping("/user/info")
+    public R<List<User>> getUserList(String role,Integer num,Integer page){
+        if(num<=0||page<=0){
+            log.info("info 查询数值错误");
+            return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
+        }
+        List<User> results = userService.getUserList(role,num,page);
+        if(results==null){
+            return new R<>(ResultCode.QUERY_FAIL.getCode(), ResultCode.QUERY_FAIL.getMessage(), null);
+        }
+        return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), results);
     }
 
-    @GetMapping("/userInfo/buyer1")
-    public List<User> getUserListPaging1(@RequestParam(value = "num",defaultValue = "0") String numString,
-                                                      @RequestParam(value = "page",defaultValue = "1") String pageString){
-        System.out.println(numString+"              "+pageString);
-        int num= Integer.valueOf(numString);
-        int page=Integer.valueOf(pageString);
-        List<User> users=userServiceImpl.getUserListPaging1(num,page);
-        System.out.println("              "+users.get(0).getUserName());
-        return users;
+    @DeleteMapping("/user/delete")
+    public R<Integer> deleteUser(String role,String username){
+        if(role==null||username==null){
+            log.info("info 删除数值错误");
+            return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
+        }
+        Integer deleteResult = userService.deleteUser(role,username);
+        if(deleteResult==0){
+            return new R<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage(), null);
+        }
+        return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), deleteResult);
     }
 
-=======
     @PostMapping("/user/register")
     public R<String> register(@RequestBody User user) {
         if (user == null) {
@@ -75,7 +78,6 @@ public class UserController {
         }
         return new R<>(ResultCode.REGISTER_FAIL.getCode(), ResultCode.REGISTER_FAIL.getMessage(), null);
     }
->>>>>>> d394d3fa5bc22346c3690a40d49c6f2b5382ead3
 
     @DeleteMapping("/user/logout")
     public R<String> register(String userName) {
@@ -84,17 +86,7 @@ public class UserController {
             return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), userService.logout(userName));
-    }
 
-    @GetMapping("/test")
-    public String getTest(){
-        String result=userServiceImpl.getTest();
-        return result;
-    }
-
-    @Autowired
-    public void setUserServiceImpl(UserServiceImpl userServiceImpl){
-        this.userServiceImpl=userServiceImpl;
     }
 
 }

@@ -15,7 +15,9 @@ public enum ResultCode {
     PERMISSION_NO_ACCESS(400, "无访问权限"),
 
     REGISTER_FAIL(401, "注册失败"),
-    LOGIN_FAIL(402, "登录失败");
+    LOGIN_FAIL(402, "登录失败"),
+    QUERY_FAIL(403,"查询失败"),
+    DELETE_FAIL(406,"删除失败");
     private Integer code;
     private String message;
 

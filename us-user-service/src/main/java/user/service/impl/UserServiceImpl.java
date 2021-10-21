@@ -3,19 +3,15 @@ package user.service.impl;
 import com.alibaba.fastjson.JSON;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import user.dao.UserDao;
 import user.domain.entity.User;
 import user.service.UserService;
 import user.utils.JwtUtil;
 
-import java.util.HashMap;
+import java.util.*;
 import java.util.Map;
-import java.util.UUID;
-
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,6 +37,10 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public Integer deleteUser(String role,String username){
+        return userDao.deleteUser(role,username);
+    }
 
     @Override
     public boolean insertUser(User user) {
@@ -48,6 +48,13 @@ public class UserServiceImpl implements UserService {
         return userDao.insertUser(user, password);
     }
 
+
+    @Override
+    public List<User> getUserList(String role,Integer num,Integer page){
+        page=(page-1)*num;
+        return userDao.getUserList(role,num,page);
+
+    }
 
     @Override
     public String logout(String userName) {

@@ -37,4 +37,39 @@
         from us_buyer where username = #{userName}
     </select>
     <select id="getSalerByName" resultType="user.domain.entity.User" parameterType="java.lang.String"></select>
+
+    <select id="getAdmins" resultType="user.domain.entity.Admin">
+        select *
+        from ultra_seller.us_admin
+        limit #{page},#{num}
+    </select>
+
+    <select id="getBuyers" resultType="user.domain.entity.User">
+        select *
+        from ultra_seller.us_buyer
+        limit #{page},#{num}
+    </select>
+
+    <select id="getSalers" resultType="user.domain.entity.User">
+        select *
+        from ultra_seller.us_saler
+        limit #{page},#{num}
+    </select>
+
+    <delete id="deleteAdmin" parameterType="java.lang.String" >
+         delete from ultra_seller.us_admin
+         where username=${username}
+    </delete>
+
+    <delete id="deleteBuyer" parameterType="java.lang.String" >
+        delete from ultra_seller.us_buyer
+        where username=${username}
+    </delete>
+
+    <delete id="deleteSaler" parameterType="java.lang.String" >
+        delete from ultra_seller.us_saler
+        where username=${username}
+    </delete>
+
+
 </mapper>
