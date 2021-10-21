@@ -1,12 +1,19 @@
 package commodity.controller;
 
 import commodity.domain.Commodity;
+import commodity.service.impl.CommodityServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 public class CommodityController {
+
+    @Autowired
+    CommodityServiceImpl commodityService;
 
     @GetMapping("/commodity/lists")
     public List<Commodity> allCommodities(@RequestHeader("Role") String role,
@@ -19,8 +26,9 @@ public class CommodityController {
     }
 
     @GetMapping("/commodity/item")
-    public Commodity singleCommodity(@RequestHeader("Role") String role, @RequestParam("id") int commodityId){
-        return null;
+    public ResponseEntity<Commodity> singleCommodity(@RequestHeader("Role") String role, @RequestParam("id") int commodityId){
+        // for test, you can delete it
+        return new ResponseEntity<Commodity>(commodityService.singleCommodity(commodityId), HttpStatus.CREATED);
     }
 
     @PutMapping("/commodity/item")
