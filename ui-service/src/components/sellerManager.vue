@@ -83,13 +83,11 @@ export default {
       this.axios({
         headers:{
           'Content-Type': 'application/json;',
+
         },
         method:"get",
-        url:"/commidity/lists",
-        transformRequest:[function (data){
-          return JSON.stringify(data)
-        }],
-        data:{
+        url:"/seller/lists",
+        params:{
           role:"admin",
           name:"admin",
           ps:this.formInline.pageSize,
