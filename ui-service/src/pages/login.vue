@@ -11,7 +11,7 @@
           <el-form-item id="password" prop="password" label="密码">
             <el-input v-model="user.password" show-password placeholder="请输入密码"></el-input>
           </el-form-item>
-          <router-link to="/" >找回密码</router-link>
+          <router-link to="/" >找回密码 / </router-link>
           <router-link to="/register">注册账号</router-link>
           <el-form-item>
             <el-button class = "button1" type="primary"  @click="doLogin()" >登 录</el-button>
