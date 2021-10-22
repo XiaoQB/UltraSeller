@@ -48,7 +48,7 @@ public class CommodityController {
 
     @GetMapping("/commodity/search")
     public List<Commodity> searchList(@RequestHeader("Role") String role, @RequestParam("q") String searchWords){
-        return null;
+        return commodityService.searchList(role, searchWords);
     }
 
 }

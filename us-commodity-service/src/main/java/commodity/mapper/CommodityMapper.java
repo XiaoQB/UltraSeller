@@ -98,6 +98,4 @@ public interface CommodityMapper {
      */
     int updateByPrimaryKey(Commodity record);
 
-    List<Map<String, Object>> selectAllCommodity(String username, int page, int pagesize, int seq);
-
 }
