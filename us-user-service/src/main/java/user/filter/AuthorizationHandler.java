@@ -1,34 +1,58 @@
 package user.filter;
 
+import io.swagger.annotations.Authorization;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
+import user.result.R;
+import user.result.ResultCode;
+import user.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
+import java.util.HashMap;
 
+@Configuration
+@Slf4j
 public class AuthorizationHandler implements HandlerInterceptor {
-//    @Override
-//    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        System.out.println(request.getRequestURL()+"===========preHandle===========");
-//        String token = request.getParameter("token");
-//        if(StringUtils.isNotEmpty(token)){
-//            if(){
-//                return true;
-//            } else{
-//                //返回校验token结果
-//                returnJson(response);
-//                // return false; //我做的时候返回数据后忘记return false了，所以导致异常
-//            }
-//        }
-//
-//        return true;
-//    }
-//
-//
+
+    @Autowired
+    private UserServiceImpl userService;
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println(request.getRequestURL() + "===========preHandle===========");
+        String role = request.getParameter("role");
+        String token = request.getHeader("Authorization");
+        if (StringUtils.isNotEmpty(token) && StringUtils.isNotEmpty(role)) {
+            boolean auth = userService.authorization(token, role);
+            if (auth) {
+                return true;
+            }
+        }
+        //返回校验token结果
+        PrintWriter writer = null;
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=utf-8");
+        try {
+            writer = response.getWriter();
+            HashMap<String,String> map = new HashMap<>();
+            map.put("code","400");
+            map.put("message","无权限");
+            writer.print(map);
+        } catch (Exception e) {
+            log.info("拦截器报错");
+            e.printStackTrace();
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
+        return false;
+    }
 //    @Override
 //    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
 //        System.out.println(request.getContextPath()+"============postHandle==========");
