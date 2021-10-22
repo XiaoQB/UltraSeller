@@ -6,12 +6,11 @@ import commodity.domain.CommodityExample;
 import commodity.mapper.CommodityMapper;
 import commodity.domain.Commodity;
 import commodity.service.CommodityService;
-import commodity.util.PagedGridResult;
+import commodity.utils.PagedGridResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class CommodityServiceImpl implements CommodityService {
@@ -19,13 +18,11 @@ public class CommodityServiceImpl implements CommodityService {
     CommodityMapper commodityMapper;
 
     @Override
-    public PagedGridResult selectAll(String username, String role, int page, int pagesize, int seq) {
+    public PagedGridResult selectAll(String username,  int page, int pagesize, int seq) {
         PageHelper.startPage(page, pagesize);
         CommodityExample example = new CommodityExample();
         CommodityExample.Criteria criteria = example.createCriteria();
-        if(role == "Seller") {
-            criteria.andVendornameEqualTo(username);
-        }
+        criteria.andVendornameEqualTo(username);
         List<Commodity> commodities = commodityMapper.selectByExample(example);
         return setterPagedGrid(commodities, 1);
     }

@@ -3,6 +3,7 @@ package commodity.controller;
 import commodity.domain.Commodity;
 import commodity.service.impl.CommodityServiceImpl;
 import commodity.utils.IdGenerator;
+import commodity.utils.PagedGridResult;
 import common.JwtUtil;
 import common.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +38,14 @@ public class CommodityController {
                                           @RequestParam("username") String username,
                                           @RequestParam("page") int pageNum,
                                           @RequestParam("pagesize") int pageSize,
-                                          @RequestParam("seq") String sequence
+                                          @RequestParam("seq") int sequence
                                           ){
         List<Commodity> ret = null;
         if(Objects.equals(JwtUtil.getRole(token), "saler")){
             //TODO: change it
-            ret = commodityService.selectAll();
+            PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
         } else {
-            ret = commodityService.selectAll();
+            PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
         }
         return new Response<>(200, "", ret);
     }
