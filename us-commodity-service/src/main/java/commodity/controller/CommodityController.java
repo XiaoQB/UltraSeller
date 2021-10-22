@@ -1,6 +1,7 @@
 package commodity.controller;
 
 import commodity.domain.Commodity;
+import commodity.domain.CommodityList;
 import commodity.service.impl.CommodityServiceImpl;
 import commodity.utils.IdGenerator;
 import commodity.utils.PagedGridResult;
@@ -9,7 +10,6 @@ import common.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -34,20 +34,20 @@ public class CommodityController {
      * @return the list
      */
     @GetMapping("/commodity/lists")
-    public Response<List<Commodity>> allCommodities(@RequestHeader("token") String token,
+    public PagedGridResult allCommodities(@RequestHeader("token") String token,
                                           @RequestParam("username") String username,
                                           @RequestParam("page") int pageNum,
                                           @RequestParam("pagesize") int pageSize,
                                           @RequestParam("seq") int sequence
                                           ){
-        List<Commodity> ret = null;
         if(Objects.equals(JwtUtil.getRole(token), "saler")){
             //TODO: change it
             PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
+            return result;
         } else {
             PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
+            return result;
         }
-        return new Response<>(200, "", ret);
     }
 
     /**
@@ -133,14 +133,15 @@ public class CommodityController {
      * @return the list
      */
     @GetMapping("/commodity/search")
-    public Response<List<Commodity>> searchList(@RequestHeader("token") String token, @RequestParam("q") String searchWords){
-        List<Commodity> ret = null;
-        if(Objects.equals(JwtUtil.getRole(token), "saler")){
-            //TODO: change it
-            ret = commodityService.searchList("saler", searchWords);
-        } else {
-            ret = commodityService.searchList(JwtUtil.getRole(token), searchWords);
-        }
+    public Response<CommodityList> searchList(@RequestHeader("token") String token,
+                                                @RequestParam("q") String searchWords,
+                                                @RequestParam("page") int pageNum,
+                                                @RequestParam("pagesize") int pageSize,
+                                                @RequestParam("seq") String sequence){
+        CommodityList ret = null;
+        String userName = JwtUtil.getUserName(token);
+        String role = JwtUtil.getRole(token);
+        ret = commodityService.searchList(role, userName, pageNum, pageSize, sequence, searchWords);
         return new Response<>(200, "", ret);
     }
 }
