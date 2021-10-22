@@ -17,4 +17,5 @@ public interface UserService {
 
     Integer modifyUser(String userName,String newData,String type,String role);
 
+    boolean authorization(String token,String role);
 }

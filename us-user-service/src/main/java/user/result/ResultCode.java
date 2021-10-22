@@ -19,6 +19,8 @@ public enum ResultCode {
     QUERY_FAIL(403,"查询失败"),
     DELETE_FAIL(406,"删除失败"),
     MODIFY_FAIL(407,"修改失败");
+
+
     private Integer code;
     private String message;
 

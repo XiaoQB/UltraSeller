@@ -12,7 +12,7 @@
         insert into us_saler(username,password,phone,email)
         values(#{userName},#{password},#{phone},#{email})
     </insert>
-    <insert id="insertBuyer">
+    <insert id="insertBuyer" parameterType="user.domain.entity.User" useGeneratedKeys="true" keyProperty="id">
         insert into us_buyer(username,password,phone,email)
         values(#{userName},#{password},#{phone},#{email})
     </insert>

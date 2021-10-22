@@ -2,7 +2,10 @@ package user.service.impl;
 
 import com.alibaba.fastjson.JSON;
 
+import com.alibaba.fastjson.JSONObject;
+import io.jsonwebtoken.Claims;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import user.dao.UserDao;
@@ -57,6 +60,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer modifyUser(String userName,String newData,String type,String role){
         return userDao.modifyUser(userName,newData,type,role);
+    }
+
+    @Override
+    public boolean authorization(String token, String role) {
+        try {
+            Claims claims = JwtUtil.parseJWT(token);
+            String subject = claims.getSubject();
+            String tokenRole = JSONObject.parseObject(subject).getString("role");
+            if(StringUtils.isNotBlank(role) && role.equals(tokenRole)){
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return false;
     }
 
     @Override

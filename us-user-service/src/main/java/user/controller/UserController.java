@@ -1,6 +1,5 @@
 package user.controller;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,9 @@ public class UserController {
     //测试token
     @GetMapping("/user/login")
     public R<String> login(String userName, String password, String role) {
+        if(StringUtils.isBlank(role)){
+            return new R<>(ResultCode.PERMISSION_NO_ACCESS.getCode(),ResultCode.PERMISSION_NO_ACCESS.getMessage(),null);
+        }
         String jwt = userService.findByUsername(userName, password, role);
         if (StringUtils.isEmpty(jwt)) {
             return new R<>(ResultCode.LOGIN_FAIL.getCode(), ResultCode.LOGIN_FAIL.getMessage(), null);
@@ -107,5 +109,7 @@ public class UserController {
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), userService.logout(userName));
 
     }
+
+
 
 }
