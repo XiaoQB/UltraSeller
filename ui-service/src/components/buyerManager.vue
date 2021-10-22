@@ -70,17 +70,14 @@ export default {
 
     getList() {
       var that = this;
-      this.axios({
+      this.http({
         headers:{
           'Content-Type': 'application/json;',
 
         },
         method:"get",
-        url:"/commidity/lists",
-        transformRequest:[function (data){
-          return JSON.stringify(data)
-        }],
-        data:{
+        url:"/buyer/lists",
+        params:{
           role:"admin",
           name:"admin",
           ps:this.formInline.pageSize,

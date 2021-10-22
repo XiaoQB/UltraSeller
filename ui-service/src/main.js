@@ -10,10 +10,8 @@ import login from "@/components/login";
 import adminLogin from "@/components/adminLogin";
 import admin from "@/components/admin";
 
-import axios from 'axios'
-import VueAxios from "vue-axios";
-Vue.use(VueAxios, axios)
-axios.defaults.baseURL = 'http://localhost:8888/'
+import http from './http'
+Vue.prototype.http = http;
 
 
 import VueCookies from 'vue-cookies'
@@ -30,7 +28,8 @@ const router = new VueRouter({
     routes:[
         {
             path:'/login',
-            component:login
+            component:login,
+
         },
         {
             path:'/adminLogin',
@@ -38,7 +37,11 @@ const router = new VueRouter({
         },
         {
             path:'/admin',
-            component:admin
+            component:admin,
+            meta:{
+                requireAuth: true,
+            }
+
         }
     ]
 })

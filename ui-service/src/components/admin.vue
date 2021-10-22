@@ -1,19 +1,28 @@
 <template>
+  <el-container>
+    <el-header>
+      管理中心
+    </el-header>
+    <el-main>
+      <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick" >
 
-  <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick" >
-    <!-------------------------------------------------------->
-    <el-tab-pane label="买家管理" name="buyerManager">
-      <buyerManager  v-if="activeName == 'buyerManager'" ref="buyerManager"></buyerManager>
-    </el-tab-pane>
-    <!-------------------------------------------------------->
-    <el-tab-pane label="卖家管理" name="sellerManager">
-      <sellerManager v-if="activeName == 'sellerManager'" ref="sellerManager"></sellerManager></el-tab-pane>
-    <!-------------------------------------------------------->
-    <el-tab-pane label="商品管理" name="commodityManager">
-      <commodityManager v-if="activeName == 'commodityManager'" ref="commodityManager"></commodityManager>
-    </el-tab-pane>
+        <!-------------------------------------------------------->
+        <el-tab-pane label="买家管理" name="buyerManager">
+          <buyerManager  v-if="activeName == 'buyerManager'" ref="buyerManager"></buyerManager>
+        </el-tab-pane>
+        <!-------------------------------------------------------->
+        <el-tab-pane label="卖家管理" name="sellerManager">
+          <sellerManager v-if="activeName == 'sellerManager'" ref="sellerManager"></sellerManager></el-tab-pane>
+        <!-------------------------------------------------------->
+        <el-tab-pane label="商品管理" name="commodityManager">
+          <commodityManager v-if="activeName == 'commodityManager'" ref="commodityManager"></commodityManager>
+        </el-tab-pane>
 
-  </el-tabs>
+      </el-tabs>
+    </el-main>
+  </el-container>
+
+
 
 </template>
 <script>
@@ -56,3 +65,12 @@ export default {
 
 };
 </script>
+<style>
+.el-header, .el-footer {
+  background-color: #B3C0D1;
+  color: #333;
+  text-align: center;
+  line-height: 60px;
+  font-family:"Arial Hebrew Scholar" ;
+}
+</style>
