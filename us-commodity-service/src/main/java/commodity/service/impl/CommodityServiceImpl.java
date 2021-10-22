@@ -3,6 +3,7 @@ package commodity.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import commodity.domain.CommodityExample;
+import commodity.domain.CommodityList;
 import commodity.mapper.CommodityMapper;
 import commodity.domain.Commodity;
 import commodity.service.CommodityService;
@@ -19,6 +20,10 @@ public class CommodityServiceImpl implements CommodityService {
     CommodityMapper commodityMapper;
 
     @Override
+    public CommodityList selectAll(String role, String userName, int pageNum, int pageSize, String seq) {
+        return null;
+    }
+
     public PagedGridResult selectAll(String username, String role, int page, int pagesize, int seq) {
         PageHelper.startPage(page, pagesize);
         CommodityExample example = new CommodityExample();
@@ -69,6 +74,12 @@ public class CommodityServiceImpl implements CommodityService {
     }
 
     @Override
+    public CommodityList searchList(String role, String userName, int pageNum,
+                                    int pageSize, String seq, String searchWords){
+        
+        return null;
+    }
+
     public PagedGridResult searchList(String role, String username, String searchWords, int page, int pagesize){
         PageHelper.startPage(page, pagesize);
         CommodityExample example = new CommodityExample();
