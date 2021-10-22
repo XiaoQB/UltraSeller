@@ -4,10 +4,13 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 import java.util.Date;
+
+import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.bson.json.JsonObject;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -106,7 +109,7 @@ public class JwtUtil {
     public static String getRole(String token){
         try {
             Claims claims = JwtUtil.parseJWT(token);
-            return claims.getRole();
+            return JSONObject.parseObject(claims.getSubject()).getString("role");
         }catch (Exception e) {
             // token格式不对
             return null;
@@ -122,7 +125,7 @@ public class JwtUtil {
     public static String getUserName(String token){
         try {
             Claims claims = JwtUtil.parseJWT(token);
-            return claims.getUsername();
+            return JSONObject.parseObject(claims.getSubject()).getString("username");
         }catch (Exception e) {
             // token格式不对
             return null;
