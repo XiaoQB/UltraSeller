@@ -58,59 +58,59 @@
 
     <delete id="deleteAdmin" parameterType="java.lang.String" >
          delete from ultra_seller.us_admin
-         where username=${userName}
+         where username=#{userName}
     </delete>
 
-    <delete id="deleteBuyer" parameterType="java.lang.String" >
+    <delete id="deleteBuyer">
         delete from ultra_seller.us_buyer
-        where username=${userName}
+        where username=#{userName}
     </delete>
 
     <delete id="deleteSaler" parameterType="java.lang.String" >
         delete from ultra_seller.us_saler
-        where username=${userName}
+        where username=#{userName}
     </delete>
 
     <update id="updateAdmin" parameterType="java.lang.String">
         update ultra_seller.us_admin
-        set password=${password},update_time=cast(now() as datetime)
-        where username=${userName}
+        set password=#{password},update_time=cast(now() as datetime)
+        where username=#{userName}
     </update>
 
     <update id="updateBuyerPassword" parameterType="java.lang.String">
         update ultra_seller.us_buyer
-        set password=${password},update_time=cast(now() as datetime)
-        where username=${userName}
+        set password=#{password},update_time=cast(now() as datetime)
+        where username=#{userName}
     </update>
 
     <update id="updateBuyerPhone" parameterType="java.lang.String">
         update ultra_seller.us_buyer
-        set phone=${phone},update_time=cast(now() as datetime)
-        where username=${userName}
+        set phone=#{phone},update_time=cast(now() as datetime)
+        where username=#{userName}
     </update>
 
     <update id="updateBuyerEmail" parameterType="java.lang.String">
         update ultra_seller.us_buyer
-        set email=${email},update_time=cast(now() as datetime)
-        where username=${userName}
+        set email=#{email},update_time=cast(now() as datetime)
+        where username=#{userName}
     </update>
 
     <update id="updateSalerPassword" parameterType="java.lang.String">
         update ultra_seller.us_saler
-        set password=${password},update_time=cast(now() as datetime)
-        where username=${userName}
+        set password=#{password},update_time=cast(now() as datetime)
+        where username=#{userName}
     </update>
 
     <update id="updateSalerPhone" parameterType="java.lang.String">
         update ultra_seller.us_saler
-        set phone=${phone},update_time=cast(now() as datetime)
-        where username=${userName}
+        set phone=#{phone},update_time=cast(now() as datetime)
+        where username=#{userName}
     </update>
 
     <update id="updateSalerEmail" parameterType="java.lang.String">
         update ultra_seller.us_saler
-        set email=${email},update_time=cast(now() as datetime)
-        where username=${userName}
+        set email=#{email},update_time=cast(now() as datetime)
+        where username=#{userName}
     </update>
 
 </mapper>

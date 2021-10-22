@@ -1,6 +1,7 @@
 package user.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import user.domain.entity.User;
 import java.util.List;

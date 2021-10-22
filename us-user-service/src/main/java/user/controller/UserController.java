@@ -1,8 +1,12 @@
 package user.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import user.domain.dto.GetUserListDTO;
+import user.domain.dto.ModifyDTO;
 import user.domain.entity.User;
 import user.result.R;
 import user.result.ResultCode;
@@ -13,6 +17,7 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
+    @Autowired
     private UserService userService;
 
     //测试路由
@@ -32,8 +37,11 @@ public class UserController {
     }
 
     @GetMapping("/user/info")
-    public R<List<User>> getUserList(String role,Integer num,Integer page){
-        if(num<=0||page<=0){
+    public R<List<User>> getUserList(@RequestBody GetUserListDTO getUserListDTO){
+        Integer num=getUserListDTO.getNum();
+        Integer page=getUserListDTO.getPage();
+        String role=getUserListDTO.getRole();
+        if(num==null||page==null){
             log.info("info 查询数值错误");
             return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
@@ -45,7 +53,9 @@ public class UserController {
     }
 
     @DeleteMapping("/user/delete")
-    public R<Integer> deleteUser(String role,String username){
+    public R<Integer> deleteUser(@RequestBody User user){
+        String role=user.getRole();
+        String username=user.getUserName();
         if(role==null||username==null){
             log.info("info 删除数值错误");
             return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
@@ -58,7 +68,11 @@ public class UserController {
     }
 
     @PutMapping("/user/modify")
-    public R<Integer> modifyUser(String userName,String newData,String type,String role){
+    public R<Integer> modifyUser(@RequestBody ModifyDTO modifyDTO){
+        String userName=modifyDTO.getUserName();
+        String newData=modifyDTO.getNewData();
+        String role=modifyDTO.getRole();
+        String type=modifyDTO.getType();
         if(userName==null||newData==null||role==null){
             log.info("info 修改时数值错误");
             return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);

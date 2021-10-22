@@ -12,12 +12,8 @@ import java.util.List;
 @Slf4j
 public class UserDao {
 
-    private UserMapper userMapper;
-
     @Autowired
-    public void setUserMapper(UserMapper userMapper){
-        this.userMapper=userMapper;
-    }
+    private UserMapper userMapper;
 
     public boolean insertUser(User user, String password) {
         String role = user.getRole();
