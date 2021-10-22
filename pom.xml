@@ -11,6 +11,7 @@
         <module>us-user-service</module>
         <module>us-gateway-service</module>
         <module>us-eureka-service</module>
+        <module>us-common</module>
     </modules>
     <name>UltraSeller</name>
     <description>Demo project for Spring Boot</description>

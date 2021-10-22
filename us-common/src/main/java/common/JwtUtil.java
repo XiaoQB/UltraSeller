@@ -1,4 +1,4 @@
-package commodity.utils;
+package common;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -14,13 +14,30 @@ import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 import java.util.Date;
 
+/**
+ * The type Jwt util.
+ */
 public class JwtUtil {
-    //有效期为
-    public static final Long JWT_TTL = 3600000L;// 60 * 60 *1000  一个小时
+    /**
+     * The constant JWT_TTL.
+     * 有效期为60 * 60 *1000  一个小时
+     */
+    public static final Long JWT_TTL = 3600000L;
 
-    //Jwt令牌信息
+    /**
+     * The constant JWT_KEY.
+     * Jwt令牌信息
+     */
     public static final String JWT_KEY = "itcast";
 
+    /**
+     * Create jwt string.
+     *
+     * @param id        the id
+     * @param subject   the subject
+     * @param ttlMillis the ttl millis
+     * @return the string
+     */
     public static String createJWT(String id, String subject, Long ttlMillis) {
         //指定算法
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -55,7 +72,8 @@ public class JwtUtil {
 
     /**
      * 生成加密 secretKey
-     * @return
+     *
+     * @return secret key
      */
     public static SecretKey generalKey() {
         byte[] encodedKey = Base64.getEncoder().encode(JwtUtil.JWT_KEY.getBytes());
@@ -66,9 +84,10 @@ public class JwtUtil {
 
     /**
      * 解析令牌数据
-     * @param jwt
-     * @return
-     * @throws Exception
+     *
+     * @param jwt the jwt
+     * @return claims
+     * @throws Exception the exception
      */
     public static Claims parseJWT(String jwt) throws Exception {
         SecretKey secretKey = generalKey();
@@ -78,6 +97,12 @@ public class JwtUtil {
                 .getBody();
     }
 
+    /**
+     * Get role string.
+     *
+     * @param token the token
+     * @return the string
+     */
     public static String getRole(String token){
         try {
             Claims claims = JwtUtil.parseJWT(token);
@@ -88,6 +113,12 @@ public class JwtUtil {
         }
     }
 
+    /**
+     * Get user name string.
+     *
+     * @param token the token
+     * @return the string
+     */
     public static String getUserName(String token){
         try {
             Claims claims = JwtUtil.parseJWT(token);
