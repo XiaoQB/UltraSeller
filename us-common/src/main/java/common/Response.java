@@ -14,7 +14,7 @@ import lombok.*;
 @Data
 public class Response<T> {
 
-    private int status;
+    private int code;
     private String msg;
     private T data;
 
