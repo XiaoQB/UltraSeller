@@ -1,6 +1,7 @@
 package commodity.service.impl;
 
 import commodity.domain.CommodityExample;
+import commodity.domain.CommodityList;
 import commodity.mapper.CommodityMapper;
 import commodity.domain.Commodity;
 import commodity.service.CommodityService;
@@ -15,7 +16,7 @@ public class CommodityServiceImpl implements CommodityService {
     CommodityMapper commodityMapper;
 
     @Override
-    public List<Commodity> selectAll() {
+    public CommodityList selectAll(String role, String userName, int pageNum, int pageSize, String seq) {
         return null;
     }
 
@@ -58,7 +59,8 @@ public class CommodityServiceImpl implements CommodityService {
     }
 
     @Override
-    public List<Commodity> searchList(String role, String searchWords){
+    public CommodityList searchList(String role, String userName, int pageNum,
+                                    int pageSize, String seq, String searchWords){
         
         return null;
     }

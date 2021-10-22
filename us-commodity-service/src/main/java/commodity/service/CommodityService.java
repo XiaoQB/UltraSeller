@@ -1,11 +1,12 @@
 package commodity.service;
 
 import commodity.domain.Commodity;
+import commodity.domain.CommodityList;
 
 import java.util.List;
 
 public interface CommodityService {
-    public List<Commodity> selectAll();
+    public CommodityList selectAll(String role, String userName, int pageNum, int pageSize, String seq);
 
     public Commodity singleCommodity(long commodityId);
 
@@ -15,5 +16,6 @@ public interface CommodityService {
 
     public void delete(long itemId);
 
-    public List<Commodity> searchList(String role, String searchWords);
+    public CommodityList searchList(String role, String userName, int pageNum,
+                                    int pageSize, String seq, String searchWords);
 }
