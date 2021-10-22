@@ -18,4 +18,4 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
-  type-aliases-package: commodity.pojo
+  type-aliases-package: commodity.domain
