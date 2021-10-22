@@ -138,5 +138,4 @@ public class CommodityController {
         ret = commodityService.searchList(role, userName, pageNum, pageSize, sequence, searchWords);
         return new Response<>(200, "", ret);
     }
-
 }

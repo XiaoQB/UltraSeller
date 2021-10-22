@@ -1,7 +1,21 @@
 package user.service;
 
 import user.domain.entity.User;
+import java.util.List;
 
 public interface UserService {
-    User findByUsername(String userName);
+
+    boolean insertUser(User user);
+
+    String logout(String userName);
+
+    String findByUsername(String userName, String password, String role);
+
+    List<User> getUserList(String role, Integer num, Integer page);
+
+    Integer deleteUser(String role,String username);
+
+    Integer modifyUser(String userName,String newData,String type,String role);
+
+    boolean authorization(String token,String role);
 }

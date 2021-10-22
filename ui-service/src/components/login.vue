@@ -2,7 +2,7 @@
   <div class="login" clearfix>
     <div class="login-wrap">
       <el-row type="flex" justify="center">
-        <el-form ref="loginForm" :model="user" status-icon label-width="80px">
+        <el-form ref="loginForm" :model="user" status-icon label-width="80px" style="height: 800px">
           <h3>请您登录</h3>
           <hr>
           <el-form-item prop="username" label="用户名">
@@ -11,10 +11,12 @@
           <el-form-item id="password" prop="password" label="密码">
             <el-input v-model="user.password" show-password placeholder="请输入密码"></el-input>
           </el-form-item>
-          <router-link to="/" >找回密码</router-link>
-          <router-link to="/register">注册账号</router-link>
+          <el-form-item label="角色" prop="role">
+            <el-radio v-model="user.role" label="1">买家</el-radio>
+            <el-radio v-model="user.role" label="2">卖家</el-radio>
+          </el-form-item>
           <el-form-item>
-            <el-button class = "button1" type="primary"  @click="doLogin()" >登 录</el-button>
+            <el-button class = "button1" type="primary"  @click="doLogin()" style="border-bottom: 200px" >登 录</el-button>
             <el-button class = "button2" type="primary"  @click="registervisible=true" >注 册</el-button>
           </el-form-item>
         </el-form>
@@ -41,13 +43,6 @@
             <el-radio v-model="register.sex" label="1">女</el-radio>
             <el-radio v-model="register.sex" label="2">男</el-radio>
           </el-form-item>
-          <!--el-form-item label="出生年月" prop="birth">
-            <el-date-picker
-                v-model="register.birth"
-                type="date"
-                placeholder="选择出生日期">
-            </el-date-picker>
-          </el-form-item!-->
           <el-form-item label="邮箱号" prop="email">
             <el-input v-model="register.email"></el-input>
           </el-form-item>
@@ -92,7 +87,8 @@ export default {
       registervisible:false,
       user: {
         username: "",
-        password: ""
+        password: "",
+        role:""
       },
       register:{
         identity:"",
@@ -147,13 +143,14 @@ export default {
         axios
             .post("/login/", {
               name: this.user.username,
-              password: this.user.password
+              password: this.user.password,
+              role:this.user.role
             })
             .then(res => {
               // console.log("输出response.data.status", res.data.status);
               if (res.data.status === 200) {
                 this.$router.push({ path: "/admin" });
-                this.$cookies.set("token",res.data["token"],"3y");
+                window.localStorage["token"] = JSON.stringify(res.data.data.token);
               } else {
                 this.$router.push({ path: "/admin" });
                 alert("您输入的用户名或密码错误！");
@@ -238,17 +235,19 @@ export default {
   background-size: cover;
   overflow: hidden;
   opacity: 30;
+
   ;
 }
 .login-wrap {
   background: rgb(255, 255, 255);
   background-size: cover;
   width: 400px;
-  height: 300px;
+  height: 350px;
   margin: 215px auto;
   overflow: hidden;
   padding-top: 10px;
   line-height: 40px;
+  opacity: 30;
 }
 #password {
   margin-bottom: 5px;
@@ -272,6 +271,8 @@ a:hover {
 .button1 {
   width: 50%;
   margin-left: -100px;
+  margin-bottom: auto;
+
 
 }
 .button2 {

@@ -1,14 +1,18 @@
 package commodity.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import commodity.domain.CommodityExample;
 import commodity.domain.CommodityList;
 import commodity.mapper.CommodityMapper;
 import commodity.domain.Commodity;
 import commodity.service.CommodityService;
+import commodity.util.PagedGridResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommodityServiceImpl implements CommodityService {
@@ -18,6 +22,17 @@ public class CommodityServiceImpl implements CommodityService {
     @Override
     public CommodityList selectAll(String role, String userName, int pageNum, int pageSize, String seq) {
         return null;
+    }
+
+    public PagedGridResult selectAll(String username, String role, int page, int pagesize, int seq) {
+        PageHelper.startPage(page, pagesize);
+        CommodityExample example = new CommodityExample();
+        CommodityExample.Criteria criteria = example.createCriteria();
+        if(role == "Seller") {
+            criteria.andVendornameEqualTo(username);
+        }
+        List<Commodity> commodities = commodityMapper.selectByExample(example);
+        return setterPagedGrid(commodities, 1);
     }
 
     public String test() { // 这是一个CommodityExample用于查询的例子, 相当于where后面的条件, https://zhuanlan.zhihu.com/p/42411540
@@ -63,5 +78,27 @@ public class CommodityServiceImpl implements CommodityService {
                                     int pageSize, String seq, String searchWords){
         
         return null;
+    }
+
+    public PagedGridResult searchList(String role, String username, String searchWords, int page, int pagesize){
+        PageHelper.startPage(page, pagesize);
+        CommodityExample example = new CommodityExample();
+        CommodityExample.Criteria criteria = example.createCriteria();
+        if(role == "Seller") {
+            criteria.andVendornameEqualTo(username);
+        }
+        criteria.andNameLike("%"+searchWords+"%");
+        List<Commodity> commodities = commodityMapper.selectByExample(example);
+        return setterPagedGrid(commodities, 1);
+    }
+
+    private PagedGridResult setterPagedGrid(List<?> list, Integer page) {
+        PageInfo<?> pageList = new PageInfo<>(list);
+        PagedGridResult grid = new PagedGridResult();
+        grid.setPage(page);
+        grid.setRows(list);
+        grid.setTotal(pageList.getPages());
+        grid.setRecords(pageList.getTotal());
+        return grid;
     }
 }
