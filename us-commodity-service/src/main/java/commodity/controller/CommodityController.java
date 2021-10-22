@@ -1,7 +1,8 @@
 package commodity.controller;
 
 import commodity.domain.Commodity;
-import commodity.service.impl.CommodityServiceImpl;
+import commodity.service.CommodityService;
+import commodity.utils.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import java.util.List;
 public class CommodityController {
 
     @Autowired
-    CommodityServiceImpl commodityService;
+    private CommodityService commodityService;
 
     @GetMapping("/commodity/lists")
     public List<Commodity> allCommodities(@RequestHeader("Role") String role,
@@ -26,24 +27,24 @@ public class CommodityController {
     }
 
     @GetMapping("/commodity/item")
-    public ResponseEntity<Commodity> singleCommodity(@RequestHeader("Role") String role, @RequestParam("id") int commodityId){
-        // for test, you can delete it
-        return new ResponseEntity<Commodity>(commodityService.singleCommodity(commodityId), HttpStatus.CREATED);
+    public Commodity singleCommodity(@RequestHeader("Role") String role, @RequestParam("id") int commodityId){
+        return commodityService.singleCommodity(commodityId);
     }
 
     @PutMapping("/commodity/item")
     public void update(@RequestBody Commodity commodity){
-
+        commodityService.update(commodity);
     }
 
     @PostMapping("/commodity/item")
     public void create(@RequestBody Commodity commodity){
-
+        commodity.setId(IdGenerator.generateId());
+        commodityService.create(commodity);
     }
 
     @DeleteMapping("/commodity/item/{itemId}")
     public void delete(@PathVariable long itemId){
-
+        commodityService.delete(itemId);
     }
 
     @GetMapping("/commodity/search")
