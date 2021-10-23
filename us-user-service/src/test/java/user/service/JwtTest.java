@@ -23,9 +23,9 @@ public class JwtTest {
     public void jwttest() throws Exception {
         Map<String, Object> info = new HashMap<String, Object>();
         //jwt载荷选择
-        info.put("role", "test01");
+        info.put("role", "admin");
         info.put("success", "SUCCESS");
-        info.put("username", "test01");
+        info.put("username", "admin");
         //生成令牌
         String jwt = JwtUtil.createJWT(UUID.randomUUID().toString(), JSON.toJSONString(info), null);
         Claims claims = JwtUtil.parseJWT(jwt);

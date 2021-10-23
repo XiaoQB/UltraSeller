@@ -112,6 +112,7 @@ public class JwtUtil {
     public static String getRole(String token){
         try {
             Claims claims = JwtUtil.parseJWT(token);
+            System.out.println(JSONObject.parseObject(claims.getSubject()).getString("role"));
             return JSONObject.parseObject(claims.getSubject()).getString("role");
         }catch (Exception e) {
             // token格式不对

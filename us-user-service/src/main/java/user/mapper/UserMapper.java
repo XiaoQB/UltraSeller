@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import user.domain.entity.User;
+
 import java.util.List;
 
 @Repository
@@ -31,29 +32,39 @@ public interface UserMapper {
 
     List<User> getAdmins(Integer num, Integer page);
 
-    List<User> getBuyers(Integer num,Integer page);
+    List<User> getBuyers(Integer num, Integer page);
 
-    List<User> getSalers(Integer num,Integer page);
+    List<User> getSalers(Integer num, Integer page);
 
-    Integer deleteAdmin(String userName);
+    Integer deleteAdmin(Integer id);
 
-    Integer deleteBuyer(String userName);
+    Integer deleteBuyer(Integer id);
 
-    Integer deleteSaler(String userName);
+    Integer deleteSaler(Integer id);
 
-    Integer updateAdmin(String userName,String password);
+    Integer updateAdmin(String userName, String password);
 
-    Integer updateBuyerPassword(String userName,String password);
+    Integer updateBuyerUserName(Integer id, String userName);
 
-    Integer updateBuyerEmail(String userName,String email);
+    Integer updateBuyerPassword(Integer id, String password);
 
-    Integer updateBuyerPhone(String userName,String phone);
+    Integer updateBuyerEmail(Integer id, String email);
 
-    Integer updateSalerPassword(String userName,String password);
+    Integer updateBuyerPhone(Integer id, String phone);
 
-    Integer updateSalerEmail(String userName,String email);
+    Integer updateSalerUserName(Integer id, String userName);
 
-    Integer updateSalerPhone(String userName,String phone);
+    Integer updateSalerPassword(Integer id, String password);
+
+    Integer updateSalerEmail(Integer id, String email);
+
+    Integer updateSalerPhone(Integer id,String phone);
+    
+    Integer getAdminNum();
+
+    Integer getBuyerNum();
+
+    Integer getSalerNum();
 
 
 
