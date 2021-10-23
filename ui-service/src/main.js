@@ -6,9 +6,11 @@ import 'element-ui/lib/theme-chalk/index.css'//element-ui的css
 Vue.use(ElementUI) //使用elementUI
 
 
-import login from "@/components/login";
-import adminLogin from "@/components/adminLogin";
-import admin from "@/components/admin";
+import login from "@/pages/login";
+import adminLogin from "@/pages/adminLogin";
+import admin from "@/pages/admin";
+import NotFound from '@/pages/404';
+import store from '@/pages/store/index';
 
 import http from './http'
 Vue.prototype.http = http;
@@ -27,22 +29,37 @@ const router = new VueRouter({
     mode: 'history',
     routes:[
         {
+            path: '/',
+            redirect: '/store',
+        },
+        {
             path:'/login',
             component:login,
 
         },
         {
             path:'/adminLogin',
-            component:adminLogin
+            component: adminLogin
         },
         {
             path:'/admin',
-            component:admin,
+            component: admin,
             meta:{
                 requireAuth: true,
             }
-
-        }
+        },
+        {
+            path:'/store',
+            component: store
+        },
+        {
+            path: '/404',
+            component: NotFound,
+        },
+        {
+            path: '*',
+            redirect: '/404',
+        },
     ]
 })
 new Vue({
