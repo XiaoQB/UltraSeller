@@ -58,7 +58,14 @@ public interface UserMapper {
 
     Integer updateSalerEmail(Integer id, String email);
 
-    Integer updateSalerPhone(Integer id, String phone);
+    Integer updateSalerPhone(Integer id,String phone);
+    
+    Integer getAdminNum();
+
+    Integer getBuyerNum();
+
+    Integer getSalerNum();
+
 
 
 }
