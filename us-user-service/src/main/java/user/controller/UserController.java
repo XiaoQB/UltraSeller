@@ -4,15 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import user.domain.dto.GetUserListDTO;
-import user.domain.dto.ModifyDTO;
 import user.domain.entity.User;
 import user.result.R;
 import user.result.ResultCode;
 import user.service.UserService;
+
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost")
+@CrossOrigin
 @RestController
 @Slf4j
 public class UserController {
@@ -29,8 +28,8 @@ public class UserController {
     //测试token
     @GetMapping("/user/login")
     public R<String> login(String userName, String password, String role) {
-        if(StringUtils.isBlank(role)){
-            return new R<>(ResultCode.PERMISSION_NO_ACCESS.getCode(),ResultCode.PERMISSION_NO_ACCESS.getMessage(),null);
+        if (StringUtils.isBlank(role)) {
+            return new R<>(ResultCode.PERMISSION_NO_ACCESS.getCode(), ResultCode.PERMISSION_NO_ACCESS.getMessage(), null);
         }
         String jwt = userService.findByUsername(userName, password, role);
         if (StringUtils.isEmpty(jwt)) {
@@ -47,8 +46,8 @@ public class UserController {
             log.info("info 查询数值错误");
             return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
-        List<User> results = userService.getUserList(role,num,page);
-        if(results==null){
+        List<User> results = userService.getUserList(role, num, page);
+        if (results == null) {
             return new R<>(ResultCode.QUERY_FAIL.getCode(), ResultCode.QUERY_FAIL.getMessage(), null);
         }
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), results);
@@ -113,7 +112,6 @@ public class UserController {
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), userService.logout(userName));
 
     }
-
 
 
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import user.domain.entity.User;
 import user.mapper.UserMapper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,17 +64,17 @@ public class UserDao {
         return user;
     }
 
-    public List<User> getUserList(String role,Integer num,Integer page){
-        List<User> users=new ArrayList<>();
+    public List<User> getUserList(String role, Integer num, Integer page) {
+        List<User> users = new ArrayList<>();
         switch (role) {
-//            case "admin":
-//                users = userMapper.getAdmins(num,page);
-//                break;
+            case "admin":
+                users = userMapper.getAdmins(num,page);
+                break;
             case "buyer":
-                users = userMapper.getBuyers(num,page);
+                users = userMapper.getBuyers(num, page);
                 break;
             case "saler":
-                users = userMapper.getSalers(num,page);
+                users = userMapper.getSalers(num, page);
                 break;
             default:
                 break;
