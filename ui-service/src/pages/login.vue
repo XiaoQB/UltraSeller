@@ -57,7 +57,10 @@
 </template>
 
 <script>
-import axios from "axios";
+import http from "@/http";
+import {baseURL} from "@/http";
+const userUrl = baseURL.user;
+
 
 export default {
   name: "login",
@@ -97,7 +100,6 @@ export default {
         pwd:"",
         checkPwd:"",
         sex:"",
-        birth:"",
         email:""
 
       },
@@ -131,17 +133,14 @@ export default {
     doLogin() {
 
       if (!this.user.username) {
-        this.$router.push({ path: "/admin" });
         this.$message.error("请输入用户名！");
         return;
       } else if (!this.user.password) {
         this.$message.error("请输入密码！");
         return;
       } else {
-        //校验用户名和密码是否正确;
-        // this.$router.push({ path: "/personal" });
-        axios
-            .post("/login/", {
+        http
+            .post(`${userUrl}/login`, {
               name: this.user.username,
               password: this.user.password,
               role:this.user.role
@@ -149,10 +148,13 @@ export default {
             .then(res => {
               // console.log("输出response.data.status", res.data.status);
               if (res.data.status === 200) {
-                this.$router.push({ path: "/admin" });
-                window.localStorage["token"] = JSON.stringify(res.data.data.token);
+                window.localStorage["token"] = JSON.stringify(res.data['token']);
+                this.$router.push({ name: "store",
+                "params":{
+                    "name":this.user.username,
+                    "token":res.data['token'],
+                }});
               } else {
-                this.$router.push({ path: "/admin" });
                 alert("您输入的用户名或密码错误！");
               }
             });
@@ -163,11 +165,9 @@ export default {
       this.axios({
         headers:{
           'Content-Type': 'application/json;',
-
-
         },
         method:"post",
-        url:"/register",
+        url:`${userUrl}/login`,
         transformRequest:[function (data){
           return JSON.stringify(data)
         }],
