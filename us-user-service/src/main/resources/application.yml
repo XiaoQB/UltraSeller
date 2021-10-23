@@ -1,23 +1,21 @@
 server:
   port: 8002
-eureka:
-  instance:
-    hostname: 127.0.0.1
-  client:
-    service-url:
-      defaultZone: http://${eureka.instance.hostname}:8000/eureka/
+#eureka:
+#  instance:
+#    hostname: 127.0.0.1
+#  client:
+#    service-url:
+#      defaultZone: http://${eureka.instance.hostname}:8000/eureka/
 spring:
   application:
     name: us-user-service
   datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      password: root
-      url: jdbc:mysql://47.102.97.229:3306/ultra_seller?characterEncoding=utf8&useSSL=false&allowMultiQueries=true&autoReconnect=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
-      username: root
-
-
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: root
+    url: jdbc:mysql://47.102.97.229:3306/ultra_seller?characterEncoding=utf8&useSSL=false&allowMultiQueries=true&autoReconnect=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+    username: root
 mybatis:
-  mapper-locations: classpath:user/mapper/xml/*Mapper.xml
   type-aliases-package: user.domain.entity
+  mapper-locations: classpath:mapper/*Mapper.xml
 
 

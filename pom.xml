@@ -9,8 +9,7 @@
     <modules>
         <module>us-commodity-service</module>
         <module>us-user-service</module>
-        <module>us-gateway-service</module>
-        <module>us-eureka-service</module>
+        <module>us-common</module>
     </modules>
     <name>UltraSeller</name>
     <description>Demo project for Spring Boot</description>
@@ -41,11 +40,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         
-        <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-		</dependency>
-        
+
         <dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
