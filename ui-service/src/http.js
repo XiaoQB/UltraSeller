@@ -3,7 +3,13 @@ import VueRouter from "vue-router";
 
 // axios 配置
 axios.defaults.timeout = 8000;
-axios.defaults.baseURL = 'http://localhost:8888/';
+
+
+export const baseURL = {
+    commodity:'http://localhost:8003/',
+    user:'http://localhost:8002/'
+}
+
 
 // http request 拦截器
 axios.interceptors.request.use(

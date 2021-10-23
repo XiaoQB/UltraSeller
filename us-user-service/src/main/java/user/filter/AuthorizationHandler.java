@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+@Configuration
 @Slf4j
 @Component
 public class AuthorizationHandler implements HandlerInterceptor {
@@ -34,6 +35,9 @@ public class AuthorizationHandler implements HandlerInterceptor {
         System.out.println(request.getRequestURL() + "===========preHandle===========");
         String role = request.getParameter("role");
         String token = request.getHeader("Authorization");
+        if (role == null) {
+            role = JSONObject.parseObject(((MyRequestWrapper) request).getBodyStr()).getString("role");
+        }
         if (StringUtils.isNotEmpty(token) && StringUtils.isNotEmpty(role)) {
             boolean auth = userService.authorization(token, role);
             if (auth) {

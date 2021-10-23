@@ -1,5 +1,25 @@
 <template>
   <div>
+    <el-dialog title="卖家详情" :visible.sync="showDialog" width="45%">
+      <el-form ref="tableData" :model="tableData[nowRow]"  label-width="100px">
+        <el-form-item label="昵称" prop="name">
+          <span v-if="!edit">{{tableData[nowRow].name}}</span>
+          <el-input v-else v-model="tableData[nowRow].name"></el-input>
+        </el-form-item>
+        <el-form-item label="联系电话" prop="phone">
+          <span v-if="!edit">{{tableData[nowRow].phone}}</span>
+          <el-input v-else v-model="tableData[nowRow].phone"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱号" prop="email">
+          <span v-if="!edit">{{tableData[nowRow].email}}</span>
+          <el-input v-else v-model="tableData[nowRow].email"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+          ` <el-button @click="handleEdit(nowRow)">编辑</el-button>
+            <el-button type="primary" @click="handleSubmit()">提交</el-button>
+        </span>
+    </el-dialog>
     <el-table
         :data="tableData"
         border
@@ -15,23 +35,27 @@
       </el-table-column>
       <el-table-column
           label="昵称"
-          prop="pName">
+          prop="name">
       </el-table-column>
       <el-table-column
           label="联系电话"
           prop="phone">
       </el-table-column>
       <el-table-column
-          label="性别"
-          prop="sex">
-      </el-table-column>
-      <el-table-column
           label="邮箱号"
           prop="email">
       </el-table-column>
       <el-table-column
-          label="商品总数"
-          prop="commodityCount">
+          label="操作">
+        <template slot-scope="scope">
+          <el-button
+              size="mini"
+              @click="getDetail(scope.$index, scope.row)">详情</el-button>
+          <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
       </el-table-column>
     </el-table>
     <el-pagination background
@@ -46,16 +70,28 @@
 </template>
 
 <script>
+import {baseURL} from "@/http";
+const userUrl = baseURL.user;
 export default {
   name: "sellerManager",
   data(){
     return {
+      showDialog:false,
+      edit:false,
+      nowRow:0,
       dataTotalCount: 0,      //查询条件的总数据量
       formInline: {
         currentPage: 1,
         pageSize:10,
       },
-      tableData: [],
+      tableData: [
+        {
+          name:"123",
+          phone:"13567656765",
+          email:"xiepeichqwuhe@kjdbv.vom"
+
+        }
+      ],
     }
   },
   methods:{
@@ -83,10 +119,10 @@ export default {
       this.axios({
         headers:{
           'Content-Type': 'application/json;',
-
+          'token':localStorage['token']
         },
         method:"get",
-        url:"/seller/lists",
+        url:`${userUrl}/seller/lists`,
         params:{
           role:"admin",
           name:"admin",
@@ -95,8 +131,8 @@ export default {
         }
       })
           .then(function (response) {
-            that.tableData = response.data.data.items;
-            that.dataTotalCount = response.data.data.total;
+            that.tableData = response.data.items;
+            that.dataTotalCount = response.data.total;
           })
           .catch(function (error) {
             that.$message({
@@ -105,6 +141,80 @@ export default {
             });
           });
     },
+    getDetail(index, row) {
+      this.showDialog=true;
+      this.nowRow=index;
+      console.log(index, row);
+    },
+    handleDelete(index, row) {
+      this.http({
+            headers:{
+              'Content-Type': 'application/json;',
+              'token':localStorage['token']
+            },
+            method:"delete",
+            url:`${userUrl}/commidity`,
+            params:{
+              name:this.search,
+              ps:this.formInline.pageSize,
+              page:this.formInline.currentPage
+            }
+          }
+
+      ).then(res=>{
+        if(res.data.code()===200){
+          this.getList();
+        }else{
+          this.$message({
+            type: 'error',
+            message: '系统异常：'
+          });
+        }
+      })
+
+      console.log(index, row);
+
+    },
+    handleEdit(){
+      this.edit=true;
+      console("ddd");
+    },
+    handleSubmit(){
+      this.showDialog=false;
+      this.edit=false;
+      this.http({
+        headers:{
+          'Content-Type': 'application/json;',
+          'token':localStorage['token']
+        },
+        method:"put",
+        url:`${userUrl}/commidity`,
+        transformRequest:[function (data){
+          return JSON.stringify(data)
+        }],
+        data:{
+          name:this.tableData[this.nowRow].name,
+          phone:this.tableData[this.nowRow].phone,
+          email:this.tableData[this.nowRow].email,
+        }
+      })
+          .then(response=> {
+            if(response.data.data.code===200){
+              this.$message({
+                type: 'success',
+                message: '修改成功：'
+              });
+            }
+          })
+          .catch(function (error) {
+            this.$message({
+              type: 'error',
+              message: '系统异常：'+error
+            });
+          });
+
+      console("submit");
+    }
 
   }
 }

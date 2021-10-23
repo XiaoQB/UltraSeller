@@ -1,8 +1,9 @@
 <template>
   <div>
     <div>
-      <el-input placeholder="Please input" v-model="search" style="width:200px;margin-left: 10%" ></el-input>
+      <el-input placeholder="请输入搜索商品的名称" v-model="search" style="width:200px;"></el-input>
       <el-button @click="doSearch()" type="primary" icon="el-icon-search" align="right" >搜索商品</el-button>
+      <el-button type="primary" class = "buttonadd" @click="addCommodity" round style="width:100px;">添加商品</el-button>
       <el-dialog title="商品详情" :visible.sync="showDialog" width="45%">
         <el-form ref="tableData" :model="tableData[nowRow]"  label-width="100px">
           <el-form-item label="编号" prop="id">
@@ -38,6 +39,34 @@
         <span slot="footer" class="dialog-footer">
           ` <el-button @click="handleEdit(nowRow)">编辑</el-button>
             <el-button type="primary" @click="handleSubmit()">提交</el-button>
+        </span>
+      </el-dialog>
+      <el-dialog title="添加商品" :visible.sync="showDialog2" width="45%">
+        <el-form ref="tableData" :model="commodity"  label-width="100px">
+          <el-form-item label="商品名称" prop="name">
+            <el-input  v-model="commodity.name"></el-input>
+          </el-form-item>
+          <el-form-item placeholder="目前只支持输入图片链接"
+              label="图片"
+              prop="imgLink">
+            <el-input  v-model="commodity.imgLink"></el-input>
+          </el-form-item>
+          <el-form-item label="价格" prop="price">
+
+            <el-input  v-model="commodity.price"  ></el-input>
+          </el-form-item>
+          <el-form-item label="商品描述" prop="description">
+            <el-input   v-model="commodity.description" ></el-input>
+          </el-form-item>
+          <el-form-item label="库存" prop="inventory">
+            <el-input  v-model="commodity.inventory" ></el-input>
+          </el-form-item>
+          <el-form-item label="所有者名字" prop="vendorName">
+            <el-input v-model="commodity.vendorName"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="handleAdd()">提交</el-button>
         </span>
       </el-dialog>
     </div>
@@ -94,7 +123,7 @@
           prop="vendorName">
       </el-table-column>
       <el-table-column
-          label="Operations">
+          label="操作">
         <template slot-scope="scope">
           <el-button
               size="mini"
@@ -114,21 +143,21 @@
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange">
     </el-pagination>
-
   </div>
-
-
-
 </template>
 
 <script>
+import {baseURL} from "@/http";
+const commodityUrl = baseURL.user;
 export default {
   name: "commodityManager",
   data(){
     return {
       showDialog:false,
+      showDialog2:false,
       edit:false,
       nowRow:0,
+      seq:0,
       search:"",
       dataTotalCount: 0,      //查询条件的总数据量
       formInline: {
@@ -138,7 +167,7 @@ export default {
       tableData: [
         {
           id:"1",
-          name:"",
+          name:"vhjl",
           imgLink:"https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
           price:"ass",
           description:"sdc",
@@ -147,6 +176,17 @@ export default {
 
         }
       ],
+      commodity: {
+        id:"",
+        name:"",
+        imgLink:"",
+        price:"",
+        description:"",
+        inventory:"",
+        vendorName:"",
+
+      }
+
 
 
     }
@@ -175,19 +215,19 @@ export default {
       var that = this;
       this.http({
         headers:{
-          'Content-Type': 'application/json;',
+          'token':localStorage['token']
         },
         method:"get",
-        url:"/commidity/lists",
+        url:`${commodityUrl}/commidity/list`,
         params:{
-          role:"admin",
-          name:"admin",
-          ps:this.formInline.pageSize,
-          page:this.formInline.currentPage
+          username:"admin",
+          pagesize:this.formInline.pageSize,
+          page:this.formInline.currentPage,
+          seq:this.seq
         }
       })
           .then(response=> {
-            that.tableData = response.data.data.items;
+            that.tableData = response.data.commodity;
             that.dataTotalCount = response.data.data.total;
           })
           .catch(function (error) {
@@ -205,14 +245,12 @@ export default {
     handleDelete(index, row) {
       this.http({
             headers:{
-              'Content-Type': 'application/json;',
+              'token':localStorage['token']
             },
             method:"delete",
-            url:"/commidity/",
+            url:`${commodityUrl}/commidity/item`,
             params:{
-              name:this.search,
-              ps:this.formInline.pageSize,
-              page:this.formInline.currentPage
+             id:row.id
             }
           }
 
@@ -240,9 +278,10 @@ export default {
       this.http({
         headers:{
           'Content-Type': 'application/json;',
+          'token':localStorage['token']
         },
         method:"put",
-        url:"/commidity/",
+        url:`${commodityUrl}/commidity/item`,
         transformRequest:[function (data){
           return JSON.stringify(data)
         }],
@@ -279,21 +318,22 @@ export default {
     doSearch(){
       this.http({
         headers:{
-          'Content-Type': 'application/json;',
+          'token':localStorage['token']
         },
         method:"get",
-        url:"/commidity/",
+        url:`${commodityUrl}/commidity`,
         params:{
-          name:this.search,
-          ps:this.formInline.pageSize,
-          page:this.formInline.currentPage
+          q:this.search,
+          pagesize:this.formInline.pageSize,
+          page:this.formInline.currentPage,
+          seq:this.seq
         }
           }
 
       ).then(res=>{
         if(res.data.code()===200){
-          this.tableData=res.data.data.items;
-          this.dataTotalCount = res.data.data.total;
+          this.tableData=res.data.rows;
+          this.dataTotalCount = res.data.records;
         }else{
           this.$message({
             type: 'error',
@@ -301,12 +341,59 @@ export default {
           });
         }
       })
+    },
+    addCommodity(){
+      this.showDialog2=true;
+    },
+    handleAdd(){
+      this.showDialog2=false;
+      this.http({
+        headers:{
+          'Content-Type': 'application/json;',
+          'token':localStorage['token']
+        },
+        method:"put",
+        url:`${commodityUrl}/commidity/add`,
+        transformRequest:[function (data){
+          return JSON.stringify(data)
+        }],
+        data:{
+          name:this.commodity.name,
+          imgLink:this.commodity.imgLink,
+          price:this.commodity.price,
+          description:this.commodity.description,
+          inventory:this.this.commodity.inventory,
+          vendorName:this.commodity.vendorName,
+        }
+      })
+          .then(response=> {
+            if(response.data.data.code===200){
+              this.$message({
+                type: 'success',
+                message: '添加成功：'
+              });
+            }
+          })
+          .catch(function (error) {
+            this.$message({
+              type: 'error',
+              message: '系统异常：'+error
+            });
+          });
     }
+
+
+
 
   }
 }
 </script>
 
 <style scoped>
-
+.buttonadd {
+  color: #FFF;
+  background-color: #409EFF;
+  border-color: #409EFF;
+  float:right
+}
 </style>
