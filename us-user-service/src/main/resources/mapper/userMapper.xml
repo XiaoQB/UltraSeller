@@ -45,13 +45,13 @@
     </select>
 
     <select id="getBuyers" resultType="user.domain.entity.User">
-        select *
+        select id,username,email,phone
         from ultra_seller.us_buyer
         limit #{page},#{num}
     </select>
 
     <select id="getSalers" resultType="user.domain.entity.User">
-        select *
+        select id,username,email,phone
         from ultra_seller.us_saler
         limit #{page},#{num}
     </select>
