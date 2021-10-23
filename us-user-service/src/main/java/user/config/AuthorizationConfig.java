@@ -18,11 +18,10 @@ public class AuthorizationConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/**");                      //所有路径都被拦截
         registration.excludePathPatterns(                         //添加不拦截路径
                 "/user/login",            //登录
-                "/user/register",            //登录
-                "/**/*.html",            //html静态资源
                 "/**/*.js",              //js静态资源
                 "/**/*.css",             //css静态资源
                 "/**/*.woff",
+                "/**/*.ttf",
                 "/**/*.ttf",
                 "/error"
         );

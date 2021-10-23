@@ -68,7 +68,7 @@ public class UserDao {
         List<User> users = new ArrayList<>();
         switch (role) {
             case "admin":
-                users = userMapper.getAdmins(num,page);
+                users = userMapper.getAdmins(num, page);
                 break;
             case "buyer":
                 users = userMapper.getBuyers(num, page);
@@ -82,8 +82,8 @@ public class UserDao {
         return users;
     }
 
-    public Integer deleteUser(String role,Integer id){
-        Integer integer= 0;
+    public Integer deleteUser(String role, Integer id) {
+        Integer integer = 0;
         switch (role) {
             case "admin":
                 integer = userMapper.deleteAdmin(id);
@@ -100,35 +100,35 @@ public class UserDao {
         return integer;
     }
 
-    public Integer modifyUser(Integer id,String role,String userName,String password,String phone,String email){
-        Integer integer=0;
+    public Integer modifyUser(Integer id, String role, String userName, String password, String phone, String email) {
+        Integer integer = 0;
         switch (role) {
             case "buyer":
-                if(userName!=null){
-                    integer=userMapper.updateBuyerUserName(id,userName);
+                if (userName != null) {
+                    integer = userMapper.updateBuyerUserName(id, userName);
                 }
-                if(password!=null){
-                    integer=userMapper.updateBuyerPassword(id,password);
+                if (password != null) {
+                    integer = userMapper.updateBuyerPassword(id, password);
                 }
-                if(phone!=null){
-                    integer=userMapper.updateBuyerPhone(id,phone);
+                if (phone != null) {
+                    integer = userMapper.updateBuyerPhone(id, phone);
                 }
-                if(email!=null){
-                    integer=userMapper.updateBuyerEmail(id,email);
+                if (email != null) {
+                    integer = userMapper.updateBuyerEmail(id, email);
                 }
                 break;
             case "saler":
-                if(userName!=null){
-                    integer=userMapper.updateSalerUserName(id,userName);
+                if (userName != null) {
+                    integer = userMapper.updateSalerUserName(id, userName);
                 }
-                if(password!=null){
-                    integer=userMapper.updateSalerPassword(id,password);
+                if (password != null) {
+                    integer = userMapper.updateSalerPassword(id, password);
                 }
-                if(phone!=null){
-                    integer=userMapper.updateSalerPhone(id,phone);
+                if (phone != null) {
+                    integer = userMapper.updateSalerPhone(id, phone);
                 }
-                if(email!=null){
-                    integer=userMapper.updateSalerEmail(id,email);
+                if (email != null) {
+                    integer = userMapper.updateSalerEmail(id, email);
                 }
                 break;
             default:
