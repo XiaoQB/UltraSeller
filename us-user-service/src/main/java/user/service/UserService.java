@@ -1,6 +1,7 @@
 package user.service;
 
 import user.domain.entity.User;
+
 import java.util.List;
 
 public interface UserService {
@@ -13,9 +14,9 @@ public interface UserService {
 
     List<User> getUserList(String role, Integer num, Integer page);
 
-    Integer deleteUser(String role,Integer id);
+    Integer deleteUser(String role, Integer id);
 
-    Integer modifyUser(Integer id,String role,String userName,String password,String phone,String email);
+    Integer modifyUser(Integer id, String role, String userName, String password, String phone, String email);
 
-    boolean authorization(String token,String role);
+    boolean authorization(String token, String role);
 }
