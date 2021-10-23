@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CommodityService {
 
-    public CommodityList selectAll(String role, String userName, int pageNum, int pageSize, String seq);
+    public PagedGridResult selectAll(String username, int pageNum, int pageSize, int sequence);
 
     public Commodity singleCommodity(long commodityId);
 
@@ -18,10 +18,5 @@ public interface CommodityService {
 
     public void delete(long itemId);
 
-<<<<<<< HEAD
-    public PagedGridResult searchList(String role, String username, String searchWords, int page, int pagesize);
-=======
-    public CommodityList searchList(String role, String userName, int pageNum,
-                                    int pageSize, String seq, String searchWords);
->>>>>>> master
+    public PagedGridResult searchList(String searchWords, int pageNum, int pageSize, String  sequences);
 }

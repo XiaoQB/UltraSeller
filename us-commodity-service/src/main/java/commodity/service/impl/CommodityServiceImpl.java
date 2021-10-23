@@ -19,8 +19,8 @@ public class CommodityServiceImpl implements CommodityService {
     CommodityMapper commodityMapper;
 
     @Override
-    public PagedGridResult selectAll(String username, String role, int page, int pagesize, int seq) {
-        PageHelper.startPage(page, pagesize);
+    public PagedGridResult selectAll(String username, int pageNum, int pageSize, int sequence) {
+        PageHelper.startPage(pageNum, pageSize);
         CommodityExample example = new CommodityExample();
         CommodityExample.Criteria criteria = example.createCriteria();
         criteria.andVendornameEqualTo(username);
@@ -67,13 +67,13 @@ public class CommodityServiceImpl implements CommodityService {
     }
 
     @Override
-    public PagedGridResult searchList(String role, String username, String searchWords, int page, int pagesize){
-        PageHelper.startPage(page, pagesize);
+    public PagedGridResult searchList(String searchWords, int pageNum, int pageSize, String sequence){
+        PageHelper.startPage(pageNum, pageSize);
         CommodityExample example = new CommodityExample();
         CommodityExample.Criteria criteria = example.createCriteria();
-        if(role == "Seller") {
-            criteria.andVendornameEqualTo(username);
-        }
+//        if(role == "Seller") {
+//            criteria.andVendornameEqualTo(userName);
+//        }
         criteria.andNameLike("%"+searchWords+"%");
         List<Commodity> commodities = commodityMapper.selectByExample(example);
         return setterPagedGrid(commodities, 1);

@@ -133,15 +133,14 @@ public class CommodityController {
      * @return the list
      */
     @GetMapping("/commodity/search")
-    public Response<CommodityList> searchList(@RequestHeader("token") String token,
+    public PagedGridResult searchList(@RequestHeader("token") String token,
                                                 @RequestParam("q") String searchWords,
                                                 @RequestParam("page") int pageNum,
                                                 @RequestParam("pagesize") int pageSize,
                                                 @RequestParam("seq") String sequence){
-        CommodityList ret = null;
+        //CommodityList ret = null;
         String userName = JwtUtil.getUserName(token);
         String role = JwtUtil.getRole(token);
-        ret = commodityService.searchList(role, userName, pageNum, pageSize, sequence, searchWords);
-        return new Response<>(200, "", ret);
+        return commodityService.searchList(searchWords,  pageNum,  pageSize,  sequence);
     }
 }
