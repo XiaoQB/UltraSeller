@@ -125,4 +125,19 @@
         where id=#{id}
     </update>
 
+    <select id="getAdminNum" resultType="java.lang.Integer">
+        select count(*)
+        from ultra_seller.us_admin;
+    </select>
+
+    <select id="getBuyerNum" resultType="java.lang.Integer">
+        select count(*)
+        from ultra_seller.us_buyer;
+    </select>
+
+    <select id="getSalerNum" resultType="java.lang.Integer">
+        select count(*)
+        from ultra_seller.us_saler;
+    </select>
+
 </mapper>

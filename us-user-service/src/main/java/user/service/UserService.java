@@ -13,6 +13,8 @@ public interface UserService {
 
     List<User> getUserList(String role, Integer num, Integer page);
 
+    Integer getUserNum(String role);
+
     Integer deleteUser(String role,Integer id);
 
     Integer modifyUser(Integer id,String role,String userName,String password,String phone,String email);

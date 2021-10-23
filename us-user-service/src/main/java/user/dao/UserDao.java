@@ -82,6 +82,24 @@ public class UserDao {
         return users;
     }
 
+    public Integer getUserNum(String role){
+        Integer num=0;
+        switch (role) {
+            case "admin":
+                num = userMapper.getAdminNum();
+                break;
+            case "buyer":
+                num = userMapper.getBuyerNum();
+                break;
+            case "saler":
+                num = userMapper.getSalerNum();
+                break;
+            default:
+                break;
+        }
+        return num;
+    }
+
     public Integer deleteUser(String role,Integer id){
         Integer integer= 0;
         switch (role) {

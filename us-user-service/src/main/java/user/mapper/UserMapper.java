@@ -59,7 +59,11 @@ public interface UserMapper {
 
     Integer updateSalerPhone(Integer id,String phone);
     
-    
+    Integer getAdminNum();
+
+    Integer getBuyerNum();
+
+    Integer getSalerNum();
     
 
 
