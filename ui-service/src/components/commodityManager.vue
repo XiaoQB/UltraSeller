@@ -148,7 +148,7 @@
 
 <script>
 import {baseURL} from "@/http";
-const commodityUrl = baseURL.user;
+const commodityUrl = baseURL.commodity;
 export default {
   name: "commodityManager",
   data(){

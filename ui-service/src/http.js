@@ -6,8 +6,8 @@ axios.defaults.timeout = 8000;
 
 
 export const baseURL = {
-    commodity:'http://localhost:8003/',
-    user:'http://localhost:8002/'
+    commodity:'http://localhost:8003',
+    user:'http://localhost:8002'
 }
 
 

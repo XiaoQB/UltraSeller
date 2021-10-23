@@ -116,7 +116,7 @@ export default {
       }
 
       var that = this;
-      this.axios({
+      this.http({
         headers:{
           'Content-Type': 'application/json;',
           'token':localStorage['token']

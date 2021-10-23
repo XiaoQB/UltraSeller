@@ -115,9 +115,9 @@ export default {
 
     getList() {
       var that = this;
-     this. http({
+      this.http({
         headers:{
-          'token':localStorage['token']
+          'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwNzRiYjk0Ni03OGMzLTRkZDktYWVkZC1mYzQyYWI2ZjI0NzUiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzQ5Nzg2OTAsImV4cCI6MTYzNDk4MjI5MH0.a_KtQzdymitJWicbYY7lmfrF4qPeNJ7W6I9SlsFLBHY'
         },
         method:"get",
         url:`${userUrl}/user/info`,
@@ -128,7 +128,7 @@ export default {
         }
       })
           .then( response=> {
-            if(response.data().code === 200){
+            if(response.code === 200){
               that.tableData = response.data.data;
               that.dataTotalCount = response.data.data;
             }
