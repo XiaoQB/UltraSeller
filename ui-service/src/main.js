@@ -27,20 +27,28 @@ const router = new VueRouter({
     mode: 'history',
     routes:[
         {
+            name:'login',
             path:'/login',
             component:login,
 
         },
         {
+            name:'adminLogin',
             path:'/adminLogin',
             component:adminLogin
         },
         {
+            name:'admin',
             path:'/admin',
             component:admin,
             meta:{
                 requireAuth: true,
             }
+        },
+        {
+            name:'store',
+            path:'/store',
+            component:admin,
 
         }
     ]

@@ -1,5 +1,25 @@
 <template>
   <div>
+    <el-dialog title="商品详情" :visible.sync="showDialog" width="45%">
+      <el-form ref="tableData" :model="tableData[nowRow]"  label-width="100px">
+        <el-form-item label="昵称" prop="name">
+          <span v-if="!edit">{{tableData[nowRow].userName}}</span>
+          <el-input v-else v-model="tableData[nowRow].userName"></el-input>
+        </el-form-item>
+        <el-form-item label="联系电话" prop="phone">
+          <span v-if="!edit">{{tableData[nowRow].phone}}</span>
+          <el-input v-else v-model="tableData[nowRow].phone"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱号" prop="email">
+          <span v-if="!edit">{{tableData[nowRow].email}}</span>
+          <el-input v-else v-model="tableData[nowRow].email"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+          ` <el-button @click="handleEdit(nowRow)">编辑</el-button>
+            <el-button type="primary" @click="handleSubmit()">提交</el-button>
+        </span>
+    </el-dialog>
     <el-table
         :data="tableData"
         border
@@ -14,6 +34,10 @@
         </template>
       </el-table-column>
       <el-table-column
+          label="id"
+          prop="id">
+      </el-table-column>
+      <el-table-column
           label="昵称"
           prop="name">
       </el-table-column>
@@ -22,12 +46,20 @@
           prop="phone">
       </el-table-column>
       <el-table-column
-          label="性别"
-          prop="sex">
-      </el-table-column>
-      <el-table-column
           label="邮箱号"
           prop="email">
+      </el-table-column>
+      <el-table-column
+          label="操作">
+        <template slot-scope="scope">
+          <el-button
+              size="mini"
+              @click="getDetail(scope.$index, scope.row)">详情</el-button>
+          <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
       </el-table-column>
     </el-table>
     <el-pagination background
@@ -42,16 +74,29 @@
 </template>
 
 <script>
+
+import {baseURL} from "@/http";
+const userUrl = baseURL.user;
 export default {
   name: "buyerManager",
   data(){
     return {
+      showDialog:false,
+      edit:false,
+      nowRow:0,
       dataTotalCount: 0,      //查询条件的总数据量
       formInline: {
         currentPage: 1,
         pageSize:10,
       },
-      tableData: [],
+      tableData: [
+        {
+          id:"0",
+          userName:"keyon",
+          phone:"13567656765",
+          email:"xiepeichqwuhe@kjdbv.vom"
+        }
+      ],
     }
   },
   methods:{
@@ -70,23 +115,23 @@ export default {
 
     getList() {
       var that = this;
-      this.http({
+     this. http({
         headers:{
-          'Content-Type': 'application/json;',
-
+          'token':localStorage['token']
         },
         method:"get",
-        url:"/buyer/lists",
+        url:`${userUrl}/user/info`,
         params:{
-          role:"admin",
-          name:"admin",
-          ps:this.formInline.pageSize,
+          role:"buyer",
+          num:this.formInline.pageSize,
           page:this.formInline.currentPage
         }
       })
-          .then(function (response) {
-            that.tableData = response.data.data.items;
-            that.dataTotalCount = response.data.data.total;
+          .then( response=> {
+            if(response.data().code === 200){
+              that.tableData = response.data.data;
+              that.dataTotalCount = response.data.data;
+            }
           })
           .catch(function (error) {
             that.$message({
@@ -95,6 +140,87 @@ export default {
             });
           });
     },
+
+    getDetail(index, row) {
+      this.showDialog=true;
+      this.nowRow=index;
+      console.log(index, row);
+    },
+    handleDelete(index, row) {
+      this.http({
+            headers:{
+              'Content-Type': 'application/json;',
+              'token':localStorage['token']
+            },
+            method:"delete",
+            url:`${userUrl}/usr/delete`,
+            transformRequest:[function (data){
+              return JSON.stringify(data)
+            }],
+            data:{
+              id:this.tableData[index].id,
+              name:this.tableData[index].name,
+            }
+          }
+
+      ).then(res=>{
+        if(res.data.code()===200){
+          this.getList();
+        }else{
+          this.$message({
+            type: 'error',
+            message: '系统异常：'
+          });
+        }
+      })
+
+      console.log(index, row);
+
+    },
+    handleEdit(){
+      this.edit=true;
+    },
+    handleSubmit(){
+      this.showDialog=false;
+      this.edit=false;
+      this.http({
+        headers:{
+          'Content-Type': 'application/json;',
+          'token':localStorage['token']
+        },
+        method:"put",
+        url:`${userUrl}/user/modify`,
+        transformRequest:[function (data){
+          return JSON.stringify(data)
+        }],
+        data:{
+          id:this.tableData[this.nowRow].id,
+          userName:this.tableData[this.nowRow].name,
+          role:"buyer",
+          phone:this.tableData[this.nowRow].phone,
+          email:this.tableData[this.nowRow].email,
+        }
+      })
+          .then(response=> {
+            if(response.data.code===200){
+              this.$message({
+                type: 'success',
+                message: '修改成功：'
+              });
+            }
+          })
+          .catch(function (error) {
+            this.$message({
+              type: 'error',
+              message: '系统异常：'+error
+            });
+          });
+
+      console("submit");
+    }
+
+
+
 
   }
 }
