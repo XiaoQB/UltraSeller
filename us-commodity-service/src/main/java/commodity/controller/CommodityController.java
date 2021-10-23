@@ -137,7 +137,7 @@ public class CommodityController {
                                                 @RequestParam("q") String searchWords,
                                                 @RequestParam("page") int pageNum,
                                                 @RequestParam("pagesize") int pageSize,
-                                                @RequestParam("seq") String sequence){
+                                                @RequestParam(value = "seq" ,required = false, defaultValue =  "0") String sequence){
         //CommodityList ret = null;
         String userName = JwtUtil.getUserName(token);
         String role = JwtUtil.getRole(token);

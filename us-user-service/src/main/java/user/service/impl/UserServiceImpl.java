@@ -12,11 +12,7 @@ import org.springframework.stereotype.Service;
 import user.dao.UserDao;
 import user.domain.entity.User;
 import user.service.UserService;
-<<<<<<< HEAD
-=======
-import user.utils.JwtUtil;
 
->>>>>>> master
 import java.util.*;
 import java.util.Map;
 
