@@ -13,9 +13,9 @@ public interface UserService {
 
     List<User> getUserList(String role, Integer num, Integer page);
 
-    Integer deleteUser(String role,String username);
+    Integer deleteUser(String role,Integer id);
 
-    Integer modifyUser(String userName,String newData,String type,String role);
+    Integer modifyUser(Integer id,String role,String userName,String password,String phone,String email);
 
     boolean authorization(String token,String role);
 }

@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer deleteUser(String role,String username){
-        return userDao.deleteUser(role,username);
+    public Integer deleteUser(String role,Integer id){
+        return userDao.deleteUser(role,id);
     }
 
     @Override
@@ -58,8 +58,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer modifyUser(String userName,String newData,String type,String role){
-        return userDao.modifyUser(userName,newData,type,role);
+    public Integer modifyUser(Integer id,String role,String userName,String password,String phone,String email){
+        return userDao.modifyUser(id,role,userName,password,phone,email);
     }
 
     @Override
