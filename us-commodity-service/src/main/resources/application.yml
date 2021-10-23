@@ -1,14 +1,11 @@
 server:
   port: 8003
-<<<<<<< HEAD
-#eureka:
-#  instance:
-#    hostname: 127.0.0.1
-#  client:
-#    service-url:
-#      defaultZone: http://${eureka.instance.hostname}:8000/eureka/
-=======
->>>>>>> b57b1c1fc3ce231bac8bce4ce84c8dea96344286
+eureka:
+  instance:
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8000/eureka/
 spring:
   application:
     name: us-commodity-service
