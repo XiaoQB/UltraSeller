@@ -101,8 +101,20 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>UltraSeller</groupId>
+            <artifactId>us-user-service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>UltraSeller</groupId>
+            <artifactId>us-user-service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
-<!--            <groupId>org.mybatis</groupId>-->
+        <!--            <groupId>org.mybatis</groupId>-->
 <!--            <artifactId>mybatis</artifactId>-->
 <!--            <version>3.5.0</version>-->
 <!--        </dependency>-->

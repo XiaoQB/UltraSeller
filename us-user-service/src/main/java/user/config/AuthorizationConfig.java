@@ -11,34 +11,36 @@ import user.filter.AuthorizationHandler;
 @Configuration
 public class AuthorizationConfig implements WebMvcConfigurer {
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        //注册TestInterceptor拦截器
-        InterceptorRegistration registration = registry.addInterceptor(apiInterceptor());
-        registration.addPathPatterns("/**");                      //所有路径都被拦截
-        registration.excludePathPatterns(                         //添加不拦截路径
-                "/user/login",            //登录
-                "/user/register",            //登录
-                "/**/*.js",              //js静态资源
-                "/**/*.css",             //css静态资源
-                "/**/*.woff",
-                "/**/*.ttf",
-                "/**/*.ttf",
-                "/error"
-        );
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        //注册TestInterceptor拦截器
+//        InterceptorRegistration registration = registry.addInterceptor(apiInterceptor());
+//        registration.addPathPatterns("/**");                      //所有路径都被拦截
+//        registration.excludePathPatterns(                         //添加不拦截路径
+//                "/user/login",            //登录
+//                "/user/register",            //登录
+//                "/**/*.js",              //js静态资源
+//                "/**/*.css",             //css静态资源
+//                "/**/*.woff",
+//                "/**/*.ttf",
+//                "/**/*.ttf",
+//                "/error"
+//        );
+//    }
 
     @Bean
     public AuthorizationHandler apiInterceptor() {
         return new AuthorizationHandler();
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
-                .maxAge(3600)
-                .allowCredentials(true);
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        System.out.println(registry.toString());
+//        registry.addMapping("/**")
+//                .allowedOrigins("*")
+//                .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
+//                .maxAge(3600)
+//                .allowCredentials(true)
+//                .allowedHeaders("*");
+//    }
 }

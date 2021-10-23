@@ -34,6 +34,10 @@
         </template>
       </el-table-column>
       <el-table-column
+          label="id"
+          prop="id">
+      </el-table-column>
+      <el-table-column
           label="昵称"
           prop="name">
       </el-table-column>
@@ -118,21 +122,22 @@ export default {
       var that = this;
       this.http({
         headers:{
-          'Content-Type': 'application/json;',
-          'token':localStorage['token']
+          'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwNzRiYjk0Ni03OGMzLTRkZDktYWVkZC1mYzQyYWI2ZjI0NzUiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzQ5Nzg2OTAsImV4cCI6MTYzNDk4MjI5MH0.a_KtQzdymitJWicbYY7lmfrF4qPeNJ7W6I9SlsFLBHY'
         },
         method:"get",
-        url:`${userUrl}/seller/lists`,
+        url:`${userUrl}/user/info`,
         params:{
-          role:"admin",
-          name:"admin",
-          ps:this.formInline.pageSize,
+          role:"saler",
+          num:this.formInline.pageSize,
           page:this.formInline.currentPage
         }
       })
-          .then(function (response) {
-            that.tableData = response.data.items;
-            that.dataTotalCount = response.data.total;
+          .then( response=> {
+            console.log(response.data.data)
+            if(response.data.code === 200){
+              this.tableData = response.data.data;
+              that.dataTotalCount = response.data.size;
+            }
           })
           .catch(function (error) {
             that.$message({
@@ -150,14 +155,15 @@ export default {
       this.http({
             headers:{
               'Content-Type': 'application/json;',
-              'token':localStorage['token']
+              'Authorization':localStorage['token']
             },
             method:"delete",
-            url:`${userUrl}/commidity`,
-            params:{
-              name:this.search,
-              ps:this.formInline.pageSize,
-              page:this.formInline.currentPage
+            url:`${userUrl}/user/delete`,
+            transformRequest:[function (data){
+              return JSON.stringify(data)
+            }],
+            data:{
+              id:this.tableData[index].id,
             }
           }
 
@@ -185,21 +191,23 @@ export default {
       this.http({
         headers:{
           'Content-Type': 'application/json;',
-          'token':localStorage['token']
+          'Authorization':localStorage['token']
         },
         method:"put",
-        url:`${userUrl}/commidity`,
+        url:`${userUrl}/user/modify`,
         transformRequest:[function (data){
           return JSON.stringify(data)
         }],
         data:{
-          name:this.tableData[this.nowRow].name,
+          id:this.tableData[this.nowRow].id,
+          userName:this.tableData[this.nowRow].name,
+          role:"saler",
           phone:this.tableData[this.nowRow].phone,
           email:this.tableData[this.nowRow].email,
         }
       })
           .then(response=> {
-            if(response.data.data.code===200){
+            if(response.data.code===200){
               this.$message({
                 type: 'success',
                 message: '修改成功：'
@@ -213,7 +221,6 @@ export default {
             });
           });
 
-      console("submit");
     }
 
   }

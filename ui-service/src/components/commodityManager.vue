@@ -186,9 +186,6 @@ export default {
         vendorName:"",
 
       }
-
-
-
     }
   },
   methods:{

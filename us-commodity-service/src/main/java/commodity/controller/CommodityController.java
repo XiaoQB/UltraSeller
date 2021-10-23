@@ -5,7 +5,7 @@ import commodity.domain.CommodityList;
 import commodity.service.impl.CommodityServiceImpl;
 import commodity.utils.IdGenerator;
 import commodity.utils.PagedGridResult;
-import common.JwtUtil;
+//import common.JwtUtil;
 import common.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +18,7 @@ import java.util.Objects;
  * @author tristonk
  */
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class CommodityController {
 
     @Autowired
@@ -40,14 +41,14 @@ public class CommodityController {
                                           @RequestParam("pagesize") int pageSize,
                                           @RequestParam("seq") int sequence
                                           ){
-        if(Objects.equals(JwtUtil.getRole(token), "saler")){
+        //if(Objects.equals(JwtUtil.getRole(token), "saler")){
             //TODO: change it
             PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
             return result;
-        } else {
-            PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
-            return result;
-        }
+       // } else {
+       //     PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
+        //    return result;
+        //}
     }
 
     /**
@@ -63,11 +64,11 @@ public class CommodityController {
         if(ret == null){
             return new Response<>(404, "查询错误",null);
         }
-        if(Objects.equals(JwtUtil.getRole(token), "saler")){
-            if(!Objects.equals(JwtUtil.getUserName(token), ret.getVendorName())){
-                return new Response<>(400, "权限错误",null);
-            }
-        }
+//        if(Objects.equals(JwtUtil.getRole(token), "saler")){
+//            if(!Objects.equals(JwtUtil.getUserName(token), ret.getVendorName())){
+//                return new Response<>(400, "权限错误",null);
+//            }
+//        }
         return new Response<>(200, "成功", ret);
     }
 
@@ -80,13 +81,13 @@ public class CommodityController {
      */
     @PutMapping("/commodity/item")
     public Response<String> update(@RequestHeader("token") String token, @RequestBody Commodity commodity){
-        if(Objects.equals(JwtUtil.getRole(token), "admin") ||
-                Objects.equals(JwtUtil.getUserName(token), commodity.getVendorName())){
+//        if(Objects.equals(JwtUtil.getRole(token), "admin") ||
+//                Objects.equals(JwtUtil.getUserName(token), commodity.getVendorName())){
             commodityService.update(commodity);
             return new Response<>(201, "更新成功", null);
 
-        }
-        return new Response<>(400, "权限错误",null);
+//        }
+//        return new Response<>(400, "权限错误",null);
     }
 
     /**
@@ -98,13 +99,13 @@ public class CommodityController {
      */
     @PostMapping("/commodity/item")
     public Response<String> create(@RequestHeader("token") String token, @RequestBody Commodity commodity){
-        if(Objects.equals(JwtUtil.getRole(token), "admin") ||
-                Objects.equals(JwtUtil.getUserName(token), commodity.getVendorName())){
+//        if(Objects.equals(JwtUtil.getRole(token), "admin") ||
+//                Objects.equals(JwtUtil.getUserName(token), commodity.getVendorName())){
             commodity.setId(IdGenerator.generateId());
             commodityService.create(commodity);
             return new Response<>(201, "创建成功", null);
-        }
-        return new Response<>(400, "权限错误",null);
+//        }
+//        return new Response<>(400, "权限错误",null);
     }
 
     /**
@@ -116,13 +117,13 @@ public class CommodityController {
      */
     @DeleteMapping("/commodity/item/{itemId}")
     public Response<String> delete(@RequestHeader("token") String token, @PathVariable long itemId){
-        if(Objects.equals(JwtUtil.getRole(token), "admin") ||
-                Objects.equals(JwtUtil.getUserName(token),
-                        commodityService.singleCommodity(itemId).getVendorName())){
+//        if(Objects.equals(JwtUtil.getRole(token), "admin") ||
+//                Objects.equals(JwtUtil.getUserName(token),
+//                        commodityService.singleCommodity(itemId).getVendorName())){
             commodityService.delete(itemId);
             return new Response<>(200, "删除成功", null);
-        }
-        return new Response<>(400, "权限错误",null);
+//        }
+//        return new Response<>(400, "权限错误",null);
     }
 
     /**
@@ -139,8 +140,8 @@ public class CommodityController {
                                                 @RequestParam("pagesize") int pageSize,
                                                 @RequestParam("seq") String sequence){
         //CommodityList ret = null;
-        String userName = JwtUtil.getUserName(token);
-        String role = JwtUtil.getRole(token);
+//        String userName = JwtUtil.getUserName(token);
+//        String role = JwtUtil.getRole(token);
         return commodityService.searchList(searchWords,  pageNum,  pageSize,  sequence);
     }
 }
