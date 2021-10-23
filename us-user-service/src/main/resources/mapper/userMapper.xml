@@ -3,7 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="user.mapper.UserMapper">
 
-
     <insert id="insertAdmin">
         insert into us_admin(username,password)
         values(#{userName},#{password})
@@ -37,9 +36,10 @@
         select username,password
         from us_buyer where username = #{userName}
     </select>
-    <select id="getSalerByName" resultType="user.domain.entity.User" parameterType="java.lang.String"></select>
-            select username,password
-            from us_saler where username = #{userName}
+    <select id="getSalerByName" resultType="user.domain.entity.User" parameterType="java.lang.String">
+        select username,password
+        from us_saler where username = #{userName}
+    </select>
     <select id="getAdmins" resultType="user.domain.entity.Admin">
         select *
         from ultra_seller.us_admin
