@@ -60,8 +60,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer modifyUser(Integer id, String role, String userName, String password, String phone, String email) {
-        return userDao.modifyUser(id, role, userName, password, phone, email);
+    public Integer getUserNum(String role){
+        return userDao.getUserNum(role);
+    }
+
+    @Override
+    public Integer modifyUser(Integer id,String role,String userName,String password,String phone,String email){
+        return userDao.modifyUser(id,role,userName,password,phone,email);
     }
 
     @Override

@@ -48,19 +48,18 @@
       <el-button class="search-button" type="primary">搜索</el-button>
       <div class="goods">
         <el-row>
-          <el-col
-            :span="4"
-            v-for="(o, index) in 10"
-            :key="o"
-            :offset="index = 0"
-          >
-            <el-card class="card" :body-style="{ padding: auto }" shadow="hover">
+          <el-col :span="4" v-for="(o, index) in 24" :key="o">
+            <el-card
+              class="card"
+              :body-style="{ padding: auto }"
+              shadow="hover"
+            >
               <img
                 src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
                 class="item-image"
               />
               <div style="padding: 5px">
-                <span>好吃的汉堡</span>
+                <span>好吃的汉堡 {{ index }}</span>
                 <div class="bottom clearfix">
                   <!-- <time class="time">{{ currentDate }}</time> -->
                   <el-button type="text" class="button">操作按钮</el-button>
@@ -69,6 +68,15 @@
             </el-card>
           </el-col>
         </el-row>
+        <div class="pagination">
+          <el-pagination
+            background
+            layout="prev, pager, next, jumper"
+            :page-size="pageSize"
+            :total="totalItems"
+          >
+          </el-pagination>
+        </div>
       </div>
     </el-main>
     <el-footer>
@@ -86,6 +94,8 @@ export default {
       storePage: "store-page",
       input: "",
       // currentDate: new Date()
+      pageSize: 24,
+      totalItems: 80,
     };
   },
   methods: {
@@ -121,5 +131,8 @@ export default {
 .item-image {
   width: 100%;
   display: block;
+}
+.pagination {
+  margin-top: 30px;
 }
 </style>
