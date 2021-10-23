@@ -39,10 +39,10 @@ public class UserController {
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), jwt);
     }
 
-    @GetMapping("/user/info/{role}/{num}/{page}")
-    public R<List<User>> getUserList(@PathVariable("role") String role,
-                                     @PathVariable("num") Integer num,
-                                     @PathVariable("page") Integer page) {
+    @GetMapping("/user/info")
+    public R<List<User>> getUserList(@RequestParam("role") String role,
+                                     @RequestParam("num") Integer num,
+                                     @RequestParam("page") Integer page) {
         if (num == null || page == null) {
             log.info("info 查询数值错误");
             return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
