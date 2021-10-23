@@ -35,26 +35,32 @@ public interface UserMapper {
 
     List<User> getSalers(Integer num,Integer page);
 
-    Integer deleteAdmin(String userName);
+    Integer deleteAdmin(Integer id);
 
-    Integer deleteBuyer(String userName);
+    Integer deleteBuyer(Integer id);
 
-    Integer deleteSaler(String userName);
+    Integer deleteSaler(Integer id);
 
     Integer updateAdmin(String userName,String password);
+    
+    Integer updateBuyerUserName(Integer id,String userName);
 
-    Integer updateBuyerPassword(String userName,String password);
+    Integer updateBuyerPassword(Integer id,String password);
 
-    Integer updateBuyerEmail(String userName,String email);
+    Integer updateBuyerEmail(Integer id,String email);
 
-    Integer updateBuyerPhone(String userName,String phone);
+    Integer updateBuyerPhone(Integer id,String phone);
 
-    Integer updateSalerPassword(String userName,String password);
+    Integer updateSalerUserName(Integer id,String userName);
 
-    Integer updateSalerEmail(String userName,String email);
+    Integer updateSalerPassword(Integer id,String password);
 
-    Integer updateSalerPhone(String userName,String phone);
+    Integer updateSalerEmail(Integer id,String email);
 
+    Integer updateSalerPhone(Integer id,String phone);
+    
+    
+    
 
 
 }

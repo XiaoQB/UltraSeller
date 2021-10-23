@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 import user.dao.UserDao;
 import user.domain.entity.User;
 import user.service.UserService;
+<<<<<<< HEAD
+=======
+import user.utils.JwtUtil;
+
+>>>>>>> master
 import java.util.*;
 import java.util.Map;
 
@@ -41,8 +46,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer deleteUser(String role,String username){
-        return userDao.deleteUser(role,username);
+    public Integer deleteUser(String role,Integer id){
+        return userDao.deleteUser(role,id);
     }
 
     @Override
@@ -52,15 +57,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUserList(String role,Integer num,Integer page){
-        page=(page-1)*num;
-        return userDao.getUserList(role,num,page);
+    public List<User> getUserList(String role, Integer num, Integer page) {
+        page = (page - 1) * num;
+        return userDao.getUserList(role, num, page);
 
     }
 
     @Override
-    public Integer modifyUser(String userName,String newData,String type,String role){
-        return userDao.modifyUser(userName,newData,type,role);
+    public Integer modifyUser(Integer id,String role,String userName,String password,String phone,String email){
+        return userDao.modifyUser(id,role,userName,password,phone,email);
     }
 
     @Override
@@ -69,10 +74,10 @@ public class UserServiceImpl implements UserService {
             Claims claims = JwtUtil.parseJWT(token);
             String subject = claims.getSubject();
             String tokenRole = JSONObject.parseObject(subject).getString("role");
-            if(StringUtils.isNotBlank(role) && role.equals(tokenRole)){
+            if (StringUtils.isNotBlank(role) && role.equals(tokenRole)) {
                 return true;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -85,8 +90,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Autowired
-    public void setUserDao(UserDao userDao){
-        this.userDao=userDao;
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 
 }

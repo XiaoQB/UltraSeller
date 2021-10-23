@@ -23,7 +23,7 @@ public class JwtTest {
     public void jwttest() throws Exception {
         Map<String, Object> info = new HashMap<String, Object>();
         //jwt载荷选择
-        info.put("role", "test01");
+        info.put("role", "buyer");
         info.put("success", "SUCCESS");
         info.put("username", "test01");
         //生成令牌
