@@ -27,6 +27,7 @@ public class AuthorizationHandler implements HandlerInterceptor {
         System.out.println(request.getRequestURL() + "===========preHandle===========");
         String role = request.getParameter("role");
         String token = request.getHeader("Authorization");
+        System.out.println(token);
         if (StringUtils.isNotEmpty(token) && StringUtils.isNotEmpty(role)) {
             boolean auth = userService.authorization(token, role);
             if (auth) {

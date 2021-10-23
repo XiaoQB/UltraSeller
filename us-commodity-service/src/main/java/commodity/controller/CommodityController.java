@@ -4,6 +4,7 @@ import commodity.domain.Commodity;
 import commodity.domain.CommodityList;
 import commodity.service.impl.CommodityServiceImpl;
 import commodity.utils.IdGenerator;
+import commodity.utils.PagedGridResult;
 import common.JwtUtil;
 import common.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +34,20 @@ public class CommodityController {
      * @return the list
      */
     @GetMapping("/commodity/lists")
-    public Response<CommodityList> allCommodities(@RequestHeader("token") String token,
-                                                  @RequestParam("username") String username,
-                                                  @RequestParam("page") int pageNum,
-                                                  @RequestParam("pagesize") int pageSize,
-                                                  @RequestParam("seq") String sequence
+    public PagedGridResult allCommodities(@RequestHeader("token") String token,
+                                          @RequestParam("username") String username,
+                                          @RequestParam("page") int pageNum,
+                                          @RequestParam("pagesize") int pageSize,
+                                          @RequestParam("seq") int sequence
                                           ){
-        CommodityList ret = null;
-        ret = commodityService.selectAll(JwtUtil.getRole(token), username, pageNum, pageSize, sequence);
-        return new Response<>(200, "", ret);
+        if(Objects.equals(JwtUtil.getRole(token), "saler")){
+            //TODO: change it
+            PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
+            return result;
+        } else {
+            PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
+            return result;
+        }
     }
 
     /**
@@ -127,15 +133,14 @@ public class CommodityController {
      * @return the list
      */
     @GetMapping("/commodity/search")
-    public Response<CommodityList> searchList(@RequestHeader("token") String token,
+    public PagedGridResult searchList(@RequestHeader("token") String token,
                                                 @RequestParam("q") String searchWords,
                                                 @RequestParam("page") int pageNum,
                                                 @RequestParam("pagesize") int pageSize,
                                                 @RequestParam("seq") String sequence){
-        CommodityList ret = null;
+        //CommodityList ret = null;
         String userName = JwtUtil.getUserName(token);
         String role = JwtUtil.getRole(token);
-        ret = commodityService.searchList(role, userName, pageNum, pageSize, sequence, searchWords);
-        return new Response<>(200, "", ret);
+        return commodityService.searchList(searchWords,  pageNum,  pageSize,  sequence);
     }
 }

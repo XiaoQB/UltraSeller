@@ -1,14 +1,14 @@
 package commodity.service;
 
 import commodity.domain.Commodity;
+import commodity.utils.PagedGridResult;
 import commodity.domain.CommodityList;
-import commodity.util.PagedGridResult;
 
 import java.util.List;
 
 public interface CommodityService {
 
-    public CommodityList selectAll(String role, String userName, int pageNum, int pageSize, String seq);
+    public PagedGridResult selectAll(String username, int pageNum, int pageSize, int sequence);
 
     public Commodity singleCommodity(long commodityId);
 
@@ -18,6 +18,5 @@ public interface CommodityService {
 
     public void delete(long itemId);
 
-    public CommodityList searchList(String role, String userName, int pageNum,
-                                    int pageSize, String seq, String searchWords);
+    public PagedGridResult searchList(String searchWords, int pageNum, int pageSize, String  sequences);
 }

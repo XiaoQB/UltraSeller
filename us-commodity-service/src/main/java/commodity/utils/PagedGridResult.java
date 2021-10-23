@@ -1,4 +1,4 @@
-package commodity.util;
+package commodity.utils;
 
 import java.util.List;
 
