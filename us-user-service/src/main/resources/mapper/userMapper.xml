@@ -30,14 +30,16 @@
     </select>
 
     <select id="getAdminByName" resultType="user.domain.entity.User" parameterType="java.lang.String">
-
+        select username,password
+        from us_admin where username = #{userName}
     </select>
     <select id="getBuyerByName" resultType="user.domain.entity.User" parameterType="java.lang.String">
         select username,password
         from us_buyer where username = #{userName}
     </select>
     <select id="getSalerByName" resultType="user.domain.entity.User" parameterType="java.lang.String"></select>
-
+            select username,password
+            from us_saler where username = #{userName}
     <select id="getAdmins" resultType="user.domain.entity.Admin">
         select *
         from ultra_seller.us_admin
