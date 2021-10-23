@@ -1,4 +1,4 @@
-package user.config;
+package user.interceptor;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,13 +7,19 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import user.filter.AuthorizationHandler;
+import user.interceptor.CorsInterceptor;
+
+import javax.annotation.Resource;
 
 @Configuration
 public class AuthorizationConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+
+         CorsInterceptor corsInterceptor = new CorsInterceptor();
         //注册TestInterceptor拦截器
+        registry.addInterceptor(corsInterceptor);
         InterceptorRegistration registration = registry.addInterceptor(apiInterceptor());
         registration.addPathPatterns("/**");                      //所有路径都被拦截
         registration.excludePathPatterns(                         //添加不拦截路径
@@ -40,5 +46,5 @@ public class AuthorizationConfig implements WebMvcConfigurer {
                 .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
                 .maxAge(3600)
                 .allowCredentials(true);
-    }
+  }
 }

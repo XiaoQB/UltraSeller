@@ -13,9 +13,9 @@ import user.service.impl.UserServiceImpl;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @Slf4j
+@CrossOrigin(origins = "*",maxAge = 3600)
 public class UserController {
 
     @Autowired
