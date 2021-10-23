@@ -1,12 +1,11 @@
 package commodity.controller;
 
 import commodity.domain.Commodity;
-import commodity.domain.CommodityList;
 import commodity.service.impl.CommodityServiceImpl;
 import commodity.utils.IdGenerator;
 import commodity.utils.PagedGridResult;
-import common.JwtUtil;
-import common.Response;
+import commodity.utils.JwtUtil;
+import commodity.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +17,9 @@ import java.util.Objects;
  * @author tristonk
  */
 @RestController
+//@CrossOrigin(origins = "*",maxAge = 3600)
 public class CommodityController {
 
-    @Autowired
     private CommodityServiceImpl commodityService;
 
     /**
@@ -40,14 +39,12 @@ public class CommodityController {
                                           @RequestParam("pagesize") int pageSize,
                                           @RequestParam("seq") int sequence
                                           ){
-        if(Objects.equals(JwtUtil.getRole(token), "saler")){
-            //TODO: change it
+//        if(Objects.equals(JwtUtil.getRole(token), "saler")){
+//            PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
+//            return result;
+//        } else {
             PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
             return result;
-        } else {
-            PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
-            return result;
-        }
     }
 
     /**
@@ -142,5 +139,9 @@ public class CommodityController {
         String userName = JwtUtil.getUserName(token);
         String role = JwtUtil.getRole(token);
         return commodityService.searchList(searchWords,  pageNum,  pageSize,  sequence);
+    }
+    @Autowired
+    public void setCommodityService(CommodityServiceImpl commodityService) {
+        this.commodityService = commodityService;
     }
 }
