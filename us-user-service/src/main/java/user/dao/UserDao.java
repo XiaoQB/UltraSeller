@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import user.domain.entity.User;
 import user.mapper.UserMapper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,17 +64,17 @@ public class UserDao {
         return user;
     }
 
-    public List<User> getUserList(String role,Integer num,Integer page){
-        List<User> users=new ArrayList<>();
+    public List<User> getUserList(String role, Integer num, Integer page) {
+        List<User> users = new ArrayList<>();
         switch (role) {
             case "admin":
-                users = userMapper.getAdmins(num,page);
+                users = userMapper.getAdmins(num, page);
                 break;
             case "buyer":
-                users = userMapper.getBuyers(num,page);
+                users = userMapper.getBuyers(num, page);
                 break;
             case "saler":
-                users = userMapper.getSalers(num,page);
+                users = userMapper.getSalers(num, page);
                 break;
             default:
                 break;
@@ -81,8 +82,8 @@ public class UserDao {
         return users;
     }
 
-    public Integer deleteUser(String role,String username){
-        Integer integer= 0;
+    public Integer deleteUser(String role, String username) {
+        Integer integer = 0;
         switch (role) {
             case "admin":
                 integer = userMapper.deleteAdmin(username);
@@ -99,37 +100,37 @@ public class UserDao {
         return integer;
     }
 
-    public Integer modifyUser(String userName,String newData,String type,String role){
-        Integer integer=0;
+    public Integer modifyUser(String userName, String newData, String type, String role) {
+        Integer integer = 0;
         switch (role) {
             case "admin":
-                integer = userMapper.updateAdmin(userName,newData);
+                integer = userMapper.updateAdmin(userName, newData);
                 break;
             case "buyer":
-                switch (type){
+                switch (type) {
                     case "password":
-                        integer=userMapper.updateBuyerPassword(userName,newData);
+                        integer = userMapper.updateBuyerPassword(userName, newData);
                         break;
                     case "phone":
-                        integer=userMapper.updateBuyerPhone(userName,newData);
+                        integer = userMapper.updateBuyerPhone(userName, newData);
                         break;
                     case "email":
-                        integer=userMapper.updateBuyerEmail(userName,newData);
+                        integer = userMapper.updateBuyerEmail(userName, newData);
                         break;
                     default:
                         break;
                 }
                 break;
             case "saler":
-                switch (type){
+                switch (type) {
                     case "password":
-                        integer=userMapper.updateSalerPassword(userName,newData);
+                        integer = userMapper.updateSalerPassword(userName, newData);
                         break;
                     case "phone":
-                        integer=userMapper.updateSalerPhone(userName,newData);
+                        integer = userMapper.updateSalerPhone(userName, newData);
                         break;
                     case "email":
-                        integer=userMapper.updateSalerEmail(userName,newData);
+                        integer = userMapper.updateSalerEmail(userName, newData);
                         break;
                     default:
                         break;

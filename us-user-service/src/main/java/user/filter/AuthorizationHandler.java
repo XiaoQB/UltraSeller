@@ -1,10 +1,13 @@
 package user.filter;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Authorization;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import user.result.R;
 import user.result.ResultCode;
@@ -12,11 +15,15 @@ import user.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Map;
 
-@Configuration
+
 @Slf4j
+@Component
 public class AuthorizationHandler implements HandlerInterceptor {
 
     @Autowired
@@ -26,6 +33,28 @@ public class AuthorizationHandler implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println(request.getRequestURL() + "===========preHandle===========");
         String role = request.getParameter("role");
+//        if(role==null){
+//            BufferedReader br;
+//            Map<String,String> params = new HashMap<>();
+//            try {
+//                br = request.getReader();
+//                String str, wholeStr = "";
+//                while((str = br.readLine()) != null){
+//                    wholeStr += str;
+//                }
+//                if(StringUtils.isNotEmpty(wholeStr)){
+//                    params = JSON.parseObject(wholeStr, Map.class);
+//                    role = params.get("role");
+//                }
+//            } catch (IOException e1) {
+//                log.info(e1.getMessage());
+//            }
+//        }
+        if (role == null) {
+            role = JSONObject.parseObject(((MyRequestWrapper) request).getBodyStr()).getString("role");
+
+        }
+        //role = JSONObject.parseObject(body).getString("role");
         String token = request.getHeader("Authorization");
         System.out.println(token);
         if (StringUtils.isNotEmpty(token) && StringUtils.isNotEmpty(role)) {
@@ -34,15 +63,14 @@ public class AuthorizationHandler implements HandlerInterceptor {
                 return true;
             }
         }
-        //返回校验token结果
         PrintWriter writer = null;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
         try {
             writer = response.getWriter();
-            HashMap<String,String> map = new HashMap<>();
-            map.put("code","400");
-            map.put("message","无权限");
+            HashMap<String, String> map = new HashMap<>();
+            map.put("code", "400");
+            map.put("message", "无权限");
             writer.print(map);
         } catch (Exception e) {
             log.info("拦截器报错");
