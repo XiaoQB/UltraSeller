@@ -23,7 +23,7 @@ public class CommodityServiceImpl implements CommodityService {
         PageHelper.startPage(pageNum, pageSize);
         CommodityExample example = new CommodityExample();
         CommodityExample.Criteria criteria = example.createCriteria();
-        criteria.andVendornameEqualTo(username);
+        //criteria.andVendornameEqualTo(username);
         List<Commodity> commodities = commodityMapper.selectByExample(example);
         return setterPagedGrid(commodities, 1);
     }
@@ -71,9 +71,6 @@ public class CommodityServiceImpl implements CommodityService {
         PageHelper.startPage(pageNum, pageSize);
         CommodityExample example = new CommodityExample();
         CommodityExample.Criteria criteria = example.createCriteria();
-//        if(role == "Seller") {
-//            criteria.andVendornameEqualTo(userName);
-//        }
         criteria.andNameLike("%"+searchWords+"%");
         List<Commodity> commodities = commodityMapper.selectByExample(example);
         return setterPagedGrid(commodities, 1);
