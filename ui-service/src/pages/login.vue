@@ -140,14 +140,16 @@ export default {
         return;
       } else {
         http
-            .post(`${userUrl}/login`, {
+
+            .get(`${userUrl}/user/login`, {
               name: this.user.username,
+
               password: this.user.password,
               role:this.user.role
             })
             .then(res => {
               // console.log("输出response.data.status", res.data.status);
-              if (res.data.status === 200) {
+              if (res.data.code === 200) {
                 window.localStorage["token"] = JSON.stringify(res.data['token']);
                 this.$router.push({ name: "store",
                 "params":{
@@ -162,20 +164,20 @@ export default {
     },
     doRegister(){
       this.submitForm('register');
-      this.axios({
+      this.http({
         headers:{
           'Content-Type': 'application/json;',
         },
         method:"post",
-        url:`${userUrl}/login`,
+        url:`${userUrl}/user/register`,
         transformRequest:[function (data){
           return JSON.stringify(data)
         }],
         data:{
-          identity:this.register.identity,
-          account:this.register.name,
+          role:this.register.identity,
+          userName:this.register.name,
           password:this.register.pwd,
-          number:this.register.number
+          phone:this.register.number
         }
       })
           .then(

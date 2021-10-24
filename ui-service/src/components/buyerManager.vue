@@ -2,7 +2,7 @@
   <div>
     <el-dialog title="商品详情" :visible.sync="showDialog" width="45%">
       <el-form ref="tableData" :model="tableData[nowRow]"  label-width="100px">
-        <el-form-item label="昵称" prop="name">
+        <el-form-item label="昵称" prop="userName">
           <span v-if="!edit">{{tableData[nowRow].userName}}</span>
           <el-input v-else v-model="tableData[nowRow].userName"></el-input>
         </el-form-item>
@@ -39,7 +39,7 @@
       </el-table-column>
       <el-table-column
           label="昵称"
-          prop="name">
+          prop="userName">
       </el-table-column>
       <el-table-column
           label="联系电话"
@@ -94,7 +94,7 @@ export default {
           id:"0",
           userName:"keyon",
           phone:"13567656765",
-          email:"xiepeichqwuhe@kjdbv.vom"
+          email:"xiepeichqwuhe@kjdbv.vom",
         }
       ],
     }
@@ -115,9 +115,12 @@ export default {
 
     getList() {
       var that = this;
-     this. http({
+      this.http({
         headers:{
-          'token':localStorage['token']
+
+          'Authorization':localStorage['token'],
+          'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwNzRiYjk0Ni03OGMzLTRkZDktYWVkZC1mYzQyYWI2ZjI0NzUiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzQ5Nzg2OTAsImV4cCI6MTYzNDk4MjI5MH0.a_KtQzdymitJWicbYY7lmfrF4qPeNJ7W6I9SlsFLBHY'
+
         },
         method:"get",
         url:`${userUrl}/user/info`,
@@ -128,9 +131,10 @@ export default {
         }
       })
           .then( response=> {
-            if(response.data().code === 200){
-              that.tableData = response.data.data;
-              that.dataTotalCount = response.data.data;
+            console.log(response.data.data)
+            if(response.data.code === 200){
+              this.tableData = response.data.data;
+              that.dataTotalCount = response.data.size;
             }
           })
           .catch(function (error) {
@@ -150,16 +154,16 @@ export default {
       this.http({
             headers:{
               'Content-Type': 'application/json;',
-              'token':localStorage['token']
+              'Authorization':localStorage['token']
             },
             method:"delete",
-            url:`${userUrl}/usr/delete`,
+            url:`${userUrl}/user/delete`,
             transformRequest:[function (data){
               return JSON.stringify(data)
             }],
             data:{
               id:this.tableData[index].id,
-              name:this.tableData[index].name,
+              userName:this.tableData[index].name,
             }
           }
 
@@ -186,7 +190,7 @@ export default {
       this.http({
         headers:{
           'Content-Type': 'application/json;',
-          'token':localStorage['token']
+          'Authorization':localStorage['token']
         },
         method:"put",
         url:`${userUrl}/user/modify`,
@@ -216,7 +220,7 @@ export default {
             });
           });
 
-      console("submit");
+
     }
 
 

@@ -148,7 +148,7 @@
 
 <script>
 import {baseURL} from "@/http";
-const commodityUrl = baseURL.user;
+const commodityUrl = baseURL.commodity;
 export default {
   name: "commodityManager",
   data(){
@@ -186,9 +186,6 @@ export default {
         vendorName:"",
 
       }
-
-
-
     }
   },
   methods:{
@@ -248,10 +245,8 @@ export default {
               'token':localStorage['token']
             },
             method:"delete",
-            url:`${commodityUrl}/commidity/item`,
-            params:{
-             id:row.id
-            }
+            url:`${commodityUrl}/commidity/item/${row.id}`,
+
           }
 
       ).then(res=>{
