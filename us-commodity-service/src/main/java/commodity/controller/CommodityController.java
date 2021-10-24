@@ -130,7 +130,7 @@ public class CommodityController {
      * @return the list
      */
     @GetMapping("/commodity/search")
-    public PagedGridResult searchList(@RequestHeader("token") String token,
+    public Response<PagedGridResult> searchList(@RequestHeader("token") String token,
                                                 @RequestParam("q") String searchWords,
                                                 @RequestParam("page") int pageNum,
                                                 @RequestParam("pagesize") int pageSize,
@@ -138,7 +138,7 @@ public class CommodityController {
         //CommodityList ret = null;
         String userName = JwtUtil.getUserName(token);
         String role = JwtUtil.getRole(token);
-        return commodityService.searchList(searchWords,  pageNum,  pageSize,  sequence);
+        return  new Response<>(200, "删除成功", commodityService.searchList(searchWords,  pageNum,  pageSize,  sequence));
     }
     @Autowired
     public void setCommodityService(CommodityServiceImpl commodityService) {

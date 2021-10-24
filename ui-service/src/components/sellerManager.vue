@@ -89,13 +89,7 @@ export default {
         pageSize:10,
       },
       tableData: [
-        {
-          id:"0",
-          userName:"123",
-          phone:"13567656765",
-          email:"xiepeichqwuhe@kjdbv.vom"
 
-        }
       ],
     }
   },
@@ -133,16 +127,13 @@ export default {
         }
       })
           .then( response=> {
-
             if(response.data.code === 200) {
-              that.tableData = response.data.data;
-              that.dataTotalCount = response.data.data;
-            }
-            console.log(response.data.data)
-            if(response.data.code === 200){
-              this.tableData = response.data.data;
-              that.dataTotalCount = response.data.size;
-
+              that.$message({
+                type: 'success',
+                message: '获得列表成功'
+              });
+              that.tableData = response.data.data.userList;
+              that.dataTotalCount = response.data.data.num;
             }
           })
           .catch(function (error) {

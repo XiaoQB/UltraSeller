@@ -12,8 +12,8 @@
             <el-input v-model="user.password" show-password placeholder="请输入密码"></el-input>
           </el-form-item>
           <el-form-item label="角色" prop="role">
-            <el-radio v-model="user.role" label="1">买家</el-radio>
-            <el-radio v-model="user.role" label="2">卖家</el-radio>
+            <el-radio v-model="user.role" label="buyer">买家</el-radio>
+            <el-radio v-model="user.role" label="saler">卖家</el-radio>
           </el-form-item>
           <el-form-item>
             <el-button class = "button1" type="primary"  @click="doLogin()" style="border-bottom: 200px" >登 录</el-button>
@@ -24,8 +24,8 @@
       <el-dialog title="注册信息" :visible.sync="registervisible" width="30%">
         <el-form ref="register" :model="register" :rules="rules" label-width="80px">
           <el-form-item label="身份" prop="identity">
-            <el-radio v-model="register.identity" label="1">买家</el-radio>
-            <el-radio v-model="register.identity" label="2">卖家</el-radio>
+            <el-radio v-model="register.identity" label="buyer">买家</el-radio>
+            <el-radio v-model="register.identity" label="saler">卖家</el-radio>
           </el-form-item>
           <el-form-item label="账户名" prop="name">
             <el-input v-model="register.name" ></el-input>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import http from "@/http";
+
 import {baseURL} from "@/http";
 const userUrl = baseURL.user;
 
@@ -139,25 +139,28 @@ export default {
         this.$message.error("请输入密码！");
         return;
       } else {
-        http
-
+        this.$router.push({ name: "admin"});
+        this.http
             .get(`${userUrl}/user/login`, {
-              name: this.user.username,
+              params:{
+                userName: this.user.username,
+                password: this.user.password,
+                role:this.user.role
+              },
 
-              password: this.user.password,
-              role:this.user.role
             })
             .then(res => {
-              // console.log("输出response.data.status", res.data.status);
               if (res.data.code === 200) {
-                window.localStorage["token"] = JSON.stringify(res.data['token']);
+                this.$message({
+                  type:"success",
+                  message:"登录成功"
+                })
+                localStorage.setItem("token",res.data.data);
                 this.$router.push({ name: "store",
-                "params":{
+                  "params":{
                     "name":this.user.username,
-                    "token":res.data['token'],
-                }});
-              } else {
-                alert("您输入的用户名或密码错误！");
+                    "token":res.data.data,
+                  }});
               }
             });
       }
