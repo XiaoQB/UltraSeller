@@ -62,7 +62,9 @@
                 <span>好吃的汉堡 {{ index }}</span>
                 <div class="bottom clearfix">
                   <!-- <time class="time">{{ currentDate }}</time> -->
-                  <el-button type="text" class="button">操作按钮</el-button>
+                  <el-button type="text" class="button">
+                    <a href="/commodityManager">编辑商品</a>
+                  </el-button>
                 </div>
               </div>
             </el-card>
