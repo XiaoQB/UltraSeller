@@ -48,7 +48,7 @@
       <el-button class="search-button" type="primary">搜索</el-button>
       <div class="goods">
         <el-row>
-          <el-col :span="4" v-for="(o, index) in 24" :key="o">
+          <el-col :span="4" v-for="(o, index) in totalItems" :key="o">
             <el-card
               class="card"
               :body-style="{ padding: auto }"
@@ -59,10 +59,27 @@
                 class="item-image"
               />
               <div style="padding: 5px">
-                <span>好吃的汉堡 {{ index }}</span>
-                <div class="bottom clearfix">
-                  <!-- <time class="time">{{ currentDate }}</time> -->
-                  <el-button type="text" class="button">操作按钮</el-button>
+                <el-descriptions title="商品信息" :column="1">
+                  <el-descriptions-item label="名字"
+                    >好吃的汉堡 {{ index }}</el-descriptions-item
+                  >
+                  <el-descriptions-item label="品牌">McD</el-descriptions-item>
+                  <el-descriptions-item label="分类">
+                    <el-tag size="small">食品</el-tag>
+                  </el-descriptions-item>
+                  <el-descriptions-item label="价格">{{
+                    10 + index
+                  }}</el-descriptions-item>
+                </el-descriptions>
+                <div class="card-action">
+                  <el-button type="primary" class="buy-commodity-bottom">
+                    买它！
+                  </el-button>
+                  <el-button type="text" class="edit-commodity-bottom">
+                    <router-link :to="`/commodityManager`"
+                      >商品编辑</router-link
+                    >
+                  </el-button>
                 </div>
               </div>
             </el-card>
@@ -95,7 +112,7 @@ export default {
       input: "",
       // currentDate: new Date()
       pageSize: 24,
-      totalItems: 80,
+      totalItems: 6,
     };
   },
   methods: {
@@ -134,5 +151,13 @@ export default {
 }
 .pagination {
   margin-top: 30px;
+}
+.buy-commodity-bottom {
+  float: left;
+  margin-left: 0px;
+}
+.edit-commodity-bottom {
+  float: right;
+  margin-left: 0px;
 }
 </style>

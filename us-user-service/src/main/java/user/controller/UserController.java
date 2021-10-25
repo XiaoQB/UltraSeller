@@ -13,9 +13,9 @@ import user.service.impl.UserServiceImpl;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @Slf4j
+@CrossOrigin(origins = "*",maxAge = 3600)
 public class UserController {
 
     @Autowired
@@ -40,10 +40,10 @@ public class UserController {
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), jwt);
     }
 
-    @GetMapping("/user/info/{role}/{num}/{page}")
-    public R<GetUserListDTO> getUserList(@PathVariable("role") String role,
-                                     @PathVariable("num") Integer num,
-                                     @PathVariable("page") Integer page){
+    @GetMapping("/user/info")
+    public R<GetUserListDTO> getUserList( String role,
+                                      Integer num,
+                                     Integer page){
         System.out.println(role+num+page);
         if(num==null||page==null){
             log.info("info 查询数值错误");
