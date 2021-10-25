@@ -1,0 +1,54 @@
+version: "3"
+services:
+  # mysql5:
+  # build: mysql/
+  # image: mysql:latest
+  # environment:
+  # MYSQL_ROOT_PASSWORD: 75560zcb
+  # MYSQL_USER: 'root'
+  # ports:
+  # - 3306:3306
+  # networks:
+  # - mynetwork
+
+  us-user-service:
+    # depends_on:
+    # - mysql5
+    build: us-user-service/
+    restart: always
+      # environment:
+      # USERNAME: root
+      # PASSWORD: 75560zcb
+    # DB_URL: mysql5:3306/
+    ports:
+      - 8002:8002
+    networks:
+      - mynetwork
+
+  us-commodity-service:
+    # depends_on:
+    #   - mysql5
+    build: us-commodity-service/
+    restart: always
+    # environment:
+    #   USERNAME: root
+    #   PASSWORD: 75560zcb
+    #   DB_URL: mysql5:3306/
+    ports:
+      - 8003:8003
+    networks:
+      - mynetwork
+
+  ui-service:
+    depends_on:
+      - us-user-service
+      - us-commodity-service
+    build: ui-service/
+    restart: always
+    ports:
+      - 1024:80
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork: {}
