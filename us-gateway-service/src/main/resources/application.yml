@@ -1,0 +1,32 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: us-gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: us-eureka-service
+          uri: lb://us-eureka-service
+          predicates:
+            - Path=/test/**
+        - id: us-commodity-service
+          uri: lb://us-commodity-service
+          predicates:
+            - Path=/commodity/**
+
+eureka:
+  instance:
+    hostname: 127.0.0.1
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
+
+
+

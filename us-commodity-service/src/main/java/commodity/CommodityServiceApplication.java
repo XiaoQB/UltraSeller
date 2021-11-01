@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 //@MapperScan(basePackages = {"commodity.mapper"})
-@EnableEurekaClient
 public class CommodityServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(CommodityServiceApplication.class, args);
