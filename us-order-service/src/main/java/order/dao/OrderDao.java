@@ -25,7 +25,7 @@ public interface OrderDao {
     /**
      * 根据 id 获取 order
      *
-     * @param orderId  orderId
+     * @param orderId orderId
      * @return order
      */
     Order getOrderById(String orderId);

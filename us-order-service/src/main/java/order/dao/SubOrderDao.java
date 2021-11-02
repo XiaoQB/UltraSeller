@@ -22,7 +22,7 @@ public interface SubOrderDao {
     void createSubOrders(@Param("subOrders") List<SubOrder> subOrders);
 
     /**
-     *  根据 order id 删除 sub order
+     * 根据 order id 删除 sub order
      *
      * @param orderId orderId
      */

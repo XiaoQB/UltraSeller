@@ -41,7 +41,8 @@
     </insert>
 
     <select id="getSubOrdersByOrder" resultMap="subOrder">
-        select <include refid="order_all_columns"/>
+        select
+        <include refid="order_all_columns"/>
         from sub_order
         where order_id = #{orderId}
     </select>

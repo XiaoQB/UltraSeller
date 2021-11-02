@@ -34,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
         List<SubOrder> subOrders = new ArrayList<>();
         float sum = 0;
 
-        for (Commodity commodity: createOrderDTO.getCommodities()) {
+        for (Commodity commodity : createOrderDTO.getCommodities()) {
             float totalPrice = commodity.getPrice() * commodity.getNum();
             sum += totalPrice;
             SubOrder subOrder = SubOrder.builder()
