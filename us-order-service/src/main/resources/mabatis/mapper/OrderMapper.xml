@@ -7,8 +7,9 @@
     </sql>
 
     <insert id="createOrder" parameterType="order.entities.dbo.Order">
-        insert into `order` (status, total_price, address, buyer_id, create_time, update_time)
+        insert into `order` (id, status, total_price, address, buyer_id, create_time, update_time)
             value (
+                   #{orderId},
                    #{status},
                    #{totalPrice},
                    #{address},
@@ -18,7 +19,7 @@
             )
     </insert>
 
-    <select id="getOrderById" resultMap="order.entities.dbo.Order">
+    <select id="getOrderById" resultType="order.entities.dbo.Order">
         select
         <include refid="order_all_columns"/>
         from `order`

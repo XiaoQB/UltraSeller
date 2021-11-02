@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="order.dao.SubOrderDao">
+    <insert id="createSubOrders" parameterType="java.util.List">
+        insert into sub_order (id, order_id, status, total_price, address, saler_id, commodity_id, commodity_name,
+        price, num)
+        values
+        <foreach collection="subOrders" item="item" index="index" separator=",">
+            (
+            #{item.subOrderId},
+            #{item.orderId},
+            #{item.status},
+            #{item.totalPrice},
+            #{item.address},
+            #{item.salerId},
+            #{item.commodityId},
+            #{item.commodityName},
+            #{item.price},
+            #{item.num}
+            )
+        </foreach>
+    </insert>
+</mapper>

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author beethoven
@@ -19,7 +20,7 @@ public class Order {
 
     private String orderId;
     private String status;
-    private Double totalPrice;
+    private Float totalPrice;
     private String address;
     private Integer buyerId;
     private Date createTime;

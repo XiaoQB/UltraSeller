@@ -1,11 +1,12 @@
 package order.entities.dto;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import order.entities.dbo.Commodity;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author beethoven
@@ -17,7 +18,7 @@ import java.util.Map;
 public class CreateOrderDTO {
 
     private Integer buyerId;
-    private Map<Commodity, Integer> commodities;
+    private List<Commodity> commodities;
     private String address;
     private String status;
 

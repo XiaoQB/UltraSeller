@@ -17,5 +17,6 @@ public class Commodity {
     private String commodityName;
     private int salerId;
     private Float price;
+    private int num;
 
 }
