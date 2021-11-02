@@ -3,7 +3,6 @@ package user.service.impl;
 import com.alibaba.fastjson.JSON;
 
 import com.alibaba.fastjson.JSONObject;
-import common.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 import user.dao.UserDao;
 import user.domain.entity.User;
 import user.service.UserService;
+import user.utils.JwtUtil;
 
 import java.util.*;
 import java.util.Map;
@@ -59,8 +59,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer modifyUser(Integer id, String role, String userName, String password, String phone, String email) {
-        return userDao.modifyUser(id, role, userName, password, phone, email);
+    public Integer getUserNum(String role){
+        return userDao.getUserNum(role);
+    }
+
+    @Override
+    public Integer modifyUser(Integer id,String role,String userName,String password,String phone,String email){
+        return userDao.modifyUser(id,role,userName,password,phone,email);
     }
 
     @Override

@@ -42,27 +42,26 @@
         </span>
       </el-dialog>
       <el-dialog title="添加商品" :visible.sync="showDialog2" width="45%">
-        <el-form ref="tableData" :model="commodity"  label-width="100px">
+        <el-form ref="commodity1" :model="commodity1"  label-width="100px">
           <el-form-item label="商品名称" prop="name">
-            <el-input  v-model="commodity.name"></el-input>
+            <el-input  v-model="commodity1.name"></el-input>
           </el-form-item>
           <el-form-item placeholder="目前只支持输入图片链接"
               label="图片"
               prop="imgLink">
-            <el-input  v-model="commodity.imgLink"></el-input>
+            <el-input  v-model="commodity1.imgLink"></el-input>
           </el-form-item>
           <el-form-item label="价格" prop="price">
-
-            <el-input  v-model="commodity.price"  ></el-input>
+            <el-input  v-model="commodity1.price"  ></el-input>
           </el-form-item>
           <el-form-item label="商品描述" prop="description">
-            <el-input   v-model="commodity.description" ></el-input>
+            <el-input   v-model="commodity1.description" ></el-input>
           </el-form-item>
           <el-form-item label="库存" prop="inventory">
-            <el-input  v-model="commodity.inventory" ></el-input>
+            <el-input  v-model="commodity1.inventory" ></el-input>
           </el-form-item>
           <el-form-item label="所有者名字" prop="vendorName">
-            <el-input v-model="commodity.vendorName"></el-input>
+            <el-input v-model="commodity1.vendorName"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -166,18 +165,45 @@ export default {
       },
       tableData: [
         {
-          id:"1",
-          name:"vhjl",
-          imgLink:"https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
-          price:"ass",
-          description:"sdc",
-          inventory:"asadfa",
-          vendorName:"asd",
+          id:"20210101001",
+          name:"面包",
+          imgLink:"https://ts3.cn.mm.bing.net/th/id/OIP-C.305fYj0cWoTv_Q8TIbJ02wHaHG?w=196&h=188&c=7&r=0&o=5&dpr=2&pid=1.7",
+          price:"10",
+          description:"好吃",
+          inventory:"10",
+          vendorName:"test01",
+        },
+        {
+          id:"20210101002",
+          name:"白酒",
+          imgLink:"https://ts1.cn.mm.bing.net/th/id/OIP-C.PWh-k1csn9MRuq9-kqf0wwHaLG?w=196&h=293&c=7&r=0&o=5&dpr=2&pid=1.7",
+          price:"100",
+          description:"一喝就倒",
+          inventory:"10",
+          vendorName:"test01",
+        },
+        {
+          id:"20210101003",
+          name:"卫生纸",
+          imgLink:"https://ts2.cn.mm.bing.net/th/id/OIP-C.3yAPWpweG_grlE-hx0GSbQHaE7?w=255&h=180&c=7&r=0&o=5&dpr=2&pid=1.7",
+          price:"10",
+          description:"可以擦皮皮",
+          inventory:"10",
+          vendorName:"test01",
+        },
+        {
+          id:"20210101004",
+          name:"矿泉水",
+          imgLink:"https://ts3.cn.mm.bing.net/th/id/OIP-C.fIfwcxCc6sjAUWxifyiJQAHaHa?w=205&h=205&c=7&r=0&o=5&dpr=2&pid=1.7",
+          price:"2",
+          description:"没有虫卵的农夫山泉",
+          inventory:"25",
+          vendorName:"test01",
+        },
 
-        }
+
       ],
-      commodity: {
-        id:"",
+      commodity1: {
         name:"",
         imgLink:"",
         price:"",
@@ -212,20 +238,20 @@ export default {
       var that = this;
       this.http({
         headers:{
-          'token':localStorage['token']
+          'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiYThlYmM2MC01MmQ1LTQ2NTctOTMzZi0zMWIzNGNkYjc4YTkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNjA4NzcsImV4cCI6MTYzNTA2NDQ3N30.Yirgbn607G0W3cWwb74JJTZpJILlTudikQjnao1I0cc'
         },
         method:"get",
-        url:`${commodityUrl}/commidity/list`,
+        url:`${commodityUrl}/commodity/lists`,
         params:{
-          username:"admin",
+          username:"tet",
           pagesize:this.formInline.pageSize,
           page:this.formInline.currentPage,
           seq:this.seq
         }
       })
           .then(response=> {
-            that.tableData = response.data.commodity;
-            that.dataTotalCount = response.data.data.total;
+            that.tableData = response.data.rows;
+            that.dataTotalCount = response.data.records;
           })
           .catch(function (error) {
             that.$message({
@@ -242,18 +268,18 @@ export default {
     handleDelete(index, row) {
       this.http({
             headers:{
-              'token':localStorage['token']
+            'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiYThlYmM2MC01MmQ1LTQ2NTctOTMzZi0zMWIzNGNkYjc4YTkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNjA4NzcsImV4cCI6MTYzNTA2NDQ3N30.Yirgbn607G0W3cWwb74JJTZpJILlTudikQjnao1I0cc'
             },
             method:"delete",
-            url:`${commodityUrl}/commidity/item`,
-            params:{
-             id:row.id
-            }
+            url:`${commodityUrl}/commodity/item/${row.id}`,
           }
-
       ).then(res=>{
-        if(res.data.code()===200){
+        if(res.data.code===200){
          this.getList();
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          });
         }else{
           this.$message({
             type: 'error',
@@ -261,13 +287,9 @@ export default {
           });
         }
       })
-
-      console.log(index, row);
-
     },
     handleEdit(){
       this.edit=true;
-      console("ddd");
     },
     handleSubmit(){
       this.showDialog=false;
@@ -275,10 +297,10 @@ export default {
       this.http({
         headers:{
           'Content-Type': 'application/json;',
-          'token':localStorage['token']
+          'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiYThlYmM2MC01MmQ1LTQ2NTctOTMzZi0zMWIzNGNkYjc4YTkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNjA4NzcsImV4cCI6MTYzNTA2NDQ3N30.Yirgbn607G0W3cWwb74JJTZpJILlTudikQjnao1I0cc'
         },
         method:"put",
-        url:`${commodityUrl}/commidity/item`,
+        url:`${commodityUrl}/commodity/item`,
         transformRequest:[function (data){
           return JSON.stringify(data)
         }],
@@ -293,7 +315,8 @@ export default {
         }
       })
           .then(response=> {
-              if(response.data.data.code===200){
+              if(response.data.code===201){
+                this.getList()
                 this.$message({
                   type: 'success',
                   message: '修改成功：'
@@ -306,8 +329,6 @@ export default {
               message: '系统异常：'+error
             });
           });
-
-      console("submit");
     },
 
 
@@ -315,10 +336,10 @@ export default {
     doSearch(){
       this.http({
         headers:{
-          'token':localStorage['token']
+          'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4NTY1YzkyYi04MWQyLTQzMjktOWEyZS1iZTQxYTVlYjAyMjYiLCJzdWIiOiJ7XCJyb2xlXCI6XCJidXllclwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInRlc3QwMVwifSIsImlzcyI6ImFkbWluIiwiaWF0IjoxNjM0OTY3MDc1LCJleHAiOjE2MzQ5NzA2NzV9.DvuJGR3y4ukfHdMjUD9RNCkcgu8KSamNquU_bq5DQjY'
         },
         method:"get",
-        url:`${commodityUrl}/commidity`,
+        url:`${commodityUrl}/commodity/search`,
         params:{
           q:this.search,
           pagesize:this.formInline.pageSize,
@@ -328,13 +349,13 @@ export default {
           }
 
       ).then(res=>{
-        if(res.data.code()===200){
-          this.tableData=res.data.rows;
-          this.dataTotalCount = res.data.records;
+        if(res.data.code===200){
+          this.tableData=res.data.data.rows;
+          this.dataTotalCount = res.data.data.records;
         }else{
           this.$message({
             type: 'error',
-            message: '系统异常：'
+            message: '没有找到相关商品'
           });
         }
       })
@@ -347,36 +368,31 @@ export default {
       this.http({
         headers:{
           'Content-Type': 'application/json;',
-          'token':localStorage['token']
+          'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiYThlYmM2MC01MmQ1LTQ2NTctOTMzZi0zMWIzNGNkYjc4YTkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNjA4NzcsImV4cCI6MTYzNTA2NDQ3N30.Yirgbn607G0W3cWwb74JJTZpJILlTudikQjnao1I0cc'
         },
-        method:"put",
-        url:`${commodityUrl}/commidity/add`,
+        method:"post",
+        url:`${commodityUrl}/commodity/item`,
         transformRequest:[function (data){
           return JSON.stringify(data)
         }],
         data:{
-          name:this.commodity.name,
-          imgLink:this.commodity.imgLink,
-          price:this.commodity.price,
-          description:this.commodity.description,
-          inventory:this.this.commodity.inventory,
-          vendorName:this.commodity.vendorName,
+          name:this.commodity1.name,
+          imgLink:this.commodity1.imgLink,
+          price:this.commodity1.price,
+          description:this.commodity1.description,
+          inventory:this.commodity1.inventory,
+          vendorName:this.commodity1.vendorName,
         }
       })
           .then(response=> {
-            if(response.data.data.code===200){
+            if(response.data.code===201){
               this.$message({
                 type: 'success',
                 message: '添加成功：'
               });
             }
           })
-          .catch(function (error) {
-            this.$message({
-              type: 'error',
-              message: '系统异常：'+error
-            });
-          });
+
     }
 
 

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import user.domain.dto.GetUserListDTO;
 import user.domain.entity.User;
 import user.result.R;
 import user.result.ResultCode;
@@ -38,18 +39,21 @@ public class UserController {
     }
 
     @GetMapping("/user/info")
-    public R<List<User>> getUserList(@RequestParam("role") String role,
-                                     @RequestParam("num") Integer num,
-                                     @RequestParam("page") Integer page) {
-        if (num == null || page == null) {
+    public R<GetUserListDTO> getUserList( String role,
+                                      Integer num,
+                                     Integer page){
+        System.out.println(role+num+page);
+        if(num==null||page==null){
             log.info("info 查询数值错误");
             return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
         List<User> results = userService.getUserList(role, num, page);
+        Integer userNum=userService.getUserNum(role);
+        GetUserListDTO getUserListDTO=new GetUserListDTO(userNum,results);
         if (results == null) {
             return new R<>(ResultCode.QUERY_FAIL.getCode(), ResultCode.QUERY_FAIL.getMessage(), null);
         }
-        return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), results);
+        return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), getUserListDTO);
     }
 
     @DeleteMapping("/user/delete")

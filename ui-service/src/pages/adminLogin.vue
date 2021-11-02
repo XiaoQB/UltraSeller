@@ -3,7 +3,7 @@
     <div class="login-wrap">
       <el-row type="flex" justify="center">
         <el-form ref="loginForm" :model="user" status-icon label-width="80px" style="height: 800px">
-          <h3>请您登录</h3>
+          <h3>请管理员登录</h3>
           <hr>
           <el-form-item prop="username" label="用户名">
             <el-input v-model="user.username" placeholder="请输入用户名" prefix-icon></el-input>
@@ -136,22 +136,27 @@ export default {
       } else {
         this.$router.push({ name: "admin"});
         http
-            .post(`${userUrl}/login`, {
-              name: this.user.username,
-              password: this.user.password,
-              role:"admin"
+            .get(`${userUrl}/user/login`, {
+              params:{
+                userName: this.user.username,
+                password: this.user.password,
+                role:"admin"
+              },
+
             })
             .then(res => {
-              // console.log("输出response.data.status", res.data.status);
-              if (res.data.status === 200) {
-                window.localStorage["token"] = JSON.stringify(res.data['token']);
+              if (res.data.code === 200) {
+                this.$message({
+                  type:"success",
+                  message:"登录成功"
+                })
+                window.localStorage["token"] = JSON.stringify(res.data.data);
+                console.log(localStorage["token"])
                 this.$router.push({ name: "admin",
                   "params":{
                     "name":this.user.username,
                     "token":res.data['token'],
                   }});
-              } else {
-                alert("您输入的用户名或密码错误！");
               }
             });
       }

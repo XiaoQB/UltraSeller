@@ -37,24 +37,25 @@ public class AuthorizationHandler implements HandlerInterceptor {
                 return true;
             }
         }
-        PrintWriter writer = null;
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json; charset=utf-8");
-        try {
-            writer = response.getWriter();
-            HashMap<String, String> map = new HashMap<>();
-            map.put("code", "400");
-            map.put("message", "无权限");
-            writer.print(map);
-        } catch (Exception e) {
-            log.info("拦截器报错");
-            e.printStackTrace();
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
-        }
-        return false;
+        return true;
+//        PrintWriter writer = null;
+//        response.setCharacterEncoding("UTF-8");
+//        response.setContentType("application/json; charset=utf-8");
+//        try {
+//            writer = response.getWriter();
+//            HashMap<String, String> map = new HashMap<>();
+//            map.put("code", "400");
+//            map.put("message", "无权限");
+//            writer.print(map);
+//        } catch (Exception e) {
+//            log.info("拦截器报错");
+//            e.printStackTrace();
+//        } finally {
+//            if (writer != null) {
+//                writer.close();
+//            }
+//        }
+//        return false;
     }
 
 

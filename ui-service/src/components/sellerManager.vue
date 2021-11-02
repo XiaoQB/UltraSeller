@@ -2,9 +2,9 @@
   <div>
     <el-dialog title="卖家详情" :visible.sync="showDialog" width="45%">
       <el-form ref="tableData" :model="tableData[nowRow]"  label-width="100px">
-        <el-form-item label="昵称" prop="name">
-          <span v-if="!edit">{{tableData[nowRow].name}}</span>
-          <el-input v-else v-model="tableData[nowRow].name"></el-input>
+        <el-form-item label="昵称" prop="userName">
+          <span v-if="!edit">{{tableData[nowRow].userName}}</span>
+          <el-input v-else v-model="tableData[nowRow].userName"></el-input>
         </el-form-item>
         <el-form-item label="联系电话" prop="phone">
           <span v-if="!edit">{{tableData[nowRow].phone}}</span>
@@ -39,7 +39,7 @@
       </el-table-column>
       <el-table-column
           label="昵称"
-          prop="name">
+          prop="userName">
       </el-table-column>
       <el-table-column
           label="联系电话"
@@ -89,12 +89,7 @@ export default {
         pageSize:10,
       },
       tableData: [
-        {
-          name:"123",
-          phone:"13567656765",
-          email:"xiepeichqwuhe@kjdbv.vom"
 
-        }
       ],
     }
   },
@@ -118,11 +113,14 @@ export default {
         this.formInline.pType = data.pType;
         this.formInline.floor = data.floor;
       }
-
       var that = this;
       this.http({
         headers:{
+<<<<<<< HEAD
           'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwNzRiYjk0Ni03OGMzLTRkZDktYWVkZC1mYzQyYWI2ZjI0NzUiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzQ5Nzg2OTAsImV4cCI6MTYzNDk4MjI5MH0.a_KtQzdymitJWicbYY7lmfrF4qPeNJ7W6I9SlsFLBHY'
+=======
+          'Authorization':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwNzRiYjk0Ni03OGMzLTRkZDktYWVkZC1mYzQyYWI2ZjI0NzUiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzQ5Nzg2OTAsImV4cCI6MTYzNDk4MjI5MH0.a_KtQzdymitJWicbYY7lmfrF4qPeNJ7W6I9SlsFLBHY'
+>>>>>>> master
         },
         method:"get",
         url:`${userUrl}/user/info`,
@@ -133,10 +131,20 @@ export default {
         }
       })
           .then( response=> {
+<<<<<<< HEAD
             console.log(response.data.data)
             if(response.data.code === 200){
               this.tableData = response.data.data;
               that.dataTotalCount = response.data.size;
+=======
+            if(response.data.code === 200) {
+              that.$message({
+                type: 'success',
+                message: '获得列表成功'
+              });
+              that.tableData = response.data.data.userList;
+              that.dataTotalCount = response.data.data.num;
+>>>>>>> master
             }
           })
           .catch(function (error) {
@@ -146,12 +154,12 @@ export default {
             });
           });
     },
-    getDetail(index, row) {
+    getDetail(index, row){
       this.showDialog=true;
       this.nowRow=index;
       console.log(index, row);
     },
-    handleDelete(index, row) {
+    handleDelete(index, row){
       this.http({
             headers:{
               'Content-Type': 'application/json;',
@@ -164,6 +172,11 @@ export default {
             }],
             data:{
               id:this.tableData[index].id,
+<<<<<<< HEAD
+=======
+              userName:this.tableData[index].name,
+
+>>>>>>> master
             }
           }
 
@@ -220,11 +233,14 @@ export default {
               message: '系统异常：'+error
             });
           });
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     }
 
-  }
-}
+
+}}
 </script>
 
 <style scoped>
