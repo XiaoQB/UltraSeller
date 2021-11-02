@@ -159,12 +159,16 @@ export default {
             }],
             data:{
               id:this.tableData[index].id,
-              userName:this.tableData[index].name,
+              role:"buyer",
             }
           }
 
       ).then(res=>{
         if(res.data.code===200){
+          this.$message({
+            type: 'success',
+            message: '删除成功：'
+          });
           this.getList();
         }else{
           this.$message({

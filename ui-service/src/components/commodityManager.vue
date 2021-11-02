@@ -148,6 +148,7 @@
 <script>
 import {baseURL} from "@/http";
 const commodityUrl = baseURL.commodity;
+const userUrl = baseURL.user
 export default {
   name: "commodityManager",
   data(){
@@ -211,6 +212,9 @@ export default {
         inventory:"",
         vendorName:"",
 
+      },
+      salerList:{
+
       }
     }
   },
@@ -238,7 +242,7 @@ export default {
       var that = this;
       this.http({
         headers:{
-          'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiYThlYmM2MC01MmQ1LTQ2NTctOTMzZi0zMWIzNGNkYjc4YTkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNjA4NzcsImV4cCI6MTYzNTA2NDQ3N30.Yirgbn607G0W3cWwb74JJTZpJILlTudikQjnao1I0cc'
+          'token':localStorage['token']
         },
         method:"get",
         url:`${commodityUrl}/commodity/lists`,
@@ -250,6 +254,10 @@ export default {
         }
       })
           .then(response=> {
+            that.$message({
+              type: 'success',
+              message: '获取列表成功'
+            });
             that.tableData = response.data.rows;
             that.dataTotalCount = response.data.records;
           })
@@ -268,10 +276,11 @@ export default {
     handleDelete(index, row) {
       this.http({
             headers:{
-            'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiYThlYmM2MC01MmQ1LTQ2NTctOTMzZi0zMWIzNGNkYjc4YTkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNjA4NzcsImV4cCI6MTYzNTA2NDQ3N30.Yirgbn607G0W3cWwb74JJTZpJILlTudikQjnao1I0cc'
+              'token':localStorage['token']
             },
             method:"delete",
             url:`${commodityUrl}/commodity/item/${row.id}`,
+
           }
       ).then(res=>{
         if(res.data.code===200){
@@ -291,13 +300,40 @@ export default {
     handleEdit(){
       this.edit=true;
     },
+    getSalerList(){
+      var that = this;
+      this.http({
+        headers:{
+          'Authorization':localStorage['token']
+        },
+        method:"get",
+        url:`${userUrl}/user/info`,
+        params:{
+          role:"saler",
+          num:this.formInline.pageSize,
+          page:this.formInline.currentPage
+        }
+      })
+          .then( response=> {
+            if(response.data.code === 200) {
+              that.salerList = response.data.data.userList;
+            }
+          })
+          .catch(function (error) {
+            that.$message({
+              type: 'error',
+              message: '获取卖家信息：'+error
+            });
+          });
+    },
+
     handleSubmit(){
       this.showDialog=false;
       this.edit=false;
       this.http({
         headers:{
           'Content-Type': 'application/json;',
-          'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiYThlYmM2MC01MmQ1LTQ2NTctOTMzZi0zMWIzNGNkYjc4YTkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNjA4NzcsImV4cCI6MTYzNTA2NDQ3N30.Yirgbn607G0W3cWwb74JJTZpJILlTudikQjnao1I0cc'
+          'token':localStorage['token']
         },
         method:"put",
         url:`${commodityUrl}/commodity/item`,
@@ -336,7 +372,7 @@ export default {
     doSearch(){
       this.http({
         headers:{
-          'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4NTY1YzkyYi04MWQyLTQzMjktOWEyZS1iZTQxYTVlYjAyMjYiLCJzdWIiOiJ7XCJyb2xlXCI6XCJidXllclwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInRlc3QwMVwifSIsImlzcyI6ImFkbWluIiwiaWF0IjoxNjM0OTY3MDc1LCJleHAiOjE2MzQ5NzA2NzV9.DvuJGR3y4ukfHdMjUD9RNCkcgu8KSamNquU_bq5DQjY'
+          'token':localStorage['token']
         },
         method:"get",
         url:`${commodityUrl}/commodity/search`,
@@ -368,7 +404,7 @@ export default {
       this.http({
         headers:{
           'Content-Type': 'application/json;',
-          'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiYThlYmM2MC01MmQ1LTQ2NTctOTMzZi0zMWIzNGNkYjc4YTkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNjA4NzcsImV4cCI6MTYzNTA2NDQ3N30.Yirgbn607G0W3cWwb74JJTZpJILlTudikQjnao1I0cc'
+          'token':localStorage['token']
         },
         method:"post",
         url:`${commodityUrl}/commodity/item`,
@@ -394,9 +430,6 @@ export default {
           })
 
     }
-
-
-
 
   }
 }

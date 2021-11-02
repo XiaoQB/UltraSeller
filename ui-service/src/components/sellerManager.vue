@@ -116,7 +116,7 @@ export default {
       var that = this;
       this.http({
         headers:{
-          'Authorization':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwNzRiYjk0Ni03OGMzLTRkZDktYWVkZC1mYzQyYWI2ZjI0NzUiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzQ5Nzg2OTAsImV4cCI6MTYzNDk4MjI5MH0.a_KtQzdymitJWicbYY7lmfrF4qPeNJ7W6I9SlsFLBHY'
+          "Authorization":localStorage['token']
         },
         method:"get",
         url:`${userUrl}/user/info`,
@@ -130,7 +130,7 @@ export default {
             if(response.data.code === 200) {
               that.$message({
                 type: 'success',
-                message: '获得列表成功'
+                message: '刷新列表成功'
               });
               that.tableData = response.data.data.userList;
               that.dataTotalCount = response.data.data.num;
@@ -161,13 +161,17 @@ export default {
             }],
             data:{
               id:this.tableData[index].id,
-              userName:this.tableData[index].name,
+              role:"saler"
 
             }
           }
 
       ).then(res=>{
-        if(res.data.code()===200){
+        if(res.data.code===200){
+          this.$message({
+            type: 'success',
+            message: '删除成功：'
+          });
           this.getList();
         }else{
           this.$message({
@@ -182,7 +186,7 @@ export default {
     },
     handleEdit(){
       this.edit=true;
-      console("ddd");
+
     },
     handleSubmit(){
       this.showDialog=false;
