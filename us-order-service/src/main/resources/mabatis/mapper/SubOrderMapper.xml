@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="order.dao.SubOrderDao">
+
+    <resultMap id="subOrder" type="order.entities.dbo.SubOrder">
+        <id property="subOrderId" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="status" column="status"/>
+        <result property="totalPrice" column="total_price"/>
+        <result property="address" column="address"/>
+        <result property="salerId" column="saler_id"/>
+        <result property="commodityId" column="commodity_id"/>
+        <result property="commodityName" column="commodity_name"/>
+        <result property="price" column="price"/>
+        <result property="num" column="num"/>
+    </resultMap>
+
+    <sql id="order_all_columns">
+        id, order_id, status, total_price, address, saler_id, commodity_id, commodity_name,
+        price, num
+    </sql>
+
     <insert id="createSubOrders" parameterType="java.util.List">
         insert into sub_order (id, order_id, status, total_price, address, saler_id, commodity_id, commodity_name,
         price, num)
@@ -20,4 +39,11 @@
             )
         </foreach>
     </insert>
+
+    <select id="getSubOrdersByOrder" resultMap="subOrder">
+        select <include refid="order_all_columns"/>
+        from sub_order
+        where order_id = #{orderId}
+    </select>
+
 </mapper>

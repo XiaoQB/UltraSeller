@@ -2,6 +2,7 @@ package order.service;
 
 import order.entities.dbo.Order;
 import order.entities.dto.CreateOrderDTO;
+import order.entities.vo.OrderVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,14 +26,14 @@ public interface OrderService {
      * @param orderId orderId
      * @return order
      */
-    Order getOrderById(int orderId);
+    Order getOrderById(String orderId);
 
     /**
      * 根据 id 删除 order
      *
      * @param orderId orderId
      */
-    void deleteOrderById(int orderId);
+    void deleteOrderById(String orderId);
 
     /**
      *  更新 order
@@ -47,5 +48,5 @@ public interface OrderService {
      * @param userIds userIds
      * @return order list
      */
-    List<Order> getOrdersByUser(List<Integer> userIds);
+    List<OrderVO> getOrdersByUser(List<Integer> userIds);
 }

@@ -6,6 +6,7 @@ import order.entities.dbo.Commodity;
 import order.entities.dbo.Order;
 import order.entities.dbo.SubOrder;
 import order.entities.dto.CreateOrderDTO;
+import order.entities.vo.OrderVO;
 import order.service.OrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,23 +68,32 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderById(int orderId) {
+    public Order getOrderById(String orderId) {
         return orderDao.getOrderById(orderId);
     }
 
     @Override
-    public void deleteOrderById(int orderId) {
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteOrderById(String orderId) {
         orderDao.deleteOrderById(orderId);
+        subOrderDao.deleteSubOrderByOrderId(orderId);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void changeOrder(Order order) {
         orderDao.changeOrder(order);
     }
 
     @Override
-    public List<Order> getOrdersByUser(List<Integer> userIds) {
-        return orderDao.getOrdersByUser(userIds);
+    public List<OrderVO> getOrdersByUser(List<Integer> userIds) {
+        List<OrderVO> orderVOList = new ArrayList<>();
+        List<Order> orders = orderDao.getOrdersByUser(userIds);
+        for (Order order : orders) {
+            List<SubOrder> subOrders = subOrderDao.getSubOrdersByOrder(order.getOrderId());
+            orderVOList.add(new OrderVO(order, subOrders));
+        }
+        return orderVOList;
     }
 
 }

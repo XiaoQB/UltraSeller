@@ -18,12 +18,12 @@ import java.util.List;
 @Builder
 public class Order {
 
-    private String orderId;
-    private String status;
-    private Float totalPrice;
-    private String address;
-    private Integer buyerId;
-    private Date createTime;
-    private Date updateTime;
+    protected String orderId;
+    protected String status;
+    protected Float totalPrice;
+    protected String address;
+    protected Integer buyerId;
+    protected Date createTime;
+    protected Date updateTime;
 
 }

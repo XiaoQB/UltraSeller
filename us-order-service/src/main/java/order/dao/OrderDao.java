@@ -4,6 +4,7 @@ import order.entities.dbo.Order;
 import order.entities.dbo.SubOrder;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -27,15 +28,15 @@ public interface OrderDao {
      * @param orderId  orderId
      * @return order
      */
-    Order getOrderById(int orderId);
+    Order getOrderById(String orderId);
 
     /**
      * 根据 id 删除 order
      *
      * @param orderId orderId
      */
-    @Delete("delete from order where id = #{orderId}")
-    void deleteOrderById(int orderId);
+    @Delete("delete from `order` where id = #{orderId}")
+    void deleteOrderById(String orderId);
 
     /**
      * 更新 order
@@ -50,5 +51,5 @@ public interface OrderDao {
      * @param userIds userIds
      * @return order list
      */
-    List<Order> getOrdersByUser(List<Integer> userIds);
+    List<Order> getOrdersByUser(@Param("userIds") List<Integer> userIds);
 }
