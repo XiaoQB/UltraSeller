@@ -7,6 +7,8 @@ import order.entities.enums.ResponseEntityCode;
 import order.entities.enums.ResponseEntityMessage;
 import order.entities.vo.OrderVO;
 import order.service.OrderService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,6 +19,7 @@ import java.util.List;
  * @date 2021-11-02 16:19:29
  */
 @RestController
+@RefreshScope
 @RequestMapping("/order")
 public class OrderController {
 
