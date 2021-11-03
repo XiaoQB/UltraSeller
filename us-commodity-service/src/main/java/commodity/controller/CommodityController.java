@@ -4,13 +4,8 @@ import commodity.domain.Commodity;
 import commodity.service.impl.CommodityServiceImpl;
 import commodity.utils.IdGenerator;
 import commodity.utils.PagedGridResult;
-<<<<<<< HEAD
-//import common.JwtUtil;
-import common.Response;
-=======
 import commodity.utils.JwtUtil;
 import commodity.utils.Response;
->>>>>>> master
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +17,7 @@ import java.util.Objects;
  * @author tristonk
  */
 @RestController
-<<<<<<< HEAD
-@CrossOrigin(origins = "*", maxAge = 3600)
-=======
 //@CrossOrigin(origins = "*",maxAge = 3600)
->>>>>>> master
 public class CommodityController {
 
     private CommodityServiceImpl commodityService;
@@ -48,23 +39,13 @@ public class CommodityController {
                                           @RequestParam("pagesize") int pageSize,
                                           @RequestParam("seq") int sequence
                                           ){
-<<<<<<< HEAD
-        //if(Objects.equals(JwtUtil.getRole(token), "saler")){
-            //TODO: change it
-            PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
-            return result;
-       // } else {
-       //     PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
-        //    return result;
-        //}
-=======
+
 //        if(Objects.equals(JwtUtil.getRole(token), "saler")){
 //            PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
 //            return result;
 //        } else {
             PagedGridResult  result= commodityService.selectAll(username, pageNum, pageSize, sequence);
             return result;
->>>>>>> master
     }
 
     /**
@@ -156,11 +137,6 @@ public class CommodityController {
                                                 @RequestParam("pagesize") int pageSize,
                                                 @RequestParam(value = "seq" ,required = false, defaultValue =  "0") String sequence){
         //CommodityList ret = null;
-<<<<<<< HEAD
-//        String userName = JwtUtil.getUserName(token);
-//        String role = JwtUtil.getRole(token);
-        return commodityService.searchList(searchWords,  pageNum,  pageSize,  sequence);
-=======
         String userName = JwtUtil.getUserName(token);
         String role = JwtUtil.getRole(token);
         return  new Response<>(200, "删除成功", commodityService.searchList(searchWords,  pageNum,  pageSize,  sequence));
@@ -168,6 +144,5 @@ public class CommodityController {
     @Autowired
     public void setCommodityService(CommodityServiceImpl commodityService) {
         this.commodityService = commodityService;
->>>>>>> master
     }
 }
