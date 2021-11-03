@@ -18,7 +18,18 @@ spring:
           uri: lb://us-commodity-service
           predicates:
             - Path=/commodity/**
-
+        - id: us-user-service
+          uri: lb://us-user-service
+          predicates:
+            - Path=/user/**
+        - id: us-wallet-service
+          uri: lb://us-wallet-service
+          predicates:
+            - Path=/wallet/**
+        - id: us-order-service
+          uri: lb://us-order-service
+          predicates:
+            - Path=/order/**
 eureka:
   instance:
     hostname: 127.0.0.1
