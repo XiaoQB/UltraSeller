@@ -10,7 +10,7 @@ import java.util.List;
  * @author beethoven
  * @date 2021-11-02 21:18:16
  */
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Data
 public class OrderVO extends Order {
 
