@@ -7,7 +7,29 @@ public class Deal {
 
     private long dealId;
 
-    private long price;
+    private double price;
 
     private String id;
+
+    private String dealStatus;
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public String getBuyerName(){
+        return buyerName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getDealStatus() {
+        return dealStatus;
+    }
 }
