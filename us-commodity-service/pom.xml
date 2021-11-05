@@ -118,6 +118,19 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <version>2.1.4.RELEASE</version>
+        </dependency>
+<!--        <dependency>-->
+<!--        注意要用2.1.4.RELEASE版本，下面这个是不行的-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-netflix-eureka-client</artifactId>-->
+<!--            <version>2.1.5.RELEASE</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
+
     </dependencies>
 
     <build>

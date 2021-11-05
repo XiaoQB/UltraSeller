@@ -1,16 +1,16 @@
 server:
-  port: 8003
+  port: 8761
 eureka:
   instance:
     hostname: 127.0.0.1
   client:
-    register-with-eureka: true #是否将自己注册到注册中心
-    fetch-registry: true #是否从注册中心服务注册信息
+    register-with-eureka: false  # 不把自己注册到eureka
+    fetch-registry: false  # 不从eureka中获取信息，表明自己是eureka server
     service-url:
-      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 spring:
   application:
-    name: us-commodity-service
+    name: us-eureka-service
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     password: 75560zcb
@@ -18,6 +18,4 @@ spring:
     username: root
 
 
-mybatis:
-  mapper-locations: classpath:mapper/*Mapper.xml
-  type-aliases-package: commodity.domain
+
