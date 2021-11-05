@@ -9,6 +9,7 @@
     <modules>
         <module>us-commodity-service</module>
         <module>us-user-service</module>
+        <module>us-wallet-service</module>
         <module>us-eureka-service</module>
         <module>us-gateway-service</module>
     </modules>
