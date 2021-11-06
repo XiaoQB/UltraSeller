@@ -1,5 +1,6 @@
 server:
   port: 8761
+
 eureka:
   instance:
     hostname: 127.0.0.1
@@ -8,6 +9,7 @@ eureka:
     fetch-registry: false  # 不从eureka中获取信息，表明自己是eureka server
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
 spring:
   application:
     name: us-eureka-service

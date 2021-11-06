@@ -7,9 +7,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import user.filter.AuthorizationHandler;
-import user.interceptor.CorsInterceptor;
-
-import javax.annotation.Resource;
 
 @Configuration
 public class AuthorizationConfig implements WebMvcConfigurer {
