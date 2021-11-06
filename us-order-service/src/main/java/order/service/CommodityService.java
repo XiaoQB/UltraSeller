@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author beethoven
  * @date 2021-11-06 19:27:47
  */
-@FeignClient(value = "MS-CLOUD-PAYMENT", fallback = CommodityFallbackImpl.class)
+@FeignClient(value = "US-COMMODITY_SERVICE", fallback = CommodityFallbackImpl.class)
 @Service
 @RequestMapping("/commodity")
 public interface CommodityService {
