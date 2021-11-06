@@ -44,7 +44,7 @@
             buyer_id    = #{buyerId},
             create_time = #{createTime},
             update_time = #{updateTime}
-        where id = #{id}
+        where id = #{orderId}
     </update>
 
     <select id="getOrdersByUser" resultMap="order">
