@@ -37,7 +37,7 @@ public class OrderController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<Order> getOrderById(@RequestParam("order_id") String orderId) {
+    public ResponseEntity<OrderVO> getOrderById(@RequestParam("order_id") String orderId) {
         try {
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getOrderById(orderId));
         } catch (Exception e) {

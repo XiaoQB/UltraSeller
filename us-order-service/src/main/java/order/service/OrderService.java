@@ -3,6 +3,7 @@ package order.service;
 import order.entities.dbo.Order;
 import order.entities.dto.CreateOrderDTO;
 import order.entities.vo.OrderVO;
+import order.exception.OrderNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +26,9 @@ public interface OrderService {
      *
      * @param orderId orderId
      * @return order
+     * @throws OrderNotFoundException OrderNotFoundException
      */
-    Order getOrderById(String orderId);
+    OrderVO getOrderById(String orderId) throws OrderNotFoundException;
 
     /**
      * 根据 id 删除 order

@@ -7,6 +7,7 @@ import order.entities.dbo.Order;
 import order.entities.dbo.SubOrder;
 import order.entities.dto.CreateOrderDTO;
 import order.entities.vo.OrderVO;
+import order.exception.OrderNotFoundException;
 import order.service.OrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,8 +69,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderById(String orderId) {
-        return orderDao.getOrderById(orderId);
+    public OrderVO getOrderById(String orderId) throws OrderNotFoundException {
+        Order order = orderDao.getOrderById(orderId);
+        if (order == null) {
+            throw new OrderNotFoundException("no such order");
+        }
+        return new OrderVO(order, subOrderDao.getSubOrdersByOrder(orderId));
     }
 
     @Override
