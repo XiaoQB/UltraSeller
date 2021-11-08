@@ -51,6 +51,7 @@
          </table> -->
         <!--可多写  要生成的表名-->
         <table tableName="us_wallet" domainObjectName="Wallet" ></table>
+        <table tableName="us_wallet_record" domainObjectName="WalletRecord" ></table>
 
 
     </context>
