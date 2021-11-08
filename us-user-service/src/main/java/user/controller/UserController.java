@@ -15,10 +15,8 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@CrossOrigin(origins = "*",maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
-
-    @Autowired
     private UserServiceImpl userService;
 
     //测试路由
@@ -117,6 +115,9 @@ public class UserController {
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), userService.logout(userName));
 
     }
+    @Autowired
 
-
+    public void setUserService(UserServiceImpl userService) {
+        this.userService = userService;
+    }
 }

@@ -1,0 +1,52 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: us-gateway-service
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]': # 匹配所有请求
+            allowedOrigins: "*" #跨域处理 允许所有的域
+            allowedMethods: # 支持的方法
+              - GET
+              - POST
+              - PUT
+              - DELETE
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: us-eureka-service
+          uri: lb://us-eureka-service
+          predicates:
+            - Path=/test/**
+        - id: us-commodity-service
+          uri: lb://us-commodity-service
+          predicates:
+            - Path=/commodity/**
+        - id: us-user-service
+          uri: lb://us-user-service
+          predicates:
+            - Path=/user/**
+        - id: us-wallet-service
+          uri: lb://us-wallet-service
+          predicates:
+            - Path=/wallet/**
+        - id: us-order-service
+          uri: lb://us-order-service
+          predicates:
+            - Path=/order/**
+eureka:
+  instance:
+    hostname: 127.0.0.1
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
+
+
+

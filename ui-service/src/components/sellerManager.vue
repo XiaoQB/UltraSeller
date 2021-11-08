@@ -115,8 +115,9 @@ export default {
       }
       var that = this;
       this.http({
-        headers:{
-          "Authorization":localStorage['token']
+        headers: {
+
+          "Authorization": localStorage['token']
         },
         method:"get",
         url:`${userUrl}/user/info`,
@@ -127,6 +128,12 @@ export default {
         }
       })
           .then( response=> {
+
+            console.log(response.data.data)
+            if(response.data.code === 200) {
+              this.tableData = response.data.data;
+              that.dataTotalCount = response.data.size;
+            }
             if(response.data.code === 200) {
               that.$message({
                 type: 'success',
@@ -134,6 +141,7 @@ export default {
               });
               that.tableData = response.data.data.userList;
               that.dataTotalCount = response.data.data.num;
+
             }
           })
           .catch(function (error) {
@@ -161,7 +169,9 @@ export default {
             }],
             data:{
               id:this.tableData[index].id,
-              role:"saler"
+
+              role:"saler",
+              userName:this.tableData[index].name,
 
             }
           }
@@ -223,6 +233,7 @@ export default {
               message: '系统异常：'+error
             });
           });
+
     }
 
 
