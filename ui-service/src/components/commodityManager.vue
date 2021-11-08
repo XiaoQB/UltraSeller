@@ -2,7 +2,7 @@
   <div>
     <div>
       <el-input placeholder="请输入搜索商品的名称" v-model="search" style="width:200px;"></el-input>
-      <el-button @click="doSearch()" type="primary" icon="el-icon-search" align="right" >搜索商品</el-button>
+      <el-button @click="doSearch(search)" type="primary" icon="el-icon-search" align="right" >搜索商品</el-button>
       <el-button type="primary" class = "buttonadd" @click="addCommodity" round style="width:100px;">添加商品</el-button>
       <el-dialog title="商品详情" :visible.sync="showDialog" width="45%">
         <el-form ref="tableData" :model="tableData[nowRow]"  label-width="100px">
@@ -137,7 +137,7 @@
     </el-table>
     <el-pagination background
                    layout="total, prev, pager, next, sizes,jumper"
-                   :page-sizes="[5, 10, 15]"
+                   :page-sizes="[6, 12, 18]"
                    :page-size="formInline.pageSize"
                    :total="dataTotalCount"
                    @size-change="handleSizeChange"
@@ -148,7 +148,7 @@
 
 <script>
 import {baseURL} from "@/http";
-const commodityUrl = baseURL.user;
+const commodityUrl = baseURL.commodity;
 export default {
   name: "commodityManager",
   data(){
@@ -315,7 +315,7 @@ export default {
 
 
 
-    doSearch(){
+    doSearch(search){
       this.http({
         headers:{
           'token':localStorage['token']
@@ -323,7 +323,7 @@ export default {
         method:"get",
         url:`${commodityUrl}/commidity`,
         params:{
-          q:this.search,
+          q:search,
           pagesize:this.formInline.pageSize,
           page:this.formInline.currentPage,
           seq:this.seq

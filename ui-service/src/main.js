@@ -9,7 +9,8 @@ Vue.use(ElementUI) //使用elementUI
 import login from "@/pages/login";
 import adminLogin from "@/pages/adminLogin";
 import admin from "@/pages/admin";
-
+import saler from "@/pages/saler/saler";
+import salerOrder from "./pages/saler/salerOrder";
 
 import http from './http'
 Vue.prototype.http = http;
@@ -45,6 +46,19 @@ const router = new VueRouter({
         requireAuth: true,
     }
     },
+
+    {
+        name:'saler',
+        path:'/saler',
+        component: saler
+    },
+    {
+        name:'salerOrder',
+        path:'/salerOrder',
+        component: salerOrder
+    },
+
+
     ]
 })
 new Vue({
