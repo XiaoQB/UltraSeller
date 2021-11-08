@@ -8,11 +8,17 @@ Vue.use(ElementUI); //使用elementUI
 import login from "@/pages/login";
 import adminLogin from "@/pages/adminLogin";
 import admin from "@/pages/admin";
+
 import store from "@/pages/store/index";
 import error from "@/pages/404";
 import commodityManager from "@/components/commodityManager"
 
-import http from "./http";
+
+import saler from "@/pages/saler/saler";
+import salerOrder from "./pages/saler/salerOrder";
+
+import http from './http'
+
 Vue.prototype.http = http;
 
 import VueCookies from "vue-cookies";
@@ -61,8 +67,23 @@ const router = new VueRouter({
       name: "404",
       component: error,
     },
-  ],
-});
+
+
+    {
+        name:'saler',
+        path:'/saler',
+        component: saler
+    },
+    {
+        name:'salerOrder',
+        path:'/salerOrder',
+        component: salerOrder
+    },
+
+
+    ]
+})
+
 new Vue({
   router,
   render: (h) => h(App),

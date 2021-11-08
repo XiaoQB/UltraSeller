@@ -131,7 +131,6 @@ export default {
   created() {},
   methods: {
     doLogin() {
-
       if (!this.user.username) {
         this.$message.error("请输入用户名！");
         return;
