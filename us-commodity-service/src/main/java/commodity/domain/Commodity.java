@@ -31,4 +31,8 @@ public class Commodity {
     private String vendorName;
     @ApiModelProperty(value = "关键字")
     private String keywords;
+    @ApiModelProperty(value = "类型列表")
+    private List<String> type_list;
+    @ApiModelProperty(value = "当前商品类型编号")
+    private Integer type_idx;
 }
