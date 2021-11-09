@@ -1,7 +1,7 @@
 package order.entities.vo;
 
+import cn.edu.fudan.common.entities.dbo.Order;
 import lombok.*;
-import order.entities.dbo.Order;
 
 import java.util.List;
 

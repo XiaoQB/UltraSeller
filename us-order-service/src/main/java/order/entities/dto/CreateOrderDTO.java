@@ -1,10 +1,9 @@
 package order.entities.dto;
 
-import com.alibaba.fastjson.JSONObject;
+import cn.edu.fudan.common.entities.dbo.Commodity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import order.entities.dbo.Commodity;
 
 import java.util.List;
 

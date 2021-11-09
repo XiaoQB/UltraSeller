@@ -1,9 +1,12 @@
-package cn.edu.fudan.filter;
+package cn.edu.fudan.gateway.filter;
 
+import cn.edu.fudan.common.entities.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -11,17 +14,21 @@ import reactor.core.publisher.Mono;
 
 /**
  * @author beethoven
- * @date 2021-10-28 16:23:12
+ * @date 2021-11-09 19:54:12
  */
 @Component
 @Slf4j
 public class GatewayFilter implements GlobalFilter, Ordered {
 
+    private static final String TOKEN = "token";
+    private static final String ROLE = "role";
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        String token = exchange.getRequest().getHeaders().getFirst("token");
-        if (!"ms-cloud".equals(token)) {
-            log.error("token not right");
+        HttpHeaders headers = exchange.getRequest().getHeaders();
+        String token = headers.getFirst(TOKEN);
+        String role = headers.getFirst(ROLE);
+        if (StringUtils.isEmpty(token) || StringUtils.isEmpty(role) || JwtUtil.authorization(token, role)) {
             exchange.getResponse().setStatusCode(HttpStatus.NOT_ACCEPTABLE);
             return exchange.getResponse().setComplete();
         }

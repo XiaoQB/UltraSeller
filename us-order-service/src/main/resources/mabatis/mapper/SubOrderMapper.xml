@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="order.dao.SubOrderDao">
 
-    <resultMap id="subOrder" type="order.entities.dbo.SubOrder">
+    <resultMap id="subOrder" type="cn.edu.fudan.common.entities.dbo.SubOrder">
         <id property="subOrderId" column="id"/>
         <result property="orderId" column="order_id"/>
         <result property="status" column="status"/>

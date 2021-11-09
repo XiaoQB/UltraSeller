@@ -1,43 +1,13 @@
-server:
-  port: 8888
-
 spring:
-  application:
-    name: us-gateway-service
+  profiles:
+    active: dev
   cloud:
     gateway:
       discovery:
         locator:
-          enabled: true
+          enabled: true #负载均衡
       routes:
-        - id: us-eureka-service
-          uri: lb://us-eureka-service
-          predicates:
-            - Path=/test/**
-        - id: us-commodity-service
-          uri: lb://us-commodity-service
-          predicates:
-            - Path=/commodity/**
-        - id: us-user-service
-          uri: lb://us-user-service
-          predicates:
-            - Path=/user/**
-        - id: us-wallet-service
-          uri: lb://us-wallet-service
-          predicates:
-            - Path=/wallet/**
-        - id: us-order-service
+        - id: order-service-route
           uri: lb://us-order-service
           predicates:
             - Path=/order/**
-eureka:
-  instance:
-    hostname: 127.0.0.1
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
-
-
-
