@@ -18,5 +18,5 @@ public interface CommodityService {
 
     public void delete(long itemId);
 
-    public PagedGridResult searchList(String searchWords, int pageNum, int pageSize, String  sequences);
+    public PagedGridResult searchList(String searchWords, int pageNum, int pageSize, String sequences);
 }

@@ -2,7 +2,6 @@ package user.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import user.domain.dto.GetUserListDTO;
 import user.domain.entity.User;
@@ -10,20 +9,24 @@ import user.result.R;
 import user.result.ResultCode;
 import user.service.UserService;
 import user.service.WalletService;
-import user.service.impl.UserServiceImpl;
 
+import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * @author beethoven
+ */
 @RestController
 @Slf4j
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
-    private UserServiceImpl userService;
 
-    @Autowired
+    @Resource
+    private UserService userService;
+
+    @Resource
     private WalletService walletService;
 
-    //测试路由
     @GetMapping("/user/get")
     public R<String> forTest(String test) {
         return new R<>(400, "message", test);
@@ -43,17 +46,15 @@ public class UserController {
     }
 
     @GetMapping("/user/info")
-    public R<GetUserListDTO> getUserList( String role,
-                                      Integer num,
-                                     Integer page){
-        System.out.println(role+num+page);
-        if(num==null||page==null){
+    public R<GetUserListDTO> getUserList(String role, Integer num, Integer page) {
+
+        if (num == null || page == null) {
             log.info("info 查询数值错误");
             return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
         List<User> results = userService.getUserList(role, num, page);
-        Integer userNum=userService.getUserNum(role);
-        GetUserListDTO getUserListDTO=new GetUserListDTO(userNum,results);
+        Integer userNum = userService.getUserNum(role);
+        GetUserListDTO getUserListDTO = new GetUserListDTO(userNum, results);
         if (results == null) {
             return new R<>(ResultCode.QUERY_FAIL.getCode(), ResultCode.QUERY_FAIL.getMessage(), null);
         }
@@ -74,7 +75,7 @@ public class UserController {
         if (deleteResult == 0) {
             return new R<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage(), null);
         }
-        if (wallet_response.getCode() != 200) 
+        if (wallet_response.getCode() != 200)
             return wallet_response;
         if (cart_response.getCode() != 200)
             return cart_response;
@@ -113,14 +114,12 @@ public class UserController {
         if (result) {
 
             R<String> wallet_response = walletService.createWallet(user);
-            if (wallet_response.getCode() != 201)
-            {
+            if (wallet_response.getCode() != 201) {
                 userService.deleteUser(user.getRole(), user.getId());
                 return wallet_response;
             }
             R<String> cart_response = cartService.createCart(user);
-            if (cart_response.getCode() != 200)
-            {
+            if (cart_response.getCode() != 200) {
                 walletService.deleteWallet(user.getUserName());
                 userService.deleteUser(user.getRole(), user.getId());
                 return cart_response;
@@ -140,9 +139,5 @@ public class UserController {
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), userService.logout(userName));
 
     }
-    @Autowired
 
-    public void setUserService(UserServiceImpl userService) {
-        this.userService = userService;
-    }
 }

@@ -2,6 +2,7 @@ package commodity.mapper;
 
 import commodity.domain.Commodity;
 import commodity.domain.CommodityExample;
+
 import java.util.List;
 
 

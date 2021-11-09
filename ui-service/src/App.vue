@@ -3,7 +3,7 @@
     <router-view></router-view>
   </div>
 </template>
-<script src = "main.js"></script>
+<script src="main.js"></script>
 <script>
 
 

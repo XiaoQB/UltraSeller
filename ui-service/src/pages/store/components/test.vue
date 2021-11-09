@@ -1,9 +1,9 @@
 <template>
   <div class="infinite-list-wrapper" style="overflow:auto">
     <ul
-      class="list"
-      v-infinite-scroll="load"
-      infinite-scroll-disabled="disabled">
+        class="list"
+        v-infinite-scroll="load"
+        infinite-scroll-disabled="disabled">
       <li v-for="i in count" class="list-item" :key="i">{{ i }}</li>
     </ul>
     <p v-if="loading">加载中...</p>
@@ -12,29 +12,29 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        count: 10,
-        loading: false
-      }
+export default {
+  data() {
+    return {
+      count: 10,
+      loading: false
+    }
+  },
+  computed: {
+    noMore() {
+      return this.count >= 100
     },
-    computed: {
-      noMore () {
-        return this.count >= 100
-      },
-      disabled () {
-        return this.loading || this.noMore
-      }
-    },
-    methods: {
-      load () {
-        this.loading = true
-        setTimeout(() => {
-          this.count += 2
-          this.loading = false
-        }, 200)
-      }
+    disabled() {
+      return this.loading || this.noMore
+    }
+  },
+  methods: {
+    load() {
+      this.loading = true
+      setTimeout(() => {
+        this.count += 2
+        this.loading = false
+      }, 200)
     }
   }
+}
 </script>

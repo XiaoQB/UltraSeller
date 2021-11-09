@@ -14,7 +14,7 @@ public class AuthorizationConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-         CorsInterceptor corsInterceptor = new CorsInterceptor();
+        CorsInterceptor corsInterceptor = new CorsInterceptor();
         //注册TestInterceptor拦截器
         registry.addInterceptor(corsInterceptor);
         InterceptorRegistration registration = registry.addInterceptor(apiInterceptor());
@@ -43,5 +43,5 @@ public class AuthorizationConfig implements WebMvcConfigurer {
                 .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
                 .maxAge(3600)
                 .allowCredentials(true);
-  }
+    }
 }

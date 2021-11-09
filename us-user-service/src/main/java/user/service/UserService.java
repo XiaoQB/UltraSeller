@@ -16,7 +16,7 @@ public interface UserService {
 
     Integer getUserNum(String role);
 
-    Integer deleteUser(String role,Integer id);
+    Integer deleteUser(String role, Integer id);
 
     Integer modifyUser(Integer id, String role, String userName, String password, String phone, String email);
 

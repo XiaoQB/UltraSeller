@@ -1,8 +1,9 @@
 server:
-  port: 8010
+  port: 8003
+
 spring:
   application:
-    name: us-order-service
+    name: us-wallet-service
   cloud:
     nacos:
       discovery:

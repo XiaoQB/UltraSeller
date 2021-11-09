@@ -5,9 +5,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.Id;
 
 import javax.persistence.Entity;
+import java.util.List;
 
 @Data
 @Entity

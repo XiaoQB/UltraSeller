@@ -32,12 +32,12 @@ public class WalletController {
      * @return the response
      */
     @PostMapping("/wallet/user")
-    public Response<String> createWallet(@RequestBody Wallet wallet){
+    public Response<String> createWallet(@RequestBody Wallet wallet) {
         wallet.setWalletId(Long.parseLong(IdGenerator.generateId()));
         int ret = walletService.create(wallet);
-        if(ret == -1){
+        if (ret == -1) {
             return new Response<>(409, "用户已存在", null);
-        } else if(ret == 0){
+        } else if (ret == 0) {
             return new Response<>(201, "创建成功", null);
         } else {
             return new Response<>(404, "未知原因出错", null);
@@ -55,10 +55,10 @@ public class WalletController {
     @PutMapping("/wallet/user")
     public Response<String> changeBalance(@RequestHeader("token") String token,
                                           @RequestParam("username") String userName,
-                                          @RequestParam("difference") double difference){
-        if(Objects.equals(JwtUtil.getRole(token), "admin") || Objects.equals(JwtUtil.getUserName(token), userName)){
+                                          @RequestParam("difference") double difference) {
+        if (Objects.equals(JwtUtil.getRole(token), "admin") || Objects.equals(JwtUtil.getUserName(token), userName)) {
             int ret = walletService.update(userName, difference);
-            if(ret == -1){
+            if (ret == -1) {
                 return new Response<>(404, "用户错误", null);
             }
             WalletRecord record = new WalletRecord(-1L, userName, new Date(), difference, -1L);
@@ -75,9 +75,9 @@ public class WalletController {
      * @return the response
      */
     @DeleteMapping("/wallet/user")
-    public Response<String> deleteWallet(@RequestParam("username") String userName){
+    public Response<String> deleteWallet(@RequestParam("username") String userName) {
         int ret = walletService.delete(userName);
-        if(ret == -1){
+        if (ret == -1) {
             return new Response<>(404, "用户信息错误", null);
         }
         return new Response<>(200, "更新成功", null);
@@ -91,27 +91,27 @@ public class WalletController {
      * @return the response
      */
     @PutMapping("/wallet/deal")
-    public Response<String> handleDeal(@RequestHeader("token") String token, @RequestBody Deal deal){
+    public Response<String> handleDeal(@RequestHeader("token") String token, @RequestBody Deal deal) {
         String status = deal.getDealStatus();
         int ret = 2;
         String userName = "";
         double diff = 0;
-        if(Objects.equals(status, "pending")){
+        if (Objects.equals(status, "pending")) {
             userName = deal.getBuyerName();
             diff = -deal.getPrice();
             ret = walletService.update(userName, diff);
-        } else if(Objects.equals(status, "finish")){
+        } else if (Objects.equals(status, "finish")) {
             userName = deal.getSellerName();
             diff = deal.getPrice();
             ret = walletService.update(userName, diff);
-        } else if(Objects.equals(status, "refund")){
+        } else if (Objects.equals(status, "refund")) {
             userName = deal.getBuyerName();
             diff = -deal.getPrice();
             ret = walletService.update(userName, diff);
         }
-        if(ret == -1){
+        if (ret == -1) {
             return new Response<>(404, "更新错误", null);
-        } else if(ret == 0){
+        } else if (ret == 0) {
             WalletRecord walletRecord = new WalletRecord(-1L, userName, new Date(), diff, deal.getDealId());
             walletService.updateRecord(walletRecord);
         }
@@ -125,7 +125,7 @@ public class WalletController {
      * @return the wallet
      */
     @GetMapping("/wallet/user")
-    public Response<Wallet> getWallet(@RequestParam("username") String userName){
+    public Response<Wallet> getWallet(@RequestParam("username") String userName) {
         return new Response<>(200, "", walletService.get(userName));
     }
 
@@ -137,8 +137,8 @@ public class WalletController {
      * @return the response
      */
     @GetMapping("/wallet/user/deal")
-    public Response<List<WalletRecord>>getDeal(@RequestParam("username") String userName,
-                                               @RequestParam("size") int size){
-        return new Response<>(200, "",walletService.getRecords(userName, size));
+    public Response<List<WalletRecord>> getDeal(@RequestParam("username") String userName,
+                                                @RequestParam("size") int size) {
+        return new Response<>(200, "", walletService.getRecords(userName, size));
     }
 }

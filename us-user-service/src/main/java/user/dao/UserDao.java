@@ -82,8 +82,8 @@ public class UserDao {
         return users;
     }
 
-    public Integer getUserNum(String role){
-        Integer num=0;
+    public Integer getUserNum(String role) {
+        Integer num = 0;
         switch (role) {
             case "admin":
                 num = userMapper.getAdminNum();
@@ -100,8 +100,8 @@ public class UserDao {
         return num;
     }
 
-    public Integer deleteUser(String role,Integer id){
-        Integer integer= 0;
+    public Integer deleteUser(String role, Integer id) {
+        Integer integer = 0;
         switch (role) {
             case "admin":
                 integer = userMapper.deleteAdmin(id);

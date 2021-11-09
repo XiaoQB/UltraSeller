@@ -28,7 +28,7 @@ public class WalletServiceImpl implements WalletService {
         WalletExample example = new WalletExample();
         WalletExample.Criteria criteria = example.createCriteria();
         criteria.andUsernameEqualTo(wallet.getUserName());
-        if(walletMapper.countByExample(example) != 0){
+        if (walletMapper.countByExample(example) != 0) {
             return -1;
         }
         walletMapper.insert(wallet);
@@ -41,11 +41,11 @@ public class WalletServiceImpl implements WalletService {
         WalletExample.Criteria criteria = example.createCriteria();
         criteria.andUsernameEqualTo(userName);
         List<Wallet> walletList = walletMapper.selectByExample(example);
-        if(walletList.isEmpty()) {
+        if (walletList.isEmpty()) {
             return -1;
         }
         Wallet wallet = walletList.get(0);
-        wallet.setBalance(wallet.getBalance()+difference);
+        wallet.setBalance(wallet.getBalance() + difference);
         walletMapper.updateByExample(wallet, example);
         return 0;
     }
@@ -55,7 +55,7 @@ public class WalletServiceImpl implements WalletService {
         WalletExample example = new WalletExample();
         WalletExample.Criteria criteria = example.createCriteria();
         criteria.andUsernameEqualTo(userName);
-        if(walletMapper.countByExample(example) == 0){
+        if (walletMapper.countByExample(example) == 0) {
             return -1;
         }
         walletMapper.deleteByExample(example);
@@ -68,7 +68,7 @@ public class WalletServiceImpl implements WalletService {
         WalletExample.Criteria criteria = example.createCriteria();
         criteria.andUsernameEqualTo(userName);
         List<Wallet> walletList = walletMapper.selectByExample(example);
-        if(walletList.size() != 1){
+        if (walletList.size() != 1) {
             return null;
         }
         return walletList.get(0);
@@ -88,7 +88,7 @@ public class WalletServiceImpl implements WalletService {
     public List<WalletRecord> getRecords(String userName, int size) {
 
         List<WalletRecord> recordList = getRecords(userName);
-        if(size > 0) {
+        if (size > 0) {
             recordList = recordList.subList(0, Math.min(recordList.size(), size));
         }
         return recordList;
