@@ -98,6 +98,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void changeSubOrder(SubOrder subOrder) {
+        orderDao.changeSubOrder(subOrder);
+    }
+
+    @Override
     public List<OrderVO> getOrdersByUser(String token, List<Integer> userIds) throws CommodityServiceException {
         List<OrderVO> orderVOList = new ArrayList<>();
         List<Order> orders = orderDao.getOrdersByUser(userIds);
@@ -108,4 +114,9 @@ public class OrderServiceImpl implements OrderService {
         return orderVOList;
     }
 
+    @Override
+    public List<SubOrder> getOrdersBySaler(String token, List<Integer> userIds) throws CommodityServiceException {
+        List<SubOrder> orders = orderDao.getSubOrdersByUser(userIds);
+        return orders;
+    }
 }

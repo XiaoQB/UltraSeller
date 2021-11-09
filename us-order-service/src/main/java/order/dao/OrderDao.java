@@ -46,10 +46,20 @@ public interface OrderDao {
     void changeOrder(Order order);
 
     /**
+     * 更新 order
+     *
+     * @param order order
+     */
+    void changeSubOrder(SubOrder subOrder);
+
+    /**
      * 根据 user id 获取 order list
      *
      * @param userIds userIds
      * @return order list
      */
     List<Order> getOrdersByUser(@Param("userIds") List<Integer> userIds);
+
+    List<SubOrder> getSubOrdersByUser(@Param("userIds") List<Integer> userIds);
+
 }

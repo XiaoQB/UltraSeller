@@ -2,7 +2,9 @@ package order.controller;
 
 import order.entities.ResponseEntity;
 import order.entities.dbo.Order;
+import order.entities.dbo.SubOrder;
 import order.entities.dto.CreateOrderDTO;
+import order.entities.dto.UpdateOrderDTO;
 import order.entities.enums.ResponseEntityCode;
 import order.entities.enums.ResponseEntityMessage;
 import order.entities.vo.OrderVO;
@@ -53,9 +55,16 @@ public class OrderController {
     }
 
     @PutMapping("/change")
-    public ResponseEntity<String> changeOrder(@RequestBody Order order) {
+    public ResponseEntity<String> changeOrder(@RequestBody UpdateOrderDTO updateOrderDTO) {
+        Order order=updateOrderDTO.getOrder();
+        List<SubOrder> subOrders=updateOrderDTO.getSubOrders();
         try {
-            orderService.changeOrder(order);
+            if(order!=null){
+                orderService.changeOrder(order);
+            }
+            if(subOrders!=null){
+                subOrders.forEach((subOrder)-> orderService.changeSubOrder(subOrder));
+            }
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, null);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
@@ -66,6 +75,16 @@ public class OrderController {
     public ResponseEntity<List<OrderVO>> getOrdersByUser(@RequestHeader("token") String token, @RequestParam("user_ids") List<Integer> userIds) {
         try {
             List<OrderVO> orders = orderService.getOrdersByUser(token, userIds);
+            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
+        } catch (Exception e) {
+            return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
+        }
+    }
+
+    @GetMapping("/saler-list")
+    public ResponseEntity<List<SubOrder>> getOrdersBySaler(@RequestHeader("token") String token, @RequestParam("user_ids") List<Integer> userIds) {
+        try {
+            List<SubOrder> orders = orderService.getOrdersBySaler(token, userIds);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);

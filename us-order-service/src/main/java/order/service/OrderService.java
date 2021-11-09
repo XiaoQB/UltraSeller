@@ -1,6 +1,7 @@
 package order.service;
 
 import order.entities.dbo.Order;
+import order.entities.dbo.SubOrder;
 import order.entities.dto.CreateOrderDTO;
 import order.entities.vo.OrderVO;
 import order.exception.CommodityServiceException;
@@ -48,6 +49,13 @@ public interface OrderService {
     void changeOrder(Order order);
 
     /**
+     * 更新 suborder
+     *
+     * @param suborder suborder
+     */
+    void changeSubOrder(SubOrder subOrder);
+
+    /**
      * 根据 user id 获取 order list
      *
      * @param token   token
@@ -56,4 +64,14 @@ public interface OrderService {
      * @throws CommodityServiceException CommodityServiceException
      */
     List<OrderVO> getOrdersByUser(String token, List<Integer> userIds) throws CommodityServiceException;
+
+    /**
+     * 根据 user id 获取 order list
+     *
+     * @param token   token
+     * @param userIds userIds
+     * @return order list
+     * @throws CommodityServiceException CommodityServiceException
+     */
+    List<SubOrder> getOrdersBySaler(String token, List<Integer> userIds) throws CommodityServiceException;
 }

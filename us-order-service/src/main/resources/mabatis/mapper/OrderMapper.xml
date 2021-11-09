@@ -12,8 +12,27 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
+    <resultMap id="subOrder" type="order.entities.dbo.SubOrder">
+        <id property="subOrderId" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="status" column="status"/>
+        <result property="totalPrice" column="total_price"/>
+        <result property="address" column="address"/>
+        <result property="salerId" column="saler_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="commodityName" column="commodity_name"/>
+        <result property="commodityId" column="commodity_id"/>
+        <result property="price" column="price"/>
+        <result property="num" column="num"/>
+    </resultMap>
+
     <sql id="order_all_columns">
         id, status, total_price, address, buyer_id, create_time, update_time
+    </sql>
+
+    <sql id="sub_order_all_columns">
+        id, order_id, status, total_price, address, saler_id, create_time, update_time, commodity_name, commodity_id, price, num
     </sql>
 
     <insert id="createOrder" parameterType="order.entities.dbo.Order">
@@ -38,13 +57,28 @@
 
     <update id="changeOrder" parameterType="order.entities.dbo.Order">
         update `order`
-        set status      = #{status},
-            total_price = #{totalPrice},
-            address     = #{address},
-            buyer_id    = #{buyerId},
-            create_time = #{createTime},
-            update_time = #{updateTime}
+        <set>
+            <if test="status != null and status != ''">
+                status  = #{status},
+            </if>
+            <if test="address != null and address != ''">
+                address  = #{address},
+            </if>
+        </set>
         where id = #{orderId}
+    </update>
+
+    <update id="changeSubOrder" parameterType="order.entities.dbo.SubOrder">
+        update `sub_order`
+        <set>
+            <if test="status != null and status != ''">
+                status  = #{status},
+            </if>
+            <if test="address != null and address != ''">
+                address  = #{address},
+            </if>
+        </set>
+        where id = #{subOrderId}
     </update>
 
     <select id="getOrdersByUser" resultMap="order">
@@ -54,6 +88,20 @@
         <where>
             <if test="userIds != null and userIds.size > 0">
                 buyer_id in
+                <foreach collection="userIds" item="userId" separator="," open="(" close=")">
+                    #{userId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getSubOrdersByUser" resultMap="subOrder">
+        select
+        <include refid="sub_order_all_columns"/>
+        from `sub_order`
+        <where>
+            <if test="userIds != null and userIds.size > 0">
+                saler_id in
                 <foreach collection="userIds" item="userId" separator="," open="(" close=")">
                     #{userId}
                 </foreach>
