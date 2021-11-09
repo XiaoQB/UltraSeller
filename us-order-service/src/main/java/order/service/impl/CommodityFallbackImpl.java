@@ -6,6 +6,7 @@ import cn.edu.fudan.common.entities.enums.ResponseEntityMessage;
 import order.entities.ResponseEntity;
 import order.service.CommodityService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author beethoven
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class CommodityFallbackImpl implements CommodityService {
 
     @Override
-    public ResponseEntity<Commodity> getCommodityById(int commodityId) {
+    public ResponseEntity<Commodity> getCommodityById(@RequestParam("id") int commodityId) {
         return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR, null);
     }
 }

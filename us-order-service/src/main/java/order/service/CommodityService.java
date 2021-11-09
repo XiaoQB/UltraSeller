@@ -6,7 +6,6 @@ import order.service.impl.CommodityFallbackImpl;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient(value = "US-COMMODITY-SERVICE", fallback = CommodityFallbackImpl.class)
 @Service
-@RequestMapping("/commodity")
 public interface CommodityService {
 
     /**
@@ -24,7 +22,7 @@ public interface CommodityService {
      * @param commodityId commodity id
      * @return commodity
      */
-    @GetMapping("/item")
+    @GetMapping("/commodity/item")
     ResponseEntity<Commodity> getCommodityById(@RequestParam("id") int commodityId);
 
 }

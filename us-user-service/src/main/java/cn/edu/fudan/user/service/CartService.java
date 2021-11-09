@@ -4,6 +4,8 @@ import cn.edu.fudan.user.result.R;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import cn.edu.fudan.user.domain.entity.User;
@@ -15,7 +17,7 @@ import cn.edu.fudan.user.service.impl.CartServiceFallBackImpl;
  */
 @RequestMapping("/cart")
 @Service
-@FeignClient(value = "US_CART_SERVICE", fallback = CartServiceFallBackImpl.class)
+@FeignClient(value = "US-CART-SERVICE", fallback = CartServiceFallBackImpl.class)
 public interface CartService {
 
     /**
@@ -24,7 +26,7 @@ public interface CartService {
      * @param userName userName
      * @return string
      */
-    @Delete("")
+    @DeleteMapping("/test")
     R<String> deleteCart(String userName);
 
     /**
@@ -33,6 +35,6 @@ public interface CartService {
      * @param user user
      * @return string
      */
-    @PostMapping("")
+    @PostMapping("/test")
     R<String> createCart(User user);
 }
