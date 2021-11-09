@@ -1,7 +1,7 @@
 package cn.edu.fudan.user.service;
 
-import cn.edu.fudan.user.domain.entity.User;
-import cn.edu.fudan.user.result.R;
+import cn.edu.fudan.common.entities.ResponseEntity;
+import cn.edu.fudan.common.entities.dbo.User;
 import cn.edu.fudan.user.service.impl.WalletServiceFallBackImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -26,7 +26,7 @@ public interface WalletService {
      * @return string
      */
     @PostMapping("/user")
-    R<String> createWallet(@RequestBody User user);
+    ResponseEntity<String> createWallet(@RequestBody User user);
 
     /**
      * 删除 wallet
@@ -35,5 +35,5 @@ public interface WalletService {
      * @return string
      */
     @DeleteMapping("/user")
-    R<String> deleteWallet(@RequestParam("username") String userName);
+    ResponseEntity<String> deleteWallet(@RequestParam("username") String userName);
 }

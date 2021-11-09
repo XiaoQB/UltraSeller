@@ -1,8 +1,8 @@
 package cn.edu.fudan.user.service.impl;
 
-import cn.edu.fudan.user.result.R;
+import cn.edu.fudan.common.entities.ResponseEntity;
+import cn.edu.fudan.common.entities.dbo.User;
 import cn.edu.fudan.user.service.CartService;
-import cn.edu.fudan.user.domain.entity.User;
 
 /**
  * @author beethoven
@@ -11,12 +11,12 @@ import cn.edu.fudan.user.domain.entity.User;
 public class CartServiceFallBackImpl implements CartService {
 
     @Override
-    public R<String> deleteCart(String userName) {
+    public ResponseEntity<String> deleteCart(String userName) {
         return null;
     }
 
     @Override
-    public R<String> createCart(User user) {
+    public ResponseEntity<String> createCart(User user) {
         return null;
     }
 }

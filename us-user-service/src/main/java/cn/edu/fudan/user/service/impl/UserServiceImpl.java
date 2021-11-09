@@ -1,7 +1,7 @@
 package cn.edu.fudan.user.service.impl;
 
+import cn.edu.fudan.common.entities.dbo.User;
 import cn.edu.fudan.common.entities.util.JwtUtil;
-import cn.edu.fudan.user.domain.entity.User;
 import cn.edu.fudan.user.service.UserService;
 import com.alibaba.fastjson.JSON;
 
@@ -31,8 +31,6 @@ public class UserServiceImpl implements UserService {
                 info.put("role", role);
                 info.put("success", "SUCCESS");
                 info.put("username", userName);
-                //生成令牌
-                System.out.println("token:" + JwtUtil.createJwt(UUID.randomUUID().toString(), JSON.toJSONString(info), null));
                 return JwtUtil.createJwt(UUID.randomUUID().toString(), JSON.toJSONString(info), null);
             }
             //设置令牌信息

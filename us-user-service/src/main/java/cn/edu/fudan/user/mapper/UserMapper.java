@@ -1,8 +1,8 @@
 package cn.edu.fudan.user.mapper;
 
+import cn.edu.fudan.common.entities.dbo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import cn.edu.fudan.user.domain.entity.User;
 
 import java.util.List;
 

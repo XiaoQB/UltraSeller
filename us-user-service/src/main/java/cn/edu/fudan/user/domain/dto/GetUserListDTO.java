@@ -1,10 +1,10 @@
 package cn.edu.fudan.user.domain.dto;
 
+import cn.edu.fudan.common.entities.dbo.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import cn.edu.fudan.user.domain.entity.User;
 
 import java.util.List;
 

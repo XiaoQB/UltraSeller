@@ -1,7 +1,7 @@
 package cn.edu.fudan.user.service;
 
+import cn.edu.fudan.common.entities.dbo.User;
 import org.springframework.stereotype.Service;
-import cn.edu.fudan.user.domain.entity.User;
 
 import java.util.List;
 
