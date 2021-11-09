@@ -7,6 +7,7 @@ import user.domain.dto.GetUserListDTO;
 import user.domain.entity.User;
 import user.result.R;
 import user.result.ResultCode;
+import user.service.CartService;
 import user.service.UserService;
 import user.service.WalletService;
 
@@ -19,21 +20,22 @@ import java.util.List;
 @RestController
 @Slf4j
 @CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/user")
 public class UserController {
 
     @Resource
     private UserService userService;
 
-    @Resource
     private WalletService walletService;
 
-    @GetMapping("/user/get")
+    private CartService cartService;
+
+    @GetMapping("/get")
     public R<String> forTest(String test) {
         return new R<>(400, "message", test);
     }
 
-    //测试token
-    @GetMapping("/user/login")
+    @GetMapping("/login")
     public R<String> login(String userName, String password, String role) {
         if (StringUtils.isBlank(role)) {
             return new R<>(ResultCode.PERMISSION_NO_ACCESS.getCode(), ResultCode.PERMISSION_NO_ACCESS.getMessage(), null);
@@ -45,7 +47,7 @@ public class UserController {
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), jwt);
     }
 
-    @GetMapping("/user/info")
+    @GetMapping("/info")
     public R<GetUserListDTO> getUserList(String role, Integer num, Integer page) {
 
         if (num == null || page == null) {
@@ -61,7 +63,7 @@ public class UserController {
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), getUserListDTO);
     }
 
-    @DeleteMapping("/user/delete")
+    @DeleteMapping("/delete")
     public R<Integer> deleteUser(@RequestBody User user) {
         String role = user.getRole();
         Integer id = user.getId();
@@ -70,19 +72,15 @@ public class UserController {
             return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
         Integer deleteResult = userService.deleteUser(role, id);
-        R<> wallet_response = walletService.deleteWallet(user.getUserName);
-        R<> cart_response = cartService.deleteCart(user.getUserName);
+        R<String> wallet_response = walletService.deleteWallet(user.getUserName());
+        R<String> cart_response = cartService.deleteCart(user.getUserName());
         if (deleteResult == 0) {
             return new R<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage(), null);
         }
-        if (wallet_response.getCode() != 200)
-            return wallet_response;
-        if (cart_response.getCode() != 200)
-            return cart_response;
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), deleteResult);
     }
 
-    @PutMapping("/user/modify")
+    @PutMapping("/modify")
     public R<Integer> modifyUser(@RequestBody User user) {
         //id,role不能为null
         Integer id = user.getId();
@@ -104,7 +102,7 @@ public class UserController {
 
     }
 
-    @PostMapping("/user/register")
+    @PostMapping("/register")
     public R<String> register(@RequestBody User user) {
         if (user == null) {
             log.info("user 参数为空");
@@ -130,7 +128,7 @@ public class UserController {
         return new R<>(ResultCode.REGISTER_FAIL.getCode(), ResultCode.REGISTER_FAIL.getMessage(), null);
     }
 
-    @DeleteMapping("/user/logout")
+    @DeleteMapping("/logout")
     public R<String> register(String userName) {
         if (userName == null) {
             log.info("username 参数为空");

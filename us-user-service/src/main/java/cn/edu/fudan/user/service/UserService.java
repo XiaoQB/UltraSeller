@@ -1,9 +1,11 @@
 package user.service;
 
+import org.springframework.stereotype.Service;
 import user.domain.entity.User;
 
 import java.util.List;
 
+@Service
 public interface UserService {
 
     boolean insertUser(User user);

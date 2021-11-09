@@ -1,0 +1,14 @@
+server:
+  port: 8003
+
+spring:
+  application:
+    name: us-wallet-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.102.97.229:8848
+      config:
+        server-addr: 47.102.97.229:8848
+        file-extension: yml
+        group: DEV_GROUP
