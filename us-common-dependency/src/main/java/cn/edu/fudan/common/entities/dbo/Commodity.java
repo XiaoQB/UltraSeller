@@ -1,4 +1,4 @@
-package order.entities.dbo;
+package cn.edu.fudan.common.entities.dbo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

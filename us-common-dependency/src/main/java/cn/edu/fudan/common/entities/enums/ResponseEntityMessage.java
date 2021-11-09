@@ -1,4 +1,4 @@
-package order.entities.enums;
+package cn.edu.fudan.common.entities.enums;
 
 /**
  * @author beethoven
