@@ -1,4 +1,4 @@
-package user.result;
+package cn.edu.fudan.user.result;
 
 import lombok.*;
 

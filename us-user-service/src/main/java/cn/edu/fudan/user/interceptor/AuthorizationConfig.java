@@ -1,12 +1,12 @@
-package user.interceptor;
+package cn.edu.fudan.user.interceptor;
 
+import cn.edu.fudan.user.filter.AuthorizationHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import user.filter.AuthorizationHandler;
 
 @Configuration
 public class AuthorizationConfig implements WebMvcConfigurer {

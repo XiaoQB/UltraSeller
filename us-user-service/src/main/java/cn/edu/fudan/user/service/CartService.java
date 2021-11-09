@@ -1,13 +1,13 @@
-package user.service;
+package cn.edu.fudan.user.service;
 
+import cn.edu.fudan.user.result.R;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import user.domain.entity.User;
-import user.result.R;
-import user.service.impl.CartServiceFallBackImpl;
+import cn.edu.fudan.user.domain.entity.User;
+import cn.edu.fudan.user.service.impl.CartServiceFallBackImpl;
 
 /**
  * @author beethoven

@@ -1,9 +1,9 @@
 server:
-  port: 8003
+  port: 8001
 
 spring:
   application:
-    name: us-wallet-service
+    name: us-user-service
   cloud:
     nacos:
       discovery:

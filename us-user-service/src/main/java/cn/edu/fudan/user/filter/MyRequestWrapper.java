@@ -1,4 +1,4 @@
-package user.filter;
+package cn.edu.fudan.user.filter;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;

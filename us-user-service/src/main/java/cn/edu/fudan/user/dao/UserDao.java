@@ -1,10 +1,10 @@
-package user.dao;
+package cn.edu.fudan.user.dao;
 
+import cn.edu.fudan.user.domain.entity.User;
+import cn.edu.fudan.user.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import user.domain.entity.User;
-import user.mapper.UserMapper;
 
 import java.util.ArrayList;
 import java.util.List;

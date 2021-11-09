@@ -1,4 +1,4 @@
-package user.interceptor;
+package cn.edu.fudan.user.interceptor;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;

@@ -1,15 +1,15 @@
-package user.service;
+package cn.edu.fudan.user.service;
 
+import cn.edu.fudan.user.domain.entity.User;
+import cn.edu.fudan.user.result.R;
+import cn.edu.fudan.user.service.impl.WalletServiceFallBackImpl;
 import org.springframework.stereotype.Service;
-import user.result.R;
-import user.domain.entity.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import user.service.impl.WalletServiceFallBackImpl;
 
 /**
  * @author beethoven

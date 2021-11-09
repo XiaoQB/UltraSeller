@@ -1,4 +1,4 @@
-package user.filter;
+package cn.edu.fudan.user.filter;
 
 import org.springframework.stereotype.Component;
 

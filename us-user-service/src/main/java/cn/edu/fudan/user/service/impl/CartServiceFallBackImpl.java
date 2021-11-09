@@ -1,8 +1,8 @@
-package user.service.impl;
+package cn.edu.fudan.user.service.impl;
 
-import user.domain.entity.User;
-import user.result.R;
-import user.service.CartService;
+import cn.edu.fudan.user.result.R;
+import cn.edu.fudan.user.service.CartService;
+import cn.edu.fudan.user.domain.entity.User;
 
 /**
  * @author beethoven

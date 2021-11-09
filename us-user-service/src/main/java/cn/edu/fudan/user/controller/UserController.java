@@ -1,15 +1,15 @@
-package user.controller;
+package cn.edu.fudan.user.controller;
 
+import cn.edu.fudan.user.result.R;
+import cn.edu.fudan.user.result.ResultCode;
+import cn.edu.fudan.user.service.CartService;
+import cn.edu.fudan.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import user.domain.dto.GetUserListDTO;
-import user.domain.entity.User;
-import user.result.R;
-import user.result.ResultCode;
-import user.service.CartService;
-import user.service.UserService;
-import user.service.WalletService;
+import cn.edu.fudan.user.domain.dto.GetUserListDTO;
+import cn.edu.fudan.user.domain.entity.User;
+import cn.edu.fudan.user.service.WalletService;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,8 +26,10 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @Resource
     private WalletService walletService;
 
+    @Resource
     private CartService cartService;
 
     @GetMapping("/get")

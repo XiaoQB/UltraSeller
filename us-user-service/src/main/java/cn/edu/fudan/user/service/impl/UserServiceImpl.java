@@ -1,5 +1,8 @@
-package user.service.impl;
+package cn.edu.fudan.user.service.impl;
 
+import cn.edu.fudan.common.entities.util.JwtUtil;
+import cn.edu.fudan.user.domain.entity.User;
+import cn.edu.fudan.user.service.UserService;
 import com.alibaba.fastjson.JSON;
 
 import com.alibaba.fastjson.JSONObject;
@@ -8,10 +11,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import user.dao.UserDao;
-import user.domain.entity.User;
-import user.service.UserService;
-import user.utils.JwtUtil;
+import cn.edu.fudan.user.dao.UserDao;
 
 import java.util.*;
 import java.util.Map;
@@ -32,8 +32,8 @@ public class UserServiceImpl implements UserService {
                 info.put("success", "SUCCESS");
                 info.put("username", userName);
                 //生成令牌
-                System.out.println("token:" + JwtUtil.createJWT(UUID.randomUUID().toString(), JSON.toJSONString(info), null));
-                return JwtUtil.createJWT(UUID.randomUUID().toString(), JSON.toJSONString(info), null);
+                System.out.println("token:" + JwtUtil.createJwt(UUID.randomUUID().toString(), JSON.toJSONString(info), null));
+                return JwtUtil.createJwt(UUID.randomUUID().toString(), JSON.toJSONString(info), null);
             }
             //设置令牌信息
         }
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean authorization(String token, String role) {
         try {
-            Claims claims = JwtUtil.parseJWT(token);
+            Claims claims = JwtUtil.parseJwt(token);
             String subject = claims.getSubject();
             String tokenRole = JSONObject.parseObject(subject).getString("role");
             if (StringUtils.isNotBlank(role) && role.equals(tokenRole)) {

@@ -1,4 +1,4 @@
-package user.service.impl;
+package cn.edu.fudan.user.service.impl;
 
 /**
  * @author beethoven

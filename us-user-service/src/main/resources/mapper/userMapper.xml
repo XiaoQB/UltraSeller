@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="user.mapper.UserMapper">
+<mapper namespace="cn.edu.fudan.user.mapper.UserMapper">
 
     <insert id="insertAdmin">
         insert into us_admin(username, password)
@@ -11,7 +11,7 @@
         insert into us_saler(username, password, phone, email)
         values (#{userName}, #{password}, #{phone}, #{email})
     </insert>
-    <insert id="insertBuyer" parameterType="user.domain.entity.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertBuyer" parameterType="cn.edu.fudan.user.domain.entity.User" useGeneratedKeys="true" keyProperty="id">
         insert into us_buyer(username, password, phone, email)
         values (#{userName}, #{password}, #{phone}, #{email})
     </insert>
@@ -31,34 +31,34 @@
         where username = #{userName}
     </select>
 
-    <select id="getAdminByName" resultType="user.domain.entity.User" parameterType="java.lang.String">
+    <select id="getAdminByName" resultType="cn.edu.fudan.user.domain.entity.User" parameterType="java.lang.String">
         select username, password
         from us_admin
         where username = #{userName}
     </select>
-    <select id="getBuyerByName" resultType="user.domain.entity.User" parameterType="java.lang.String">
+    <select id="getBuyerByName" resultType="cn.edu.fudan.user.domain.entity.User" parameterType="java.lang.String">
         select username, password
         from us_buyer
         where username = #{userName}
     </select>
-    <select id="getSalerByName" resultType="user.domain.entity.User" parameterType="java.lang.String">
+    <select id="getSalerByName" resultType="cn.edu.fudan.user.domain.entity.User" parameterType="java.lang.String">
         select username, password
         from us_saler
         where username = #{userName}
     </select>
-    <select id="getAdmins" resultType="user.domain.entity.Admin">
+    <select id="getAdmins" resultType="cn.edu.fudan.user.domain.entity.Admin">
         select *
         from ultra_seller.us_admin
         limit #{page},#{num}
     </select>
 
-    <select id="getBuyers" resultType="user.domain.entity.User">
+    <select id="getBuyers" resultType="cn.edu.fudan.user.domain.entity.User">
         select id, username, email, phone
         from ultra_seller.us_buyer
         limit #{page},#{num}
     </select>
 
-    <select id="getSalers" resultType="user.domain.entity.User">
+    <select id="getSalers" resultType="cn.edu.fudan.user.domain.entity.User">
         select id, username, email, phone
         from ultra_seller.us_saler
         limit #{page},#{num}

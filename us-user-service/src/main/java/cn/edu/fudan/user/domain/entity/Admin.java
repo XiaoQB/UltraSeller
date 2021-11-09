@@ -1,4 +1,4 @@
-package user.domain.entity;
+package cn.edu.fudan.user.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package user.domain.apimodel;
+package cn.edu.fudan.user.domain.apimodel;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
