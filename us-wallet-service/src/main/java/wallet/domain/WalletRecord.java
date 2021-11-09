@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import java.util.Date;
 
 /**
  * @author tristonk
@@ -13,15 +14,20 @@ import javax.persistence.Entity;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Wallet {
+public class WalletRecord implements Comparable<WalletRecord>{
 
     private Long walletId;
 
-    //private long userId;
-
     private String userName;
 
-    private Double balance;
+    private Date time;
 
-    private String role;
+    private Double amount;
+
+    private Long orderId;
+
+    @Override
+    public int compareTo(WalletRecord o) {
+        return this.getTime().before(o.getTime())?1:0;
+    }
 }

@@ -6,8 +6,3 @@ spring:
       discovery:
         locator:
           enabled: true #负载均衡
-      routes:
-        - id: order-service-route
-          uri: lb://us-order-service
-          predicates:
-            - Path=/order/**

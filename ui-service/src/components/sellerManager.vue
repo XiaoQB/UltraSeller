@@ -115,12 +115,9 @@ export default {
       }
       var that = this;
       this.http({
-        headers:{
-<<<<<<< HEAD
-          'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwNzRiYjk0Ni03OGMzLTRkZDktYWVkZC1mYzQyYWI2ZjI0NzUiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzQ5Nzg2OTAsImV4cCI6MTYzNDk4MjI5MH0.a_KtQzdymitJWicbYY7lmfrF4qPeNJ7W6I9SlsFLBHY'
-=======
-          'Authorization':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwNzRiYjk0Ni03OGMzLTRkZDktYWVkZC1mYzQyYWI2ZjI0NzUiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzQ5Nzg2OTAsImV4cCI6MTYzNDk4MjI5MH0.a_KtQzdymitJWicbYY7lmfrF4qPeNJ7W6I9SlsFLBHY'
->>>>>>> master
+        headers: {
+
+          "Authorization": localStorage['token']
         },
         method:"get",
         url:`${userUrl}/user/info`,
@@ -131,20 +128,20 @@ export default {
         }
       })
           .then( response=> {
-<<<<<<< HEAD
+
             console.log(response.data.data)
-            if(response.data.code === 200){
+            if(response.data.code === 200) {
               this.tableData = response.data.data;
               that.dataTotalCount = response.data.size;
-=======
+            }
             if(response.data.code === 200) {
               that.$message({
                 type: 'success',
-                message: '获得列表成功'
+                message: '刷新列表成功'
               });
               that.tableData = response.data.data.userList;
               that.dataTotalCount = response.data.data.num;
->>>>>>> master
+
             }
           })
           .catch(function (error) {
@@ -172,16 +169,19 @@ export default {
             }],
             data:{
               id:this.tableData[index].id,
-<<<<<<< HEAD
-=======
+
+              role:"saler",
               userName:this.tableData[index].name,
 
->>>>>>> master
             }
           }
 
       ).then(res=>{
-        if(res.data.code()===200){
+        if(res.data.code===200){
+          this.$message({
+            type: 'success',
+            message: '删除成功：'
+          });
           this.getList();
         }else{
           this.$message({
@@ -196,7 +196,7 @@ export default {
     },
     handleEdit(){
       this.edit=true;
-      console("ddd");
+
     },
     handleSubmit(){
       this.showDialog=false;
@@ -233,10 +233,7 @@ export default {
               message: '系统异常：'+error
             });
           });
-<<<<<<< HEAD
 
-=======
->>>>>>> master
     }
 
 

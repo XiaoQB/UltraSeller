@@ -90,16 +90,7 @@ export default {
         pageSize:10,
       },
       tableData: [
-<<<<<<< HEAD
-        {
-          id:"0",
-          userName:"keyon",
-          phone:"13567656765",
-          email:"xiepeichqwuhe@kjdbv.vom",
-        }
-=======
 
->>>>>>> master
       ],
     }
   },
@@ -121,11 +112,9 @@ export default {
       var that = this;
       this.http({
         headers:{
-<<<<<<< HEAD
-          'token':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwNzRiYjk0Ni03OGMzLTRkZDktYWVkZC1mYzQyYWI2ZjI0NzUiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzQ5Nzg2OTAsImV4cCI6MTYzNDk4MjI5MH0.a_KtQzdymitJWicbYY7lmfrF4qPeNJ7W6I9SlsFLBHY'
-=======
+
           'Authorization':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4ODUxNGU2YS00Mjc3LTQwNDQtYjVlZS02YTRlM2UzYjkyNjkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNTI2NjQsImV4cCI6MTYzNTA1NjI2NH0.L-74lwuvnDW4gqMi2WYiN9DvWD5QKxg_EKppP6WbSks'
->>>>>>> master
+
         },
         method:"get",
         url:`${userUrl}/user/info`,
@@ -138,17 +127,14 @@ export default {
           .then( response=> {
             console.log(response.data.data)
             if(response.data.code === 200){
-<<<<<<< HEAD
-              this.tableData = response.data.data;
-              that.dataTotalCount = response.data.size;
-=======
+
               that.$message({
                 type: 'success',
                 message: '获得列表成功'
               });
               this.tableData = response.data.data.userList;
               that.dataTotalCount = response.data.data.num;
->>>>>>> master
+
             }
           })
           .catch(function (error) {
@@ -177,12 +163,16 @@ export default {
             }],
             data:{
               id:this.tableData[index].id,
-              userName:this.tableData[index].name,
+              role:"buyer",
             }
           }
 
       ).then(res=>{
         if(res.data.code===200){
+          this.$message({
+            type: 'success',
+            message: '删除成功：'
+          });
           this.getList();
         }else{
           this.$message({

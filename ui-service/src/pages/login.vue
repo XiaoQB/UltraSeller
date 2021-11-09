@@ -131,7 +131,6 @@ export default {
   created() {},
   methods: {
     doLogin() {
-
       if (!this.user.username) {
         this.$message.error("请输入用户名！");
         return;
@@ -139,18 +138,7 @@ export default {
         this.$message.error("请输入密码！");
         return;
       } else {
-<<<<<<< HEAD
-        http
-            .get(`${userUrl}/user/login`, {
-              name: this.user.username,
-              password: this.user.password,
-              role:this.user.role
-            })
-            .then(res => {
-              // console.log("输出response.data.status", res.data.status);
-              if (res.data.code === 200) {
-                window.localStorage["token"] = JSON.stringify(res.data['token']);
-=======
+
         this.$router.push({ name: "admin"});
         this.http
             .get(`${userUrl}/user/login`, {
@@ -168,7 +156,7 @@ export default {
                   message:"登录成功"
                 })
                 localStorage.setItem("token",res.data.data);
->>>>>>> master
+
                 this.$router.push({ name: "store",
                   "params":{
                     "name":this.user.username,
