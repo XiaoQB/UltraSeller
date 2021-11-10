@@ -33,6 +33,7 @@ public class WalletServiceImpl implements WalletService {
         if (walletMapper.countByExample(example) != 0) {
             return -1;
         }
+        wallet.setBalance(0.00);
         walletMapper.insert(wallet);
         return 0;
     }
@@ -47,6 +48,9 @@ public class WalletServiceImpl implements WalletService {
             return -1;
         }
         Wallet wallet = walletList.get(0);
+        if(wallet.getBalance() + difference < 0){
+            return -2;
+        }
         wallet.setBalance(wallet.getBalance() + difference);
         walletMapper.updateByExample(wallet, example);
         return 0;

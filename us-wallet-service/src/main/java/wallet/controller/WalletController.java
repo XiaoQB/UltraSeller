@@ -37,6 +37,7 @@ public class WalletController {
     public Response<String> createWallet(@RequestBody Wallet wallet) {
         wallet.setWalletId(Long.parseLong(IdGenerator.generateId()));
         int ret = walletService.create(wallet);
+        System.out.println(wallet.getUserName());
         if (ret == -1) {
             return new Response<>(409, "用户已存在", null);
         } else if (ret == 0) {
@@ -63,6 +64,9 @@ public class WalletController {
             if (ret == -1) {
                 return new Response<>(404, "用户错误", null);
             }
+            if(ret == -2){
+                return new Response<>(401, "余额不足", null);
+            }
             WalletRecord record = new WalletRecord(-1L, userName, new Date(), difference, -1L);
             walletService.updateRecord(record);
             return new Response<>(200, "更新成功", null);
@@ -78,6 +82,7 @@ public class WalletController {
      */
     @DeleteMapping("/wallet/user")
     public Response<String> deleteWallet(@RequestParam("username") String userName) {
+        System.out.println(userName);
         int ret = walletService.delete(userName);
         if (ret == -1) {
             return new Response<>(404, "用户信息错误", null);
@@ -98,12 +103,16 @@ public class WalletController {
         int ret = 2;
         String userName = "";
         double diff = 0;
-        if (Objects.equals(status, "pending") || Objects.equals(status, "refund")) {
+        if (Objects.equals(status, "pending")) {
             userName = deal.getBuyerName();
             diff = -deal.getPrice();
             ret = walletService.update(userName, diff);
         } else if (Objects.equals(status, "finish")) {
             userName = deal.getSellerName();
+            diff = deal.getPrice();
+            ret = walletService.update(userName, diff);
+        } else if(Objects.equals(status, "refund")) {
+            userName = deal.getBuyerName();
             diff = deal.getPrice();
             ret = walletService.update(userName, diff);
         }
@@ -112,6 +121,8 @@ public class WalletController {
         } else if (ret == 0) {
             WalletRecord walletRecord = new WalletRecord(-1L, userName, new Date(), diff, deal.getDealId());
             walletService.updateRecord(walletRecord);
+        } else if(ret == -2){
+            return new Response<>(401, "余额不足", null);
         }
         return new Response<>(200, "处理成功", null);
     }
