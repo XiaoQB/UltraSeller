@@ -139,7 +139,7 @@ def AddCart(request):
     return HttpResponse("AddCart Succes!")
 
 
-
+@csrf_exempt
 @require_http_methods(["POST"])
 def Cart2Order(request):
     # 调用http http://localhost:8003/order/create
