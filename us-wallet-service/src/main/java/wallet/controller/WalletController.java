@@ -96,17 +96,13 @@ public class WalletController {
         int ret = 2;
         String userName = "";
         double diff = 0;
-        if (Objects.equals(status, "pending")) {
+        if (Objects.equals(status, "pending") || Objects.equals(status, "refund")) {
             userName = deal.getBuyerName();
             diff = -deal.getPrice();
             ret = walletService.update(userName, diff);
         } else if (Objects.equals(status, "finish")) {
             userName = deal.getSellerName();
             diff = deal.getPrice();
-            ret = walletService.update(userName, diff);
-        } else if (Objects.equals(status, "refund")) {
-            userName = deal.getBuyerName();
-            diff = -deal.getPrice();
             ret = walletService.update(userName, diff);
         }
         if (ret == -1) {

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author beethoven
  * @date 2021-11-06 19:27:47
  */
-@FeignClient(value = "US-COMMODITY-SERVICE", fallback = CommodityFallbackImpl.class)
+@FeignClient(value = "us-commodity-service", fallback = CommodityFallbackImpl.class)
 @Service
 public interface CommodityService {
 
@@ -23,6 +23,6 @@ public interface CommodityService {
      * @return commodity
      */
     @GetMapping("/commodity/item")
-    ResponseEntity<Commodity> getCommodityById(@RequestParam("id") int commodityId);
+    ResponseEntity<Commodity> getCommodityById(@RequestParam("id") String commodityId);
 
 }

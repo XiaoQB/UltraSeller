@@ -20,8 +20,8 @@ public class SubOrder {
     protected String status;
     protected Float totalPrice;
     protected String address;
-    protected Integer salerId;
-    protected Integer commodityId;
+    protected Long salerId;
+    protected String commodityId;
     protected String commodityName;
     protected Float price;
     protected Integer num;

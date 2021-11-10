@@ -1,5 +1,6 @@
 package commodity.domain;
 
+import cn.edu.fudan.common.entities.dbo.Commodity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

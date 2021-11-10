@@ -1,6 +1,6 @@
 package commodity.controller;
 
-import commodity.domain.Commodity;
+import cn.edu.fudan.common.entities.dbo.Commodity;
 import commodity.service.impl.CommodityServiceImpl;
 import commodity.utils.IdGenerator;
 import commodity.utils.PagedGridResult;
@@ -21,7 +21,6 @@ public class CommodityController {
     /**
      * All commodities list.
      *
-     * @param token    the token
      * @param username the username
      * @param pageNum  the page num
      * @param pageSize the page size
@@ -29,88 +28,63 @@ public class CommodityController {
      * @return the list
      */
     @GetMapping("/commodity/lists")
-    public PagedGridResult allCommodities(@RequestHeader("token") String token,
-                                          @RequestParam("username") String username,
+    public PagedGridResult allCommodities(@RequestParam("username") String username,
                                           @RequestParam("page") int pageNum,
                                           @RequestParam("pagesize") int pageSize,
-                                          @RequestParam("seq") int sequence
-    ) {
+                                          @RequestParam("seq") int sequence) {
         return commodityService.selectAll(username, pageNum, pageSize, sequence);
     }
 
     /**
      * Single commodity.
      *
-     * @param token       the token
      * @param commodityId the commodity id
      * @return the commodity
      */
     @GetMapping("/commodity/item")
-    public Response<Commodity> singleCommodity(@RequestHeader("token") String token, @RequestParam("id") int commodityId) {
+    public Response<Commodity> singleCommodity(@RequestParam("id") String commodityId) {
         Commodity ret = commodityService.singleCommodity(commodityId);
         if (ret == null) {
             return new Response<>(404, "查询错误", null);
         }
-//        if(Objects.equals(JwtUtil.getRole(token), "saler")){
-//            if(!Objects.equals(JwtUtil.getUserName(token), ret.getVendorName())){
-//                return new Response<>(400, "权限错误",null);
-//            }
-//        }
         return new Response<>(200, "成功", ret);
     }
 
     /**
      * Update.
      *
-     * @param token     the token
      * @param commodity the commodity
      * @return the response
      */
     @PutMapping("/commodity/item")
-    public Response<String> update(@RequestHeader("token") String token, @RequestBody Commodity commodity) {
-//        if(Objects.equals(JwtUtil.getRole(token), "admin") ||
-//                Objects.equals(JwtUtil.getUserName(token), commodity.getVendorName())){
+    public Response<String> update(@RequestBody Commodity commodity) {
         commodityService.update(commodity);
         return new Response<>(201, "更新成功", null);
-
-//        }
-//        return new Response<>(400, "权限错误",null);
     }
 
     /**
      * Create.
      *
-     * @param token     the token
      * @param commodity the commodity
      * @return the response
      */
     @PostMapping("/commodity/item")
-    public Response<String> create(@RequestHeader("token") String token, @RequestBody Commodity commodity) {
-//        if(Objects.equals(JwtUtil.getRole(token), "admin") ||
-//                Objects.equals(JwtUtil.getUserName(token), commodity.getVendorName())){
+    public Response<String> create(@RequestBody Commodity commodity) {
         commodity.setId(IdGenerator.generateId());
         commodityService.create(commodity);
         return new Response<>(201, "创建成功", null);
-//        }
-//        return new Response<>(400, "权限错误",null);
     }
 
     /**
      * Delete.
      *
-     * @param token  the token
      * @param itemId the item id
      * @return the response
      */
     @DeleteMapping("/commodity/item/{itemId}")
-    public Response<String> delete(@RequestHeader("token") String token, @PathVariable long itemId) {
-//        if(Objects.equals(JwtUtil.getRole(token), "admin") ||
-//                Objects.equals(JwtUtil.getUserName(token),
-//                        commodityService.singleCommodity(itemId).getVendorName())){
+    public Response<String> delete(@PathVariable long itemId) {
         commodityService.delete(itemId);
         return new Response<>(200, "删除成功", null);
-//        }
-//        return new Response<>(400, "权限错误",null);
     }
 
     /**

@@ -1,11 +1,10 @@
 package commodity.service.impl;
 
+import cn.edu.fudan.common.entities.dbo.Commodity;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import commodity.domain.CommodityExample;
-import commodity.domain.CommodityList;
 import commodity.mapper.CommodityMapper;
-import commodity.domain.Commodity;
 import commodity.service.CommodityService;
 import commodity.utils.PagedGridResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +39,8 @@ public class CommodityServiceImpl implements CommodityService {
     }
 
     @Override
-    public Commodity singleCommodity(long commodityId) {
-        return commodityMapper.selectByPrimaryKey(commodityId + "");
-        //return null;
+    public Commodity singleCommodity(String commodityId) {
+        return commodityMapper.selectByPrimaryKey(commodityId);
     }
 
     @Override

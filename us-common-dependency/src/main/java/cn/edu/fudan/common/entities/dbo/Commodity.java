@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @author beethoven
  * @date 2021-11-02 16:16:45
@@ -13,10 +15,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Commodity {
 
-    private Integer commodityId;
-    private String commodityName;
-    private int salerId;
-    private Float price;
-    private int num;
+    private String id;
+    private String name;
+    private String imgLink;
+    private float price;
+    private String description;
+    private long inventory;
+    private String vendorName;
+    private String keywords;
+    private List<String> typeList;
+    private Integer typeIdx;
+    private Integer num;
 
 }
