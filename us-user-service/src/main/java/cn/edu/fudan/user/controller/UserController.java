@@ -117,12 +117,12 @@ public class UserController {
                     userService.deleteUser(user.getRole(), user.getId());
                     return walletResponse;
                 }
-                ResponseEntity<String> cartResponse = cartService.createCart(user);
-                if (cartResponse.getCode() != 200) {
-                    walletService.deleteWallet(user.getUserName());
-                    userService.deleteUser(user.getRole(), user.getId());
-                    return cartResponse;
-                }
+//                ResponseEntity<String> cartResponse = cartService.createCart(user);
+//                if (cartResponse.getCode() != 200) {
+//                    walletService.deleteWallet(user.getUserName());
+//                    userService.deleteUser(user.getRole(), user.getId());
+//                    return cartResponse;
+//                }
                 return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
             }
             return new ResponseEntity<>(ResultCode.REGISTER_FAIL.getCode(), ResultCode.REGISTER_FAIL.getMessage(), null);

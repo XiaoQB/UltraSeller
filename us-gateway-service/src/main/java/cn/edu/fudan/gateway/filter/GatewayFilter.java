@@ -28,7 +28,7 @@ public class GatewayFilter implements GlobalFilter, Ordered {
         HttpHeaders headers = exchange.getRequest().getHeaders();
         String token = headers.getFirst(TOKEN);
         String role = headers.getFirst(ROLE);
-        if (StringUtils.isEmpty(token) || StringUtils.isEmpty(role) || JwtUtil.authorization(token, role)) {
+        if (StringUtils.isEmpty(token) || StringUtils.isEmpty(role) || !JwtUtil.authorization(token, role)) {
             exchange.getResponse().setStatusCode(HttpStatus.NOT_ACCEPTABLE);
             return exchange.getResponse().setComplete();
         }

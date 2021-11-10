@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserMapper {
 
 
-    boolean insertAdmin(String userName, String password);
+    boolean insertAdmin(@Param("userName") String userName, @Param("password") String password);
 
     boolean insertSaler(@Param("userName") String userName, @Param("email") String email, @Param("phone") String phone, @Param("password") String password);
 
