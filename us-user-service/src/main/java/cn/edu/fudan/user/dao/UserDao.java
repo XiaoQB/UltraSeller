@@ -19,35 +19,29 @@ public class UserDao {
     public boolean insertUser(User user, String password) {
         String role = user.getRole();
         boolean exist = false;
-        try {
-            switch (role) {
-                case "admin":
-                    exist = userMapper.isExistAdmin(user.getUserName()) > 0;
-                    if (exist) return false;
-                    userMapper.insertAdmin(user.getUserName(), password);
-                    break;
-                case "saler":
-                    exist = userMapper.isExistSaler(user.getUserName()) > 0;
-                    if (exist) return false;
-                    userMapper.insertSaler(user.getUserName(), user.getEmail(), user.getPhone(), password);
-                    break;
-                case "buyer":
-                    exist = userMapper.isExistBuyer(user.getUserName()) > 0;
-                    if (exist) return false;
-                    userMapper.insertBuyer(user.getUserName(), user.getEmail(), user.getPhone(), password);
-                    break;
-                default:
-                    break;
-            }
-        } catch (Exception e) {
-            log.info("插入用户失败");
-            return false;
+        switch (role) {
+            case "admin":
+                exist = userMapper.isExistAdmin(user.getUserName()) > 0;
+                if (exist) return false;
+                userMapper.insertAdmin(user.getUserName(), password);
+                break;
+            case "saler":
+                exist = userMapper.isExistSaler(user.getUserName()) > 0;
+                if (exist) return false;
+                userMapper.insertSaler(user.getUserName(), user.getEmail(), user.getPhone(), password);
+                break;
+            case "buyer":
+                exist = userMapper.isExistBuyer(user.getUserName()) > 0;
+                if (exist) return false;
+                userMapper.insertBuyer(user.getUserName(), user.getEmail(), user.getPhone(), password);
+                break;
+            default:
+                break;
         }
         return true;
     }
 
-
-    public User getUserbyName(String userName, String role) {
+    public User getUserByName(String userName, String role) {
         User user = new User();
         switch (role) {
             case "admin":

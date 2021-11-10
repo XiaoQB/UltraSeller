@@ -77,8 +77,13 @@ public class UserController {
             return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage(), null);
         }
         ResponseEntity<String> walletResponse = walletService.deleteWallet(user.getUserName());
+        if (walletResponse.getCode() != 200) {
+            return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage() + " 钱包服务删除失败", null);
+        }
         ResponseEntity<String> cartResponse = cartService.deleteCart(user.getUserName());
-
+        if (cartResponse.getCode() != 200) {
+            return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage() + " 购物车服务删除失败", null);
+        }
         return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), deleteResult);
     }
 
@@ -104,22 +109,27 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
-        boolean result = userService.insertUser(user);
-        if (result) {
-            ResponseEntity<String> walletResponse = walletService.createWallet(user);
-            if (walletResponse.getCode() != 201) {
-                userService.deleteUser(user.getRole(), user.getId());
-                return walletResponse;
+        try {
+            boolean result = userService.insertUser(user);
+            if (result) {
+                ResponseEntity<String> walletResponse = walletService.createWallet(user);
+                if (walletResponse.getCode() != 201) {
+                    userService.deleteUser(user.getRole(), user.getId());
+                    return walletResponse;
+                }
+                ResponseEntity<String> cartResponse = cartService.createCart(user);
+                if (cartResponse.getCode() != 200) {
+                    walletService.deleteWallet(user.getUserName());
+                    userService.deleteUser(user.getRole(), user.getId());
+                    return cartResponse;
+                }
+                return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
             }
-            ResponseEntity<String> cartResponse = cartService.createCart(user);
-            if (cartResponse.getCode() != 200) {
-                walletService.deleteWallet(user.getUserName());
-                userService.deleteUser(user.getRole(), user.getId());
-                return cartResponse;
-            }
-            return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
+            return new ResponseEntity<>(ResultCode.REGISTER_FAIL.getCode(), ResultCode.REGISTER_FAIL.getMessage(), null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(ResultCode.REGISTER_FAIL.getCode(), ResultCode.REGISTER_FAIL.getMessage() + " " + e.getMessage(), null);
         }
-        return new ResponseEntity<>(ResultCode.REGISTER_FAIL.getCode(), ResultCode.REGISTER_FAIL.getMessage(), null);
     }
 
     @DeleteMapping("/logout")

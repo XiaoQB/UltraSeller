@@ -76,7 +76,7 @@
         where id = #{id}
     </delete>
 
-    <delete id="deleteSaler" parameterType="java.lang.String">
+    <delete id="deleteSaler">
         delete
         from ultra_seller.us_saler
         where id = #{id}

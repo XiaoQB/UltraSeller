@@ -2,6 +2,7 @@ package cn.edu.fudan.user.mapper;
 
 import cn.edu.fudan.common.entities.dbo.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface UserMapper {
 
     boolean insertAdmin(String userName, String password);
 
-    boolean insertSaler(String userName, String email, String phone, String password);
+    boolean insertSaler(@Param("userName") String userName, @Param("email") String email, @Param("phone") String phone, @Param("password") String password);
 
     boolean insertBuyer(String userName, String email, String phone, String password);
 

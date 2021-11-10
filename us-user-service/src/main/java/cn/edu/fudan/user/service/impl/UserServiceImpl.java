@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String findByUsername(String userName, String password, String role) {
-        User user = userDao.getUserbyName(userName, role);
+        User user = userDao.getUserByName(userName, role);
         if (user != null) {
             String pwd = DigestUtils.md5Hex(password);
             if (pwd.equals(user.getPassword())) {
