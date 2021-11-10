@@ -12,7 +12,7 @@
             <el-input v-model="user.password" show-password placeholder="请输入密码"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button class = "button1" type="primary"  @click="doLogin()" style="border-bottom: 200px" >登 录</el-button>
+            <el-button class="button1" type="primary" @click="doLogin()" style="border-bottom: 200px">登 录</el-button>
           </el-form-item>
         </el-form>
       </el-row>
@@ -23,13 +23,13 @@
             <el-radio v-model="register.identity" label="2">卖家</el-radio>
           </el-form-item>
           <el-form-item label="账户名" prop="name">
-            <el-input v-model="register.name" ></el-input>
+            <el-input v-model="register.name"></el-input>
           </el-form-item>
           <el-form-item label="手机号码" prop="number">
             <el-input v-model="register.number"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="pwd">
-            <el-input v-model="register.pwd" show-password ></el-input>
+            <el-input v-model="register.pwd" show-password></el-input>
           </el-form-item>
           <el-form-item label="确认密码" prop="checkPwd">
             <el-input v-model="register.checkPwd" show-password></el-input>
@@ -54,6 +54,7 @@
 <script>
 import http from "@/http";
 import {baseURL} from "@/http";
+
 const userUrl = baseURL.user;
 
 
@@ -61,7 +62,7 @@ export default {
   name: "login",
   data() {
     var validatePass = (rule, value, callback) => {
-      setTimeout(()=>{
+      setTimeout(() => {
         if (value === '') {
           callback(new Error('请输入密码'));
         } else {
@@ -70,7 +71,7 @@ export default {
           }
           callback();
         }
-      },1000)
+      }, 1000)
     };
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
@@ -82,48 +83,49 @@ export default {
       }
     };
     return {
-      registervisible:false,
+      registervisible: false,
       user: {
         username: "",
         password: "",
-        role:""
+        role: ""
       },
-      register:{
-        identity:"",
-        name:'',
-        number:"",
-        pwd:"",
-        checkPwd:"",
-        sex:"",
-        email:""
+      register: {
+        identity: "",
+        name: '',
+        number: "",
+        pwd: "",
+        checkPwd: "",
+        sex: "",
+        email: ""
 
       },
 
-      rules:{
+      rules: {
         identity: [
-          { required: true, message: '请确认注册身份', trigger: 'blur' },
+          {required: true, message: '请确认注册身份', trigger: 'blur'},
 
         ],
         name: [
-          { required: true, message: '请输入账号', trigger: 'blur' },
-          { min: 1, max: 20, message: '账号名不能超过20个字符', trigger: 'blur' }
+          {required: true, message: '请输入账号', trigger: 'blur'},
+          {min: 1, max: 20, message: '账号名不能超过20个字符', trigger: 'blur'}
         ],
         number: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
-          { incr:11, message: '输入正确的手机号', trigger: 'blur' }
+          {required: true, message: '请输入手机号', trigger: 'blur'},
+          {incr: 11, message: '输入正确的手机号', trigger: 'blur'}
         ],
         pwd: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { validator: validatePass, trigger: 'blur' }
+          {required: true, message: '请输入密码', trigger: 'blur'},
+          {validator: validatePass, trigger: 'blur'}
         ],
         checkPwd: [
-          { validator: validatePass2, trigger: 'blur' }
+          {validator: validatePass2, trigger: 'blur'}
         ],
       }
 
     };
   },
-  created() {},
+  created() {
+  },
   methods: {
     doLogin() {
 
@@ -134,29 +136,31 @@ export default {
         this.$message.error("请输入密码！");
         return;
       } else {
-        this.$router.push({ name: "admin"});
+        this.$router.push({name: "admin"});
         http
             .get(`${userUrl}/user/login`, {
-              params:{
+              params: {
                 userName: this.user.username,
                 password: this.user.password,
-                role:"admin"
+                role: "admin"
               },
 
             })
             .then(res => {
               if (res.data.code === 200) {
                 this.$message({
-                  type:"success",
-                  message:"登录成功"
+                  type: "success",
+                  message: "登录成功"
                 })
                 window.localStorage["token"] = JSON.stringify(res.data.data);
                 console.log(localStorage["token"])
-                this.$router.push({ name: "admin",
-                  "params":{
-                    "name":this.user.username,
-                    "token":res.data['token'],
-                  }});
+                this.$router.push({
+                  name: "admin",
+                  "params": {
+                    "name": this.user.username,
+                    "token": res.data['token'],
+                  }
+                });
               }
             });
       }
@@ -169,8 +173,8 @@ export default {
 
         } else {
           this.$message({
-            type:"warning",
-            message:"请检查信息后重新提交"
+            type: "warning",
+            message: "请检查信息后重新提交"
           })
           console.log('error submit!!');
           return false;
@@ -193,10 +197,9 @@ export default {
   background: url("../assets/left-pic.jpeg") no-repeat;
   background-size: cover;
   overflow: hidden;
-  opacity: 30;
-
-;
+  opacity: 30;;
 }
+
 .login-wrap {
   background: rgb(255, 255, 255);
   background-size: cover;
@@ -208,25 +211,31 @@ export default {
   line-height: 40px;
   opacity: 30;
 }
+
 #password {
   margin-bottom: 5px;
 }
+
 h3 {
   color: #0babeab8;
   font-size: 24px;
 }
+
 hr {
   background-color: #444;
   margin: 20px auto;
 }
+
 a {
   text-decoration: none;
   color: #aaa;
   font-size: 15px;
 }
+
 a:hover {
   color: coral;
 }
+
 .button1 {
   width: 50%;
   margin-left: -100px;
@@ -234,6 +243,7 @@ a:hover {
 
 
 }
+
 .button2 {
   width: 50%;
   margin-left: 100px;

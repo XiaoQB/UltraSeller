@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Random;
 
 public class IdGenerator {
-    public static String generateId(){
+    public static String generateId() {
         String newId;
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         newId = timeFormat.format(new Date(System.currentTimeMillis())) +

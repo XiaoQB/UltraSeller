@@ -1,9 +1,9 @@
 package order.entities.vo;
 
+import cn.edu.fudan.common.entities.dbo.Commodity;
+import cn.edu.fudan.common.entities.dbo.SubOrder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import order.entities.dbo.Commodity;
-import order.entities.dbo.SubOrder;
 
 /**
  * @author beethoven

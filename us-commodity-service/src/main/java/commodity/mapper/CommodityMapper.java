@@ -1,7 +1,8 @@
 package commodity.mapper;
 
-import commodity.domain.Commodity;
+import cn.edu.fudan.common.entities.dbo.Commodity;
 import commodity.domain.CommodityExample;
+
 import java.util.List;
 
 

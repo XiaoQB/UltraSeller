@@ -26,13 +26,12 @@ public interface OrderService {
     /**
      * 根据 id 获取 order
      *
-     * @param token   token
      * @param orderId orderId
      * @return order
      * @throws OrderNotFoundException    OrderNotFoundException
      * @throws CommodityServiceException CommodityServiceException
      */
-    OrderVO getOrderById(String token, String orderId) throws OrderNotFoundException, CommodityServiceException;
+    OrderVO getOrderById(String orderId) throws OrderNotFoundException, CommodityServiceException;
 
     /**
      * 根据 id 删除 order
@@ -68,7 +67,6 @@ public interface OrderService {
     /**
      * 根据 user id 获取 order list
      *
-     * @param token   token
      * @param userIds userIds
      * @return order list
      * @throws CommodityServiceException CommodityServiceException

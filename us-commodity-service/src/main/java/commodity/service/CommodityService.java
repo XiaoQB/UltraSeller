@@ -1,22 +1,19 @@
 package commodity.service;
 
-import commodity.domain.Commodity;
+import cn.edu.fudan.common.entities.dbo.Commodity;
 import commodity.utils.PagedGridResult;
-import commodity.domain.CommodityList;
-
-import java.util.List;
 
 public interface CommodityService {
 
-    public PagedGridResult selectAll(String username, int pageNum, int pageSize, int sequence);
+    PagedGridResult selectAll(String username, int pageNum, int pageSize, int sequence);
 
-    public Commodity singleCommodity(long commodityId);
+    Commodity singleCommodity(String commodityId);
 
-    public void update(Commodity commodity);
+    void update(Commodity commodity);
 
-    public void create(Commodity commodity);
+    void create(Commodity commodity);
 
-    public void delete(long itemId);
+    void delete(long itemId);
 
-    public PagedGridResult searchList(String searchWords, int pageNum, int pageSize, String  sequences);
+    PagedGridResult searchList(String searchWords, int pageNum, int pageSize, String sequences);
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="order.dao.OrderDao">
 
-    <resultMap id="order" type="order.entities.dbo.Order">
+    <resultMap id="order" type="cn.edu.fudan.common.entities.dbo.Order">
         <id property="orderId" column="id"/>
         <result property="status" column="status"/>
         <result property="totalPrice" column="total_price"/>
@@ -55,7 +55,7 @@
         where id = #{orderId}
     </select>
 
-    <update id="changeOrder" parameterType="order.entities.dbo.Order">
+    <update id="changeOrder" parameterType="cn.edu.fudan.common.entities.dbo.Order">
         update `order`
         <set>
             <if test="status != null and status != ''">

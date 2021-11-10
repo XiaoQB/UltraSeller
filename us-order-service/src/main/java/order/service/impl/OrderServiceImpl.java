@@ -3,8 +3,6 @@ package order.service.impl;
 import order.dao.OrderDao;
 import order.dao.SubOrderDao;
 import order.entities.dbo.Commodity;
-import order.entities.dbo.Order;
-import order.entities.dbo.SubOrder;
 import order.entities.dto.CreateOrderDTO;
 import order.entities.vo.OrderVO;
 import order.exception.CommodityServiceException;
@@ -49,9 +47,9 @@ public class OrderServiceImpl implements OrderService {
                     .orderId(orderId)
                     .totalPrice(totalPrice)
                     .address(createOrderDTO.getAddress())
-                    .salerId(commodity.getSalerId())
-                    .commodityId(commodity.getCommodityId())
-                    .commodityName(commodity.getCommodityName())
+                    .salerId(commodity.getInventory())
+                    .commodityId(commodity.getId())
+                    .commodityName(commodity.getName())
                     .price(commodity.getPrice())
                     .num(commodity.getNum())
                     .build();
@@ -74,14 +72,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderVO getOrderById(String token, String orderId) throws OrderNotFoundException, CommodityServiceException {
+    public OrderVO getOrderById(String orderId) throws OrderNotFoundException, CommodityServiceException {
         Order order = orderDao.getOrderById(orderId);
         if (order == null) {
             throw new OrderNotFoundException("no such order");
         }
 
         List<SubOrder> subOrders = subOrderDao.getSubOrdersByOrder(orderId);
-        return new OrderVO(order, restUtil.getSubOrderVOList(token, subOrders));
+        return new OrderVO(order, restUtil.getSubOrderVOList(subOrders));
     }
 
     @Override
@@ -105,11 +103,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderVO> getOrdersByUser(String token, List<Integer> userIds, int page, int num) throws CommodityServiceException {
+
         List<OrderVO> orderVOList = new ArrayList<>();
         List<Order> orders = orderDao.getOrdersByUser(userIds, (page - 1) * num, num);
         for (Order order : orders) {
             List<SubOrder> subOrders = subOrderDao.getSubOrdersByOrder(order.getOrderId());
-            orderVOList.add(new OrderVO(order, restUtil.getSubOrderVOList(token, subOrders)));
+            orderVOList.add(new OrderVO(order, restUtil.getSubOrderVOList(subOrders)));
         }
         return orderVOList;
     }

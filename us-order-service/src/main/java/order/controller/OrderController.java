@@ -36,9 +36,9 @@ public class OrderController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<OrderVO> getOrderById(@RequestHeader("token") String token, @RequestParam("order_id") String orderId) {
+    public ResponseEntity<OrderVO> getOrderById(@RequestParam("order_id") String orderId) {
         try {
-            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getOrderById(token, orderId));
+            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getOrderById(orderId));
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
         }

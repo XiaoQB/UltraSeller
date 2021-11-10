@@ -69,12 +69,12 @@ public class JwtUtil {
 
     /**
      * 生成加密 secretKey
+     * <p>
+     * <<<<<<< HEAD:us-gateway-service/src/main/java/gateway/utils/JwtUtil.java
      *
-<<<<<<< HEAD:us-gateway-service/src/main/java/gateway/utils/JwtUtil.java
-     * @return
-=======
+     * @return =======
      * @return secret key
->>>>>>> master:us-common/src/main/java/common/JwtUtil.java
+     * >>>>>>> master:us-common/src/main/java/common/JwtUtil.java
      */
     public static SecretKey generalKey() {
         byte[] encodedKey = Base64.getEncoder().encode(JwtUtil.JWT_KEY.getBytes());
@@ -104,12 +104,12 @@ public class JwtUtil {
      * @param token the token
      * @return the string
      */
-    public static String getRole(String token){
+    public static String getRole(String token) {
         try {
             Claims claims = JwtUtil.parseJWT(token);
             System.out.println(JSONObject.parseObject(claims.getSubject()).getString("role"));
             return JSONObject.parseObject(claims.getSubject()).getString("role");
-        }catch (Exception e) {
+        } catch (Exception e) {
             // token格式不对
             return null;
         }
@@ -121,11 +121,11 @@ public class JwtUtil {
      * @param token the token
      * @return the string
      */
-    public static String getUserName(String token){
+    public static String getUserName(String token) {
         try {
             Claims claims = JwtUtil.parseJWT(token);
             return JSONObject.parseObject(claims.getSubject()).getString("username");
-        }catch (Exception e) {
+        } catch (Exception e) {
             // token格式不对
             return null;
         }
