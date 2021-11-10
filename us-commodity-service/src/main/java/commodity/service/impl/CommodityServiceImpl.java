@@ -40,7 +40,7 @@ public class CommodityServiceImpl implements CommodityService {
     }
 
     @Override
-    public Commodity singleCommodity(long commodityId){
+    public Commodity singleCommodity(String commodityId){
         return commodityMapper.selectByPrimaryKey(commodityId+"");
         //return null;
     }

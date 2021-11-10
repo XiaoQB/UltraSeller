@@ -55,7 +55,7 @@ public class CommodityController {
      * @return the commodity
      */
     @GetMapping("/commodity/item")
-    public Response<Commodity> singleCommodity(@RequestHeader("token") String token, @RequestParam("id") int commodityId){
+    public Response<Commodity> singleCommodity(@RequestHeader("token") String token, @RequestParam("id") String commodityId){
         Commodity ret = commodityService.singleCommodity(commodityId);
         if(ret == null){
             return new Response<>(404, "查询错误",null);

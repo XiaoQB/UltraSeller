@@ -97,30 +97,28 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/saler-order-list")
+    @GetMapping("/saler-orders-status")
     public ResponseEntity<List<SubOrder>> getSalerOrderListByStatus(@RequestHeader("token") String token,
                                                                     @RequestParam("user_id") Integer userId,
                                                                     @RequestParam("status") String status,
                                                                     @RequestParam("page") Integer page,
-                                                                    @RequestParam("num") Integer num){
-        //todo:根据鉴权结果确定卖家，随后只显示该卖家的所有订单
+                                                                    @RequestParam("num") Integer num) {
         try {
-            List<SubOrder> orders = orderService.getSalerOrderListByStatus(token,userId, status, page, num);
+            List<SubOrder> orders = orderService.getSalerOrderListByStatus(token, userId, status, page, num);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
         }
     }
 
-    @GetMapping("/buyer-order-list")
+    @GetMapping("/buyer-orders-status")
     public ResponseEntity<List<OrderVO>> getBuyerOrderListByStatus(@RequestHeader("token") String token,
                                                                    @RequestParam("user_id") Integer userId,
                                                                    @RequestParam("status") String status,
                                                                    @RequestParam("page") Integer page,
-                                                                   @RequestParam("num") Integer num){
-        //todo:根据鉴权结果确定卖家，随后只显示该买家的所有订单
+                                                                   @RequestParam("num") Integer num) {
         try {
-            List<OrderVO> orders = orderService.getBuyerOrderListByStatus(token,userId, status, page, num);
+            List<OrderVO> orders = orderService.getBuyerOrderListByStatus(token, userId, status, page, num);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);

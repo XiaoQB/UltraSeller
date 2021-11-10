@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class CommodityFallbackImpl implements CommodityService {
 
     @Override
-    public ResponseEntity<Commodity> getCommodityById(String token, int commodityId) {
+    public ResponseEntity<Commodity> getCommodityById(String token, String commodityId) {
         return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR, null);
     }
 }

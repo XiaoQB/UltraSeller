@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Commodity {
 
-    private Integer commodityId;
+    private String commodityId;
     private String commodityName;
     private int salerId;
     private Float price;

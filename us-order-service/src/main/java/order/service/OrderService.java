@@ -75,7 +75,7 @@ public interface OrderService {
      */
     List<SubOrder> getOrdersBySaler(String token, List<Integer> userIds, int page, int num) throws CommodityServiceException;
 
-    List<SubOrder> getSalerOrderListByStatus(String token,Integer userId,String status,int page,int num);
+    List<SubOrder> getSalerOrderListByStatus(String token, Integer userId, String status, int page, int num);
 
     /**
      * 根据 order status 获取 order list
@@ -85,5 +85,5 @@ public interface OrderService {
      * @return order list
      * @throws CommodityServiceException CommodityServiceException
      */
-    List<OrderVO> getBuyerOrderListByStatus(String token,Integer userId,String status,int page,int num) throws CommodityServiceException;
+    List<OrderVO> getBuyerOrderListByStatus(String token, Integer userId, String status, int page, int num) throws CommodityServiceException;
 }

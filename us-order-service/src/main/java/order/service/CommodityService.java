@@ -27,6 +27,6 @@ public interface CommodityService {
      * @return commodity
      */
     @GetMapping("/item")
-    ResponseEntity<Commodity> getCommodityById(@RequestHeader("token") String token, @RequestParam("id") int commodityId);
+    ResponseEntity<Commodity> getCommodityById(@RequestHeader("token") String token, @RequestParam("id") String commodityId);
 
 }

@@ -58,11 +58,11 @@ public interface OrderDao {
      * @param userIds userIds
      * @return order list
      */
-    List<Order> getOrdersByUser(@Param("userIds") List<Integer> userIds, Integer page, Integer num);
+    List<Order> getOrdersByUser(@Param("userIds") List<Integer> userIds, @Param("page") Integer page, @Param("num") Integer num);
 
-    List<SubOrder> getSubOrdersByUser(@Param("userIds") List<Integer> userIds, Integer page, Integer num);
+    List<SubOrder> getSubOrdersByUser(@Param("userIds") List<Integer> userIds, @Param("page") Integer page, @Param("num") Integer num);
 
-    List<SubOrder> getSalerOrderListByStatus(@Param("userId")Integer userId,@Param("status") String status,@Param("page") Integer page,@Param("num") Integer num);
+    List<SubOrder> getSalerOrderListByStatus(@Param("userId") Integer userId, @Param("status") String status, @Param("page") Integer page, @Param("num") Integer num);
 
-    List<Order> getBuyerOrdersByStatus(@Param("userId")Integer userId,@Param("status") String status,@Param("page") Integer page,@Param("num") Integer num);
+    List<Order> getBuyerOrdersByStatus(@Param("userId") Integer userId, @Param("status") String status, @Param("page") Integer page, @Param("num") Integer num);
 }

@@ -59,10 +59,10 @@
         update `order`
         <set>
             <if test="status != null and status != ''">
-                status  = #{status},
+                status = #{status},
             </if>
             <if test="address != null and address != ''">
-                address  = #{address},
+                address = #{address},
             </if>
         </set>
         where id = #{orderId}
@@ -72,10 +72,10 @@
         update `sub_order`
         <set>
             <if test="status != null and status != ''">
-                status  = #{status},
+                status = #{status},
             </if>
             <if test="address != null and address != ''">
-                address  = #{address},
+                address = #{address},
             </if>
         </set>
         where id = #{subOrderId}
@@ -113,15 +113,15 @@
     <select id="getSalerOrderListByStatus" resultMap="subOrder">
         select *
         from ultra_seller.sub_order
-        where status=#{status}
-        and saler_id=#{userId}
+        where status = #{status}
+          and saler_id = #{userId}
         limit #{page},#{num}
     </select>
     <select id="getBuyerOrdersByStatus" resultMap="order">
         select *
         from ultra_seller.`order`
-        where status=#{status}
-          and buyer_id=#{userId}
+        where status = #{status}
+          and buyer_id = #{userId}
         limit #{page},#{num}
     </select>
 
