@@ -9,9 +9,8 @@ import wallet.mapper.WalletMapper;
 import wallet.mapper.WalletRecordMapper;
 import wallet.service.WalletService;
 
-import java.util.Collection;
+import javax.annotation.Resource;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -20,8 +19,11 @@ import java.util.List;
 @Service
 public class WalletServiceImpl implements WalletService {
 
-    WalletMapper walletMapper;
-    WalletRecordMapper walletRecordMapper;
+    @Resource
+    private WalletMapper walletMapper;
+
+    @Resource
+    private WalletRecordMapper walletRecordMapper;
 
     @Override
     public int create(Wallet wallet) {

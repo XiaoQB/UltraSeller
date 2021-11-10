@@ -15,7 +15,7 @@ import cn.edu.fudan.user.service.impl.CartServiceFallBackImpl;
  */
 @RequestMapping("/cart")
 @Service
-@FeignClient(value = "US-CART-SERVICE", fallback = CartServiceFallBackImpl.class)
+@FeignClient(value = "us-cart-service", fallback = CartServiceFallBackImpl.class)
 public interface CartService {
 
     /**

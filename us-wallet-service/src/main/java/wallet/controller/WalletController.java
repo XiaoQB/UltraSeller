@@ -9,6 +9,7 @@ import wallet.utils.IdGenerator;
 import wallet.utils.JwtUtil;
 import wallet.utils.Response;
 
+import javax.annotation.Resource;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,6 +24,7 @@ import java.util.Objects;
 @RestController
 public class WalletController {
 
+    @Resource
     private WalletServiceImpl walletService;
 
     /**

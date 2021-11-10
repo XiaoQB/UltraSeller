@@ -16,12 +16,6 @@ spring:
     username: root
     password: root
 
-ribbon:
-  ReadTimeout: 5000
-  ConnectTimeout: 5000
-  MaxAutoRetries: 0
-  MaxAutoRetriesNextServer: 1
-
 management:
   endpoints:
     web:

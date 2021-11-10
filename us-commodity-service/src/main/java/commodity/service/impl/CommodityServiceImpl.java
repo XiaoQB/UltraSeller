@@ -7,35 +7,23 @@ import commodity.domain.CommodityExample;
 import commodity.mapper.CommodityMapper;
 import commodity.service.CommodityService;
 import commodity.utils.PagedGridResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class CommodityServiceImpl implements CommodityService {
-    @Autowired
+
+    @Resource
     CommodityMapper commodityMapper;
 
     @Override
     public PagedGridResult selectAll(String username, int pageNum, int pageSize, int sequence) {
         PageHelper.startPage(pageNum, pageSize);
         CommodityExample example = new CommodityExample();
-        CommodityExample.Criteria criteria = example.createCriteria();
-        //criteria.andVendornameEqualTo(username);
         List<Commodity> commodities = commodityMapper.selectByExample(example);
         return setterPagedGrid(commodities, 1);
-    }
-
-    public String test() { // 这是一个CommodityExample用于查询的例子, 相当于where后面的条件, https://zhuanlan.zhihu.com/p/42411540
-        // 具体可以搜索mybatis example类的用法
-        CommodityExample example = new CommodityExample();
-        CommodityExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo("zpw");
-        System.out.println(commodityMapper);
-        commodityMapper.countByExample(example);
-        System.out.println("zpw ok ok ok ok !!!");
-        return "ok";
     }
 
     @Override

@@ -51,7 +51,6 @@ public class UserController {
 
     @GetMapping("/info")
     public ResponseEntity<GetUserListDTO> getUserList(String role, Integer num, Integer page) {
-
         if (num == null || page == null) {
             log.info("info 查询数值错误");
             return new ResponseEntity<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
@@ -74,17 +73,17 @@ public class UserController {
             return new ResponseEntity<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
         Integer deleteResult = userService.deleteUser(role, id);
-        ResponseEntity<String> wallet_response = walletService.deleteWallet(user.getUserName());
-        ResponseEntity<String> cart_response = cartService.deleteCart(user.getUserName());
         if (deleteResult == 0) {
             return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage(), null);
         }
+        ResponseEntity<String> walletResponse = walletService.deleteWallet(user.getUserName());
+        ResponseEntity<String> cartResponse = cartService.deleteCart(user.getUserName());
+
         return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), deleteResult);
     }
 
     @PutMapping("/modify")
     public ResponseEntity<Integer> modifyUser(@RequestBody User user) {
-        //id,role不能为null
         Integer id = user.getId();
         String role = user.getRole();
         String userName = user.getUserName();
@@ -101,30 +100,23 @@ public class UserController {
             return new ResponseEntity<>(ResultCode.MODIFY_FAIL.getCode(), ResultCode.MODIFY_FAIL.getMessage(), null);
         }
         return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), modifyResult);
-
     }
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
-        if (user == null) {
-            log.info("user 参数为空");
-            return new ResponseEntity<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
-        }
         boolean result = userService.insertUser(user);
         if (result) {
-
-            ResponseEntity<String> wallet_response = walletService.createWallet(user);
-            if (wallet_response.getCode() != 201) {
+            ResponseEntity<String> walletResponse = walletService.createWallet(user);
+            if (walletResponse.getCode() != 201) {
                 userService.deleteUser(user.getRole(), user.getId());
-                return wallet_response;
+                return walletResponse;
             }
-            ResponseEntity<String> cart_response = cartService.createCart(user);
-            if (cart_response.getCode() != 200) {
+            ResponseEntity<String> cartResponse = cartService.createCart(user);
+            if (cartResponse.getCode() != 200) {
                 walletService.deleteWallet(user.getUserName());
                 userService.deleteUser(user.getRole(), user.getId());
-                return cart_response;
+                return cartResponse;
             }
-
             return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
         }
         return new ResponseEntity<>(ResultCode.REGISTER_FAIL.getCode(), ResultCode.REGISTER_FAIL.getMessage(), null);
@@ -137,7 +129,6 @@ public class UserController {
             return new ResponseEntity<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
         return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), userService.logout(userName));
-
     }
 
 }

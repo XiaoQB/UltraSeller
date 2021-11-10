@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * @author beethoven
  */
-@FeignClient(value = "US-WALLET-SERVICE", fallback = WalletServiceFallBackImpl.class)
+@FeignClient(value = "us-wallet-service", fallback = WalletServiceFallBackImpl.class)
 @RequestMapping("/wallet")
 @Service
 public interface WalletService {
