@@ -15,7 +15,7 @@
           我的订单
         </router-link></el-menu-item>
         <el-menu-item index="message-center-page"
-        ><router-link to="/salerOrder">
+        ><router-link to="/wallet">
           钱包
         </router-link></el-menu-item>
         <el-menu-item

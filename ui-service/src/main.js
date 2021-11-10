@@ -16,6 +16,7 @@ import commodityManager from "@/components/commodityManager"
 
 import saler from "@/pages/saler/saler";
 import salerOrder from "./pages/saler/salerOrder";
+import wallet from "./components/wallet";
 
 import http from './http'
 
@@ -79,6 +80,11 @@ const router = new VueRouter({
         path:'/salerOrder',
         component: salerOrder
     },
+      {
+          name:'wallet',
+          path:'/wallet',
+          component: wallet
+      },
 
 
     ]

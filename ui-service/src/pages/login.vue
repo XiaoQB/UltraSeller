@@ -150,7 +150,7 @@ export default {
 
             })
             .then(res => {
-// console.log("输出response.data.status", res.data.status);
+  // console.log("输出response.data.status", res.data.status);
               if (res.data.status === 200 && this.user.role === 'saler') {
                 window.localStorage["token"] = JSON.stringify(res.data['token']);
                 this.$router.push({ name: "saler",

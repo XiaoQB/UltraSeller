@@ -17,7 +17,7 @@
             订单信息
           </router-link></el-menu-item>
         <el-menu-item index="message-center-page"
-        > <router-link to="/packet">
+        > <router-link to="/wallet">
           钱包
         </router-link></el-menu-item
         >
