@@ -63,13 +63,9 @@
           >
             <el-card class="card" :body-style="{ padding: auto}" shadow="hover">
               <img
-<<<<<<< HEAD
+
                 :src="o.imgLink" style="width: 250px;height: 250px"
                 class="item-image"
-=======
-                  :src="commodityList[index].imgLink" style="width: 250px;height: 250px"
-                  class="item-image"
->>>>>>> master
               />
               <el-descriptions title="商品信息" :column="1">
                 <el-descriptions-item label="名字"
@@ -160,12 +156,7 @@
           <el-input v-model="commodity.imgLink"></el-input>
         </el-form-item>
         <el-form-item label="价格" prop="price">
-<<<<<<< HEAD
           <el-input  v-model="commodity.price"  ></el-input>
-=======
-
-          <el-input v-model="commodity.price"></el-input>
->>>>>>> master
         </el-form-item>
         <el-form-item label="商品描述" prop="description">
           <el-input v-model="commodity.description"></el-input>
@@ -192,11 +183,7 @@ import {baseURL} from "@/http";
 const commodityUrl = baseURL.commodity;
 export default {
   name: "saler",
-<<<<<<< HEAD
-=======
 
-
->>>>>>> master
   data() {
     return {
       showDialog2: false,

@@ -113,17 +113,8 @@
            </div>
             <el-button
                 size="mini"
-<<<<<<< HEAD
                 @click="changeAddress(scope.row)">修改地址</el-button>
-=======
-                @click="getDetail(scope.$index, scope.row)">详情
-            </el-button>
-            <el-button
-                size="mini"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)">删除
-            </el-button>
->>>>>>> master
+
           </template>
         </el-table-column>
       </el-table>
