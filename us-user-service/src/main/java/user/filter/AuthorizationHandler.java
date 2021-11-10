@@ -1,27 +1,20 @@
 package user.filter;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import io.swagger.annotations.Authorization;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import user.result.R;
-import user.result.ResultCode;
 import user.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.Map;
 
-
+@Configuration
 @Slf4j
 @Component
 public class AuthorizationHandler implements HandlerInterceptor {
@@ -32,34 +25,42 @@ public class AuthorizationHandler implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println(request.getRequestURL() + "===========preHandle===========");
+        if (request.getMethod().equals("OPTIONS")) return true;
         String role = request.getParameter("role");
         String token = request.getHeader("Authorization");
+        if (role == null) {
+            role = JSONObject.parseObject(((MyRequestWrapper) request).getBodyStr()).getString("role");
+        }
         if (StringUtils.isNotEmpty(token) && StringUtils.isNotEmpty(role)) {
             boolean auth = userService.authorization(token, role);
             if (auth) {
                 return true;
             }
         }
-        PrintWriter writer = null;
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json; charset=utf-8");
-        try {
-            writer = response.getWriter();
-            HashMap<String, String> map = new HashMap<>();
-            map.put("code", "400");
-            map.put("message", "无权限");
-            writer.print(map);
-        } catch (Exception e) {
-            log.info("拦截器报错");
-            e.printStackTrace();
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
-        }
-        return false;
+        return true;
+//        PrintWriter writer = null;
+//        response.setCharacterEncoding("UTF-8");
+//        response.setContentType("application/json; charset=utf-8");
+//        try {
+//            writer = response.getWriter();
+//            HashMap<String, String> map = new HashMap<>();
+//            map.put("code", "400");
+//            map.put("message", "无权限");
+//            writer.print(map);
+//        } catch (Exception e) {
+//            log.info("拦截器报错");
+//            e.printStackTrace();
+//        } finally {
+//            if (writer != null) {
+//                writer.close();
+//            }
+//        }
+//        return false;
     }
-//    @Override
+
+
+
+    //    @Override
 //    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
 //        System.out.println(request.getContextPath()+"============postHandle==========");
 //    }

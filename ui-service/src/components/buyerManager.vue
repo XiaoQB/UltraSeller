@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-dialog title="商品详情" :visible.sync="showDialog" width="45%">
+    <el-dialog title="买家详情" :visible.sync="showDialog" width="45%">
       <el-form ref="tableData" :model="tableData[nowRow]"  label-width="100px">
-        <el-form-item label="昵称" prop="name">
+        <el-form-item label="昵称" prop="userName">
           <span v-if="!edit">{{tableData[nowRow].userName}}</span>
           <el-input v-else v-model="tableData[nowRow].userName"></el-input>
         </el-form-item>
@@ -39,7 +39,7 @@
       </el-table-column>
       <el-table-column
           label="昵称"
-          prop="name">
+          prop="userName">
       </el-table-column>
       <el-table-column
           label="联系电话"
@@ -90,12 +90,7 @@ export default {
         pageSize:10,
       },
       tableData: [
-        {
-          id:"0",
-          userName:"keyon",
-          phone:"13567656765",
-          email:"xiepeichqwuhe@kjdbv.vom"
-        }
+
       ],
     }
   },
@@ -115,9 +110,11 @@ export default {
 
     getList() {
       var that = this;
-     this. http({
+      this.http({
         headers:{
-          'token':localStorage['token']
+
+          'Authorization':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4ODUxNGU2YS00Mjc3LTQwNDQtYjVlZS02YTRlM2UzYjkyNjkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNTI2NjQsImV4cCI6MTYzNTA1NjI2NH0.L-74lwuvnDW4gqMi2WYiN9DvWD5QKxg_EKppP6WbSks'
+
         },
         method:"get",
         url:`${userUrl}/user/info`,
@@ -128,9 +125,16 @@ export default {
         }
       })
           .then( response=> {
-            if(response.data().code === 200){
-              that.tableData = response.data.data;
-              that.dataTotalCount = response.data.data;
+            console.log(response.data.data)
+            if(response.data.code === 200){
+
+              that.$message({
+                type: 'success',
+                message: '获得列表成功'
+              });
+              this.tableData = response.data.data.userList;
+              that.dataTotalCount = response.data.data.num;
+
             }
           })
           .catch(function (error) {
@@ -150,21 +154,25 @@ export default {
       this.http({
             headers:{
               'Content-Type': 'application/json;',
-              'token':localStorage['token']
+              'Authorization':localStorage['token']
             },
             method:"delete",
-            url:`${userUrl}/usr/delete`,
+            url:`${userUrl}/user/delete`,
             transformRequest:[function (data){
               return JSON.stringify(data)
             }],
             data:{
               id:this.tableData[index].id,
-              name:this.tableData[index].name,
+              role:"buyer",
             }
           }
 
       ).then(res=>{
-        if(res.data.code()===200){
+        if(res.data.code===200){
+          this.$message({
+            type: 'success',
+            message: '删除成功：'
+          });
           this.getList();
         }else{
           this.$message({
@@ -186,7 +194,7 @@ export default {
       this.http({
         headers:{
           'Content-Type': 'application/json;',
-          'token':localStorage['token']
+          'Authorization':localStorage['token']
         },
         method:"put",
         url:`${userUrl}/user/modify`,
@@ -216,7 +224,7 @@ export default {
             });
           });
 
-      console("submit");
+
     }
 
 

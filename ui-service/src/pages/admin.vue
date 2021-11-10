@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header>
+    <el-header class="manager-header">
       管理中心
     </el-header>
     <el-main>
@@ -66,7 +66,7 @@ export default {
 };
 </script>
 <style>
-.el-header, .el-footer {
+.manager-header {
   background-color: #B3C0D1;
   color: #333;
   text-align: center;

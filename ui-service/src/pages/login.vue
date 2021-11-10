@@ -12,8 +12,8 @@
             <el-input v-model="user.password" show-password placeholder="请输入密码"></el-input>
           </el-form-item>
           <el-form-item label="角色" prop="role">
-            <el-radio v-model="user.role" label="1">买家</el-radio>
-            <el-radio v-model="user.role" label="2">卖家</el-radio>
+            <el-radio v-model="user.role" label="buyer">买家</el-radio>
+            <el-radio v-model="user.role" label="saler">卖家</el-radio>
           </el-form-item>
           <el-form-item>
             <el-button class = "button1" type="primary"  @click="doLogin()" style="border-bottom: 200px" >登 录</el-button>
@@ -24,8 +24,8 @@
       <el-dialog title="注册信息" :visible.sync="registervisible" width="30%">
         <el-form ref="register" :model="register" :rules="rules" label-width="80px">
           <el-form-item label="身份" prop="identity">
-            <el-radio v-model="register.identity" label="1">买家</el-radio>
-            <el-radio v-model="register.identity" label="2">卖家</el-radio>
+            <el-radio v-model="register.identity" label="buyer">买家</el-radio>
+            <el-radio v-model="register.identity" label="saler">卖家</el-radio>
           </el-form-item>
           <el-form-item label="账户名" prop="name">
             <el-input v-model="register.name" ></el-input>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import http from "@/http";
+
 import {baseURL} from "@/http";
 const userUrl = baseURL.user;
 
@@ -138,14 +138,19 @@ export default {
         this.$message.error("请输入密码！");
         return;
       } else {
-        http
-            .post(`${userUrl}/login`, {
-              name: this.user.username,
-              password: this.user.password,
-              role:this.user.role
+
+        this.$router.push({ name: "admin"});
+        this.http
+            .get(`${userUrl}/user/login`, {
+              params:{
+                userName: this.user.username,
+                password: this.user.password,
+                role:this.user.role
+              },
+
             })
             .then(res => {
-              // console.log("输出response.data.status", res.data.status);
+// console.log("输出response.data.status", res.data.status);
               if (res.data.status === 200 && this.user.role === 'saler') {
                 window.localStorage["token"] = JSON.stringify(res.data['token']);
                 this.$router.push({ name: "saler",
@@ -155,26 +160,27 @@ export default {
                 }});
               } else{
                 alert("您输入的用户名或密码错误！");
+
               }
             });
       }
     },
     doRegister(){
       this.submitForm('register');
-      this.axios({
+      this.http({
         headers:{
           'Content-Type': 'application/json;',
         },
         method:"post",
-        url:`${userUrl}/login`,
+        url:`${userUrl}/user/register`,
         transformRequest:[function (data){
           return JSON.stringify(data)
         }],
         data:{
-          identity:this.register.identity,
-          account:this.register.name,
+          role:this.register.identity,
+          userName:this.register.name,
           password:this.register.pwd,
-          number:this.register.number
+          phone:this.register.number
         }
       })
           .then(

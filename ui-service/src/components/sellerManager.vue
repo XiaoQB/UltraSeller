@@ -2,9 +2,9 @@
   <div>
     <el-dialog title="卖家详情" :visible.sync="showDialog" width="45%">
       <el-form ref="tableData" :model="tableData[nowRow]"  label-width="100px">
-        <el-form-item label="昵称" prop="name">
-          <span v-if="!edit">{{tableData[nowRow].name}}</span>
-          <el-input v-else v-model="tableData[nowRow].name"></el-input>
+        <el-form-item label="昵称" prop="userName">
+          <span v-if="!edit">{{tableData[nowRow].userName}}</span>
+          <el-input v-else v-model="tableData[nowRow].userName"></el-input>
         </el-form-item>
         <el-form-item label="联系电话" prop="phone">
           <span v-if="!edit">{{tableData[nowRow].phone}}</span>
@@ -34,8 +34,12 @@
         </template>
       </el-table-column>
       <el-table-column
+          label="id"
+          prop="id">
+      </el-table-column>
+      <el-table-column
           label="昵称"
-          prop="name">
+          prop="userName">
       </el-table-column>
       <el-table-column
           label="联系电话"
@@ -85,12 +89,7 @@ export default {
         pageSize:10,
       },
       tableData: [
-        {
-          name:"123",
-          phone:"13567656765",
-          email:"xiepeichqwuhe@kjdbv.vom"
 
-        }
       ],
     }
   },
@@ -114,25 +113,36 @@ export default {
         this.formInline.pType = data.pType;
         this.formInline.floor = data.floor;
       }
-
       var that = this;
-      this.axios({
-        headers:{
-          'Content-Type': 'application/json;',
-          'token':localStorage['token']
+      this.http({
+        headers: {
+
+          "Authorization": localStorage['token']
         },
         method:"get",
-        url:`${userUrl}/seller/lists`,
+        url:`${userUrl}/user/info`,
         params:{
-          role:"admin",
-          name:"admin",
-          ps:this.formInline.pageSize,
+          role:"saler",
+          num:this.formInline.pageSize,
           page:this.formInline.currentPage
         }
       })
-          .then(function (response) {
-            that.tableData = response.data.items;
-            that.dataTotalCount = response.data.total;
+          .then( response=> {
+
+            console.log(response.data.data)
+            if(response.data.code === 200) {
+              this.tableData = response.data.data;
+              that.dataTotalCount = response.data.size;
+            }
+            if(response.data.code === 200) {
+              that.$message({
+                type: 'success',
+                message: '刷新列表成功'
+              });
+              that.tableData = response.data.data.userList;
+              that.dataTotalCount = response.data.data.num;
+
+            }
           })
           .catch(function (error) {
             that.$message({
@@ -141,28 +151,37 @@ export default {
             });
           });
     },
-    getDetail(index, row) {
+    getDetail(index, row){
       this.showDialog=true;
       this.nowRow=index;
       console.log(index, row);
     },
-    handleDelete(index, row) {
+    handleDelete(index, row){
       this.http({
             headers:{
               'Content-Type': 'application/json;',
-              'token':localStorage['token']
+              'Authorization':localStorage['token']
             },
             method:"delete",
-            url:`${userUrl}/commidity`,
-            params:{
-              name:this.search,
-              ps:this.formInline.pageSize,
-              page:this.formInline.currentPage
+            url:`${userUrl}/user/delete`,
+            transformRequest:[function (data){
+              return JSON.stringify(data)
+            }],
+            data:{
+              id:this.tableData[index].id,
+
+              role:"saler",
+              userName:this.tableData[index].name,
+
             }
           }
 
       ).then(res=>{
-        if(res.data.code()===200){
+        if(res.data.code===200){
+          this.$message({
+            type: 'success',
+            message: '删除成功：'
+          });
           this.getList();
         }else{
           this.$message({
@@ -177,7 +196,7 @@ export default {
     },
     handleEdit(){
       this.edit=true;
-      console("ddd");
+
     },
     handleSubmit(){
       this.showDialog=false;
@@ -185,21 +204,23 @@ export default {
       this.http({
         headers:{
           'Content-Type': 'application/json;',
-          'token':localStorage['token']
+          'Authorization':localStorage['token']
         },
         method:"put",
-        url:`${userUrl}/commidity`,
+        url:`${userUrl}/user/modify`,
         transformRequest:[function (data){
           return JSON.stringify(data)
         }],
         data:{
-          name:this.tableData[this.nowRow].name,
+          id:this.tableData[this.nowRow].id,
+          userName:this.tableData[this.nowRow].name,
+          role:"saler",
           phone:this.tableData[this.nowRow].phone,
           email:this.tableData[this.nowRow].email,
         }
       })
           .then(response=> {
-            if(response.data.data.code===200){
+            if(response.data.code===200){
               this.$message({
                 type: 'success',
                 message: '修改成功：'
@@ -213,11 +234,10 @@ export default {
             });
           });
 
-      console("submit");
     }
 
-  }
-}
+
+}}
 </script>
 
 <style scoped>

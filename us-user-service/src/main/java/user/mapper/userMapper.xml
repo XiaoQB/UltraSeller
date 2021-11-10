@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user.mapper.UserMapper">
+
+    <insert id="insertAdmin">
+        insert into us_admin(username,password)
+        values(#{userName},#{password})
+    </insert>
+    <insert id="insertSaler">
+        insert into us_saler(username,password,phone,email)
+        values(#{userName},#{password},#{phone},#{email})
+    </insert>
+    <insert id="insertBuyer" parameterType="user.domain.entity.User" useGeneratedKeys="true" keyProperty="id">
+        insert into us_buyer(username,password,phone,email)
+        values(#{userName},#{password},#{phone},#{email})
+    </insert>
+    <select id="isExistAdmin" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(id) from us_admin
+        where username = #{userName}
+    </select>
+    <select id="isExistSaler" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(id) from us_saler
+        where username = #{userName}
+    </select>
+    <select id="isExistBuyer" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(id) from us_buyer
+        where username = #{userName}
+    </select>
+
+    <select id="getAdminByName" resultType="user.domain.entity.User" parameterType="java.lang.String">
+        select username,password
+        from us_admin where username = #{userName}
+    </select>
+    <select id="getBuyerByName" resultType="user.domain.entity.User" parameterType="java.lang.String">
+        select username,password
+        from us_buyer where username = #{userName}
+    </select>
+    <select id="getSalerByName" resultType="user.domain.entity.User" parameterType="java.lang.String">
+        select username,password
+        from us_saler where username = #{userName}
+    </select>
+    <select id="getAdmins" resultType="user.domain.entity.Admin">
+        select *
+        from ultra_seller.us_admin
+        limit #{page},#{num}
+    </select>
+
+    <select id="getBuyers" resultType="user.domain.entity.User">
+        select id,username,email,phone
+        from ultra_seller.us_buyer
+        limit #{page},#{num}
+    </select>
+
+    <select id="getSalers" resultType="user.domain.entity.User">
+        select id,username,email,phone
+        from ultra_seller.us_saler
+        limit #{page},#{num}
+    </select>
+
+    <delete id="deleteAdmin"  >
+         delete from ultra_seller.us_admin
+         where id=#{id}
+    </delete>
+
+    <delete id="deleteBuyer">
+        delete from ultra_seller.us_buyer
+        where id=#{id}
+    </delete>
+
+    <delete id="deleteSaler" parameterType="java.lang.String">
+        delete from ultra_seller.us_saler
+        where id=#{id}
+    </delete>
+
+    <update id="updateAdmin" parameterType="java.lang.String">
+        update ultra_seller.us_admin
+        set password=#{password},update_time=cast(now() as datetime)
+        where username=#{userName}
+    </update>
+
+    <update id="updateBuyerUserName">
+        update ultra_seller.us_buyer
+        set username=#{userName},update_time=cast(now() as datetime)
+        where id=#{id}
+    </update>
+
+    <update id="updateBuyerPassword">
+        update ultra_seller.us_buyer
+        set password=#{password},update_time=cast(now() as datetime)
+        where id=#{id}
+    </update>
+
+    <update id="updateBuyerPhone">
+        update ultra_seller.us_buyer
+        set phone=#{phone},update_time=cast(now() as datetime)
+        where id=#{id}
+    </update>
+
+    <update id="updateBuyerEmail">
+        update ultra_seller.us_buyer
+        set email=#{email},update_time=cast(now() as datetime)
+        where id=#{id}
+    </update>
+
+    <update id="updateSalerUserName">
+        update ultra_seller.us_saler
+        set username=#{userName},update_time=cast(now() as datetime)
+        where id=#{id}
+    </update>
+
+    <update id="updateSalerPassword">
+        update ultra_seller.us_saler
+        set password=#{password},update_time=cast(now() as datetime)
+        where id=#{id}
+    </update>
+
+    <update id="updateSalerPhone">
+        update ultra_seller.us_saler
+        set phone=#{phone},update_time=cast(now() as datetime)
+        where id=#{id}
+    </update>
+
+    <update id="updateSalerEmail">
+        update ultra_seller.us_saler
+        set email=#{email},update_time=cast(now() as datetime)
+        where id=#{id}
+    </update>
+
+    <select id="getAdminNum" resultType="java.lang.Integer">
+        select count(*)
+        from ultra_seller.us_admin;
+    </select>
+
+    <select id="getBuyerNum" resultType="java.lang.Integer">
+        select count(*)
+        from ultra_seller.us_buyer;
+    </select>
+
+    <select id="getSalerNum" resultType="java.lang.Integer">
+        select count(*)
+        from ultra_seller.us_saler;
+    </select>
+
+</mapper>
