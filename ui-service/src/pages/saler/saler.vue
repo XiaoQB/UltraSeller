@@ -31,6 +31,7 @@
                   src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                 />
               </el-avatar>
+
             </div>
           </el-col>
         </el-menu-item>
@@ -59,11 +60,21 @@
           >
             <el-card class="card" :body-style="{ padding: auto}" shadow="hover" >
               <img
-                :src="commodityList[index].imgLink" style="width: 250px;height: 250px"
+                :src="o.imgLink" style="width: 250px;height: 250px"
                 class="item-image"
               />
-              <div style="padding: 4px">
-
+              <el-descriptions title="商品信息" :column="1">
+                <el-descriptions-item label="名字"
+                >{{ o.name }}</el-descriptions-item
+                >
+                <el-descriptions-item label="分类">
+                  <el-tag size="small">{{o.description}}</el-tag>
+                </el-descriptions-item>
+                <el-descriptions-item label="价格">{{
+                    o.price
+                  }}</el-descriptions-item>
+              </el-descriptions>
+              <div style="padding: 5px">
                 <div class="bottom clearfix">
                   <!-- <time class="time">{{ currentDate }}</time> -->
                   <el-button
@@ -139,7 +150,6 @@
           <el-input  v-model="commodity.imgLink"></el-input>
         </el-form-item>
         <el-form-item label="价格" prop="price">
-
           <el-input  v-model="commodity.price"  ></el-input>
         </el-form-item>
         <el-form-item label="商品描述" prop="description">
@@ -165,11 +175,7 @@ import userService from "../../services/user"
 import {baseURL} from "@/http";
 const commodityUrl = baseURL.commodity;
 export default {
-
   name: "saler",
-
-
-
   data() {
     return {
       showDialog2:false,
