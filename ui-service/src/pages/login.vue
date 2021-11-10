@@ -152,20 +152,19 @@ export default {
 
             })
             .then(res => {
-              if (res.data.code === 200) {
-                this.$message({
-                  type: "success",
-                  message: "登录成功"
-                })
-                localStorage.setItem("token", res.data.data);
 
-                this.$router.push({
-                  name: "store",
-                  "params": {
-                    "name": this.user.username,
-                    "token": res.data.data,
-                  }
-                });
+  // console.log("输出response.data.status", res.data.status);
+              if (res.data.status === 200 && this.user.role === 'saler') {
+                window.localStorage["token"] = JSON.stringify(res.data['token']);
+                this.$router.push({ name: "saler",
+                "params":{
+                    "name":this.user.username,
+                    "token":res.data['token'],
+                }});
+              } else{
+                alert("您输入的用户名或密码错误！");
+
+
               }
             });
       }

@@ -16,6 +16,7 @@ import commodityManager from "@/components/commodityManager"
 
 import saler from "@/pages/saler/saler";
 import salerOrder from "./pages/saler/salerOrder";
+import wallet from "./components/wallet";
 
 import http from './http'
 
@@ -32,55 +33,62 @@ Vue.use(VueRouter);
 Vue.config.productionTip = false;
 
 const router = new VueRouter({
-    mode: "history",
-    routes: [
-        {
-            name: "store",
-            path: "/",
-            component: store,
-        },
-        {
-            path: "/login",
-            component: login,
-        },
-        {
-            name: "adminLogin",
-            path: "/adminLogin",
-            component: adminLogin,
-        },
-        {
-            name: "admin",
-            path: "/admin",
-            component: admin,
-            meta: {
-                requireAuth: true,
-            },
-        },
-        {
-            name: "commodityManager",
-            path: "/commodityManager",
-            component: commodityManager,
-            meta: {
-                requireAuth: true,
-            },
-        },
-        {
-            path: "*",
-            name: "404",
-            component: error,
-        },
+
+  mode: "history",
+  routes: [
+    {
+      name: "store",
+      path: "/",
+      component: store,
+    },
+    {
+      path: "/login",
+      component: login,
+    },
+    {
+      name: "adminLogin",
+      path: "/adminLogin",
+      component: adminLogin,
+    },
+    {
+      name: "admin",
+      path: "/admin",
+      component: admin,
+      meta: {
+        requireAuth: true,
+      },
+    },
+    {
+        name: "commodityManager",
+        path: "/commodityManager",
+        component: commodityManager,
+        meta: {
+            requireAuth: true,
+          },
+    },
+    {
+      path: "*",
+      name: "404",
+      component: error,
+    },
 
 
-        {
-            name: 'saler',
-            path: '/saler',
-            component: saler
-        },
-        {
-            name: 'salerOrder',
-            path: '/salerOrder',
-            component: salerOrder
-        },
+    {
+        name:'saler',
+        path:'/saler',
+        component: saler
+    },
+    {
+        name:'salerOrder',
+        path:'/salerOrder',
+        component: salerOrder
+    },
+      {
+          name:'wallet',
+          path:'/wallet',
+          component: wallet
+      },
+
 
 
     ]
