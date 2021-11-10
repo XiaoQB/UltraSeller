@@ -1,45 +1,78 @@
 <template>
   <div>
     <div>
+      <el-header class="store-menu">
+        <el-menu
+            :default-active="saler"
+            mode="horizontal"
+            @select="handleSelect"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+        >
+          <el-menu-item index="saler">商品页面</el-menu-item>
+          <el-menu-item index="/salerOrder">
+            <router-link to="/salerOrder">
+              我的订单
+            </router-link></el-menu-item>
+          <el-menu-item index="message-center-page"
+          ><router-link to="/wallet">
+            钱包
+          </router-link></el-menu-item>
+          <el-menu-item
+              index="to-login"
+              style="float: right"
+              @change="handleUser"
+              @click="onclick"
+          >
+            <el-col :span="12">
+              <div class="user-image">
+                <el-avatar :size="50" :src="circleUrl" @error="UserImageHandler">
+                  <img
+                      src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+                  />
+                </el-avatar>
+              </div>
+            </el-col>
+          </el-menu-item>
+        </el-menu>
+      </el-header>
 
-      <el-descriptions title="钱包信息">
-        <el-descriptions-item label="钱包余额">{{ money }}</el-descriptions-item>
-        <el-descriptions-item label="余额宝">888</el-descriptions-item>
-      </el-descriptions>
+      <el-main>
+        <el-descriptions title="钱包信息">
+          <el-descriptions-item label="钱包余额">{{money}}</el-descriptions-item>
+        </el-descriptions>
 
-      <el-dialog title="订单详情" :visible.sync="showDialog" width="45%">
-        <el-form ref="tableData" :model="tableData[nowRow]" label-width="100px">
-          <el-form-item label="订单编号" prop="id">
-            <span v-if="!edit">{{ tableData[nowRow].id }}</span>
-            <el-input v-else v-model="tableData[nowRow].id"></el-input>
-          </el-form-item>
-          <el-form-item label="卖家名称" prop="seller">
-            <span v-if="!edit">{{ tableData[nowRow].seller }}</span>
-            <el-input v-else v-model="tableData[nowRow].seller"></el-input>
-          </el-form-item>
-          <el-form-item
-              label="商品图"
-              prop="imgLink">
-            <img :src=tableData[nowRow].imgLink alt="" style="width: 150px;height: 150px">
-          </el-form-item>
-          <el-form-item label="价格" prop="price">
-            <span v-if="!edit">{{ tableData[nowRow].price }}</span>
-            <el-input v-else v-model="tableData[nowRow].price"></el-input>
-          </el-form-item>
-          <el-form-item label="订单状态" prop="status">
-            <span v-if="!edit">{{ tableData[nowRow].status }}</span>
-            <el-input v-else v-model="tableData[nowRow].status"></el-input>
-          </el-form-item>
-        </el-form>
 
-        //这里如何修改？
-        <span slot="footer" class="dialog-footer">
+        <el-dialog title="订单详情" :visible.sync="showDialog" width="45%">
+          <el-form ref="tableData" :model="tableData[nowRow]"  label-width="100px">
+            <el-form-item label="订单编号" prop="id">
+              <span v-if="!edit">{{tableData[nowRow].id}}</span>
+              <el-input v-else v-model="tableData[nowRow].id"></el-input>
+            </el-form-item>
+            <el-form-item label="卖家名称" prop="seller">
+              <span v-if="!edit">{{tableData[nowRow].seller}}</span>
+              <el-input v-else v-model="tableData[nowRow].seller"></el-input>
+            </el-form-item>
+            <el-form-item
+                label="商品图"
+                prop="imgLink">
+              <img :src=tableData[nowRow].imgLink alt="" style="width: 150px;height: 150px">
+            </el-form-item>
+            <el-form-item label="价格" prop="price">
+              <span v-if="!edit">{{tableData[nowRow].price}}</span>
+              <el-input v-else v-model="tableData[nowRow].price"  ></el-input>
+            </el-form-item>
+            <el-form-item label="订单状态" prop="status">
+              <span v-if="!edit">{{tableData[nowRow].status}}</span>
+              <el-input v-else v-model="tableData[nowRow].status"  ></el-input>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
           ` <el-button @click="handleEdit(nowRow)">编辑</el-button>
             <el-button type="primary" @click="handleSubmit()">提交</el-button>
         </span>
-      </el-dialog>
-    </div>
-
+        </el-dialog>
     <el-table
         :data="tableData"
         border
@@ -58,8 +91,6 @@
           label="订单编号"
           prop="id">
       </el-table-column>
-
-      //这里为啥不一样？
       <el-table-column
           label="卖家名称"
           prop="name">
@@ -88,8 +119,6 @@
           label="状态"
           prop="status">
       </el-table-column>
-
-      //需要什么操作，如何修改？
       <el-table-column
           label="操作">
         <template slot-scope="scope">
@@ -109,6 +138,11 @@
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange">
     </el-pagination>
+
+    </el-main>
+
+
+  </div>
   </div>
 </template>
 
@@ -180,7 +214,7 @@ export default {
     }
   },
 
-  //需要哪些methods
+
   methods: {
     //分页 初始页currentPage、初始每页数据数pagesize和数据testpage--->控制每页几条
     handleSizeChange: function (size) {

@@ -5,12 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.cloud.gateway.route.Route;
+import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
 
 /**
  * @author beethoven
@@ -25,7 +29,12 @@ public class GatewayFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        Route route = (Route) exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
+        if ("user-service-route".equals(route.getId())) {
+            return chain.filter(exchange);
+        }
         HttpHeaders headers = exchange.getRequest().getHeaders();
+
         String token = headers.getFirst(TOKEN);
         String role = headers.getFirst(ROLE);
         if (StringUtils.isEmpty(token) || StringUtils.isEmpty(role) || !JwtUtil.authorization(token, role)) {
