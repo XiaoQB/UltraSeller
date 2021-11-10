@@ -3,9 +3,15 @@ package wallet.service.impl;
 import org.springframework.stereotype.Service;
 import wallet.domain.Wallet;
 import wallet.domain.WalletExample;
+import wallet.domain.WalletRecord;
+import wallet.domain.WalletRecordExample;
 import wallet.mapper.WalletMapper;
+import wallet.mapper.WalletRecordMapper;
 import wallet.service.WalletService;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -15,6 +21,7 @@ import java.util.List;
 public class WalletServiceImpl implements WalletService {
 
     WalletMapper walletMapper;
+    WalletRecordMapper walletRecordMapper;
 
     @Override
     public int create(Wallet wallet) {
@@ -65,5 +72,30 @@ public class WalletServiceImpl implements WalletService {
             return null;
         }
         return walletList.get(0);
+    }
+
+    @Override
+    public List<WalletRecord> getRecords(String userName) {
+        WalletRecordExample example = new WalletRecordExample();
+        WalletRecordExample.Criteria criteria = example.createCriteria();
+        criteria.andUsernameEqualTo(userName);
+        List<WalletRecord> recordList = walletRecordMapper.selectByExample(example);
+        Collections.sort(recordList);
+        return recordList;
+    }
+
+    @Override
+    public List<WalletRecord> getRecords(String userName, int size) {
+
+        List<WalletRecord> recordList = getRecords(userName);
+        if(size > 0) {
+            recordList = recordList.subList(0, Math.min(recordList.size(), size));
+        }
+        return recordList;
+    }
+
+    @Override
+    public void updateRecord(WalletRecord record) {
+        walletRecordMapper.insert(record);
     }
 }

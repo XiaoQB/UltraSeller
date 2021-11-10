@@ -1,27 +1,21 @@
-package wallet.domain;
+package user.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-
-/**
- * @author tristonk
- */
 @Data
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Wallet {
 
     private Long walletId;
 
-    //private long userId;
 
     private String userName;
 
     private Double balance;
 
     private String role;
+
 }

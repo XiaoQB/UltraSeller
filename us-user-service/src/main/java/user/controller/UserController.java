@@ -9,6 +9,7 @@ import user.domain.entity.User;
 import user.result.R;
 import user.result.ResultCode;
 import user.service.UserService;
+import user.service.WalletService;
 import user.service.impl.UserServiceImpl;
 
 import java.util.List;
@@ -18,6 +19,9 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
     private UserServiceImpl userService;
+
+    @Autowired
+    private WalletService walletService;
 
     //测试路由
     @GetMapping("/user/get")
@@ -65,9 +69,15 @@ public class UserController {
             return new R<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
         Integer deleteResult = userService.deleteUser(role, id);
+        R<> wallet_response = walletService.deleteWallet(user.getUserName);
+        R<> cart_response = cartService.deleteCart(user.getUserName);
         if (deleteResult == 0) {
             return new R<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage(), null);
         }
+        if (wallet_response.getCode() != 200) 
+            return wallet_response;
+        if (cart_response.getCode() != 200)
+            return cart_response;
         return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), deleteResult);
     }
 
@@ -101,6 +111,21 @@ public class UserController {
         }
         boolean result = userService.insertUser(user);
         if (result) {
+
+            R<String> wallet_response = walletService.createWallet(user);
+            if (wallet_response.getCode() != 201)
+            {
+                userService.deleteUser(user.getRole(), user.getId());
+                return wallet_response;
+            }
+            R<String> cart_response = cartService.createCart(user);
+            if (cart_response.getCode() != 200)
+            {
+                walletService.deleteWallet(user.getUserName());
+                userService.deleteUser(user.getRole(), user.getId());
+                return cart_response;
+            }
+
             return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
         }
         return new R<>(ResultCode.REGISTER_FAIL.getCode(), ResultCode.REGISTER_FAIL.getMessage(), null);
