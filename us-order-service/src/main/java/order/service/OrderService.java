@@ -63,7 +63,7 @@ public interface OrderService {
      * @return order list
      * @throws CommodityServiceException CommodityServiceException
      */
-    List<OrderVO> getOrdersByUser(String token, List<Integer> userIds) throws CommodityServiceException;
+    List<OrderVO> getOrdersByUser(String token, List<Integer> userIds, int page, int num) throws CommodityServiceException;
 
     /**
      * 根据 user id 获取 order list
@@ -73,5 +73,17 @@ public interface OrderService {
      * @return order list
      * @throws CommodityServiceException CommodityServiceException
      */
-    List<SubOrder> getOrdersBySaler(String token, List<Integer> userIds) throws CommodityServiceException;
+    List<SubOrder> getOrdersBySaler(String token, List<Integer> userIds, int page, int num) throws CommodityServiceException;
+
+    List<SubOrder> getSalerOrderListByStatus(String token,Integer userId,String status,int page,int num);
+
+    /**
+     * 根据 order status 获取 order list
+     *
+     * @param token   token
+     * @param userIds userIds
+     * @return order list
+     * @throws CommodityServiceException CommodityServiceException
+     */
+    List<OrderVO> getBuyerOrderListByStatus(String token,Integer userId,String status,int page,int num) throws CommodityServiceException;
 }

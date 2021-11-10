@@ -56,14 +56,14 @@ public class OrderController {
 
     @PutMapping("/change")
     public ResponseEntity<String> changeOrder(@RequestBody UpdateOrderDTO updateOrderDTO) {
-        Order order=updateOrderDTO.getOrder();
-        List<SubOrder> subOrders=updateOrderDTO.getSubOrders();
+        Order order = updateOrderDTO.getOrder();
+        List<SubOrder> subOrders = updateOrderDTO.getSubOrders();
         try {
-            if(order!=null){
+            if (order != null) {
                 orderService.changeOrder(order);
             }
-            if(subOrders!=null){
-                subOrders.forEach((subOrder)-> orderService.changeSubOrder(subOrder));
+            if (subOrders != null) {
+                subOrders.forEach((subOrder) -> orderService.changeSubOrder(subOrder));
             }
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, null);
         } catch (Exception e) {
@@ -72,9 +72,12 @@ public class OrderController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<OrderVO>> getOrdersByUser(@RequestHeader("token") String token, @RequestParam("user_ids") List<Integer> userIds) {
+    public ResponseEntity<List<OrderVO>> getOrdersByUser(@RequestHeader("token") String token,
+                                                         @RequestParam("user_ids") List<Integer> userIds,
+                                                         @RequestParam("page") Integer page,
+                                                         @RequestParam("num") Integer num) {
         try {
-            List<OrderVO> orders = orderService.getOrdersByUser(token, userIds);
+            List<OrderVO> orders = orderService.getOrdersByUser(token, userIds, page, num);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
@@ -82,9 +85,42 @@ public class OrderController {
     }
 
     @GetMapping("/saler-list")
-    public ResponseEntity<List<SubOrder>> getOrdersBySaler(@RequestHeader("token") String token, @RequestParam("user_ids") List<Integer> userIds) {
+    public ResponseEntity<List<SubOrder>> getOrdersBySaler(@RequestHeader("token") String token,
+                                                           @RequestParam("user_ids") List<Integer> userIds,
+                                                           @RequestParam("page") Integer page,
+                                                           @RequestParam("num") Integer num) {
         try {
-            List<SubOrder> orders = orderService.getOrdersBySaler(token, userIds);
+            List<SubOrder> orders = orderService.getOrdersBySaler(token, userIds, page, num);
+            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
+        } catch (Exception e) {
+            return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
+        }
+    }
+
+    @GetMapping("/saler-order-list")
+    public ResponseEntity<List<SubOrder>> getSalerOrderListByStatus(@RequestHeader("token") String token,
+                                                                    @RequestParam("user_id") Integer userId,
+                                                                    @RequestParam("status") String status,
+                                                                    @RequestParam("page") Integer page,
+                                                                    @RequestParam("num") Integer num){
+        //todo:根据鉴权结果确定卖家，随后只显示该卖家的所有订单
+        try {
+            List<SubOrder> orders = orderService.getSalerOrderListByStatus(token,userId, status, page, num);
+            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
+        } catch (Exception e) {
+            return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
+        }
+    }
+
+    @GetMapping("/buyer-order-list")
+    public ResponseEntity<List<OrderVO>> getBuyerOrderListByStatus(@RequestHeader("token") String token,
+                                                                   @RequestParam("user_id") Integer userId,
+                                                                   @RequestParam("status") String status,
+                                                                   @RequestParam("page") Integer page,
+                                                                   @RequestParam("num") Integer num){
+        //todo:根据鉴权结果确定卖家，随后只显示该买家的所有订单
+        try {
+            List<OrderVO> orders = orderService.getBuyerOrderListByStatus(token,userId, status, page, num);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
