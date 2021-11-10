@@ -32,8 +32,6 @@
                       src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                   />
                 </el-avatar>
-
-
               </div>
             </el-col>
           </el-menu-item>
@@ -43,7 +41,6 @@
       <el-main>
         <el-descriptions title="钱包信息">
           <el-descriptions-item label="钱包余额">{{money}}</el-descriptions-item>
-          <el-descriptions-item label="余额宝">888</el-descriptions-item>
         </el-descriptions>
 
 
@@ -71,8 +68,6 @@
               <el-input v-else v-model="tableData[nowRow].status"  ></el-input>
             </el-form-item>
           </el-form>
-
-          //这里如何修改？
           <span slot="footer" class="dialog-footer">
           ` <el-button @click="handleEdit(nowRow)">编辑</el-button>
             <el-button type="primary" @click="handleSubmit()">提交</el-button>
@@ -96,8 +91,6 @@
           label="订单编号"
           prop="id">
       </el-table-column>
-
-      //这里为啥不一样？
       <el-table-column
           label="卖家名称"
           prop="name">
@@ -126,8 +119,6 @@
           label="状态"
           prop="status">
       </el-table-column>
-
-      //需要什么操作，如何修改？
       <el-table-column
           label="操作">
         <template slot-scope="scope">
@@ -223,7 +214,7 @@ export default {
     }
   },
 
-  //需要哪些methods
+
   methods: {
     //分页 初始页currentPage、初始每页数据数pagesize和数据testpage--->控制每页几条
     handleSizeChange: function (size) {
