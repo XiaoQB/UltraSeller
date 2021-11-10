@@ -18,7 +18,7 @@ services:
     restart: always
       # environment:
       # USERNAME: root
-      # PASSWORD: 75560zcb
+    # PASSWORD: 75560zcb
     # DB_URL: mysql5:3306/
     ports:
       - 8002:8002
@@ -51,4 +51,4 @@ services:
       - mynetwork
 
 networks:
-  mynetwork: {}
+  mynetwork: { }

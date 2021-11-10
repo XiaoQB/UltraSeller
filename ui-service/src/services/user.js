@@ -1,20 +1,21 @@
 import {baseURL} from "@/http";
+
 const userUrl = baseURL.user;
 
-function getLists(name,ps,page) {
+function getLists(name, ps, page) {
     var that = this;
     this.axios({
-        headers:{
+        headers: {
             'Content-Type': 'application/json;',
-            'token':localStorage['token']
+            'token': localStorage['token']
         },
-        method:"get",
-        url:`${userUrl}/seller/lists`,
-        params:{
-            role:"seller",
-            name:name,
-            ps:ps,
-            page:page
+        method: "get",
+        url: `${userUrl}/seller/lists`,
+        params: {
+            role: "seller",
+            name: name,
+            ps: ps,
+            page: page
         }
     })
         .then(function (response) {
@@ -24,10 +25,11 @@ function getLists(name,ps,page) {
         .catch(function (error) {
             that.$message({
                 type: 'error',
-                message: '系统异常：'+error
+                message: '系统异常：' + error
             });
         });
 }
+
 export default {
     getLists
 }

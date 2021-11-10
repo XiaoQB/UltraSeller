@@ -14,7 +14,7 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class WalletRecord implements Comparable<WalletRecord>{
+public class WalletRecord implements Comparable<WalletRecord> {
 
     private Long walletId;
 
@@ -28,6 +28,6 @@ public class WalletRecord implements Comparable<WalletRecord>{
 
     @Override
     public int compareTo(WalletRecord o) {
-        return this.getTime().before(o.getTime())?1:0;
+        return this.getTime().before(o.getTime()) ? 1 : 0;
     }
 }

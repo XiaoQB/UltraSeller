@@ -74,27 +74,27 @@ WSGI_APPLICATION = 'Shopcar.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 # mysql -h 47.102.97.229 -u root -p
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'ultra_seller',
-#         'USER': 'root',
-#         'PASSWORD': 'root',
-#         'HOST':'47.102.97.229',
-#         'PORT': '',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ultra_seller',
         'USER': 'root',
-        'PASSWORD': '',
-        'HOST':'localhost',
+        'PASSWORD': 'root',
+        'HOST':'47.102.97.229',
         'PORT': '',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'ultra_seller',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST':'localhost',
+#         'PORT': '',
+#     }
+# }
 
 
 

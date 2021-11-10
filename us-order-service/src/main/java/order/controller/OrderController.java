@@ -1,10 +1,10 @@
 package order.controller;
 
+import cn.edu.fudan.common.entities.dbo.Order;
+import cn.edu.fudan.common.entities.enums.ResponseEntityCode;
+import cn.edu.fudan.common.entities.enums.ResponseEntityMessage;
 import order.entities.ResponseEntity;
-import order.entities.dbo.Order;
 import order.entities.dto.CreateOrderDTO;
-import order.entities.enums.ResponseEntityCode;
-import order.entities.enums.ResponseEntityMessage;
 import order.entities.vo.OrderVO;
 import order.service.OrderService;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +34,9 @@ public class OrderController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<OrderVO> getOrderById(@RequestHeader("token") String token, @RequestParam("order_id") String orderId) {
+    public ResponseEntity<OrderVO> getOrderById(@RequestParam("order_id") String orderId) {
         try {
-            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getOrderById(token, orderId));
+            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getOrderById(orderId));
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
         }
@@ -63,9 +63,9 @@ public class OrderController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<OrderVO>> getOrdersByUser(@RequestHeader("token") String token, @RequestParam("user_ids") List<Integer> userIds) {
+    public ResponseEntity<List<OrderVO>> getOrdersByUser(@RequestParam("user_ids") List<Integer> userIds) {
         try {
-            List<OrderVO> orders = orderService.getOrdersByUser(token, userIds);
+            List<OrderVO> orders = orderService.getOrdersByUser(userIds);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);

@@ -23,14 +23,17 @@ import http from './http'
 Vue.prototype.http = http;
 
 import VueCookies from "vue-cookies";
+
 Vue.use(VueCookies);
 
 import VueRouter from "vue-router";
+
 Vue.use(VueRouter);
 
 Vue.config.productionTip = false;
 
 const router = new VueRouter({
+
   mode: "history",
   routes: [
     {
@@ -87,10 +90,11 @@ const router = new VueRouter({
       },
 
 
+
     ]
 })
 
 new Vue({
-  router,
-  render: (h) => h(App),
+    router,
+    render: (h) => h(App),
 }).$mount("#app");

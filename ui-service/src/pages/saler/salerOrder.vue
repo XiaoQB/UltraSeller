@@ -15,8 +15,10 @@
         <el-menu-item index="salerOrder">
           <router-link to="salerOrder">
             订单信息
-          </router-link></el-menu-item>
+          </router-link>
+        </el-menu-item>
         <el-menu-item index="message-center-page"
+
         > <router-link to="/wallet">
           钱包
         </router-link></el-menu-item
@@ -48,7 +50,7 @@
             :value="item.value">
         </el-option>
       </el-select>
-      <el-button @click="doSearch()" type="primary" icon="el-icon-search" align="right" >查询订单</el-button>
+      <el-button @click="doSearch()" type="primary" icon="el-icon-search" align="right">查询订单</el-button>
       <el-table
           :data="tableData"
           border
@@ -60,7 +62,7 @@
             align="center"
             width="70px">
           <template slot-scope="scope">
-            {{(formInline.currentPage-1)*formInline.pageSize + scope.$index + 1}}
+            {{ (formInline.currentPage - 1) * formInline.pageSize + scope.$index + 1 }}
           </template>
         </el-table-column>
         <el-table-column
@@ -72,7 +74,7 @@
             prop="name">
           <template slot-scope="scope">
             <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-            <span v-show="!scope.row.show">{{scope.row.name}}</span>
+            <span v-show="!scope.row.show">{{ scope.row.name }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -111,7 +113,17 @@
            </div>
             <el-button
                 size="mini"
+<<<<<<< HEAD
                 @click="changeAddress(scope.row)">修改地址</el-button>
+=======
+                @click="getDetail(scope.$index, scope.row)">详情
+            </el-button>
+            <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row)">删除
+            </el-button>
+>>>>>>> master
           </template>
         </el-table-column>
       </el-table>
@@ -146,6 +158,7 @@
 <script>
 
 import userService from "../../services/user"
+
 export default {
   name: "saler",
   data() {
@@ -155,7 +168,7 @@ export default {
       dataTotalCount: 0,      //查询条件的总数据量
       formInline: {
         currentPage: 1,
-        pageSize:10,
+        pageSize: 10,
       },
       options: [{
         value: '待付款',
@@ -190,13 +203,13 @@ export default {
   },
   methods: {
     //分页 初始页currentPage、初始每页数据数pagesize和数据testpage--->控制每页几条
-    handleSizeChange: function(size) {
+    handleSizeChange: function (size) {
       this.formInline.pageSize = size;
       this.getList();
     },
 
     // 控制页面的切换
-    handleCurrentChange: function(currentpage) {
+    handleCurrentChange: function (currentpage) {
       this.formInline.currentPage = currentpage;
       this.getList();
     },
@@ -207,7 +220,7 @@ export default {
     UserImageHandler() {
       return true;
     },
-    getList(){
+    getList() {
       userService.getLists();
     },
     shipments(row){
@@ -265,19 +278,23 @@ export default {
 .user-image {
   margin-right: 20px;
 }
+
 .input {
   width: 60%;
   display: inline-block;
 }
+
 .logo {
   width: 100%;
   height: 100%;
 }
+
 .orders {
   width: 100%;
   height: 100%;
   margin-top: 50px;
 }
+
 .item-image {
   width: 100%;
   display: block;

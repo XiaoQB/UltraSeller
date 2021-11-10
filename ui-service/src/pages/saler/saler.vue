@@ -2,33 +2,36 @@
   <div class="store">
     <el-header class="store-menu">
       <el-menu
-        :default-active="saler"
-        mode="horizontal"
-        @select="handleSelect"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
+          :default-active="saler"
+          mode="horizontal"
+          @select="handleSelect"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b"
       >
         <el-menu-item index="saler">商品页面</el-menu-item>
         <el-menu-item index="/salerOrder">
-        <router-link to="/salerOrder">
-          我的订单
-        </router-link></el-menu-item>
+          <router-link to="/salerOrder">
+            我的订单
+          </router-link>
+        </el-menu-item>
         <el-menu-item index="message-center-page"
+
         ><router-link to="/wallet">
           钱包
         </router-link></el-menu-item>
+
         <el-menu-item
-          index="to-login"
-          style="float: right"
-          @change="handleUser"
-          @click="onclick"
+            index="to-login"
+            style="float: right"
+            @change="handleUser"
+            @click="onclick"
         >
           <el-col :span="12">
             <div class="user-image">
               <el-avatar :size="50" :src="circleUrl" @error="UserImageHandler">
                 <img
-                  src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+                    src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                 />
               </el-avatar>
 
@@ -38,30 +41,35 @@
       </el-menu>
     </el-header>
     <el-header style="width: 30%; height: 30%; margin: auto">
-      <img class="logo" src="@/assets/store_logo.png" />
+      <img class="logo" src="@/assets/store_logo.png"/>
     </el-header>
     <el-main>
       <el-input
-        class="input"
-        placeholder="请输入商品"
-        v-model="input"
-        clearable
+          class="input"
+          placeholder="请输入商品"
+          v-model="input"
+          clearable
       >
       </el-input>
-      <el-button @click="doSearch()" type="primary" icon="el-icon-search" align="right" >搜索商品</el-button>
-      <el-button type="primary" class = "buttonadd" @click="addCommodity()" round style="width:100px;">添加商品</el-button>
+      <el-button @click="doSearch()" type="primary" icon="el-icon-search" align="right">搜索商品</el-button>
+      <el-button type="primary" class="buttonadd" @click="addCommodity()" round style="width:100px;">添加商品</el-button>
       <div class="goods">
         <el-row>
           <el-col
-            :span="4"
-            v-for="(o, index) in commodityList"
-            :key="o"
-            :offset="index = 0"
+              :span="4"
+              v-for="(o, index) in commodityList"
+              :key="o"
+              :offset="index = 0"
           >
-            <el-card class="card" :body-style="{ padding: auto}" shadow="hover" >
+            <el-card class="card" :body-style="{ padding: auto}" shadow="hover">
               <img
+<<<<<<< HEAD
                 :src="o.imgLink" style="width: 250px;height: 250px"
                 class="item-image"
+=======
+                  :src="commodityList[index].imgLink" style="width: 250px;height: 250px"
+                  class="item-image"
+>>>>>>> master
               />
               <el-descriptions title="商品信息" :column="1">
                 <el-descriptions-item label="名字"
@@ -79,11 +87,13 @@
                   <!-- <time class="time">{{ currentDate }}</time> -->
                   <el-button
                       size="mini"
-                      @click="getDetail(o,index)">详情</el-button>
+                      @click="getDetail(o,index)">详情
+                  </el-button>
                   <el-button
                       size="mini"
                       type="danger"
-                      @click="handleDelete(o,index)">删除</el-button>
+                      @click="handleDelete(o,index)">删除
+                  </el-button>
                 </div>
               </div>
             </el-card>
@@ -103,13 +113,13 @@
       <div class="customer-service"></div>
     </el-footer>
     <el-dialog title="商品详情" :visible.sync="showDialog" width="45%">
-      <el-form ref="commodityList" :model="commodityList[index]"  label-width="100px">
+      <el-form ref="commodityList" :model="commodityList[index]" label-width="100px">
         <el-form-item label="编号" prop="id">
-          <span v-if="!edit">{{commodityList[index].id}}</span>
+          <span v-if="!edit">{{ commodityList[index].id }}</span>
           <el-input v-else v-model="commodityList[index].id"></el-input>
         </el-form-item>
         <el-form-item label="商品名称" prop="name">
-          <span v-if="!edit">{{commodityList[index].name}}</span>
+          <span v-if="!edit">{{ commodityList[index].name }}</span>
           <el-input v-else v-model="commodityList[index].name"></el-input>
         </el-form-item>
         <el-form-item
@@ -118,19 +128,19 @@
           <img :src=commodityList[index].imgLink alt="" style="width: 150px;height: 150px">
         </el-form-item>
         <el-form-item label="价格" prop="price">
-          <span v-if="!edit">{{commodityList[index].price}}</span>
-          <el-input v-else v-model="commodityList[index].price"  ></el-input>
+          <span v-if="!edit">{{ commodityList[index].price }}</span>
+          <el-input v-else v-model="commodityList[index].price"></el-input>
         </el-form-item>
         <el-form-item label="商品描述" prop="description">
-          <span v-if="!edit">{{commodityList[index].description}}</span>
-          <el-input  v-else v-model="commodityList[index].description" ></el-input>
+          <span v-if="!edit">{{ commodityList[index].description }}</span>
+          <el-input v-else v-model="commodityList[index].description"></el-input>
         </el-form-item>
         <el-form-item label="库存" prop="inventory">
-          <span v-if="!edit">{{commodityList[index].inventory}}</span>
-          <el-input v-else v-model="commodityList[index].inventory" ></el-input>
+          <span v-if="!edit">{{ commodityList[index].inventory }}</span>
+          <el-input v-else v-model="commodityList[index].inventory"></el-input>
         </el-form-item>
         <el-form-item label="所有者名字" prop="vendorName">
-          <span v-if="!edit">{{commodityList[index].vendorName}}</span>
+          <span v-if="!edit">{{ commodityList[index].vendorName }}</span>
           <el-input v-else v-model="commodityList[index].vendorName"></el-input>
         </el-form-item>
       </el-form>
@@ -140,23 +150,28 @@
         </span>
     </el-dialog>
     <el-dialog title="添加商品" :visible.sync="showDialog2" width="45%">
-      <el-form ref="commodityList" :model="commodity"  label-width="100px">
+      <el-form ref="commodityList" :model="commodity" label-width="100px">
         <el-form-item label="商品名称" prop="name">
-          <el-input  v-model="commodity.name"></el-input>
+          <el-input v-model="commodity.name"></el-input>
         </el-form-item>
         <el-form-item placeholder="目前只支持输入图片链接"
                       label="图片"
                       prop="imgLink">
-          <el-input  v-model="commodity.imgLink"></el-input>
+          <el-input v-model="commodity.imgLink"></el-input>
         </el-form-item>
         <el-form-item label="价格" prop="price">
+<<<<<<< HEAD
           <el-input  v-model="commodity.price"  ></el-input>
+=======
+
+          <el-input v-model="commodity.price"></el-input>
+>>>>>>> master
         </el-form-item>
         <el-form-item label="商品描述" prop="description">
-          <el-input   v-model="commodity.description" ></el-input>
+          <el-input v-model="commodity.description"></el-input>
         </el-form-item>
         <el-form-item label="库存" prop="inventory">
-          <el-input  v-model="commodity.inventory" ></el-input>
+          <el-input v-model="commodity.inventory"></el-input>
         </el-form-item>
         <el-form-item label="所有者名字" prop="vendorName">
           <el-input v-model="commodity.vendorName"></el-input>
@@ -173,104 +188,110 @@
 
 import userService from "../../services/user"
 import {baseURL} from "@/http";
+
 const commodityUrl = baseURL.commodity;
 export default {
   name: "saler",
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> master
   data() {
     return {
-      showDialog2:false,
-      showDialog:false,
-      edit:false,
-      index:0,
+      showDialog2: false,
+      showDialog: false,
+      edit: false,
+      index: 0,
       salerPage: "saler",
       input: "",
-      commodityList:[
+      commodityList: [
         {
-          id:"1",
-          name:"vhjl",
-          imgLink:"https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
-          price:"ass",
-          description:"sdc",
-          inventory:"asadfa",
-          vendorName:"asd",
+          id: "1",
+          name: "vhjl",
+          imgLink: "https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
+          price: "ass",
+          description: "sdc",
+          inventory: "asadfa",
+          vendorName: "asd",
         },
         {
-          id:"1",
-          name:"vhjl",
-          imgLink:"https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
-          price:"ass",
-          description:"sdc",
-          inventory:"asadfa",
-          vendorName:"asd",
+          id: "1",
+          name: "vhjl",
+          imgLink: "https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
+          price: "ass",
+          description: "sdc",
+          inventory: "asadfa",
+          vendorName: "asd",
         },
         {
-          id:"1",
-          name:"vhjl",
-          imgLink:"https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
-          price:"ass",
-          description:"sdc",
-          inventory:"asadfa",
-          vendorName:"asd",
+          id: "1",
+          name: "vhjl",
+          imgLink: "https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
+          price: "ass",
+          description: "sdc",
+          inventory: "asadfa",
+          vendorName: "asd",
         },
         {
-          id:"1",
-          name:"vhjl",
-          imgLink:"https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
-          price:"ass",
-          description:"sdc",
-          inventory:"asadfa",
-          vendorName:"asd",
+          id: "1",
+          name: "vhjl",
+          imgLink: "https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
+          price: "ass",
+          description: "sdc",
+          inventory: "asadfa",
+          vendorName: "asd",
         },
         {
-          id:"1",
-          name:"vhjl",
-          imgLink:"https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
-          price:"ass",
-          description:"sdc",
-          inventory:"asadfa",
-          vendorName:"asd",
+          id: "1",
+          name: "vhjl",
+          imgLink: "https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
+          price: "ass",
+          description: "sdc",
+          inventory: "asadfa",
+          vendorName: "asd",
         },
         {
-          id:"1",
-          name:"vhjl",
-          imgLink:"https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
-          price:"ass",
-          description:"sdc",
-          inventory:"asadfa",
-          vendorName:"asd",
+          id: "1",
+          name: "vhjl",
+          imgLink: "https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
+          price: "ass",
+          description: "sdc",
+          inventory: "asadfa",
+          vendorName: "asd",
         },
 
 
       ],
       commodity: {
-        id:"",
-        name:"",
-        imgLink:"",
-        price:"",
-        description:"",
-        inventory:"",
-        vendorName:"",
+        id: "",
+        name: "",
+        imgLink: "",
+        price: "",
+        description: "",
+        inventory: "",
+        vendorName: "",
 
       },
       dataTotalCount: 0,      //查询条件的总数据量
       formInline: {
         currentPage: 1,
-        pageSize:10,
+        pageSize: 10,
       },
       // currentDate: new Date()
     };
   },
   methods: {
-    mounted(){
+    mounted() {
       this.getList();
     },
-    handleSizeChange: function(size) {
+    handleSizeChange: function (size) {
       this.formInline.pageSize = size;
       this.getList();
     },
 
     // 控制页面的切换
-    handleCurrentChange: function(currentpage) {
+    handleCurrentChange: function (currentpage) {
       this.formInline.currentPage = currentpage;
       this.getList();
     },
@@ -281,31 +302,30 @@ export default {
     UserImageHandler() {
       return true;
     },
-    getList(){
+    getList() {
       userService.getLists();
     },
-    getDetail(o,index){
-      this.showDialog=true;
-      this.index=index;
+    getDetail(o, index) {
+      this.showDialog = true;
+      this.index = index;
       console.log(o, index);
     },
 
     handleDelete(o, index) {
       this.http({
-            headers:{
-              'token':localStorage['token']
+            headers: {
+              'token': localStorage['token']
             },
-            method:"delete",
-            url:`${commodityUrl}/commidity/item`,
-            params:{
-              id:o.id
+            method: "delete",
+            url: `${commodityUrl}/commidity/item`,
+            params: {
+              id: o.id
             }
           }
-
-      ).then(res=>{
-        if(res.data.code()===200){
+      ).then(res => {
+        if (res.data.code() === 200) {
           this.getList();
-        }else{
+        } else {
           this.$message({
             type: 'error',
             message: '系统异常：'
@@ -316,35 +336,35 @@ export default {
       console.log(index, o);
 
     },
-    handleEdit(){
-      this.edit=true;
+    handleEdit() {
+      this.edit = true;
       console("ddd");
     },
-    handleSubmit(){
-      this.showDialog=false;
-      this.edit=false;
+    handleSubmit() {
+      this.showDialog = false;
+      this.edit = false;
       this.http({
-        headers:{
+        headers: {
           'Content-Type': 'application/json;',
-          'token':localStorage['token']
+          'token': localStorage['token']
         },
-        method:"put",
-        url:`${commodityUrl}/commidity/item`,
-        transformRequest:[function (data){
+        method: "put",
+        url: `${commodityUrl}/commidity/item`,
+        transformRequest: [function (data) {
           return JSON.stringify(data)
         }],
-        data:{
-          id:this.commodityList[this.index].id,
-          name:this.commodityList[this.index].name,
-          imgLink:this.commodityList[this.index].imgLink,
-          price:this.commodityList[this.index].price,
-          description:this.commodityList[this.index].description,
-          inventory:this.commodityList[this.index].inventory,
-          vendorName:this.commodityList[this.index].vendorName,
+        data: {
+          id: this.commodityList[this.index].id,
+          name: this.commodityList[this.index].name,
+          imgLink: this.commodityList[this.index].imgLink,
+          price: this.commodityList[this.index].price,
+          description: this.commodityList[this.index].description,
+          inventory: this.commodityList[this.index].inventory,
+          vendorName: this.commodityList[this.index].vendorName,
         }
       })
-          .then(response=> {
-            if(response.data.data.code===200){
+          .then(response => {
+            if (response.data.data.code === 200) {
               this.$message({
                 type: 'success',
                 message: '修改成功：'
@@ -354,34 +374,32 @@ export default {
           .catch(function (error) {
             this.$message({
               type: 'error',
-              message: '系统异常：'+error
+              message: '系统异常：' + error
             });
           });
 
     },
 
 
-
-    doSearch(search){
+    doSearch(search) {
       this.http({
-            headers:{
-              'token':localStorage['token']
+            headers: {
+              'token': localStorage['token']
             },
-            method:"get",
-            url:`${commodityUrl}/commidity`,
-            params:{
-              q:search,
-              pagesize:this.formInline.pageSize,
-              page:this.formInline.currentPage,
-              seq:this.seq
+            method: "get",
+            url: `${commodityUrl}/commidity`,
+            params: {
+              q: search,
+              pagesize: this.formInline.pageSize,
+              page: this.formInline.currentPage,
+              seq: this.seq
             }
           }
-
-      ).then(res=>{
-        if(res.data.code()===200){
-          this.commodityList=res.data.rows;
+      ).then(res => {
+        if (res.data.code() === 200) {
+          this.commodityList = res.data.rows;
           this.dataTotalCount = res.data.records;
-        }else{
+        } else {
           this.$message({
             type: 'error',
             message: '系统异常：'
@@ -389,32 +407,32 @@ export default {
         }
       })
     },
-    addCommodity(){
-      this.showDialog2=true;
+    addCommodity() {
+      this.showDialog2 = true;
     },
-    handleAdd(){
-      this.showDialog2=false;
+    handleAdd() {
+      this.showDialog2 = false;
       this.http({
-        headers:{
+        headers: {
           'Content-Type': 'application/json;',
-          'token':localStorage['token']
+          'token': localStorage['token']
         },
-        method:"put",
-        url:`${commodityUrl}/commidity/add`,
-        transformRequest:[function (data){
+        method: "put",
+        url: `${commodityUrl}/commidity/add`,
+        transformRequest: [function (data) {
           return JSON.stringify(data)
         }],
-        data:{
-          name:this.commodity.name,
-          imgLink:this.commodity.imgLink,
-          price:this.commodity.price,
-          description:this.commodity.description,
-          inventory:this.commodity.inventory,
-          vendorName:this.commodity.vendorName,
+        data: {
+          name: this.commodity.name,
+          imgLink: this.commodity.imgLink,
+          price: this.commodity.price,
+          description: this.commodity.description,
+          inventory: this.commodity.inventory,
+          vendorName: this.commodity.vendorName,
         }
       })
-          .then(response=> {
-            if(response.data.data.code===200){
+          .then(response => {
+            if (response.data.data.code === 200) {
               this.$message({
                 type: 'success',
                 message: '添加成功：'
@@ -424,7 +442,7 @@ export default {
           .catch(function (error) {
             this.$message({
               type: 'error',
-              message: '系统异常：'+error
+              message: '系统异常：' + error
             });
           });
     }
@@ -438,19 +456,23 @@ export default {
 .user-image {
   margin-right: 20px;
 }
+
 .input {
   width: 60%;
   display: inline-block;
 }
+
 .logo {
   width: 100%;
   height: 100%;
 }
+
 .goods {
   width: 100%;
   height: 100%;
   margin-top: 50px;
 }
+
 .item-image {
   width: 100%;
   display: block;
