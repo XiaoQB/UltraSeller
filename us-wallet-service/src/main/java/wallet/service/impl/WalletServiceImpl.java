@@ -33,6 +33,7 @@ public class WalletServiceImpl implements WalletService {
         if (walletMapper.countByExample(example) != 0) {
             return -1;
         }
+        wallet.setBalance(0.00);
         walletMapper.insert(wallet);
         return 0;
     }
@@ -43,11 +44,14 @@ public class WalletServiceImpl implements WalletService {
         WalletExample.Criteria criteria = example.createCriteria();
         criteria.andUsernameEqualTo(userName);
         List<Wallet> walletList = walletMapper.selectByExample(example);
-        if (walletList.isEmpty()) {
+        if (walletList == null || walletList.size() !=1) {
             return -1;
         }
         Wallet wallet = walletList.get(0);
-        wallet.setBalance(wallet.getBalance() + difference);
+        if(wallet.getBalance() + difference < 0){
+            return -2;
+        }
+        wallet.setBalance((double)Math.round((wallet.getBalance() + difference)*100)/100);
         walletMapper.updateByExample(wallet, example);
         return 0;
     }

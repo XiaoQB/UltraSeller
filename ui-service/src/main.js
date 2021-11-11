@@ -11,14 +11,13 @@ import admin from "@/pages/admin";
 
 import store from "@/pages/store/index";
 import error from "@/pages/404";
-import commodityManager from "@/components/commodityManager"
-
+import commodityManager from "@/components/commodityManager";
 
 import saler from "@/pages/saler/saler";
 import salerOrder from "./pages/saler/salerOrder";
 import wallet from "./components/wallet";
 
-import http from './http'
+import http from "./http";
 
 Vue.prototype.http = http;
 
@@ -33,7 +32,6 @@ Vue.use(VueRouter);
 Vue.config.productionTip = false;
 
 const router = new VueRouter({
-
   mode: "history",
   routes: [
     {
@@ -85,11 +83,13 @@ const router = new VueRouter({
       path: "*",
       name: "404",
       component: error,
+
     }
   ]
 })
 
+
 new Vue({
-    router,
-    render: (h) => h(App),
+  router,
+  render: (h) => h(App),
 }).$mount("#app");
