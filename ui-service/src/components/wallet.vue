@@ -10,10 +10,14 @@
             text-color="#fff"
             active-text-color="#ffd04b"
         >
-          <el-menu-item index="saler">商品页面</el-menu-item>
+          <el-menu-item index="saler">
+            <router-link to="/saler">
+              商品信息
+            </router-link>
+          </el-menu-item>
           <el-menu-item index="/salerOrder">
             <router-link to="/salerOrder">
-              我的订单
+              订单信息
             </router-link></el-menu-item>
           <el-menu-item index="message-center-page"
           ><router-link to="/wallet">
@@ -37,13 +41,10 @@
           </el-menu-item>
         </el-menu>
       </el-header>
-
       <el-main>
         <el-descriptions title="钱包信息">
           <el-descriptions-item label="钱包余额">{{money}}</el-descriptions-item>
         </el-descriptions>
-
-
         <el-dialog title="订单详情" :visible.sync="showDialog" width="45%">
           <el-form ref="tableData" :model="tableData[nowRow]"  label-width="100px">
             <el-form-item label="订单编号" prop="id">
@@ -68,10 +69,7 @@
               <el-input v-else v-model="tableData[nowRow].status"  ></el-input>
             </el-form-item>
           </el-form>
-          <span slot="footer" class="dialog-footer">
-          ` <el-button @click="handleEdit(nowRow)">编辑</el-button>
-            <el-button type="primary" @click="handleSubmit()">提交</el-button>
-        </span>
+
         </el-dialog>
     <el-table
         :data="tableData"
@@ -83,41 +81,18 @@
           label="序号"
           align="center"
           width="70px">
-        <template slot-scope="scope">
-          {{ (formInline.currentPage - 1) * formInline.pageSize + scope.$index + 1 }}
-        </template>
       </el-table-column>
       <el-table-column
           label="订单编号"
-          prop="id">
+          prop="orderId">
       </el-table-column>
       <el-table-column
-          label="卖家名称"
-          prop="name">
-        <template slot-scope="scope">
-          <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.name }}</span>
-        </template>
+          label="订单时间"
+          prop="time">
       </el-table-column>
-      <el-table-column
-          label="商品图"
-          prop="imgLink">
-        <template slot-scope="scope">
-          <el-popover placement="top-start" title="" trigger="hover">
-            <img :src=scope.row.imgLink alt="" style="width: 150px;height: 150px">
-            <img slot="reference" :src=scope.row.imgLink style="width: 100px;height: 100px">
-          </el-popover>
-        </template>
-      </el-table-column>
-
-
       <el-table-column
           label="价格"
-          prop="price">
-      </el-table-column>
-      <el-table-column
-          label="状态"
-          prop="status">
+          prop="amount">
       </el-table-column>
       <el-table-column
           label="操作">
@@ -129,19 +104,7 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <el-pagination background
-                   layout="total, prev, pager, next, sizes,jumper"
-                   :page-sizes="[5, 10, 15]"
-                   :page-size="formInline.pageSize"
-                   :total="dataTotalCount"
-                   @size-change="handleSizeChange"
-                   @current-change="handleCurrentChange">
-    </el-pagination>
-
     </el-main>
-
-
   </div>
   </div>
 </template>
@@ -168,39 +131,11 @@ export default {
       },
       tableData: [
         {
-          id: "20210101001",
-          seller: "达利园面包旗舰店",
-          imgLink: "https://ts3.cn.mm.bing.net/th/id/OIP-C.305fYj0cWoTv_Q8TIbJ02wHaHG?w=196&h=188&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "10",
-          status: "已完成",
-          vendorName: "test01",
-        },
-        {
-          id: "20210101002",
-          seller: "茅台旗舰店",
-          imgLink: "https://ts1.cn.mm.bing.net/th/id/OIP-C.PWh-k1csn9MRuq9-kqf0wwHaLG?w=196&h=293&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "100",
-          status: "已完成",
-          vendorName: "test01",
-        },
-        {
-          id: "20210101003",
-          seller: "心相印抽纸旗舰店",
-          imgLink: "https://ts2.cn.mm.bing.net/th/id/OIP-C.3yAPWpweG_grlE-hx0GSbQHaE7?w=255&h=180&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "10",
-          status: "已完成",
-          vendorName: "test01",
-        },
-        {
-          id: "20210101004",
-          seller: "农夫山泉旗舰店",
-          imgLink: "https://ts3.cn.mm.bing.net/th/id/OIP-C.fIfwcxCc6sjAUWxifyiJQAHaHa?w=205&h=205&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "2",
-          status: "已完成",
-          vendorName: "test01",
-        },
+          orderId: "20210101001",
+          time:"2121/9/0 23:00::00",
+          amount:"+70"
 
-
+        },
       ],
       commodity1: {
         id: "",
@@ -213,28 +148,18 @@ export default {
       }
     }
   },
-
-
+  mounted() {
+    this.getMoney();
+    this.getList()
+  },
   methods: {
-    //分页 初始页currentPage、初始每页数据数pagesize和数据testpage--->控制每页几条
-    handleSizeChange: function (size) {
-      this.formInline.pageSize = size;
-      this.getList();
-    },
-
-    // 控制页面的切换
-    handleCurrentChange: function (currentpage) {
-      this.formInline.currentPage = currentpage;
-      this.getList();
-    },
     getMoney() {
       this.http({
         headers: {
           'token': localStorage['token']
         },
         method: "get",
-        //改
-        url: `${commodityUrl}/commodity/lists`,
+        url: `/commodity/lists`,
         params: {
           username: "tet",
         }
@@ -250,8 +175,6 @@ export default {
           });
 
     },
-
-
     getList() {
       var that = this;
       this.http({
@@ -269,8 +192,7 @@ export default {
         }
       })
           .then(response => {
-            that.tableData = response.data.rows;
-            that.dataTotalCount = response.data.records;
+            that.tableData = response.data.data;
           })
           .catch(function (error) {
             that.$message({
@@ -280,8 +202,22 @@ export default {
           });
     },
     getDetail(index, row) {
-      this.showDialog = true;
-      this.nowRow = index;
+      this.http({
+        headers:{
+          'token':localStorage['token']
+        },
+        method:"get",
+        url:"/order/get",
+        params:{
+          id:row.orderId
+        }
+
+
+      }).then(response=>{
+        if(response.data.code===200){
+          this.commodity1 = response.data
+        }
+      })
       console.log(index, row);
     },
     handleDelete(index, row) {
@@ -290,7 +226,7 @@ export default {
               'token': 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiYThlYmM2MC01MmQ1LTQ2NTctOTMzZi0zMWIzNGNkYjc4YTkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNjA4NzcsImV4cCI6MTYzNTA2NDQ3N30.Yirgbn607G0W3cWwb74JJTZpJILlTudikQjnao1I0cc'
             },
             method: "delete",
-            url: `${commodityUrl}/commodity/item/${row.id}`,
+            url: `/commodity/item/${row.id}`,
           }
       ).then(res => {
         if (res.data.code === 200) {
@@ -348,7 +284,6 @@ export default {
             });
           });
     },
-
 
     doSearch() {
       this.http({
@@ -408,10 +343,7 @@ export default {
               });
             }
           })
-
     }
-
-
   }
 }
 </script>

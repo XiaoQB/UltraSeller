@@ -37,6 +37,21 @@ const router = new VueRouter({
   mode: "history",
   routes: [
     {
+      name:'saler',
+      path:'/saler',
+      component: saler
+    },
+    {
+      name:'salerOrder',
+      path:'/salerOrder',
+      component: salerOrder
+    },
+    {
+      name:'wallet',
+      path:'/wallet',
+      component: wallet
+    },
+    {
       name: "store",
       path: "/",
       component: store,
@@ -59,39 +74,19 @@ const router = new VueRouter({
       },
     },
     {
-        name: "commodityManager",
-        path: "/commodityManager",
-        component: commodityManager,
-        meta: {
-            requireAuth: true,
-          },
+      name: "commodityManager",
+      path: "/commodityManager",
+      component: commodityManager,
+      meta: {
+        requireAuth: true,
+      },
     },
     {
       path: "*",
       name: "404",
       component: error,
-    },
-
-
-    {
-        name:'saler',
-        path:'/saler',
-        component: saler
-    },
-    {
-        name:'salerOrder',
-        path:'/salerOrder',
-        component: salerOrder
-    },
-      {
-          name:'wallet',
-          path:'/wallet',
-          component: wallet
-      },
-
-
-
-    ]
+    }
+  ]
 })
 
 new Vue({

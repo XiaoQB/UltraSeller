@@ -9,10 +9,10 @@
           text-color="#fff"
           active-text-color="#ffd04b"
       >
-        <el-menu-item index="saler">商品页面</el-menu-item>
+        <el-menu-item index="saler">商品信息</el-menu-item>
         <el-menu-item index="/salerOrder">
           <router-link to="/salerOrder">
-            我的订单
+            订单信息
           </router-link>
         </el-menu-item>
         <el-menu-item index="message-center-page"
@@ -24,12 +24,10 @@
         <el-menu-item
             index="to-login"
             style="float: right"
-            @change="handleUser"
-            @click="onclick"
         >
           <el-col :span="12">
             <div class="user-image">
-              <el-avatar :size="50" :src="circleUrl" @error="UserImageHandler">
+              <el-avatar :size="50" >
                 <img
                     src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                 />
@@ -61,7 +59,7 @@
               :key="o"
               :offset="index = 0"
           >
-            <el-card class="card" :body-style="{ padding: auto}" shadow="hover">
+            <el-card class="card"  shadow="hover">
               <img
 
                 :src="o.imgLink" style="width: 250px;height: 250px"
@@ -177,10 +175,6 @@
 
 <script>
 
-import userService from "../../services/user"
-import {baseURL} from "@/http";
-
-const commodityUrl = baseURL.commodity;
 export default {
   name: "saler",
 
@@ -247,8 +241,6 @@ export default {
           inventory: "asadfa",
           vendorName: "asd",
         },
-
-
       ],
       commodity: {
         id: "",
@@ -265,13 +257,13 @@ export default {
         currentPage: 1,
         pageSize: 10,
       },
-      // currentDate: new Date()
     };
   },
+  mounted(){
+    this.getList()
+  },
   methods: {
-    mounted() {
-      this.getList();
-    },
+
     handleSizeChange: function (size) {
       this.formInline.pageSize = size;
       this.getList();
@@ -290,7 +282,29 @@ export default {
       return true;
     },
     getList() {
-      userService.getLists();
+      this.http({
+        headers: {
+          'token': localStorage['token']
+        },
+        method: "get",
+        url: `/seller/lists`,
+        params: {
+          role: "seller",
+          name: localStorage['user_id'],
+          ps: this.formInline.pageSize,
+          page: this.formInline.currentPage
+        }
+      })
+          .then(function (response) {
+            this.commodityList = response.data.items;
+            this.dataTotalCount = response.data.total;
+          })
+          .catch(function (error) {
+            this.$message({
+              type: 'error',
+              message: '系统异常：' + error
+            });
+          });
     },
     getDetail(o, index) {
       this.showDialog = true;
@@ -304,7 +318,7 @@ export default {
               'token': localStorage['token']
             },
             method: "delete",
-            url: `${commodityUrl}/commidity/item`,
+            url: `/commidity/item`,
             params: {
               id: o.id
             }
@@ -336,7 +350,7 @@ export default {
           'token': localStorage['token']
         },
         method: "put",
-        url: `${commodityUrl}/commidity/item`,
+        url: `/commidity/item`,
         transformRequest: [function (data) {
           return JSON.stringify(data)
         }],
@@ -374,7 +388,7 @@ export default {
               'token': localStorage['token']
             },
             method: "get",
-            url: `${commodityUrl}/commidity`,
+            url: `/commidity`,
             params: {
               q: search,
               pagesize: this.formInline.pageSize,
@@ -405,7 +419,7 @@ export default {
           'token': localStorage['token']
         },
         method: "put",
-        url: `${commodityUrl}/commidity/add`,
+        url: `/commidity/add`,
         transformRequest: [function (data) {
           return JSON.stringify(data)
         }],

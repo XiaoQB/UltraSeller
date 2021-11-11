@@ -26,12 +26,10 @@
         <el-menu-item
             index="to-login"
             style="float: right"
-            @change="handleUser"
-            @click="onclick"
         >
           <el-col :span="12">
             <div class="user-image">
-              <el-avatar :size="50" :src="circleUrl" @error="UserImageHandler">
+              <el-avatar :size="50">
                 <img
                     src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                 />
@@ -114,7 +112,6 @@
             <el-button
                 size="mini"
                 @click="changeAddress(scope.row)">修改地址</el-button>
-
           </template>
         </el-table-column>
       </el-table>
@@ -147,11 +144,8 @@
 </template>
 
 <script>
-
-import userService from "../../services/user"
-
 export default {
-  name: "saler",
+  name: "salerOrder",
   data() {
     return {
       showDialog:false,
@@ -192,17 +186,21 @@ export default {
       // currentDate: new Date()
     };
   },
+  mounted(){
+      this.getOrderList()
+    console.log("sfasdfsd")
+  },
   methods: {
     //分页 初始页currentPage、初始每页数据数pagesize和数据testpage--->控制每页几条
     handleSizeChange: function (size) {
       this.formInline.pageSize = size;
-      this.getList();
+      this.getOrderList();
     },
 
     // 控制页面的切换
     handleCurrentChange: function (currentpage) {
       this.formInline.currentPage = currentpage;
-      this.getList();
+      this.getOrderList();
     },
     handleSelect(key) {
       this.salerPage = key;
@@ -211,18 +209,47 @@ export default {
     UserImageHandler() {
       return true;
     },
-    getList() {
-      userService.getLists();
-    },
+    getOrderList() {
+        var that = this;
+        this.http({
+          headers: {
+            'Content-Type': 'application/json;',
+            'token': localStorage['token']
+          },
+          method: "get",
+          url: '/saler-list',
+          params: {
+            user_id:localStorage["use_id"],
+            page:this.formInline.currentPage,
+            num:this.formInline.pageSize
+          }
+        })
+            .then(response=> {
+              if(response.data.code===200){
+                this.dataTotalCount = response.data
+
+              }
+            })
+            .catch(function (error) {
+              that.$message({
+                type: 'error',
+                message: '系统异常：' + error
+              });
+            });
+      },
+
     shipments(row){
       this.http({
         headers:{
+          'Content-Type': 'application/json;',
           'token':window.localStorage['token']
         },
         method:"put",
-        url:"",
-        params:{
-          orderId:row.id,
+        url:"/order/change",
+        data:{
+          subOrderId:row.id,
+          address:row.address,
+          status:""
         }
       }).then(response=>{
         if(response.data.code===200){
@@ -232,7 +259,7 @@ export default {
             message: '发货成功'
           });
         }
-        this.getList()
+        this.getOrderList()
 
       })
     },
@@ -242,11 +269,16 @@ export default {
           'token':window.localStorage['token']
         },
         method:"get",
+        url:"/order/saler-orders-status",
         params:{
-          status:this.status
+          user_id:localStorage['user_id'],
+          status:this.status,
+          page:this.formInline.currentPage,
+          num:this.formInline.pageSize
         }
       }).then(response=>{
         if(response.data.code===200){
+
           this.$message({
             type: 'success',
             message:'查询成功'

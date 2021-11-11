@@ -58,11 +58,6 @@
 
 <script>
 
-import {baseURL} from "@/http";
-
-const userUrl = baseURL.user;
-
-
 export default {
   name: "login",
   data() {
@@ -140,22 +135,19 @@ export default {
         this.$message.error("请输入密码！");
         return;
       } else {
-
         this.$router.push({name: "admin"});
         this.http
-            .get(`${userUrl}/user/login`, {
+            .get(`/user/login`, {
               params: {
                 userName: this.user.username,
                 password: this.user.password,
                 role: this.user.role
               },
-
             })
             .then(res => {
-
-  // console.log("输出response.data.status", res.data.status);
               if (res.data.status === 200 && this.user.role === 'saler') {
-                window.localStorage["token"] = JSON.stringify(res.data['token']);
+                window.localStorage["token"] = JSON.stringify(res.data['token'])
+                window.localStorage['user_id'] = this.user.username
                 this.$router.push({ name: "saler",
                 "params":{
                     "name":this.user.username,
@@ -163,8 +155,6 @@ export default {
                 }});
               } else{
                 alert("您输入的用户名或密码错误！");
-
-
               }
             });
       }
@@ -176,7 +166,7 @@ export default {
           'Content-Type': 'application/json;',
         },
         method: "post",
-        url: `${userUrl}/user/register`,
+        url: `/user/register`,
         transformRequest: [function (data) {
           return JSON.stringify(data)
         }],
