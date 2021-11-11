@@ -54,7 +54,7 @@ if __name__ == '__main__':
     # django组
     group = 'hsc-nwpu-django-group'
     # django服务器运行端口
-    port = 8000
+    port = 8012
 
     register_server_to_nacos(service_ip, port, service_name, namespaceId, namespace, group)
     # discover_service_on_nacos(service_name)
