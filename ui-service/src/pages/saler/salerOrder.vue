@@ -111,6 +111,7 @@
             <el-button
                 size="mini"
                 @click="changeAddress(scope.row)">修改地址</el-button>
+
           </template>
         </el-table-column>
       </el-table>
