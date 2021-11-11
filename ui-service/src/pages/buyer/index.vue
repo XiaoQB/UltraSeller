@@ -1,32 +1,34 @@
 <template>
-  <div class="store">
+  <div class="buyer">
     <el-header class="store-menu">
       <el-menu
-        :default-active="storePage"
+        :default-active="buyer"
         mode="horizontal"
         @select="handleSelect"
+        router
         background-color="#545c64"
         text-color="#fff"
         active-text-color="#ffd04b"
       >
         <el-menu-item index="store-page" route="/">商品页面</el-menu-item>
-        <el-menu-item index="my-orders-page">我的订单</el-menu-item>
-        <el-menu-item index="message-center-page" disabled
+        <el-menu-item index="my-orders-page" route="/oerderPage"
+          >我的订单</el-menu-item
+        >
+        <el-menu-item index="message-center-page" disabled route="/messagePage"
           >消息中心
         </el-menu-item>
-        <el-menu-item index="wallet">我的钱包</el-menu-item>
+        <el-menu-item index="wallet" route="/wallet">我的钱包</el-menu-item>
         <el-menu-item
           class="user-login"
-          index="to-login"
+          index="login"
+          route="/login"
           style="float: right"
           @change="handleUser()"
           @click="onclick"
         >
           <div :hidden="hideLogin">
             <el-avatar :size="50" :src="circleUrl" @error="userImageHandler()">
-              <img
-                :src="currentImg"
-              />
+              <img :src="currentImg" />
             </el-avatar>
             <a href="/login" style="marginLeft: 20px">登录/注册</a>
           </div>
@@ -36,9 +38,9 @@
                 src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
               />
             </el-avatar>
-            <span style="marginLeft: 20px" :aria-label="userData.userName"
-              >{{userData.userName}}</span
-            >
+            <span style="marginLeft: 20px" :aria-label="userData.userName">{{
+              userData.userName
+            }}</span>
           </div>
         </el-menu-item>
       </el-menu>
@@ -47,6 +49,7 @@
       <img class="logo" src="@/assets/store_logo.png" />
     </el-header>
     <el-main>
+      <storePage />
       <el-input
         class="input"
         placeholder="请输入商品"
@@ -113,16 +116,18 @@
 </template>
 
 <script>
+import storePage from "../buyer/components/storePage";
 export default {
-  name: "store-page",
-
+  name: "buyer",
+  components: { storePage },
   data() {
     return {
-      storePage: "store-page",
+      buyer: "buyer",
       input: "",
       hideLogin: false,
       currentImg: "",
-      defaultImg: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      defaultImg:
+        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       pageSize: 24,
       totalItems: 6,
       userData: {
@@ -183,12 +188,14 @@ export default {
 
     userImageHandler() {
       this.userData.userImg = this.$route.query.userImg;
-      if (this.userData.userImg === ""||
-      this.userData.userImg === null || 
-      this.userData.userImg === undefined) {
-        this.currentImg = this.defaultImg
+      if (
+        this.userData.userImg === "" ||
+        this.userData.userImg === null ||
+        this.userData.userImg === undefined
+      ) {
+        this.currentImg = this.defaultImg;
       } else {
-        this.currentImg = this.userData.userImg
+        this.currentImg = this.userData.userImg;
       }
     },
 

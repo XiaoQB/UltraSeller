@@ -223,7 +223,7 @@ export default {
               // });
               localStorage.setItem("token", res.data.data);
               this.$router.push({
-                name: "store",
+                name: "buyer",
                 query: {
                   name: this.user.username,
                   // userImg: res.data.userImg,
@@ -233,7 +233,7 @@ export default {
             // }
           });
           this.$router.push({
-          name: "store",
+          name: "buyer",
           query: {
             userName: this.user.username,
             role: this.user.role,

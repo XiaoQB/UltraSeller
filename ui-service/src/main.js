@@ -9,7 +9,7 @@ import login from "@/pages/login";
 import adminLogin from "@/pages/adminLogin";
 import admin from "@/pages/admin";
 
-import store from "@/pages/store/index";
+import buyer from "@/pages/buyer/index";
 import error from "@/pages/404";
 import commodityManager from "@/components/commodityManager";
 
@@ -35,9 +35,9 @@ const router = new VueRouter({
   mode: "history",
   routes: [
     {
-      name: "store",
+      name: "buyer",
       path: "/",
-      component: store,
+      component: buyer,
     },
     {
       path: "/login",
