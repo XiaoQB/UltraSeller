@@ -22,11 +22,7 @@ public class SubOrder {
     protected String status;
     protected Float totalPrice;
     protected String address;
-<<<<<<< HEAD:us-order-service/src/main/java/order/entities/dbo/SubOrder.java
-    protected Integer salerId;
-=======
     protected Long salerId;
->>>>>>> master:us-common-dependency/src/main/java/cn/edu/fudan/common/entities/dbo/SubOrder.java
     protected String commodityId;
     protected String commodityName;
     protected Float price;

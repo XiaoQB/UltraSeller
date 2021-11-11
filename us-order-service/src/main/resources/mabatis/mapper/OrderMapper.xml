@@ -12,7 +12,7 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <resultMap id="subOrder" type="order.entities.dbo.SubOrder">
+    <resultMap id="subOrder" type="cn.edu.fudan.common.entities.dbo.SubOrder">
         <id property="subOrderId" column="id"/>
         <result property="orderId" column="order_id"/>
         <result property="status" column="status"/>
@@ -35,7 +35,7 @@
         id, order_id, status, total_price, address, saler_id, create_time, update_time, commodity_name, commodity_id, price, num
     </sql>
 
-    <insert id="createOrder" parameterType="order.entities.dbo.Order">
+    <insert id="createOrder" parameterType="cn.edu.fudan.common.entities.dbo.Order">
         insert into `order` (id, status, total_price, address, buyer_id, create_time, update_time)
             value (
                    #{orderId},
@@ -68,7 +68,7 @@
         where id = #{orderId}
     </update>
 
-    <update id="changeSubOrder" parameterType="order.entities.dbo.SubOrder">
+    <update id="changeSubOrder" parameterType="cn.edu.fudan.common.entities.dbo.SubOrder">
         update `sub_order`
         <set>
             <if test="status != null and status != ''">

@@ -102,8 +102,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderVO> getOrdersByUser(String token, List<Integer> userIds, int page, int num) throws CommodityServiceException {
-
+    public List<OrderVO> getOrdersByUser(List<Integer> userIds, int page, int num) throws CommodityServiceException {
         List<OrderVO> orderVOList = new ArrayList<>();
         List<Order> orders = orderDao.getOrdersByUser(userIds, (page - 1) * num, num);
         for (Order order : orders) {
@@ -114,24 +113,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<SubOrder> getOrdersBySaler(String token, List<Integer> userIds, int page, int num) throws CommodityServiceException {
+    public List<SubOrder> getOrdersBySaler(List<Integer> userIds, int page, int num) throws CommodityServiceException {
         List<SubOrder> orders = orderDao.getSubOrdersByUser(userIds, (page - 1) * num, num);
         return orders;
     }
 
     @Override
-    public List<SubOrder> getSalerOrderListByStatus(String token, Integer userId, String status, int page, int num) {
+    public List<SubOrder> getSalerOrderListByStatus(Integer userId, String status, int page, int num) {
         List<SubOrder> orders = orderDao.getSalerOrderListByStatus(userId, status, (page - 1) * num, num);
         return orders;
     }
 
     @Override
-    public List<OrderVO> getBuyerOrderListByStatus(String token, Integer userId, String status, int page, int num) throws CommodityServiceException {
+    public List<OrderVO> getBuyerOrderListByStatus(Integer userId, String status, int page, int num) throws CommodityServiceException {
         List<OrderVO> orderVOList = new ArrayList<>();
         List<Order> orders = orderDao.getBuyerOrdersByStatus(userId, status, (page - 1) * num, num);
         for (Order order : orders) {
             List<SubOrder> subOrders = subOrderDao.getSubOrdersByOrder(order.getOrderId());
-            orderVOList.add(new OrderVO(order, restUtil.getSubOrderVOList(token, subOrders)));
+            orderVOList.add(new OrderVO(order, restUtil.getSubOrderVOList(subOrders)));
         }
         return orderVOList;
     }

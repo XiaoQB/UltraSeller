@@ -27,14 +27,8 @@ public class CommodityServiceImpl implements CommodityService {
     }
 
     @Override
-<<<<<<< HEAD
-    public Commodity singleCommodity(String commodityId){
-        return commodityMapper.selectByPrimaryKey(commodityId+"");
-        //return null;
-=======
     public Commodity singleCommodity(String commodityId) {
         return commodityMapper.selectByPrimaryKey(commodityId);
->>>>>>> master
     }
 
     @Override
