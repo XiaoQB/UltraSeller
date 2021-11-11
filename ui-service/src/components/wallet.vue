@@ -10,6 +10,7 @@
             text-color="#fff"
             active-text-color="#ffd04b"
         >
+
           <el-menu-item index="saler">
             <router-link to="/saler">
               商品信息
@@ -18,6 +19,7 @@
           <el-menu-item index="/salerOrder">
             <router-link to="/salerOrder">
               订单信息
+
             </router-link></el-menu-item>
           <el-menu-item index="message-center-page"
           ><router-link to="/wallet">
@@ -70,6 +72,7 @@
             </el-form-item>
           </el-form>
 
+
         </el-dialog>
     <el-table
         :data="tableData"
@@ -104,7 +107,9 @@
         </template>
       </el-table-column>
     </el-table>
+
     </el-main>
+
   </div>
   </div>
 </template>
