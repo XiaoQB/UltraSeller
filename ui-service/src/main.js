@@ -11,14 +11,13 @@ import admin from "@/pages/admin";
 
 import store from "@/pages/store/index";
 import error from "@/pages/404";
-import commodityManager from "@/components/commodityManager"
-
+import commodityManager from "@/components/commodityManager";
 
 import saler from "@/pages/saler/saler";
 import salerOrder from "./pages/saler/salerOrder";
 import wallet from "./components/wallet";
 
-import http from './http'
+import http from "./http";
 
 Vue.prototype.http = http;
 
@@ -33,7 +32,6 @@ Vue.use(VueRouter);
 Vue.config.productionTip = false;
 
 const router = new VueRouter({
-
   mode: "history",
   routes: [
     {
@@ -59,12 +57,12 @@ const router = new VueRouter({
       },
     },
     {
-        name: "commodityManager",
-        path: "/commodityManager",
-        component: commodityManager,
-        meta: {
-            requireAuth: true,
-          },
+      name: "commodityManager",
+      path: "/commodityManager",
+      component: commodityManager,
+      meta: {
+        requireAuth: true,
+      },
     },
     {
       path: "*",
@@ -72,29 +70,25 @@ const router = new VueRouter({
       component: error,
     },
 
-
     {
-        name:'saler',
-        path:'/saler',
-        component: saler
+      name: "saler",
+      path: "/saler",
+      component: saler,
     },
     {
-        name:'salerOrder',
-        path:'/salerOrder',
-        component: salerOrder
+      name: "salerOrder",
+      path: "/salerOrder",
+      component: salerOrder,
     },
-      {
-          name:'wallet',
-          path:'/wallet',
-          component: wallet
-      },
-
-
-
-    ]
-})
+    {
+      name: "wallet",
+      path: "/wallet",
+      component: wallet,
+    },
+  ],
+});
 
 new Vue({
-    router,
-    render: (h) => h(App),
+  router,
+  render: (h) => h(App),
 }).$mount("#app");
