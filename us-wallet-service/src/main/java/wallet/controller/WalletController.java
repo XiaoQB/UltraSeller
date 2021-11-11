@@ -48,26 +48,23 @@ public class WalletController {
 
     /**
      * Change balance response.
-     *
-     * @param token      the token
      * @param userName   the user name
      * @param difference the difference
      * @return the response
      */
     @PutMapping("/wallet/user")
-    public Response<String> changeBalance(@RequestHeader("token") String token,
-                                          @RequestParam("username") String userName,
+    public Response<String> changeBalance(@RequestParam("username") String userName,
                                           @RequestParam("difference") double difference) {
-        if (Objects.equals(JwtUtil.getRole(token), "admin") || Objects.equals(JwtUtil.getUserName(token), userName)) {
-            int ret = walletService.update(userName, difference);
-            if (ret == -1) {
-                return new Response<>(404, "用户错误", null);
-            }
-            WalletRecord record = new WalletRecord(-1L, userName, new Date(), difference, -1L);
-            walletService.updateRecord(record);
-            return new Response<>(200, "更新成功", null);
+        int ret = walletService.update(userName, difference);
+        if (ret == -1) {
+            return new Response<>(404, "用户错误", null);
         }
-        return new Response<>(401, "权限不足", null);
+        if(ret == -2){
+            return new Response<>(401, "余额不足", null);
+        }
+        WalletRecord record = new WalletRecord(-1L, userName, new Date(), difference, -1L);
+        walletService.updateRecord(record);
+        return new Response<>(200, "更新成功", null);
     }
 
     /**
@@ -78,6 +75,7 @@ public class WalletController {
      */
     @DeleteMapping("/wallet/user")
     public Response<String> deleteWallet(@RequestParam("username") String userName) {
+        System.out.println(userName);
         int ret = walletService.delete(userName);
         if (ret == -1) {
             return new Response<>(404, "用户信息错误", null);
@@ -93,17 +91,21 @@ public class WalletController {
      * @return the response
      */
     @PutMapping("/wallet/deal")
-    public Response<String> handleDeal(@RequestHeader("token") String token, @RequestBody Deal deal) {
+    public Response<String> handleDeal(@RequestBody Deal deal) {
         String status = deal.getDealStatus();
         int ret = 2;
         String userName = "";
         double diff = 0;
-        if (Objects.equals(status, "pending") || Objects.equals(status, "refund")) {
+        if (Objects.equals(status, "pending")) {
             userName = deal.getBuyerName();
             diff = -deal.getPrice();
             ret = walletService.update(userName, diff);
         } else if (Objects.equals(status, "finish")) {
             userName = deal.getSellerName();
+            diff = deal.getPrice();
+            ret = walletService.update(userName, diff);
+        } else if(Objects.equals(status, "refund")) {
+            userName = deal.getBuyerName();
             diff = deal.getPrice();
             ret = walletService.update(userName, diff);
         }
@@ -112,6 +114,8 @@ public class WalletController {
         } else if (ret == 0) {
             WalletRecord walletRecord = new WalletRecord(-1L, userName, new Date(), diff, deal.getDealId());
             walletService.updateRecord(walletRecord);
+        } else if(ret == -2){
+            return new Response<>(401, "余额不足", null);
         }
         return new Response<>(200, "处理成功", null);
     }

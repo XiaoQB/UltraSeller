@@ -134,7 +134,7 @@ def AddCart(request):
             else:
                 return HttpResponse("Exceeding stock or purchase limits!")
         else:
-            return HttpResponse(response.get("msg"))
+            return HttpResponse("commodity service error!")
     
     return HttpResponse("AddCart Succes!")
 
