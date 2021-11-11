@@ -1,12 +1,12 @@
 package order.controller;
 
-import order.entities.ResponseEntity;
-import order.entities.dbo.Order;
-import order.entities.dbo.SubOrder;
+import cn.edu.fudan.common.entities.ResponseEntity;
+import cn.edu.fudan.common.entities.dbo.Order;
+import cn.edu.fudan.common.entities.dbo.SubOrder;
+import cn.edu.fudan.common.entities.enums.ResponseEntityCode;
+import cn.edu.fudan.common.entities.enums.ResponseEntityMessage;
 import order.entities.dto.CreateOrderDTO;
 import order.entities.dto.UpdateOrderDTO;
-import order.entities.enums.ResponseEntityCode;
-import order.entities.enums.ResponseEntityMessage;
 import order.entities.vo.OrderVO;
 import order.service.OrderService;
 import org.springframework.web.bind.annotation.*;
@@ -36,9 +36,9 @@ public class OrderController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<OrderVO> getOrderById(@RequestHeader("token") String token, @RequestParam("order_id") String orderId) {
+    public ResponseEntity<OrderVO> getOrderById(@RequestParam("order_id") String orderId) {
         try {
-            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getOrderById(token, orderId));
+            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getOrderById(orderId));
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
         }
@@ -72,12 +72,11 @@ public class OrderController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<OrderVO>> getOrdersByUser(@RequestHeader("token") String token,
-                                                         @RequestParam("user_ids") List<Integer> userIds,
+    public ResponseEntity<List<OrderVO>> getOrdersByUser(@RequestParam("user_ids") List<Integer> userIds,
                                                          @RequestParam("page") Integer page,
                                                          @RequestParam("num") Integer num) {
         try {
-            List<OrderVO> orders = orderService.getOrdersByUser(token, userIds, page, num);
+            List<OrderVO> orders = orderService.getOrdersByUser(userIds, page, num);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
@@ -85,12 +84,11 @@ public class OrderController {
     }
 
     @GetMapping("/saler-list")
-    public ResponseEntity<List<SubOrder>> getOrdersBySaler(@RequestHeader("token") String token,
-                                                           @RequestParam("user_ids") List<Integer> userIds,
+    public ResponseEntity<List<SubOrder>> getOrdersBySaler(@RequestParam("user_ids") List<Integer> userIds,
                                                            @RequestParam("page") Integer page,
                                                            @RequestParam("num") Integer num) {
         try {
-            List<SubOrder> orders = orderService.getOrdersBySaler(token, userIds, page, num);
+            List<SubOrder> orders = orderService.getOrdersBySaler(userIds, page, num);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
@@ -98,13 +96,12 @@ public class OrderController {
     }
 
     @GetMapping("/saler-orders-status")
-    public ResponseEntity<List<SubOrder>> getSalerOrderListByStatus(@RequestHeader("token") String token,
-                                                                    @RequestParam("user_id") Integer userId,
+    public ResponseEntity<List<SubOrder>> getSalerOrderListByStatus(@RequestParam("user_id") Integer userId,
                                                                     @RequestParam("status") String status,
                                                                     @RequestParam("page") Integer page,
                                                                     @RequestParam("num") Integer num) {
         try {
-            List<SubOrder> orders = orderService.getSalerOrderListByStatus(token, userId, status, page, num);
+            List<SubOrder> orders = orderService.getSalerOrderListByStatus(userId, status, page, num);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
@@ -112,13 +109,12 @@ public class OrderController {
     }
 
     @GetMapping("/buyer-orders-status")
-    public ResponseEntity<List<OrderVO>> getBuyerOrderListByStatus(@RequestHeader("token") String token,
-                                                                   @RequestParam("user_id") Integer userId,
+    public ResponseEntity<List<OrderVO>> getBuyerOrderListByStatus(@RequestParam("user_id") Integer userId,
                                                                    @RequestParam("status") String status,
                                                                    @RequestParam("page") Integer page,
                                                                    @RequestParam("num") Integer num) {
         try {
-            List<OrderVO> orders = orderService.getBuyerOrderListByStatus(token, userId, status, page, num);
+            List<OrderVO> orders = orderService.getBuyerOrderListByStatus(userId, status, page, num);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);

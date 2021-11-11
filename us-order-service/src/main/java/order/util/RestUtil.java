@@ -1,9 +1,9 @@
 package order.util;
 
-import order.entities.ResponseEntity;
-import order.entities.dbo.Commodity;
-import order.entities.dbo.SubOrder;
-import order.entities.enums.ResponseEntityCode;
+import cn.edu.fudan.common.entities.ResponseEntity;
+import cn.edu.fudan.common.entities.dbo.Commodity;
+import cn.edu.fudan.common.entities.dbo.SubOrder;
+import cn.edu.fudan.common.entities.enums.ResponseEntityCode;
 import order.entities.vo.SubOrderVO;
 import order.exception.CommodityServiceException;
 import order.service.CommodityService;
@@ -23,11 +23,11 @@ public class RestUtil {
     @Resource
     private CommodityService commodityService;
 
-    public List<SubOrderVO> getSubOrderVOList(String token, List<SubOrder> subOrders) throws CommodityServiceException {
+    public List<SubOrderVO> getSubOrderVOList(List<SubOrder> subOrders) throws CommodityServiceException {
         List<SubOrderVO> subOrderList = new ArrayList<>();
         for (SubOrder subOrder : subOrders) {
-            ResponseEntity<Commodity> response = commodityService.getCommodityById(token, subOrder.getCommodityId());
-            if (ResponseEntityCode.OK.getCode() == response.getCode()) {
+            ResponseEntity<Commodity> response = commodityService.getCommodityById(subOrder.getCommodityId());
+            if (ResponseEntityCode.OK.getCode() != response.getCode()) {
                 throw new CommodityServiceException("commodity service error");
             }
             Commodity commodity = response.getData();

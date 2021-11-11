@@ -15,13 +15,13 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 public class Wallet {
 
-    private long walletId;
+    private Long walletId;
 
     //private long userId;
 
     private String userName;
 
-    private double balance;
+    private Double balance;
 
     private String role;
 }

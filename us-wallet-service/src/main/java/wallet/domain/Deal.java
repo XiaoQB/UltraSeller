@@ -1,35 +1,28 @@
 package wallet.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+
+/**
+ * @author tristonk
+ */
+@Data
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Deal {
     private String sellerName;
 
     private String buyerName;
 
-    private long dealId;
+    private Long dealId;
 
-    private double price;
+    private Double price;
 
     private String id;
 
     private String dealStatus;
-
-    public double getPrice() {
-        return price;
-    }
-
-    public String getSellerName() {
-        return sellerName;
-    }
-
-    public String getBuyerName(){
-        return buyerName;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getDealStatus() {
-        return dealStatus;
-    }
 }

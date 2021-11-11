@@ -1,7 +1,8 @@
 package order.service;
 
-import order.entities.dbo.Order;
-import order.entities.dbo.SubOrder;
+
+import cn.edu.fudan.common.entities.dbo.Order;
+import cn.edu.fudan.common.entities.dbo.SubOrder;
 import order.entities.dto.CreateOrderDTO;
 import order.entities.vo.OrderVO;
 import order.exception.CommodityServiceException;
@@ -26,13 +27,12 @@ public interface OrderService {
     /**
      * 根据 id 获取 order
      *
-     * @param token   token
      * @param orderId orderId
      * @return order
      * @throws OrderNotFoundException    OrderNotFoundException
      * @throws CommodityServiceException CommodityServiceException
      */
-    OrderVO getOrderById(String token, String orderId) throws OrderNotFoundException, CommodityServiceException;
+    OrderVO getOrderById(String orderId) throws OrderNotFoundException, CommodityServiceException;
 
     /**
      * 根据 id 删除 order
@@ -63,19 +63,19 @@ public interface OrderService {
      * @return order list
      * @throws CommodityServiceException CommodityServiceException
      */
-    List<OrderVO> getOrdersByUser(String token, List<Integer> userIds, int page, int num) throws CommodityServiceException;
+    List<OrderVO> getOrdersByUser(List<Integer> userIds, int page, int num) throws CommodityServiceException;
 
     /**
      * 根据 user id 获取 order list
      *
-     * @param token   token
      * @param userIds userIds
      * @return order list
      * @throws CommodityServiceException CommodityServiceException
      */
-    List<SubOrder> getOrdersBySaler(String token, List<Integer> userIds, int page, int num) throws CommodityServiceException;
 
-    List<SubOrder> getSalerOrderListByStatus(String token, Integer userId, String status, int page, int num);
+    List<SubOrder> getOrdersBySaler(List<Integer> userIds, int page, int num) throws CommodityServiceException;
+
+    List<SubOrder> getSalerOrderListByStatus(Integer userId, String status, int page, int num);
 
     /**
      * 根据 order status 获取 order list
@@ -85,5 +85,6 @@ public interface OrderService {
      * @return order list
      * @throws CommodityServiceException CommodityServiceException
      */
-    List<OrderVO> getBuyerOrderListByStatus(String token, Integer userId, String status, int page, int num) throws CommodityServiceException;
+    List<OrderVO> getBuyerOrderListByStatus(Integer userId, String status, int page, int num) throws CommodityServiceException;
+
 }
