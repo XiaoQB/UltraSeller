@@ -4,6 +4,7 @@ import cn.edu.fudan.common.entities.dbo.Order;
 import cn.edu.fudan.common.entities.dbo.SubOrder;
 import order.entities.dto.CreateOrderDTO;
 import order.entities.vo.OrderVO;
+import order.entities.vo.SubOrderVO;
 import order.exception.CommodityServiceException;
 import order.exception.OrderNotFoundException;
 import org.springframework.stereotype.Service;
@@ -72,9 +73,9 @@ public interface OrderService {
      * @throws CommodityServiceException CommodityServiceException
      */
 
-    List<SubOrder> getOrdersBySaler(List<Integer> userIds, int page, int num) throws CommodityServiceException;
+    List<SubOrderVO> getOrdersBySaler(List<Integer> userIds, int page, int num) throws CommodityServiceException;
 
-    List<SubOrder> getSalerOrderListByStatus(Integer userId, String status, int page, int num);
+    List<SubOrderVO> getSalerOrderListByStatus(Integer userId, String status, int page, int num) throws CommodityServiceException;
 
     /**
      * 根据 order status 获取 order list

@@ -8,6 +8,7 @@ import cn.edu.fudan.common.entities.enums.ResponseEntityMessage;
 import order.entities.dto.CreateOrderDTO;
 import order.entities.dto.UpdateOrderDTO;
 import order.entities.vo.OrderVO;
+import order.entities.vo.SubOrderVO;
 import order.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,11 +85,11 @@ public class OrderController {
     }
 
     @GetMapping("/saler-list")
-    public ResponseEntity<List<SubOrder>> getOrdersBySaler(@RequestParam("user_ids") List<Integer> userIds,
+    public ResponseEntity<List<SubOrderVO>> getOrdersBySaler(@RequestParam("user_ids") List<Integer> userIds,
                                                            @RequestParam("page") Integer page,
                                                            @RequestParam("num") Integer num) {
         try {
-            List<SubOrder> orders = orderService.getOrdersBySaler(userIds, page, num);
+            List<SubOrderVO> orders = orderService.getOrdersBySaler(userIds, page, num);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
@@ -96,12 +97,12 @@ public class OrderController {
     }
 
     @GetMapping("/saler-orders-status")
-    public ResponseEntity<List<SubOrder>> getSalerOrderListByStatus(@RequestParam("user_id") Integer userId,
+    public ResponseEntity<List<SubOrderVO>> getSalerOrderListByStatus(@RequestParam("user_id") Integer userId,
                                                                     @RequestParam("status") String status,
                                                                     @RequestParam("page") Integer page,
                                                                     @RequestParam("num") Integer num) {
         try {
-            List<SubOrder> orders = orderService.getSalerOrderListByStatus(userId, status, page, num);
+            List<SubOrderVO> orders = orderService.getSalerOrderListByStatus(userId, status, page, num);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);

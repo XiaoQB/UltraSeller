@@ -1,10 +1,13 @@
 package order.service.impl;
 
+import cn.edu.fudan.common.entities.dbo.Commodity;
+import cn.edu.fudan.common.entities.dbo.Order;
+import cn.edu.fudan.common.entities.dbo.SubOrder;
 import order.dao.OrderDao;
 import order.dao.SubOrderDao;
-import order.entities.dbo.Commodity;
 import order.entities.dto.CreateOrderDTO;
 import order.entities.vo.OrderVO;
+import order.entities.vo.SubOrderVO;
 import order.exception.CommodityServiceException;
 import order.exception.OrderNotFoundException;
 import order.service.OrderService;
@@ -113,15 +116,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<SubOrder> getOrdersBySaler(List<Integer> userIds, int page, int num) throws CommodityServiceException {
+    public List<SubOrderVO> getOrdersBySaler(List<Integer> userIds, int page, int num) throws CommodityServiceException {
         List<SubOrder> orders = orderDao.getSubOrdersByUser(userIds, (page - 1) * num, num);
-        return orders;
+        return restUtil.getSubOrderVOList(orders);
     }
 
     @Override
-    public List<SubOrder> getSalerOrderListByStatus(Integer userId, String status, int page, int num) {
+    public List<SubOrderVO> getSalerOrderListByStatus(Integer userId, String status, int page, int num) throws CommodityServiceException {
         List<SubOrder> orders = orderDao.getSalerOrderListByStatus(userId, status, (page - 1) * num, num);
-        return orders;
+        return restUtil.getSubOrderVOList(orders);
     }
 
     @Override
