@@ -51,14 +51,13 @@ public interface OrderService {
     /**
      * 更新 suborder
      *
-     * @param suborder suborder
+     * @param subOrder suborder
      */
     void changeSubOrder(SubOrder subOrder);
 
     /**
      * 根据 user id 获取 order list
      *
-     * @param token   token
      * @param userIds userIds
      * @return order list
      * @throws CommodityServiceException CommodityServiceException
@@ -80,8 +79,10 @@ public interface OrderService {
     /**
      * 根据 order status 获取 order list
      *
-     * @param token   token
-     * @param userIds userIds
+     * @param userId userId
+     * @param status status
+     * @param page   page
+     * @param num    num
      * @return order list
      * @throws CommodityServiceException CommodityServiceException
      */
