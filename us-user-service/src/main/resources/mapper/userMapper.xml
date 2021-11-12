@@ -49,37 +49,34 @@
     <select id="getAdmins" resultType="cn.edu.fudan.common.entities.dbo.Admin">
         select *
         from ultra_seller.us_admin
-        limit #{page},#{num}
     </select>
 
     <select id="getBuyers" resultType="cn.edu.fudan.common.entities.dbo.User">
         select id, username, email, phone
         from ultra_seller.us_buyer
-        limit #{page},#{num}
     </select>
 
     <select id="getSalers" resultType="cn.edu.fudan.common.entities.dbo.User">
         select id, username, email, phone
         from ultra_seller.us_saler
-        limit #{page},#{num}
     </select>
 
     <delete id="deleteAdmin">
         delete
         from ultra_seller.us_admin
-        where id = #{id}
+        where username = #{username}
     </delete>
 
     <delete id="deleteBuyer">
         delete
         from ultra_seller.us_buyer
-        where id = #{id}
+        where username = #{username}
     </delete>
 
     <delete id="deleteSaler">
         delete
         from ultra_seller.us_saler
-        where id = #{id}
+        where username = #{username}
     </delete>
 
     <update id="updateAdmin" parameterType="java.lang.String">
