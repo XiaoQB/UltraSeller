@@ -87,9 +87,6 @@
 </template>
 
 <script>
-import { baseURL } from "@/http";
-const userUrl = baseURL.user;
-
 export default {
   name: "login",
   data() {
@@ -172,9 +169,9 @@ export default {
       ) {
         this.$message.error("请选择角色！");
       }
-      if (this.user.role === "seller") {
+      if (this.user.role === "saler") {
         this.http
-          .get(`${userUrl}/user/login`, {
+          .get(`/user/login`, {
             params: {
               userName: this.user.username,
               password: this.user.password,
@@ -182,19 +179,18 @@ export default {
             },
           })
           .then((res) => {
-            if (res.data.code === 200) {
-              this.$message({
-                type: "success",
-                message: "登录成功",
-              });
-              localStorage.setItem("token", res.data.data);
+            if (res.data.status === 200) {
+              window.localStorage["token"] = JSON.stringify(res.data["token"]);
+              window.localStorage["user_id"] = this.user.username;
               this.$router.push({
-                path: "/saler",
-                query: {
+                name: "saler",
+                params: {
                   name: this.user.username,
-                  token: res.data.data,
+                  token: res.data["token"],
                 },
               });
+            } else {
+              alert("您输入的用户名或密码错误！");
             }
           });
         this.$router.push({
@@ -205,9 +201,9 @@ export default {
           },
         });
       }
-      if (this.user.role === "buyer") {
+      if (this.user.role === "saler") {
         this.http
-          .get(`${userUrl}/user/login`, {
+          .get(`/user/login`, {
             params: {
               userName: this.user.username,
               password: this.user.password,
@@ -215,21 +211,20 @@ export default {
             },
           })
           .then((res) => {
-            // if (res.data.code === 200) {
-            // this.$message({
-            //   type: "success",
-            //   message: "登录成功",
-            // });
-            localStorage.setItem("token", res.data.data);
-            this.$router.push({
-              name: "app",
-              query: {
-                name: this.user.username,
-                // userImg: res.data.userImg,
-                token: res.data.data,
-              },
-            });
-            // }
+            if (res.data.status === 200) {
+              window.localStorage["token"] = JSON.stringify(res.data["token"]);
+              window.localStorage["user_id"] = this.user.username;
+              this.$router.push({
+                name: "app",
+                query: {
+                  userName: this.user.username,
+                  token: res.data["token"],
+                  role: this.user.role,
+                },
+              });
+            } else {
+              alert("您输入的用户名或密码错误！");
+            }
           });
         this.$router.push({
           name: "app",
@@ -247,12 +242,14 @@ export default {
           "Content-Type": "application/json;",
         },
         method: "post",
-        url: `${userUrl}/user/register`,
+
+        url: `/user/register`,
         transformRequest: [
           function(data) {
             return JSON.stringify(data);
           },
         ],
+
         data: {
           role: this.register.identity,
           userName: this.register.name,
