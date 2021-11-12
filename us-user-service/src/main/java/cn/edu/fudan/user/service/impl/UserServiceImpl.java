@@ -83,6 +83,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByName(String role, String username) {
+        return userDao.getUserByName(username, role);
+    }
+
+    @Override
     public String logout(String userName) {
         return null;
     }

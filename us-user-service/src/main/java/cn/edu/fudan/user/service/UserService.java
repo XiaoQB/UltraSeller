@@ -23,4 +23,6 @@ public interface UserService {
     Integer modifyUser(Integer id, String role, String userName, String password, String phone, String email);
 
     boolean authorization(String token, String role);
+
+    User getUserByName(String role, String username);
 }

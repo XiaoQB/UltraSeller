@@ -1,6 +1,7 @@
 package cn.edu.fudan.user.controller;
 
 import cn.edu.fudan.common.entities.ResponseEntity;
+import cn.edu.fudan.common.entities.dbo.Cart;
 import cn.edu.fudan.common.entities.dbo.User;
 import cn.edu.fudan.common.entities.dbo.Wallet;
 import cn.edu.fudan.user.result.ResultCode;
@@ -52,12 +53,17 @@ public class UserController {
 
     @GetMapping("/info")
     public ResponseEntity<GetUserListDTO> getUserList(String role, Integer num, Integer page) {
+        /*
         if (num == null || page == null) {
             log.info("info 查询数值错误");
             return new ResponseEntity<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
+
+         */
+        log.info("role:"+role);
         List<User> results = userService.getUserList(role, num, page);
         Integer userNum = userService.getUserNum(role);
+        log.info("userNum:"+userNum);
         GetUserListDTO getUserListDTO = new GetUserListDTO(userNum, results);
         if (results == null) {
             return new ResponseEntity<>(ResultCode.QUERY_FAIL.getCode(), ResultCode.QUERY_FAIL.getMessage(), null);
@@ -122,12 +128,18 @@ public class UserController {
                     userService.deleteUser(user.getRole(), user.getUserName());
                     return walletResponse;
                 }
-//                ResponseEntity<String> cartResponse = cartService.createCart(user);
-//                if (cartResponse.getCode() != 200) {
-//                    walletService.deleteWallet(user.getUserName());
-//                    userService.deleteUser(user.getRole(), user.getId());
-//                    return cartResponse;
-//                }
+                user = userService.getUserByName(user.getRole(), user.getUserName());
+                log.info("user id:"+user.getId());
+                /*
+                Cart cart = new Cart(user.getId().toString(), null);
+                ResponseEntity<String> cartResponse = cartService.createCart(cart);
+                if (cartResponse.getCode() != 200) {
+                    walletService.deleteWallet(user.getUserName());
+                    userService.deleteUser(user.getRole(), user.getUserName());
+                    return cartResponse;
+                }
+
+                 */
                 return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
             }
             return new ResponseEntity<>(ResultCode.REGISTER_FAIL.getCode(), ResultCode.REGISTER_FAIL.getMessage(), null);

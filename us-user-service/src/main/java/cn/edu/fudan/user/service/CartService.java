@@ -1,7 +1,7 @@
 package cn.edu.fudan.user.service;
 
 import cn.edu.fudan.common.entities.ResponseEntity;
-import cn.edu.fudan.common.entities.dbo.User;
+import cn.edu.fudan.common.entities.dbo.Cart;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +13,7 @@ import cn.edu.fudan.user.service.impl.CartServiceFallBackImpl;
  * @author beethoven
  * @date 2021-11-09 21:32:29
  */
-@RequestMapping("/cart")
+@RequestMapping("/testapp/shopcar")
 @Service
 @FeignClient(value = "us-cart-service", fallback = CartServiceFallBackImpl.class)
 public interface CartService {
@@ -30,9 +30,9 @@ public interface CartService {
     /**
      * 创建 cart
      *
-     * @param user user
+     * @param Cart cart
      * @return string
      */
-    @PostMapping("/test")
-    ResponseEntity<String> createCart(User user);
+    @PostMapping("/AddCart")
+    ResponseEntity<String> createCart(Cart cart);
 }
