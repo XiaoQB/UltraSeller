@@ -19,5 +19,6 @@ public class UpdateOrderDTO {
 
     private Order order;
     private List<SubOrder> subOrders;
+    private String userName;
 
 }
