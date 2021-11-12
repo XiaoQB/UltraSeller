@@ -36,13 +36,14 @@ public class UserDao {
                 userMapper.insertBuyer(user.getUserName(), user.getEmail(), user.getPhone(), password);
                 break;
             default:
-                break;
+                return false;
         }
         return true;
     }
 
     public User getUserByName(String userName, String role) {
         User user = new User();
+        log.info("Dao getuserbyName:"+userName+" "+role);
         switch (role) {
             case "admin":
                 user = userMapper.getAdminByName(userName);

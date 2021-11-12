@@ -16,7 +16,7 @@ public interface UserMapper {
 
     boolean insertSaler(@Param("userName") String userName, @Param("email") String email, @Param("phone") String phone, @Param("password") String password);
 
-    boolean insertBuyer(String userName, String email, String phone, String password);
+    boolean insertBuyer(@Param("userName") String userName, @Param("email") String email, @Param("phone") String phone, @Param("password") String password);
 
     Integer isExistAdmin(String userName);
 
