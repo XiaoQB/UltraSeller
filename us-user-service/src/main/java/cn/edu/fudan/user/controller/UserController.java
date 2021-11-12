@@ -2,6 +2,7 @@ package cn.edu.fudan.user.controller;
 
 import cn.edu.fudan.common.entities.ResponseEntity;
 import cn.edu.fudan.common.entities.dbo.User;
+import cn.edu.fudan.common.entities.dbo.Wallet;
 import cn.edu.fudan.user.result.ResultCode;
 import cn.edu.fudan.user.service.CartService;
 import cn.edu.fudan.user.service.UserService;
@@ -112,7 +113,8 @@ public class UserController {
         try {
             boolean result = userService.insertUser(user);
             if (result) {
-                ResponseEntity<String> walletResponse = walletService.createWallet(user);
+                Wallet wallet = new Wallet(0, user.getUserName(), 0.0, user.getRole());
+                ResponseEntity<String> walletResponse = walletService.createWallet(wallet);
                 if (walletResponse.getCode() != 201) {
                     userService.deleteUser(user.getRole(), user.getId());
                     return walletResponse;
