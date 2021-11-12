@@ -27,7 +27,7 @@
           </el-form-item>
           <el-form-item label="角色" prop="role">
             <el-radio v-model="user.role" label="buyer">买家</el-radio>
-            <el-radio v-model="user.role" label="saler">卖家</el-radio>
+            <el-radio v-model="user.role" label="seller">卖家</el-radio>
           </el-form-item>
           <el-form-item>
             <el-button
@@ -156,8 +156,7 @@ export default {
       },
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
     doLogin() {
       if (!this.user.username) {
@@ -173,7 +172,7 @@ export default {
       ) {
         this.$message.error("请选择角色！");
       }
-      if (this.user.role === "saler") {
+      if (this.user.role === "seller") {
         this.http
           .get(`${userUrl}/user/login`, {
             params: {
@@ -198,14 +197,14 @@ export default {
               });
             }
           });
-          this.$router.push({
+        this.$router.push({
           path: "/saler",
           query: {
             userName: this.user.username,
             role: this.user.role,
           },
         });
-      } 
+      }
       if (this.user.role === "buyer") {
         this.http
           .get(`${userUrl}/user/login`, {
@@ -217,23 +216,23 @@ export default {
           })
           .then((res) => {
             // if (res.data.code === 200) {
-              // this.$message({
-              //   type: "success",
-              //   message: "登录成功",
-              // });
-              localStorage.setItem("token", res.data.data);
-              this.$router.push({
-                name: "buyer",
-                query: {
-                  name: this.user.username,
-                  // userImg: res.data.userImg,
-                  token: res.data.data,
-                },
-              });
+            // this.$message({
+            //   type: "success",
+            //   message: "登录成功",
+            // });
+            localStorage.setItem("token", res.data.data);
+            this.$router.push({
+              name: "app",
+              query: {
+                name: this.user.username,
+                // userImg: res.data.userImg,
+                token: res.data.data,
+              },
+            });
             // }
           });
-          this.$router.push({
-          name: "buyer",
+        this.$router.push({
+          name: "app",
           query: {
             userName: this.user.username,
             role: this.user.role,

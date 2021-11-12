@@ -1,10 +1,13 @@
 <template>
   <div id="storePage" class="storePage">
+    <el-header style="width: 30%; height: 30%; margin: auto">
+      <img class="logo" src="@/assets/store_logo.png" />
+    </el-header>
     <el-main>
       <el-input
         class="input"
         placeholder="请输入商品"
-        v-model="input"
+        :v-model="input"
         clearable
       >
       </el-input>
@@ -21,8 +24,7 @@
               <img src="imgLink" class="item-image" prop="commodity.img" />
               <div style="padding: 5px">
                 <el-descriptions title="商品信息" :column="1">
-                  <el-descriptions-item label="名字" prop="commodity.name"
-                    >
+                  <el-descriptions-item label="名字" prop="commodity.name">
                   </el-descriptions-item>
                   <el-descriptions-item
                     label="描述"
@@ -64,6 +66,7 @@ export default {
   data() {
     return {
       age: 15,
+      input: "",
       commodityData: [
         {
           id: "",
@@ -76,15 +79,61 @@ export default {
           vendorName: "",
         },
       ],
+      Mock: [
+        {
+          id: "20210101001",
+          name: "面包",
+          imgLink:
+            "https://ts3.cn.mm.bing.net/th/id/OIP-C.305fYj0cWoTv_Q8TIbJ02wHaHG?w=196&h=188&c=7&r=0&o=5&dpr=2&pid=1.7",
+          price: "10",
+          description: "好吃",
+          inventory: "10",
+          vendorName: "test01",
+        },
+        {
+          id: "20210101002",
+          name: "白酒",
+          imgLink:
+            "https://ts1.cn.mm.bing.net/th/id/OIP-C.PWh-k1csn9MRuq9-kqf0wwHaLG?w=196&h=293&c=7&r=0&o=5&dpr=2&pid=1.7",
+          price: "100",
+          description: "一喝就倒",
+          inventory: "10",
+          vendorName: "test01",
+        },
+        {
+          id: "20210101003",
+          name: "卫生纸",
+          imgLink:
+            "https://ts2.cn.mm.bing.net/th/id/OIP-C.3yAPWpweG_grlE-hx0GSbQHaE7?w=255&h=180&c=7&r=0&o=5&dpr=2&pid=1.7",
+          price: "10",
+          description: "可以擦皮皮",
+          inventory: "10",
+          vendorName: "test01",
+        },
+        {
+          id: "20210101004",
+          name: "矿泉水",
+          imgLink:
+            "https://ts3.cn.mm.bing.net/th/id/OIP-C.fIfwcxCc6sjAUWxifyiJQAHaHa?w=205&h=205&c=7&r=0&o=5&dpr=2&pid=1.7",
+          price: "2",
+          description: "没有虫卵的农夫山泉",
+          inventory: "25",
+          vendorName: "test01",
+        },
+      ],
     };
   },
-  mounted: function() {
-    
-  },
+  mounted: function() {},
   methods: {
     updateCommodityData() {
-      this.commodityData = JSON.parse(this.$route.query.commodityData)
+      this.commodityData = JSON.parse(this.$route.query.commodityData);
     },
-  }
+  },
 };
 </script>
+<style scoped>
+.logo {
+  width: 100%;
+  height: 100%;
+}
+</style>

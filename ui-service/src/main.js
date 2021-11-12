@@ -5,18 +5,21 @@ import ElementUI from "element-ui"; //element-ui的全部组件
 import "element-ui/lib/theme-chalk/index.css"; //element-ui的css
 Vue.use(ElementUI); //使用elementUI
 
-import login from "@/pages/login";
 import adminLogin from "@/pages/adminLogin";
 import admin from "@/pages/admin";
-
-import buyer from "@/pages/buyer/index";
-import error from "@/pages/404";
 import commodityManager from "@/components/commodityManager";
+
+import login from "@/pages/login";
+import storePage from "@/pages/buyer/components/storePage";
+import buyerOrder from "@/pages/buyer/components/buyerOrder";
+import messageCenter from "@/pages/buyer/components/messageCenter";
+import buyerWallet from "@/pages/buyer/components/buyerWallet";
 
 import saler from "@/pages/saler/saler";
 import salerOrder from "./pages/saler/salerOrder";
 import wallet from "./components/wallet";
 
+import error from "@/pages/404";
 import http from "./http";
 
 Vue.prototype.http = http;
@@ -35,9 +38,44 @@ const router = new VueRouter({
   mode: "history",
   routes: [
     {
-      name: "buyer",
+      name: "saler",
+      path: "/saler",
+      component: saler,
+    },
+    {
+      name: "salerOrder",
+      path: "/salerOrder",
+      component: salerOrder,
+    },
+    {
+      name: "wallet",
+      path: "/wallet",
+      component: wallet,
+    },
+    {
+      name: "storePage",
       path: "/",
-      component: buyer,
+      component: storePage,
+    },
+    {
+      name: "storePage",
+      path: "/storePage",
+      component: storePage,
+    },
+    {
+      name: "buyerOrder",
+      path: "/buyerOrder",
+      component: buyerOrder,
+    },
+    {
+      name: "messageCenter",
+      path: "/messageCenter",
+      component: messageCenter,
+    },
+    {
+      name: "buyerWallet",
+      path: "/buyerWallet",
+      component: buyerWallet,
     },
     {
       path: "/login",
@@ -68,22 +106,6 @@ const router = new VueRouter({
       path: "*",
       name: "404",
       component: error,
-    },
-
-    {
-      name: "saler",
-      path: "/saler",
-      component: saler,
-    },
-    {
-      name: "salerOrder",
-      path: "/salerOrder",
-      component: salerOrder,
-    },
-    {
-      name: "wallet",
-      path: "/wallet",
-      component: wallet,
     },
   ],
 });
