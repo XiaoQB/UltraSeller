@@ -28,6 +28,6 @@ public class WalletRecord implements Comparable<WalletRecord> {
 
     @Override
     public int compareTo(WalletRecord o) {
-        return this.getTime().before(o.getTime()) ? 1 : 0;
+        return this.getTime().before(o.getTime()) ? 0 : 1;
     }
 }
