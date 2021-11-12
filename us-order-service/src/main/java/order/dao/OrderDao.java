@@ -1,6 +1,7 @@
 package order.dao;
 
 import cn.edu.fudan.common.entities.dbo.Order;
+import cn.edu.fudan.common.entities.dbo.SubOrder;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -45,10 +46,23 @@ public interface OrderDao {
     void changeOrder(Order order);
 
     /**
+     * 更新 order
+     *
+     * @param order order
+     */
+    void changeSubOrder(SubOrder subOrder);
+
+    /**
      * 根据 user id 获取 order list
      *
      * @param userIds userIds
      * @return order list
      */
-    List<Order> getOrdersByUser(@Param("userIds") List<Integer> userIds);
+    List<Order> getOrdersByUser(@Param("userIds") List<Integer> userIds, @Param("page") Integer page, @Param("num") Integer num);
+
+    List<SubOrder> getSubOrdersByUser(@Param("userIds") List<Integer> userIds, @Param("page") Integer page, @Param("num") Integer num);
+
+    List<SubOrder> getSalerOrderListByStatus(@Param("userId") Integer userId, @Param("status") String status, @Param("page") Integer page, @Param("num") Integer num);
+
+    List<Order> getBuyerOrdersByStatus(@Param("userId") Integer userId, @Param("status") String status, @Param("page") Integer page, @Param("num") Integer num);
 }

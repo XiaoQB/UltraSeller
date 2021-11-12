@@ -1,9 +1,9 @@
 package order.util;
 
+import cn.edu.fudan.common.entities.ResponseEntity;
 import cn.edu.fudan.common.entities.dbo.Commodity;
 import cn.edu.fudan.common.entities.dbo.SubOrder;
 import cn.edu.fudan.common.entities.enums.ResponseEntityCode;
-import order.entities.ResponseEntity;
 import order.entities.vo.SubOrderVO;
 import order.exception.CommodityServiceException;
 import order.service.CommodityService;

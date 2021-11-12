@@ -1,17 +1,14 @@
 package wallet.controller;
 
+import cn.edu.fudan.common.entities.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import wallet.domain.Deal;
 import wallet.domain.Wallet;
 import wallet.domain.WalletRecord;
 import wallet.service.impl.WalletServiceImpl;
 import wallet.utils.IdGenerator;
-import wallet.utils.JwtUtil;
-import wallet.utils.Response;
 
 import javax.annotation.Resource;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -34,15 +31,15 @@ public class WalletController {
      * @return the response
      */
     @PostMapping("/wallet/user")
-    public Response<String> createWallet(@RequestBody Wallet wallet) {
+    public ResponseEntity<String> createWallet(@RequestBody Wallet wallet) {
         wallet.setWalletId(Long.parseLong(IdGenerator.generateId()));
         int ret = walletService.create(wallet);
         if (ret == -1) {
-            return new Response<>(409, "用户已存在", null);
+            return new ResponseEntity<>(409, "用户已存在", null);
         } else if (ret == 0) {
-            return new Response<>(201, "创建成功", null);
+            return new ResponseEntity<>(201, "创建成功", null);
         } else {
-            return new Response<>(404, "未知原因出错", null);
+            return new ResponseEntity<>(404, "未知原因出错", null);
         }
     }
 
@@ -53,18 +50,18 @@ public class WalletController {
      * @return the response
      */
     @PutMapping("/wallet/user")
-    public Response<String> changeBalance(@RequestParam("username") String userName,
-                                          @RequestParam("difference") double difference) {
+    public ResponseEntity<String> changeBalance(@RequestParam("username") String userName,
+                                                @RequestParam("difference") double difference) {
         int ret = walletService.update(userName, difference);
         if (ret == -1) {
-            return new Response<>(404, "用户错误", null);
+            return new ResponseEntity<>(404, "用户错误", null);
         }
         if(ret == -2){
-            return new Response<>(401, "余额不足", null);
+            return new ResponseEntity<>(401, "余额不足", null);
         }
         WalletRecord record = new WalletRecord(-1L, userName, new Date(), difference, -1L);
         walletService.updateRecord(record);
-        return new Response<>(200, "更新成功", null);
+        return new ResponseEntity<>(200, "更新成功", null);
     }
 
     /**
@@ -74,24 +71,22 @@ public class WalletController {
      * @return the response
      */
     @DeleteMapping("/wallet/user")
-    public Response<String> deleteWallet(@RequestParam("username") String userName) {
-        System.out.println(userName);
+    public ResponseEntity<String> deleteWallet(@RequestParam("username") String userName) {
         int ret = walletService.delete(userName);
         if (ret == -1) {
-            return new Response<>(404, "用户信息错误", null);
+            return new ResponseEntity<>(404, "用户信息错误", null);
         }
-        return new Response<>(200, "更新成功", null);
+        return new ResponseEntity<>(200, "更新成功", null);
     }
 
     /**
      * Handle deal response.
      *
-     * @param token the token
      * @param deal  the deal
      * @return the response
      */
     @PutMapping("/wallet/deal")
-    public Response<String> handleDeal(@RequestBody Deal deal) {
+    public ResponseEntity<String> handleDeal(@RequestBody Deal deal) {
         String status = deal.getDealStatus();
         int ret = 2;
         String userName = "";
@@ -110,14 +105,14 @@ public class WalletController {
             ret = walletService.update(userName, diff);
         }
         if (ret == -1) {
-            return new Response<>(404, "更新错误", null);
+            return new ResponseEntity<>(404, "更新错误", null);
         } else if (ret == 0) {
             WalletRecord walletRecord = new WalletRecord(-1L, userName, new Date(), diff, deal.getDealId());
             walletService.updateRecord(walletRecord);
         } else if(ret == -2){
-            return new Response<>(401, "余额不足", null);
+            return new ResponseEntity<>(401, "余额不足", null);
         }
-        return new Response<>(200, "处理成功", null);
+        return new ResponseEntity<>(200, "处理成功", null);
     }
 
     /**
@@ -127,8 +122,8 @@ public class WalletController {
      * @return the wallet
      */
     @GetMapping("/wallet/user")
-    public Response<Wallet> getWallet(@RequestParam("username") String userName) {
-        return new Response<>(200, "", walletService.get(userName));
+    public ResponseEntity<Wallet> getWallet(@RequestParam("username") String userName) {
+        return new ResponseEntity<>(200, "", walletService.get(userName));
     }
 
     /**
@@ -139,8 +134,8 @@ public class WalletController {
      * @return the response
      */
     @GetMapping("/wallet/user/deal")
-    public Response<List<WalletRecord>> getDeal(@RequestParam("username") String userName,
+    public ResponseEntity<List<WalletRecord>> getDeal(@RequestParam("username") String userName,
                                                 @RequestParam("size") int size) {
-        return new Response<>(200, "", walletService.getRecords(userName, size));
+        return new ResponseEntity<>(200, "", walletService.getRecords(userName, size));
     }
 }

@@ -1,5 +1,6 @@
 package commodity.controller;
 
+import cn.edu.fudan.common.entities.ResponseEntity;
 import cn.edu.fudan.common.entities.dbo.Commodity;
 import commodity.service.impl.CommodityServiceImpl;
 import commodity.utils.IdGenerator;
@@ -42,12 +43,12 @@ public class CommodityController {
      * @return the commodity
      */
     @GetMapping("/commodity/item")
-    public Response<Commodity> singleCommodity(@RequestParam("id") String commodityId) {
+    public ResponseEntity<Commodity> singleCommodity(@RequestParam("id") String commodityId) {
         Commodity ret = commodityService.singleCommodity(commodityId);
         if (ret == null) {
-            return new Response<>(404, "查询错误", null);
+            return new ResponseEntity<>(404, "查询错误", null);
         }
-        return new Response<>(200, "成功", ret);
+        return new ResponseEntity<>(200, "成功", ret);
     }
 
     /**

@@ -1,7 +1,8 @@
 package order.service;
 
+import cn.edu.fudan.common.entities.ResponseEntity;
 import cn.edu.fudan.common.entities.dbo.Commodity;
-import order.entities.ResponseEntity;
+
 import order.service.impl.CommodityFallbackImpl;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
