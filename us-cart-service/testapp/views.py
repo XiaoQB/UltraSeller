@@ -7,6 +7,7 @@ from .models import cart
 import json
 from django.views.decorators.csrf import csrf_exempt
 
+from json import dumps
 
 from datetime import date, datetime
 
@@ -52,11 +53,8 @@ def index(request):
 
 # # 判断是否登录，使用header 中的 token
 
-# problem 
-# 如何调http 接口 ？
-# 沟通业务逻辑 
-# 确定如何写接口
 
+# host.docker.internal
 
 @require_http_methods(["GET"]) # 返回所有
 def GetCart(request):
@@ -73,7 +71,9 @@ def GetCart(request):
         status = obj.status
         create_time = obj.create_time
         update_time = obj.update_time
-        url = 'http://localhost:8003/commodity/item'
+# mac docker 无法获得宿主机IP 通过 host.docker.internal 获取 每台宿主机 不同 
+# linux 直接在 compose 中 使用 network: localhost 即可
+        url = 'http://192.168.65.2:8002/commodity/item'
         params = {'id': gid}
         response = requests.get(url=url, params=params, headers=headers)
         response = response.json()
@@ -111,10 +111,11 @@ def AddCart(request):
         update_time = good.get("update_time")
         # 请求库存 判断当前数量是否合法
 
-        url = 'http://localhost:8003/commodity/item'
+        url = 'http://192.168.65.2:8002/commodity/item'
         params = {'id': gid}
         response = requests.get(url=url, params=params,  headers=headers)
         response = response.json()
+
         if response.get('code')== 200:
             data = response.get("data") 
             inventory = data.get("inventory")
@@ -134,7 +135,7 @@ def AddCart(request):
             else:
                 return HttpResponse("Exceeding stock or purchase limits!")
         else:
-            return HttpResponse(response.get("msg"))
+            return HttpResponse(response)
     
     return HttpResponse("AddCart Succes!")
 
@@ -143,7 +144,66 @@ def AddCart(request):
 @require_http_methods(["POST"])
 def Cart2Order(request):
     # 调用http http://localhost:8003/order/create
-    return HttpResponse("Cart2Ordeer Succes!")
+    data = json.loads(request.body)
+    uid = data.get('uid')
+    goods_list = data.get('goods_list')
+    address = data.get('address')
+    res = {}
+    res['buyerId'] = uid
+    res['address'] = address
+    res['status'] = data.get('status')
+    commodities = []
+    token = request.META.get("HTTP_TOKEN")
+    headers = {"token":token}
+
+    for good in goods_list:
+        commodity = {}
+        gid = good.get("data").get("id") 
+        commodity["num"] = good.get("order_num")
+        commodity["id"] = gid
+        #status = good.get("status")
+        
+        # 请求库存 判断当前数量是否合法
+        url = 'http://192.168.65.2:8002/commodity/item'
+        params = {'id': gid}
+        response = requests.get(url=url, params=params,  headers=headers)
+        response = response.json()
+        
+        if response.get('code')== 200:
+            data = response.get("data") 
+            commodity["inventory"] = data.get("inventory")
+            commodity["price"] = data.get("price")
+            commodity["name"] = data.get("name")
+        else:
+            return HttpResponse(response)
+        commodities.append(commodity)
+    
+    res["commodities"] = commodities  
+    # return HttpResponse(dumps(res))
+    # 请求下单 
+    url = 'http://192.168.65.2:8004/order/create?'
+    headers = {'content-Type': 'application/json'}
+    response = requests.post(url=url, data=dumps(res), headers=headers)
+    response = response.json()
+
+    # 下单成功 修改数据库
+    if response.get('code') == 200:
+        for good in goods_list:
+            gid = good.get("id")
+            order_num = good.get("order_num")
+            
+            dictCheck = {"buyer_id": uid, "commodity_id": gid}
+            dictFor = getKwargs(dictCheck)
+            #利用**解引用，进行数据条件查询
+            obj = cart.objects.filter( **dictFor)
+            obj = obj[0]
+            obj.cart_num = obj.cart_num - order_num
+            if obj.cart_num > 0:
+                obj.save()
+            else:
+                obj.delete()  
+
+    return HttpResponse(dumps(response))
     
    
 

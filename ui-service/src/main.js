@@ -5,20 +5,22 @@ import ElementUI from "element-ui"; //element-ui的全部组件
 import "element-ui/lib/theme-chalk/index.css"; //element-ui的css
 Vue.use(ElementUI); //使用elementUI
 
-import login from "@/pages/login";
 import adminLogin from "@/pages/adminLogin";
 import admin from "@/pages/admin";
+import commodityManager from "@/components/commodityManager";
 
-import store from "@/pages/store/index";
-import error from "@/pages/404";
-import commodityManager from "@/components/commodityManager"
-
+import login from "@/pages/login";
+import storePage from "@/pages/buyer/components/storePage";
+import buyerOrder from "@/pages/buyer/components/buyerOrder";
+import messageCenter from "@/pages/buyer/components/messageCenter";
+import buyerWallet from "@/pages/buyer/components/buyerWallet";
 
 import saler from "@/pages/saler/saler";
 import salerOrder from "./pages/saler/salerOrder";
 import wallet from "./components/wallet";
 
-import http from './http'
+import error from "@/pages/404";
+import http from "./http";
 
 Vue.prototype.http = http;
 
@@ -33,13 +35,47 @@ Vue.use(VueRouter);
 Vue.config.productionTip = false;
 
 const router = new VueRouter({
-
   mode: "history",
   routes: [
     {
-      name: "store",
+      name: "saler",
+      path: "/saler",
+      component: saler,
+    },
+    {
+      name: "salerOrder",
+      path: "/salerOrder",
+      component: salerOrder,
+    },
+    {
+      name: "wallet",
+      path: "/wallet",
+      component: wallet,
+    },
+    {
+      name: "storePage",
       path: "/",
-      component: store,
+      component: storePage,
+    },
+    {
+      name: "storePage",
+      path: "/storePage",
+      component: storePage,
+    },
+    {
+      name: "buyerOrder",
+      path: "/buyerOrder",
+      component: buyerOrder,
+    },
+    {
+      name: "messageCenter",
+      path: "/messageCenter",
+      component: messageCenter,
+    },
+    {
+      name: "buyerWallet",
+      path: "/buyerWallet",
+      component: buyerWallet,
     },
     {
       path: "/login",
@@ -59,42 +95,22 @@ const router = new VueRouter({
       },
     },
     {
-        name: "commodityManager",
-        path: "/commodityManager",
-        component: commodityManager,
-        meta: {
-            requireAuth: true,
-          },
+      name: "commodityManager",
+      path: "/commodityManager",
+      component: commodityManager,
+      meta: {
+        requireAuth: true,
+      },
     },
     {
       path: "*",
       name: "404",
       component: error,
     },
-
-
-    {
-        name:'saler',
-        path:'/saler',
-        component: saler
-    },
-    {
-        name:'salerOrder',
-        path:'/salerOrder',
-        component: salerOrder
-    },
-      {
-          name:'wallet',
-          path:'/wallet',
-          component: wallet
-      },
-
-
-
-    ]
-})
+  ],
+});
 
 new Vue({
-    router,
-    render: (h) => h(App),
+  router,
+  render: (h) => h(App),
 }).$mount("#app");

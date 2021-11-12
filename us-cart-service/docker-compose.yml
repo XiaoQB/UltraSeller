@@ -1,13 +1,15 @@
-version: "3"
+version: "3.4"
 services:
   us-cart-service:
     restart: always
-    build: .  # '点'代表当前目录
-    command: bash -c "python manage.py migrate && python manage.py makemigrations && python NacosClient.py"
+    build:
+      context: .
+      network: host
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python NacosClient.py"
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
+      - "8012:8012"
   #   depends_on:
   #     - db
   # db:
