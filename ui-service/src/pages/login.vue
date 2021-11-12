@@ -27,7 +27,7 @@
           </el-form-item>
           <el-form-item label="角色" prop="role">
             <el-radio v-model="user.role" label="buyer">买家</el-radio>
-            <el-radio v-model="user.role" label="seller">卖家</el-radio>
+            <el-radio v-model="user.role" label="saler">卖家</el-radio>
           </el-form-item>
           <el-form-item>
             <el-button
@@ -168,8 +168,7 @@ export default {
         this.user.role === undefined
       ) {
         this.$message.error("请选择角色！");
-      }
-      if (this.user.role === "saler") {
+      }else if (this.user.role === "saler") {
         this.http
           .get(`/user/login`, {
             params: {
@@ -200,8 +199,7 @@ export default {
             role: this.user.role,
           },
         });
-      }
-      if (this.user.role === "saler") {
+      }else if (this.user.role === "buyer") {
         this.http
           .get(`/user/login`, {
             params: {
