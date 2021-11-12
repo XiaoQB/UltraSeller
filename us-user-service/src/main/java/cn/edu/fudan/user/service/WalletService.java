@@ -22,7 +22,7 @@ public interface WalletService {
     /**
      * 创建 wallet
      *
-     * @param user user
+     * @param wallet wallet
      * @return string
      */
     @PostMapping("/user")

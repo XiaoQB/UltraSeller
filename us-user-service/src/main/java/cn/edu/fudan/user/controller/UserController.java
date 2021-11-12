@@ -79,10 +79,6 @@ public class UserController {
             log.info("info 删除数值错误");
             return new ResponseEntity<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
-        Integer deleteResult = userService.deleteUser(role, username);
-        if (deleteResult == 0) {
-            return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage(), null);
-        }
         ResponseEntity<String> walletResponse = walletService.deleteWallet(user.getUserName());
         if (walletResponse.getCode() != 200) {
             return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage() + " 钱包服务删除失败", null);
@@ -94,6 +90,10 @@ public class UserController {
         }
 
          */
+        Integer deleteResult = userService.deleteUser(role, username);
+        if (deleteResult == 0) {
+            return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage(), null);
+        }
         return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), deleteResult);
     }
 
