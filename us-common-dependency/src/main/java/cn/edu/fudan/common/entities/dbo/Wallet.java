@@ -11,7 +11,6 @@ public class Wallet {
 
     private Long walletId;
 
-
     private String userName;
 
     private Double balance;
