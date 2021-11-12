@@ -94,17 +94,17 @@ public class UserDao {
         return num;
     }
 
-    public Integer deleteUser(String role, Integer id) {
+    public Integer deleteUser(String role, String username) {
         Integer integer = 0;
         switch (role) {
             case "admin":
-                integer = userMapper.deleteAdmin(id);
+                integer = userMapper.deleteAdmin(username);
                 break;
             case "buyer":
-                integer = userMapper.deleteBuyer(id);
+                integer = userMapper.deleteBuyer(username);
                 break;
             case "saler":
-                integer = userMapper.deleteSaler(id);
+                integer = userMapper.deleteSaler(username);
                 break;
             default:
                 break;

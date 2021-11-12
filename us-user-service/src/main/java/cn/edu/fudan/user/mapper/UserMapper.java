@@ -36,11 +36,11 @@ public interface UserMapper {
 
     List<User> getSalers(Integer num, Integer page);
 
-    Integer deleteAdmin(Integer id);
+    Integer deleteAdmin(String username);
 
-    Integer deleteBuyer(Integer id);
+    Integer deleteBuyer(String username);
 
-    Integer deleteSaler(Integer id);
+    Integer deleteSaler(String username);
 
     Integer updateAdmin(String userName, String password);
 

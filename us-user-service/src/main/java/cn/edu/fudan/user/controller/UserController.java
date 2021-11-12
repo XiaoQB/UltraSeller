@@ -68,12 +68,12 @@ public class UserController {
     @DeleteMapping("/delete")
     public ResponseEntity<Integer> deleteUser(@RequestBody User user) {
         String role = user.getRole();
-        Integer id = user.getId();
-        if (role == null || id == null) {
+        String username = user.getUserName();
+        if (role == null || username == null) {
             log.info("info 删除数值错误");
             return new ResponseEntity<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
-        Integer deleteResult = userService.deleteUser(role, id);
+        Integer deleteResult = userService.deleteUser(role, username);
         if (deleteResult == 0) {
             return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage(), null);
         }
@@ -81,10 +81,13 @@ public class UserController {
         if (walletResponse.getCode() != 200) {
             return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage() + " 钱包服务删除失败", null);
         }
+        /*
         ResponseEntity<String> cartResponse = cartService.deleteCart(user.getUserName());
         if (cartResponse.getCode() != 200) {
             return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage() + " 购物车服务删除失败", null);
         }
+
+         */
         return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), deleteResult);
     }
 
@@ -113,10 +116,10 @@ public class UserController {
         try {
             boolean result = userService.insertUser(user);
             if (result) {
-                Wallet wallet = new Wallet(0, user.getUserName(), 0.0, user.getRole());
+                Wallet wallet = new Wallet(0L, user.getUserName(), 0.0, user.getRole());
                 ResponseEntity<String> walletResponse = walletService.createWallet(wallet);
                 if (walletResponse.getCode() != 201) {
-                    userService.deleteUser(user.getRole(), user.getId());
+                    userService.deleteUser(user.getRole(), user.getUserName());
                     return walletResponse;
                 }
 //                ResponseEntity<String> cartResponse = cartService.createCart(user);
