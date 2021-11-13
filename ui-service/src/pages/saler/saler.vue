@@ -216,10 +216,9 @@ export default {
       index: 0,
       salerPage: "saler",
       input: "",
-      commodityList: [
-        {
+      commodityList: [{
 
-        }
+      }
       ],
       commodity: {
         id: "",

@@ -29,11 +29,11 @@ public class CommodityController {
      * @return the list
      */
     @GetMapping("/commodity/lists")
-    public PagedGridResult allCommodities(@RequestParam("username") String username,
+    public ResponseEntity<PagedGridResult> allCommodities(@RequestParam("username") String username,
                                           @RequestParam("page") int pageNum,
                                           @RequestParam("pagesize") int pageSize,
                                           @RequestParam("seq") int sequence) {
-        return commodityService.selectAll(username, pageNum, pageSize, sequence);
+        return new ResponseEntity<>(200,"",commodityService.selectAll(username, pageNum, pageSize, sequence));
     }
 
     /**
