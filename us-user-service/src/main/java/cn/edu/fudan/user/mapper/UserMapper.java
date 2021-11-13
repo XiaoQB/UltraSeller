@@ -16,49 +16,49 @@ public interface UserMapper {
 
     boolean insertSaler(@Param("userName") String userName, @Param("email") String email, @Param("phone") String phone, @Param("password") String password);
 
-    boolean insertBuyer(String userName, String email, String phone, String password);
+    boolean insertBuyer(@Param("userName") String userName, @Param("email")String email, @Param("phone")String phone, @Param("password")String password);
 
-    Integer isExistAdmin(String userName);
+    Integer isExistAdmin(@Param("userName") String userName);
 
-    Integer isExistSaler(String userName);
+    Integer isExistSaler(@Param("userName") String userName);
 
-    Integer isExistBuyer(String userName);
+    Integer isExistBuyer(@Param("userName") String userName);
 
-    User getAdminByName(String userName);
+    User getAdminByName(@Param("userName") String userName);
 
-    User getBuyerByName(String userName);
+    User getBuyerByName(@Param("userName") String userName);
 
-    User getSalerByName(String userName);
+    User getSalerByName(@Param("userName") String userName);
 
-    List<User> getAdmins(Integer num, Integer page);
+    List<User> getAdmins(@Param("num")Integer num, @Param("page")Integer page);
 
-    List<User> getBuyers(Integer num, Integer page);
+    List<User> getBuyers(@Param("num") Integer num, @Param("page") Integer page);
 
-    List<User> getSalers(Integer num, Integer page);
+    List<User> getSalers(@Param("num") Integer num,@Param("page") Integer page);
 
-    Integer deleteAdmin(Integer id);
+    Integer deleteAdmin(@Param("id")Integer id);
 
-    Integer deleteBuyer(Integer id);
+    Integer deleteBuyer(@Param("id")Integer id);
 
-    Integer deleteSaler(Integer id);
+    Integer deleteSaler(@Param("id")Integer id);
 
-    Integer updateAdmin(String userName, String password);
+    Integer updateAdmin(@Param("userName") String userName, @Param("password")String password);
 
-    Integer updateBuyerUserName(Integer id, String userName);
+    Integer updateBuyerUserName(@Param("id")Integer id, @Param("userName") String userName);
 
-    Integer updateBuyerPassword(Integer id, String password);
+    Integer updateBuyerPassword(@Param("id")Integer id,@Param("password") String password);
 
-    Integer updateBuyerEmail(Integer id, String email);
+    Integer updateBuyerEmail(@Param("id")Integer id,@Param("email") String email);
 
-    Integer updateBuyerPhone(Integer id, String phone);
+    Integer updateBuyerPhone(@Param("id")Integer id, @Param("phone")String phone);
 
-    Integer updateSalerUserName(Integer id, String userName);
+    Integer updateSalerUserName(@Param("id")Integer id,@Param("userName")  String userName);
 
-    Integer updateSalerPassword(Integer id, String password);
+    Integer updateSalerPassword(@Param("id")Integer id, @Param("password")String password);
 
-    Integer updateSalerEmail(Integer id, String email);
+    Integer updateSalerEmail(@Param("id")Integer id, @Param("email")String email);
 
-    Integer updateSalerPhone(Integer id, String phone);
+    Integer updateSalerPhone(@Param("id")Integer id, @Param("phone")String phone);
 
     Integer getAdminNum();
 

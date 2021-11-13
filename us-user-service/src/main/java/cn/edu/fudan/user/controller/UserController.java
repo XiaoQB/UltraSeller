@@ -57,11 +57,12 @@ public class UserController {
             return new ResponseEntity<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
         List<User> results = userService.getUserList(role, num, page);
-        Integer userNum = userService.getUserNum(role);
-        GetUserListDTO getUserListDTO = new GetUserListDTO(userNum, results);
         if (results == null) {
             return new ResponseEntity<>(ResultCode.QUERY_FAIL.getCode(), ResultCode.QUERY_FAIL.getMessage(), null);
         }
+        results.forEach((result)->result.setRole(role));
+        Integer userNum = userService.getUserNum(role);
+        GetUserListDTO getUserListDTO = new GetUserListDTO(userNum, results);
         return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), getUserListDTO);
     }
 
@@ -113,7 +114,7 @@ public class UserController {
         try {
             boolean result = userService.insertUser(user);
             if (result) {
-                Wallet wallet = new Wallet(0, user.getUserName(), 0.0, user.getRole());
+                Wallet wallet = new Wallet((long)0, user.getUserName(), 0.0, user.getRole());
                 ResponseEntity<String> walletResponse = walletService.createWallet(wallet);
                 if (walletResponse.getCode() != 201) {
                     userService.deleteUser(user.getRole(), user.getId());

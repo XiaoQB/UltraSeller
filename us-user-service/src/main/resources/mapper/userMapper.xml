@@ -3,6 +3,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.fudan.user.mapper.UserMapper">
 
+    <resultMap id="user" type="cn.edu.fudan.common.entities.dbo.User">
+        <id property="id" column="id"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="userName" column="username"/>
+        <result property="password" column="password"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
     <insert id="insertAdmin">
         insert into us_admin(username, password)
         values (#{userName}, #{password})
@@ -52,14 +62,14 @@
         limit #{page},#{num}
     </select>
 
-    <select id="getBuyers" resultType="cn.edu.fudan.common.entities.dbo.User">
-        select id, username, email, phone
+    <select id="getBuyers" resultMap="user">
+        select *
         from ultra_seller.us_buyer
         limit #{page},#{num}
     </select>
 
-    <select id="getSalers" resultType="cn.edu.fudan.common.entities.dbo.User">
-        select id, username, email, phone
+    <select id="getSalers" resultMap="user">
+        select *
         from ultra_seller.us_saler
         limit #{page},#{num}
     </select>
