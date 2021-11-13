@@ -179,11 +179,9 @@ export default {
               if (res.data.status === 200 && this.user.role === 'saler') {
                 window.localStorage["token"] = JSON.stringify(res.data['token'])
                 window.localStorage['user_id'] = this.user.username
+                window.localStorage['role'] = this.user.role
                 this.$router.push({ name: "saler",
-                "params":{
-                    "name":this.user.username,
-                    "token":res.data['token'],
-                }});
+               });
               } else{
                 alert("您输入的用户名或密码错误！");
               }

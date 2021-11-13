@@ -2,13 +2,13 @@ import axios from 'axios';
 import VueRouter from "vue-router";
 
 // axios 配置
-axios.defaults.timeout = 8000;
+axios.defaults.baseURL = "http://127.0.0.1:8000";
 
 
 export const baseURL = {
     commodity: 'http://localhost:8003',
     user: 'http://localhost:8002',
-    gatewy:'http://localhost:8000'
+    gateway:'http://localhost:8000'
 }
 
 

@@ -9,13 +9,15 @@
         text-color="#fff"
         active-text-color="#ffd04b"
       >
-        <el-menu-item index="saler">商品信息</el-menu-item>
-        <el-menu-item index="/salerOrder">
+        <el-menu-item index="saler"><router-link to="/saler">
+          商品信息
+        </router-link></el-menu-item>
+        <el-menu-item index="salerOrder">
           <router-link to="/salerOrder">
             订单信息
           </router-link>
         </el-menu-item>
-        <el-menu-item index="message-center-page"
+        <el-menu-item index="wallet"
           ><router-link to="/wallet">
             钱包
           </router-link></el-menu-item
@@ -84,7 +86,7 @@
                 <el-descriptions-item label="名字">{{
                   o.name
                 }}</el-descriptions-item>
-                <el-descriptions-item label="分类">
+                <el-descriptions-item label="描述">
                   <el-tag size="small">{{ o.description }}</el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item label="价格">{{
@@ -319,7 +321,8 @@ export default {
     getList() {
       this.http({
         headers: {
-          'token': localStorage['token']
+          'token': localStorage['token'],
+          'role':localStorage['role']
         },
         method: "get",
         url: `/seller/lists`,
@@ -351,7 +354,8 @@ export default {
       this.http({
 
             headers: {
-              'token': localStorage['token']
+              'token': localStorage['token'],
+              'role':localStorage['role']
             },
             method: "delete",
             url: `/commidity/item`,
@@ -360,7 +364,6 @@ export default {
             }
           }
       ).then(res => {
-
         if (res.data.code() === 200) {
           this.getList();
         } else {
@@ -384,6 +387,7 @@ export default {
         headers: {
           "Content-Type": "application/json;",
           token: localStorage["token"],
+          'role':localStorage['role']
         },
         method: "put",
         url: `/commidity/item`,
@@ -421,7 +425,8 @@ export default {
       this.http({
 
             headers: {
-              'token': localStorage['token']
+              'token': localStorage['token'],
+              'role':localStorage['role']
             },
             method: "get",
             url: `/commidity`,
@@ -433,16 +438,15 @@ export default {
             }
           }
       ).then(res => {
-
         if (res.data.code() === 200) {
           this.commodityList = res.data.rows;
           this.dataTotalCount = res.data.records;
-        } else {
-          this.$message({
-            type: "error",
-            message: "系统异常：",
-          });
         }
+      }).catch(function(error) {
+        this.$message({
+          type: "error",
+          message: "系统异常：" + error,
+        });
       });
     },
     addCommodity() {
@@ -454,6 +458,7 @@ export default {
         headers: {
           "Content-Type": "application/json;",
           token: localStorage["token"],
+          'role':localStorage['role']
         },
         method: "put",
         url: `/commidity/add`,

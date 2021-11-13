@@ -17,7 +17,7 @@
             订单信息
           </router-link>
         </el-menu-item>
-        <el-menu-item index="message-center-page"
+        <el-menu-item index="wallet"
         > <router-link to="/wallet">
           钱包
         </router-link></el-menu-item
@@ -64,24 +64,17 @@
         </el-table-column>
         <el-table-column
             label="订单编号"
-            prop="id">
+            prop="subOrderId">
         </el-table-column>
-        <el-table-column
-            label="商品名称"
-            prop="name">
+        <el-table-column v-for = "(item,index) in columnIndex" :key="index" :label="item">
           <template slot-scope="scope">
-            <el-input placeholder="请输入内容" v-show="scope.row.show" v-model="scope.row.name"></el-input>
-            <span v-show="!scope.row.show">{{ scope.row.name }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-            label="图片"
-            prop="imgLink">
-          <template slot-scope="scope">
+            <div v-if="item==='图片'">
             <el-popover placement="top-start" title="" trigger="hover">
-              <img :src=scope.row.imgLink alt="" style="width: 150px;height: 150px">
-              <img slot="reference" :src=scope.row.imgLink style="width: 100px;height: 100px">
+              <img :src=scope.row.commodity.imgLink alt="" style="width: 150px;height: 150px">
+              <img slot="reference" :src=scope.row.commodity.imgLink  style="width: 100px;height: 100px">
             </el-popover>
+            </div>
+            <span v-else>{{scope.row.commodity.name}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -97,8 +90,20 @@
             prop="address">
         </el-table-column>
         <el-table-column
+            label="数量"
+            prop="num">
+        </el-table-column>
+        <el-table-column
+            label="总价"
+            prop="totalPrice">
+        </el-table-column>
+        <el-table-column
             label="订单状态"
             prop="status">
+        </el-table-column>
+        <el-table-column
+            label="创建时间"
+            prop="createTime">
         </el-table-column>
         <el-table-column
             label="操作">
@@ -114,6 +119,7 @@
 
           </template>
         </el-table-column>
+
       </el-table>
       <el-pagination background
                      layout="total, prev, pager, next, sizes,jumper"
@@ -171,24 +177,37 @@ export default {
         value: '已取消',
         label: '已取消'
       }],
+      columnIndex:['图片','商品名称'],
       tableData: [
         {
-          id:"20210101001",
-          name:"面包",
-          imgLink:"https://ts3.cn.mm.bing.net/th/id/OIP-C.305fYj0cWoTv_Q8TIbJ02wHaHG?w=196&h=188&c=7&r=0&o=5&dpr=2&pid=1.7",
+          commodity:
+            {
+              imgLink:"https://ts3.cn.mm.bing.net/th/id/OIP-C.305fYj0cWoTv_Q8TIbJ02wHaHG?w=196&h=188&c=7&r=0&o=5&dpr=2&pid=1.7",
+              name:"面包"
+            }
+          ,
+          subOrderId:"20210101001",
           price:"10",
           buyer:"好吃",
           address:"10",
           status:"未发货",
+          createTime:"2021",
+          num:'5',
+          totalPrice:"50",
+
         },
       ],
-      status: ''
+      status: '',
+      changeInfo:{
+        subOrderId:"",
+        address:"",
+        status:""
+      }
       // currentDate: new Date()
     };
   },
   mounted(){
       this.getOrderList()
-    console.log("sfasdfsd")
   },
   methods: {
     //分页 初始页currentPage、初始每页数据数pagesize和数据testpage--->控制每页几条
@@ -214,7 +233,8 @@ export default {
         this.http({
           headers: {
             'Content-Type': 'application/json;',
-            'token': localStorage['token']
+            'token': localStorage['token'],
+            'role':localStorage['role']
           },
           method: "get",
           url: '/saler-list',
@@ -226,8 +246,7 @@ export default {
         })
             .then(response=> {
               if(response.data.code===200){
-                this.dataTotalCount = response.data
-
+                this.tableData = response.data.data
               }
             })
             .catch(function (error) {
@@ -242,14 +261,15 @@ export default {
       this.http({
         headers:{
           'Content-Type': 'application/json;',
-          'token':window.localStorage['token']
+          'token':window.localStorage['token'],
+          'role':localStorage['role']
         },
         method:"put",
         url:"/order/change",
         data:{
           subOrderId:row.id,
           address:row.address,
-          status:""
+          status:row.status
         }
       }).then(response=>{
         if(response.data.code===200){
@@ -264,32 +284,65 @@ export default {
       })
     },
     doSearch(){
-      this.http({
-        headers:{
-          'token':window.localStorage['token']
-        },
-        method:"get",
-        url:"/order/saler-orders-status",
-        params:{
-          user_id:localStorage['user_id'],
-          status:this.status,
-          page:this.formInline.currentPage,
-          num:this.formInline.pageSize
-        }
-      }).then(response=>{
-        if(response.data.code===200){
-
-          this.$message({
-            type: 'success',
-            message:'查询成功'
-          })
-        }
-      })
+     if(this.status === ''){
+       this.$message({
+         type:'error',
+         message:'请输入要查询的订单状态'
+       })
+     }else{
+       this.http({
+         headers:{
+           'token':window.localStorage['token'],
+           'role':localStorage['role']
+         },
+         method:"get",
+         url:"/order/saler-orders-status",
+         params:{
+           user_id:localStorage['user_id'],
+           status:this.status,
+           page:this.formInline.currentPage,
+           num:this.formInline.pageSize
+         }
+       }).then(response=>{
+         if(response.data.code===200){
+           this.$message({
+             type: 'success',
+             message:'查询成功'
+           })
+         }
+       }).catch(function (error) {
+         this.$message({
+           type: 'error',
+           message: '系统异常：' + error
+         });
+       });
+     }
     },
-    changeAddress(){
+    changeAddress(row){
       this.showDialog=true;
+      this.changeInfo = {
+        subOrderId:row.id,
+        address:row.address,
+        status:row.status
+      }
     },
     changeSubmit(){
+      this.showDialog=false;
+      this.http({
+        headers:{
+          'Content-Type': 'application/json;',
+          'token':window.localStorage['token'],
+          'role':localStorage['role']
+        },
+        method:"put",
+        url:"/order/change",
+        data:{
+          subOrderId:this.changeInfo.subOrderId,
+          address:this.changeInfo.address,
+          status:this.changeInfo.status
+        }
+
+      })
 
     }
   },
