@@ -1,6 +1,7 @@
 package cn.edu.fudan.user.service;
 
 import cn.edu.fudan.common.entities.dbo.User;
+import cn.edu.fudan.user.domain.dto.LoginDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface UserService {
 
     String logout(String userName);
 
-    String findByUsername(String userName, String password, String role);
+    LoginDTO findByUsername(String userName, String password, String role);
 
     List<User> getUserList(String role, Integer num, Integer page);
 

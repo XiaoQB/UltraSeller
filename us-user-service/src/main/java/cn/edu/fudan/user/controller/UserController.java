@@ -1,9 +1,9 @@
 package cn.edu.fudan.user.controller;
 
 import cn.edu.fudan.common.entities.ResponseEntity;
-import cn.edu.fudan.common.entities.dbo.Cart;
 import cn.edu.fudan.common.entities.dbo.User;
 import cn.edu.fudan.common.entities.dbo.Wallet;
+import cn.edu.fudan.user.domain.dto.LoginDTO;
 import cn.edu.fudan.user.result.ResultCode;
 import cn.edu.fudan.user.service.CartService;
 import cn.edu.fudan.user.service.UserService;
@@ -39,15 +39,15 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public ResponseEntity<String> login(String userName, String password, String role) {
+    public ResponseEntity<LoginDTO> login(String userName, String password, String role) {
         if (StringUtils.isBlank(role)) {
             return new ResponseEntity<>(ResultCode.PERMISSION_NO_ACCESS.getCode(), ResultCode.PERMISSION_NO_ACCESS.getMessage(), null);
         }
-        String jwt = userService.findByUsername(userName, password, role);
-        if (StringUtils.isEmpty(jwt)) {
+        LoginDTO loginDTO = userService.findByUsername(userName, password, role);
+        if (StringUtils.isEmpty(loginDTO.getToken())) {
             return new ResponseEntity<>(ResultCode.LOGIN_FAIL.getCode(), ResultCode.LOGIN_FAIL.getMessage(), null);
         }
-        return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), jwt);
+        return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), loginDTO);
     }
 
     @GetMapping("/info")
