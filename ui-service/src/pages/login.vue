@@ -169,8 +169,21 @@ export default {
       ) {
         this.$message.error("请选择角色！");
       }else if (this.user.role === "saler") {
+        // var requestOptions = {
+        //   method: 'GET',
+        //   redirect: 'follow',
+        //   mode: 'no-cor'
+        // };
+        // fetch("http://localhost:8000/user/login?userName=xpc&password=1234&role=saler", requestOptions)
+        // .then(response => response.text())
+        // .then(result => console.log(result))
+        // .catch(error => console.log('error', error));
+
         this.http
             .get(`/user/login`, {
+              headers:{
+                'Access-Control-Allow-Origin':'*'
+              },
               params: {
                 userName: this.user.username,
                 password: this.user.password,
@@ -178,8 +191,8 @@ export default {
               },
             })
             .then(res => {
-              if (res.data.status === 200 && this.user.role === 'saler') {
-                window.localStorage["token"] = JSON.stringify(res.data['token'])
+              if (res.data.code === 200 && this.user.role === 'saler') {
+                window.localStorage["token"] = JSON.stringify(res.data.data)
                 window.localStorage['user_id'] = this.user.username
                 window.localStorage['role'] = this.user.role
                 this.$router.push({ name: "saler",
