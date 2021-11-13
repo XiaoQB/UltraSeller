@@ -47,7 +47,7 @@
       <el-input
         class="input"
         placeholder="请输入商品"
-        v-model="input"
+        v-model="search"
         clearable
       >
       </el-input>
@@ -193,7 +193,7 @@
           <el-input v-model="commodity.inventory"></el-input>
         </el-form-item>
         <el-form-item label="所有者名字" prop="vendorName">
-          <el-input v-model="commodity.vendorName"></el-input>
+          <el-input v-model="userName"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -204,79 +204,21 @@
 </template>
 
 <script>
-import axios from 'axios';
 export default {
   name: "saler",
 
   data() {
     return {
+      userName:window.localStorage['user_id'],
       showDialog2: false,
       showDialog: false,
       edit: false,
       index: 0,
       salerPage: "saler",
       input: "",
-      commodityList: [
-        {
-          id: "1",
-          name: "vhjl",
-          imgLink:
-            "https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
-          price: "ass",
-          description: "sdc",
-          inventory: "asadfa",
-          vendorName: "asd",
-        },
-        {
-          id: "1",
-          name: "vhjl",
-          imgLink:
-            "https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
-          price: "ass",
-          description: "sdc",
-          inventory: "asadfa",
-          vendorName: "asd",
-        },
-        {
-          id: "1",
-          name: "vhjl",
-          imgLink:
-            "https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
-          price: "ass",
-          description: "sdc",
-          inventory: "asadfa",
-          vendorName: "asd",
-        },
-        {
-          id: "1",
-          name: "vhjl",
-          imgLink:
-            "https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
-          price: "ass",
-          description: "sdc",
-          inventory: "asadfa",
-          vendorName: "asd",
-        },
-        {
-          id: "1",
-          name: "vhjl",
-          imgLink:
-            "https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
-          price: "ass",
-          description: "sdc",
-          inventory: "asadfa",
-          vendorName: "asd",
-        },
-        {
-          id: "1",
-          name: "vhjl",
-          imgLink:
-            "https://uploadfile.bizhizu.cn/up/77/22/d9/7722d9f3dca875a7bfdee20adba5e8cc.jpg.source.jpg",
-          price: "ass",
-          description: "sdc",
-          inventory: "asadfa",
-          vendorName: "asd",
-        },
+      commodityList: [{
+
+      }
       ],
       commodity: {
         id: "",
@@ -292,15 +234,14 @@ export default {
         currentPage: 1,
         pageSize: 10,
       },
-      seq:0
+      seq:0,
+      search:""
     };
   },
   mounted(){
     this.getList()
   },
   methods: {
-
-
     handleSizeChange: function (size) {
 
       this.formInline.pageSize = size;
@@ -320,30 +261,10 @@ export default {
       return true;
     },
     getList() {
-
-var config = {
-  method: 'get',
-  url: 'http://127.0.0.1:8000/commodity/lists?page=1&pagesize=10&seq=0&username=xpc',
-  headers: { 
-    'token': 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiNDE3NTBmOS0wODk4LTQ0ZDgtODZmYS0xOTMzY2E2YTExNTMiLCJzdWIiOiJ7XCJyb2xlXCI6XCJzYWxlclwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhwY1wifSIsImlzcyI6ImFkbWluIiwiaWF0IjoxNjM2Nzk5MjkwLCJleHAiOjE2MzY4MDI4OTB9.si2OLHqqzYzBWaiigs87Rlbr_icwyXL6XDY60mUlTc0', 
-    'role': 'saler'
-  }
-};
-
-axios(config)
-.then(function (response) {
-  console.log(JSON.stringify(response.data));
-})
-.catch(function (error) {
-  console.log(error);
-});
-
-      console.log(localStorage['token'])
       this.http({
         headers: {
           'token': localStorage['token'],
-          'role':localStorage['role'],
-          'Access-Control-Allow-Origin':'*'
+          'role':localStorage['user_id'],
         },
         method: "get",
         url: `/commodity/lists`,
@@ -354,9 +275,9 @@ axios(config)
           seq: this.seq,
         }
       })
-          .then(function (response) {
-            this.commodityList = response.data.items;
-            this.dataTotalCount = response.data.total;
+          .then( (response) =>{
+            this.commodityList = response.rows;
+            this.dataTotalCount = response.records;
           })
           .catch(function (error) {
             this.$message({
@@ -372,17 +293,14 @@ axios(config)
     },
 
     handleDelete(o, index) {
+      console.log(o.id)
       this.http({
-
             headers: {
               'token': localStorage['token'],
               'role':localStorage['role']
             },
             method: "delete",
-            url: `/commidity/item`,
-            params: {
-              id: o.id
-            }
+            url: `/commodity/item/${o.id}`,
           }
       ).then(res => {
         if (res.data.code === 200) {
@@ -442,7 +360,7 @@ axios(config)
         });
     },
 
-    doSearch(search) {
+    doSearch() {
       this.http({
 
             headers: {
@@ -450,18 +368,19 @@ axios(config)
               'role':localStorage['role']
             },
             method: "get",
-            url: `/commidity`,
+            url: `/commodity/search`,
             params: {
-              q: search,
+              q: this.search,
               pagesize: this.formInline.pageSize,
               page: this.formInline.currentPage,
               seq: this.seq
             }
           }
       ).then(res => {
-        if (res.data.code() === 200) {
-          this.commodityList = res.data.rows;
-          this.dataTotalCount = res.data.records;
+        console.log(res.data.code)
+        if (res.data.code === 200) {
+          this.commodityList = res.data.data.rows;
+          this.dataTotalCount = res.data.data.records;
         }
       }).catch(function(error) {
         this.$message({
@@ -478,7 +397,7 @@ axios(config)
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          token: localStorage["token"],
+          'token': localStorage["token"],
           'role':localStorage['role']
         },
         method: "put",
@@ -492,7 +411,7 @@ axios(config)
           imgLink: this.commodity.imgLink,
           price: this.commodity.price,
           description: this.commodity.description,
-          inventory: this.commodity.inventory,
+          inventory: localStorage["user_id"],
           vendorName: this.commodity.vendorName,
         },
       })

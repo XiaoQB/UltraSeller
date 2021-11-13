@@ -192,7 +192,7 @@ export default {
             })
             .then(res => {
               if (res.data.code === 200 && this.user.role === 'saler') {
-                window.localStorage["token"] = JSON.stringify(res.data.data)
+                window.localStorage["token"] = (res.data.data)
                 window.localStorage['user_id'] = this.user.username
                 window.localStorage['role'] = this.user.role
                 this.$router.push({ name: "saler",
