@@ -3,6 +3,7 @@ package cn.edu.fudan.user.controller;
 import cn.edu.fudan.common.entities.ResponseEntity;
 import cn.edu.fudan.common.entities.dbo.User;
 import cn.edu.fudan.common.entities.dbo.Wallet;
+import cn.edu.fudan.user.domain.dto.LoginDTO;
 import cn.edu.fudan.user.result.ResultCode;
 import cn.edu.fudan.user.service.CartService;
 import cn.edu.fudan.user.service.UserService;
@@ -20,7 +21,6 @@ import java.util.List;
  */
 @RestController
 @Slf4j
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/user")
 public class UserController {
 
@@ -39,52 +39,59 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public ResponseEntity<String> login(String userName, String password, String role) {
+    public ResponseEntity<LoginDTO> login(String userName, String password, String role) {
         if (StringUtils.isBlank(role)) {
             return new ResponseEntity<>(ResultCode.PERMISSION_NO_ACCESS.getCode(), ResultCode.PERMISSION_NO_ACCESS.getMessage(), null);
         }
-        String jwt = userService.findByUsername(userName, password, role);
-        if (StringUtils.isEmpty(jwt)) {
+        LoginDTO loginDTO = userService.findByUsername(userName, password, role);
+        if (StringUtils.isEmpty(loginDTO.getToken())) {
             return new ResponseEntity<>(ResultCode.LOGIN_FAIL.getCode(), ResultCode.LOGIN_FAIL.getMessage(), null);
         }
-        return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), jwt);
+        return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), loginDTO);
     }
 
     @GetMapping("/info")
     public ResponseEntity<GetUserListDTO> getUserList(String role, Integer num, Integer page) {
+        /*
         if (num == null || page == null) {
             log.info("info 查询数值错误");
             return new ResponseEntity<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
         }
+
+         */
+        log.info("role:"+role);
         List<User> results = userService.getUserList(role, num, page);
+        Integer userNum = userService.getUserNum(role);
+        log.info("userNum:"+userNum);
+        GetUserListDTO getUserListDTO = new GetUserListDTO(userNum, results);
         if (results == null) {
             return new ResponseEntity<>(ResultCode.QUERY_FAIL.getCode(), ResultCode.QUERY_FAIL.getMessage(), null);
         }
-        results.forEach((result)->result.setRole(role));
-        Integer userNum = userService.getUserNum(role);
-        GetUserListDTO getUserListDTO = new GetUserListDTO(userNum, results);
         return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), getUserListDTO);
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<Integer> deleteUser(@RequestBody User user) {
         String role = user.getRole();
-        Integer id = user.getId();
-        if (role == null || id == null) {
+        String username = user.getUserName();
+        if (role == null || username == null) {
             log.info("info 删除数值错误");
             return new ResponseEntity<>(ResultCode.SERVICE_ERROR.getCode(), ResultCode.SERVICE_ERROR.getMessage(), null);
-        }
-        Integer deleteResult = userService.deleteUser(role, id);
-        if (deleteResult == 0) {
-            return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage(), null);
         }
         ResponseEntity<String> walletResponse = walletService.deleteWallet(user.getUserName());
         if (walletResponse.getCode() != 200) {
             return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage() + " 钱包服务删除失败", null);
         }
+        /*
         ResponseEntity<String> cartResponse = cartService.deleteCart(user.getUserName());
         if (cartResponse.getCode() != 200) {
             return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage() + " 购物车服务删除失败", null);
+        }
+
+         */
+        Integer deleteResult = userService.deleteUser(role, username);
+        if (deleteResult == 0) {
+            return new ResponseEntity<>(ResultCode.DELETE_FAIL.getCode(), ResultCode.DELETE_FAIL.getMessage(), null);
         }
         return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), deleteResult);
     }
@@ -114,18 +121,24 @@ public class UserController {
         try {
             boolean result = userService.insertUser(user);
             if (result) {
-                Wallet wallet = new Wallet((long)0, user.getUserName(), 0.0, user.getRole());
+                Wallet wallet = new Wallet(0L, user.getUserName(), 0.0, user.getRole());
                 ResponseEntity<String> walletResponse = walletService.createWallet(wallet);
                 if (walletResponse.getCode() != 201) {
-                    userService.deleteUser(user.getRole(), user.getId());
+                    userService.deleteUser(user.getRole(), user.getUserName());
                     return walletResponse;
                 }
-//                ResponseEntity<String> cartResponse = cartService.createCart(user);
-//                if (cartResponse.getCode() != 200) {
-//                    walletService.deleteWallet(user.getUserName());
-//                    userService.deleteUser(user.getRole(), user.getId());
-//                    return cartResponse;
-//                }
+                user = userService.getUserByName(user.getRole(), user.getUserName());
+                log.info("user id:"+user.getId());
+                /*
+                Cart cart = new Cart(user.getId().toString(), null);
+                ResponseEntity<String> cartResponse = cartService.createCart(cart);
+                if (cartResponse.getCode() != 200) {
+                    walletService.deleteWallet(user.getUserName());
+                    userService.deleteUser(user.getRole(), user.getUserName());
+                    return cartResponse;
+                }
+
+                 */
                 return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
             }
             return new ResponseEntity<>(ResultCode.REGISTER_FAIL.getCode(), ResultCode.REGISTER_FAIL.getMessage(), null);

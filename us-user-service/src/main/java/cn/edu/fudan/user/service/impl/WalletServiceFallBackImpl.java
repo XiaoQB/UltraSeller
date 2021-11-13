@@ -15,6 +15,7 @@ public class WalletServiceFallBackImpl implements WalletService {
 
     @Override
     public ResponseEntity<String> createWallet(Wallet wallet) {
+//        todo add wallet
         return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + "钱包服务异常", null);
     }
 

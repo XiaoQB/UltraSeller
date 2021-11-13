@@ -3,7 +3,7 @@
     <div>
       <el-header class="store-menu">
         <el-menu
-            :default-active="saler"
+            :default-active="this.salerPage"
             mode="horizontal"
             @select="handleSelect"
             background-color="#545c64"
@@ -38,6 +38,7 @@
                       src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                   />
                 </el-avatar>
+
               </div>
             </el-col>
           </el-menu-item>
@@ -50,25 +51,22 @@
         <el-dialog title="订单详情" :visible.sync="showDialog" width="45%">
           <el-form ref="tableData" :model="tableData[nowRow]"  label-width="100px">
             <el-form-item label="订单编号" prop="id">
-              <span v-if="!edit">{{tableData[nowRow].id}}</span>
-              <el-input v-else v-model="tableData[nowRow].id"></el-input>
+              <span>{{orderInfo.id}}</span>
             </el-form-item>
-            <el-form-item label="卖家名称" prop="seller">
-              <span v-if="!edit">{{tableData[nowRow].seller}}</span>
-              <el-input v-else v-model="tableData[nowRow].seller"></el-input>
+            <el-form-item label="商品名称" prop="seller">
+              <span >{{orderInfo.commodityName}}</span>
             </el-form-item>
-            <el-form-item
-                label="商品图"
-                prop="imgLink">
-              <img :src=tableData[nowRow].imgLink alt="" style="width: 150px;height: 150px">
+            <el-form-item label="商品单价" prop="seller">
+              <span >{{orderInfo.price}}</span>
             </el-form-item>
-            <el-form-item label="价格" prop="price">
-              <span v-if="!edit">{{tableData[nowRow].price}}</span>
-              <el-input v-else v-model="tableData[nowRow].price"  ></el-input>
+            <el-form-item label="商品数量" prop="seller">
+              <span >{{orderInfo.num}}</span>
             </el-form-item>
-            <el-form-item label="订单状态" prop="status">
-              <span v-if="!edit">{{tableData[nowRow].status}}</span>
-              <el-input v-else v-model="tableData[nowRow].status"  ></el-input>
+            <el-form-item label="商品总价" prop="seller">
+              <span >{{orderInfo.totalPrice}}</span>
+            </el-form-item>
+            <el-form-item label="订单时间" prop="seller">
+              <span >{{orderInfo.createTime}}</span>
             </el-form-item>
           </el-form>
 
@@ -84,6 +82,9 @@
           label="序号"
           align="center"
           width="70px">
+        <template slot-scope="scope">
+          <span>{{scope.$index + 1}}</span>
+        </template>
       </el-table-column>
       <el-table-column
           label="订单编号"
@@ -115,21 +116,13 @@
 </template>
 
 <script>
-import {baseURL} from '@/http';
 
-const commodityUrl = baseURL.commodity;
 export default {
   name: "wallet",
   data() {
     return {
       money: "777",
       showDialog: false,
-      showDialog2: false,
-      edit: false,
-      nowRow: 0,
-      seq: 0,
-      search: "",
-      dataTotalCount: 0,      //查询条件的总数据量
       formInline: {
         currentPage: 1,
         pageSize: 10,
@@ -139,17 +132,16 @@ export default {
           orderId: "20210101001",
           time:"2121/9/0 23:00::00",
           amount:"+70"
-
         },
       ],
-      commodity1: {
-        id: "",
-        seller: "",
-        name: "",
-        imgLink: "",
-        price: "",
-        status: "",
-        vendorName: "",
+      orderInfo: {
+        id:"",
+        commodityName:"",
+        totalPrice:"",
+        num:"",
+        price:"",
+        createTime:"",
+
       }
     }
   },
@@ -161,16 +153,17 @@ export default {
     getMoney() {
       this.http({
         headers: {
-          'token': localStorage['token']
+          'token': localStorage['token'],
+          'role': localStorage['role']
         },
         method: "get",
-        url: `/commodity/lists`,
+        url: `/wallet/user`,
         params: {
-          username: "tet",
+          username: localStorage['user_id'],
         }
       })
           .then(response => {
-            this.money = response.data.money
+            this.money = response.data.balance
           })
           .catch(function (error) {
             this.$message({
@@ -184,16 +177,14 @@ export default {
       var that = this;
       this.http({
         headers: {
-          'token': localStorage['token']
+          'token': localStorage['token'],
+          'role': localStorage['role']
         },
         method: "get",
-        //改
-        url: `${commodityUrl}/commodity/lists`,
+        url: `/wallet/user/deal`,
         params: {
-          username: "tests",
-          pagesize: this.formInline.pageSize,
-          page: this.formInline.currentPage,
-          seq: this.seq
+          username: localStorage['user_id'],
+          size:"-1"
         }
       })
           .then(response => {
@@ -208,147 +199,32 @@ export default {
     },
     getDetail(index, row) {
       this.http({
-        headers:{
-          'token':localStorage['token']
+        headers: {
+          'token': localStorage['token'],
+          'role': localStorage['role']
         },
-        method:"get",
-        url:"/order/get",
-        params:{
-          id:row.orderId
+        method: "get",
+        url: "/order/get",
+        params: {
+          id: row.orderId
         }
-
-
-      }).then(response=>{
-        if(response.data.code===200){
-          this.commodity1 = response.data
+      }).then(response => {
+        if (response.data.code === 200) {
+          this.orderInfo = response.data.data
+          this.showDialog = true
         }
-      })
+      }).catch(function (error){
+        this.$message({
+          type:"error",
+          message:error
+        })
+      });
       console.log(index, row);
     },
-    handleDelete(index, row) {
-      this.http({
-            headers: {
-              'token': 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiYThlYmM2MC01MmQ1LTQ2NTctOTMzZi0zMWIzNGNkYjc4YTkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNjA4NzcsImV4cCI6MTYzNTA2NDQ3N30.Yirgbn607G0W3cWwb74JJTZpJILlTudikQjnao1I0cc'
-            },
-            method: "delete",
-            url: `/commodity/item/${row.id}`,
-          }
-      ).then(res => {
-        if (res.data.code === 200) {
-          this.getList();
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          });
-        } else {
-          this.$message({
-            type: 'error',
-            message: '系统异常：'
-          });
-        }
-      })
-    },
-    handleEdit() {
-      this.edit = true;
-    },
-    handleSubmit() {
-      this.showDialog = false;
-      this.edit = false;
-      this.http({
-        headers: {
-          'Content-Type': 'application/json;',
-          'token': 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiYThlYmM2MC01MmQ1LTQ2NTctOTMzZi0zMWIzNGNkYjc4YTkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNjA4NzcsImV4cCI6MTYzNTA2NDQ3N30.Yirgbn607G0W3cWwb74JJTZpJILlTudikQjnao1I0cc'
-        },
-        method: "put",
-        url: `${commodityUrl}/commodity/item`,
-        transformRequest: [function (data) {
-          return JSON.stringify(data)
-        }],
-        data: {
-          id: this.tableData[this.nowRow].id,
-          name: this.tableData[this.nowRow].name,
-          imgLink: this.tableData[this.nowRow].imgLink,
-          price: this.tableData[this.nowRow].price,
-          status: this.tableData[this.nowRow].status,
-          vendorName: this.tableData[this.nowRow].vendorName,
-        }
-      })
-          .then(response => {
-            if (response.data.code === 201) {
-              this.getList()
-              this.$message({
-                type: 'success',
-                message: '修改成功：'
-              });
-            }
-          })
-          .catch(function (error) {
-            this.$message({
-              type: 'error',
-              message: '系统异常：' + error
-            });
-          });
-    },
 
-    doSearch() {
-      this.http({
-            headers: {
-              'token': 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4NTY1YzkyYi04MWQyLTQzMjktOWEyZS1iZTQxYTVlYjAyMjYiLCJzdWIiOiJ7XCJyb2xlXCI6XCJidXllclwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInRlc3QwMVwifSIsImlzcyI6ImFkbWluIiwiaWF0IjoxNjM0OTY3MDc1LCJleHAiOjE2MzQ5NzA2NzV9.DvuJGR3y4ukfHdMjUD9RNCkcgu8KSamNquU_bq5DQjY'
-            },
-            method: "get",
-            url: `${commodityUrl}/commodity/search`,
-            params: {
-              q: this.search,
-              pagesize: this.formInline.pageSize,
-              page: this.formInline.currentPage,
-              seq: this.seq
-            }
-          }
-      ).then(res => {
-        if (res.data.code === 200) {
-          this.tableData = res.data.data.rows;
-          this.dataTotalCount = res.data.data.records;
-        } else {
-          this.$message({
-            type: 'error',
-            message: '没有找到相关商品'
-          });
-        }
-      })
-    },
-    addCommodity() {
-      this.showDialog2 = true;
-    },
-    handleAdd() {
-      this.showDialog2 = false;
-      this.http({
-        headers: {
-          'Content-Type': 'application/json;',
-          'token': 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiYThlYmM2MC01MmQ1LTQ2NTctOTMzZi0zMWIzNGNkYjc4YTkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNjA4NzcsImV4cCI6MTYzNTA2NDQ3N30.Yirgbn607G0W3cWwb74JJTZpJILlTudikQjnao1I0cc'
-        },
-        method: "post",
-        url: `${commodityUrl}/commodity/item`,
-        transformRequest: [function (data) {
-          return JSON.stringify(data)
-        }],
-        data: {
-          name: this.commodity1.name,
-          imgLink: this.commodity1.imgLink,
-          price: this.commodity1.price,
-          description: this.commodity1.description,
-          inventory: this.commodity1.inventory,
-          vendorName: this.commodity1.vendorName,
-        }
-      })
-          .then(response => {
-            if (response.data.code === 201) {
-              this.$message({
-                type: 'success',
-                message: '添加成功：'
-              });
-            }
-          })
-    }
+
+
+
   }
 }
 </script>

@@ -3,21 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.fudan.user.mapper.UserMapper">
 
-    <resultMap id="user" type="cn.edu.fudan.common.entities.dbo.User">
-        <id property="id" column="id"/>
-        <result property="email" column="email"/>
-        <result property="phone" column="phone"/>
-        <result property="userName" column="username"/>
-        <result property="password" column="password"/>
-        <result property="createTime" column="create_time"/>
-        <result property="updateTime" column="update_time"/>
-    </resultMap>
-
-    <insert id="insertAdmin">
+    <insert id="insertAdmin" useGeneratedKeys="true" keyProperty="id">
         insert into us_admin(username, password)
         values (#{userName}, #{password})
     </insert>
-    <insert id="insertSaler">
+    <insert id="insertSaler" useGeneratedKeys="true" keyProperty="id">
         insert into us_saler(username, password, phone, email)
         values (#{userName}, #{password}, #{phone}, #{email})
     </insert>
@@ -42,54 +32,51 @@
     </select>
 
     <select id="getAdminByName" resultType="cn.edu.fudan.common.entities.dbo.User" parameterType="java.lang.String">
-        select username, password
+        select id, username, password
         from us_admin
         where username = #{userName}
     </select>
     <select id="getBuyerByName" resultType="cn.edu.fudan.common.entities.dbo.User" parameterType="java.lang.String">
-        select username, password
+        select id, username, password
         from us_buyer
         where username = #{userName}
     </select>
     <select id="getSalerByName" resultType="cn.edu.fudan.common.entities.dbo.User" parameterType="java.lang.String">
-        select username, password
+        select id, username, password
         from us_saler
         where username = #{userName}
     </select>
     <select id="getAdmins" resultType="cn.edu.fudan.common.entities.dbo.Admin">
-        select *
+        select id, username
         from ultra_seller.us_admin
-        limit #{page},#{num}
     </select>
 
-    <select id="getBuyers" resultMap="user">
-        select *
+    <select id="getBuyers" resultType="cn.edu.fudan.common.entities.dbo.User">
+        select id, username, email, phone
         from ultra_seller.us_buyer
-        limit #{page},#{num}
     </select>
 
-    <select id="getSalers" resultMap="user">
-        select *
+    <select id="getSalers" resultType="cn.edu.fudan.common.entities.dbo.User">
+        select id, username, email, phone
         from ultra_seller.us_saler
-        limit #{page},#{num}
     </select>
 
     <delete id="deleteAdmin">
         delete
         from ultra_seller.us_admin
-        where id = #{id}
+        where username = #{username}
     </delete>
 
     <delete id="deleteBuyer">
         delete
         from ultra_seller.us_buyer
-        where id = #{id}
+        where username = #{username}
     </delete>
 
     <delete id="deleteSaler">
         delete
         from ultra_seller.us_saler
-        where id = #{id}
+        where username = #{username}
     </delete>
 
     <update id="updateAdmin" parameterType="java.lang.String">

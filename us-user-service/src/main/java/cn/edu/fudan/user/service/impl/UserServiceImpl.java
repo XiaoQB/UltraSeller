@@ -2,6 +2,7 @@ package cn.edu.fudan.user.service.impl;
 
 import cn.edu.fudan.common.entities.dbo.User;
 import cn.edu.fudan.common.entities.util.JwtUtil;
+import cn.edu.fudan.user.domain.dto.LoginDTO;
 import cn.edu.fudan.user.service.UserService;
 import com.alibaba.fastjson.JSON;
 
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public String findByUsername(String userName, String password, String role) {
+    public LoginDTO findByUsername(String userName, String password, String role) {
         User user = userDao.getUserByName(userName, role);
         if (user != null) {
             String pwd = DigestUtils.md5Hex(password);
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
                 info.put("role", role);
                 info.put("success", "SUCCESS");
                 info.put("username", userName);
-                return JwtUtil.createJwt(UUID.randomUUID().toString(), JSON.toJSONString(info), null);
+                return new LoginDTO(user.getId(),JwtUtil.createJwt(UUID.randomUUID().toString(), JSON.toJSONString(info), null));
             }
             //设置令牌信息
         }
@@ -39,8 +40,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer deleteUser(String role, Integer id) {
-        return userDao.deleteUser(role, id);
+    public Integer deleteUser(String role, String username) {
+        return userDao.deleteUser(role, username);
     }
 
     @Override
@@ -80,6 +81,11 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return false;
+    }
+
+    @Override
+    public User getUserByName(String role, String username) {
+        return userDao.getUserByName(username, role);
     }
 
     @Override

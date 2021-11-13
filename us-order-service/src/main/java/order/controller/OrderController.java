@@ -38,6 +38,7 @@ public class OrderController {
             orderService.createOrder(createOrderDTO);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, null);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
         }
     }

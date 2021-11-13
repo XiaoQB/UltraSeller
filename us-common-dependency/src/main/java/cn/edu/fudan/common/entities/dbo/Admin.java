@@ -15,5 +15,6 @@ public class Admin {
     private String password;
     private LocalDateTime updateTime;
     private LocalDateTime createTime;
+    private Integer id;
 
 }

@@ -1,6 +1,7 @@
 package cn.edu.fudan.user.service;
 
 import cn.edu.fudan.common.entities.dbo.User;
+import cn.edu.fudan.user.domain.dto.LoginDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,15 +13,17 @@ public interface UserService {
 
     String logout(String userName);
 
-    String findByUsername(String userName, String password, String role);
+    LoginDTO findByUsername(String userName, String password, String role);
 
     List<User> getUserList(String role, Integer num, Integer page);
 
     Integer getUserNum(String role);
 
-    Integer deleteUser(String role, Integer id);
+    Integer deleteUser(String role, String username);
 
     Integer modifyUser(Integer id, String role, String userName, String password, String phone, String email);
 
     boolean authorization(String token, String role);
+
+    User getUserByName(String role, String username);
 }

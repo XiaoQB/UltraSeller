@@ -169,68 +169,38 @@ export default {
       ) {
         this.$message.error("请选择角色！");
       }else if (this.user.role === "saler") {
+        // var requestOptions = {
+        //   method: 'GET',
+        //   redirect: 'follow',
+        //   mode: 'no-cor'
+        // };
+        // fetch("http://localhost:8000/user/login?userName=xpc&password=1234&role=saler", requestOptions)
+        // .then(response => response.text())
+        // .then(result => console.log(result))
+        // .catch(error => console.log('error', error));
+
         this.http
-          .get(`/user/login`, {
-            params: {
-              userName: this.user.username,
-              password: this.user.password,
-              role: this.user.role,
-            },
-          })
-          .then((res) => {
-            if (res.data.status === 200) {
-              window.localStorage["token"] = JSON.stringify(res.data["token"]);
-              window.localStorage["user_id"] = this.user.username;
-              this.$router.push({
-                name: "saler",
-                params: {
-                  name: this.user.username,
-                  token: res.data["token"],
-                },
-              });
-            } else {
-              alert("您输入的用户名或密码错误！");
-            }
-          });
-        this.$router.push({
-          path: "/saler",
-          query: {
-            userName: this.user.username,
-            role: this.user.role,
-          },
-        });
-      }else if (this.user.role === "buyer") {
-        this.http
-          .get(`/user/login`, {
-            params: {
-              userName: this.user.username,
-              password: this.user.password,
-              role: this.user.role,
-            },
-          })
-          .then((res) => {
-            if (res.data.status === 200) {
-              window.localStorage["token"] = JSON.stringify(res.data["token"]);
-              window.localStorage["user_id"] = this.user.username;
-              this.$router.push({
-                name: "app",
-                query: {
-                  userName: this.user.username,
-                  token: res.data["token"],
-                  role: this.user.role,
-                },
-              });
-            } else {
-              alert("您输入的用户名或密码错误！");
-            }
-          });
-        this.$router.push({
-          name: "app",
-          query: {
-            userName: this.user.username,
-            role: this.user.role,
-          },
-        });
+            .get(`/user/login`, {
+              headers:{
+                'Access-Control-Allow-Origin':'*'
+              },
+              params: {
+                userName: this.user.username,
+                password: this.user.password,
+                role: this.user.role
+              },
+            })
+            .then(res => {
+              if (res.data.code === 200 && this.user.role === 'saler') {
+                window.localStorage["token"] = JSON.stringify(res.data.data)
+                window.localStorage['user_id'] = this.user.username
+                window.localStorage['role'] = this.user.role
+                this.$router.push({ name: "saler",
+               });
+              } else{
+                alert("您输入的用户名或密码错误！");
+              }
+            });
       }
     },
     doRegister() {
