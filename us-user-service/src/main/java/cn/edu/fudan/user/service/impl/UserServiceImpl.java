@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer deleteUser(String role, Integer id) {
-        return userDao.deleteUser(role, id);
+    public Integer deleteUser(String role, String username) {
+        return userDao.deleteUser(role, username);
     }
 
     @Override
@@ -80,6 +80,11 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return false;
+    }
+
+    @Override
+    public User getUserByName(String role, String username) {
+        return userDao.getUserByName(username, role);
     }
 
     @Override

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * @author beethoven
  * @date 2021-11-02 16:14:38
@@ -25,5 +27,7 @@ public class SubOrder {
     protected String commodityName;
     protected Float price;
     protected Integer num;
+    protected Date createTime;
+    protected Date updateTime;
 
 }

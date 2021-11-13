@@ -36,13 +36,14 @@ public class UserDao {
                 userMapper.insertBuyer(user.getUserName(), user.getEmail(), user.getPhone(), password);
                 break;
             default:
-                break;
+                return false;
         }
         return true;
     }
 
     public User getUserByName(String userName, String role) {
         User user = new User();
+        log.info("Dao getuserbyName:"+userName+" "+role);
         switch (role) {
             case "admin":
                 user = userMapper.getAdminByName(userName);
@@ -94,17 +95,17 @@ public class UserDao {
         return num;
     }
 
-    public Integer deleteUser(String role, Integer id) {
+    public Integer deleteUser(String role, String username) {
         Integer integer = 0;
         switch (role) {
             case "admin":
-                integer = userMapper.deleteAdmin(id);
+                integer = userMapper.deleteAdmin(username);
                 break;
             case "buyer":
-                integer = userMapper.deleteBuyer(id);
+                integer = userMapper.deleteBuyer(username);
                 break;
             case "saler":
-                integer = userMapper.deleteSaler(id);
+                integer = userMapper.deleteSaler(username);
                 break;
             default:
                 break;

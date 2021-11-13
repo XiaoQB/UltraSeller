@@ -1,6 +1,7 @@
 package order.service;
 
 import cn.edu.fudan.common.entities.dbo.Order;
+import cn.edu.fudan.common.entities.dbo.SubOrder;
 import order.entities.dto.CreateOrderDTO;
 import order.entities.vo.OrderVO;
 import order.exception.CommodityServiceException;
@@ -47,11 +48,43 @@ public interface OrderService {
     void changeOrder(Order order);
 
     /**
+     * 更新 suborder
+     *
+     * @param subOrder suborder
+     */
+    void changeSubOrder(SubOrder subOrder);
+
+    /**
      * 根据 user id 获取 order list
      *
      * @param userIds userIds
      * @return order list
      * @throws CommodityServiceException CommodityServiceException
      */
-    List<OrderVO> getOrdersByUser(List<Integer> userIds) throws CommodityServiceException;
+    List<OrderVO> getOrdersByUser(List<Integer> userIds, int page, int num) throws CommodityServiceException;
+
+    /**
+     * 根据 user id 获取 order list
+     *
+     * @param userIds userIds
+     * @return order list
+     * @throws CommodityServiceException CommodityServiceException
+     */
+
+    List<SubOrder> getOrdersBySaler(List<Integer> userIds, int page, int num) throws CommodityServiceException;
+
+    List<SubOrder> getSalerOrderListByStatus(Integer userId, String status, int page, int num);
+
+    /**
+     * 根据 order status 获取 order list
+     *
+     * @param userId userId
+     * @param status status
+     * @param page   page
+     * @param num    num
+     * @return order list
+     * @throws CommodityServiceException CommodityServiceException
+     */
+    List<OrderVO> getBuyerOrderListByStatus(Integer userId, String status, int page, int num) throws CommodityServiceException;
+
 }

@@ -1,53 +1,11 @@
 <template>
-  <div class="store">
-    <el-header class="store-menu">
-      <el-menu
-        :default-active="storePage"
-        mode="horizontal"
-        @select="handleSelect"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
-      >
-        <el-menu-item index="store-page" route="/">商品页面</el-menu-item>
-        <el-menu-item index="my-orders-page">我的订单</el-menu-item>
-        <el-menu-item index="message-center-page" disabled
-          >消息中心
-        </el-menu-item>
-        <el-menu-item index="wallet">我的钱包</el-menu-item>
-        <el-menu-item
-          class="user-login"
-          index="to-login"
-          style="float: right"
-          @change="handleUser()"
-          @click="onclick"
-        >
-          <div :hidden="hideLogin">
-            <el-avatar :size="50" :src="circleUrl" @error="userImageHandler()">
-              <img
-                :src="currentImg"
-              />
-            </el-avatar>
-            <a href="/login" style="marginLeft: 20px">登录/注册</a>
-          </div>
-          <div :hidden="!hideLogin">
-            <el-avatar :size="50" :src="circleUrl" @error="userImageHandler()">
-              <img
-                src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
-              />
-            </el-avatar>
-            <span style="marginLeft: 20px" :aria-label="userData.userName"
-              >{{userData.userName}}</span
-            >
-          </div>
-        </el-menu-item>
-      </el-menu>
-    </el-header>
+  <div class="buyer">
+    
     <el-header style="width: 30%; height: 30%; margin: auto">
       <img class="logo" src="@/assets/store_logo.png" />
     </el-header>
     <el-main>
-      <el-input
+      <!-- <el-input
         class="input"
         placeholder="请输入商品"
         v-model="input"
@@ -104,25 +62,22 @@
           >
           </el-pagination>
         </div>
-      </div>
+      </div> -->
     </el-main>
     <el-footer>
-      <div class="customer-service"></div>
+      <div></div>
     </el-footer>
   </div>
 </template>
 
 <script>
+// import storePage from "../buyer/components/storePage";
 export default {
-  name: "store-page",
-
+  name: "buyer",
+  // components: { storePage },
   data() {
     return {
-      storePage: "store-page",
       input: "",
-      hideLogin: false,
-      currentImg: "",
-      defaultImg: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       pageSize: 24,
       totalItems: 6,
       userData: {
@@ -174,38 +129,14 @@ export default {
     };
   },
   mounted() {
-    this.handleUser();
   },
   methods: {
+    handlePage() {
+      console.log(this.currentPage);
+    },
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+      console.log(key, keyPath)
     },
-
-    userImageHandler() {
-      this.userData.userImg = this.$route.query.userImg;
-      if (this.userData.userImg === ""||
-      this.userData.userImg === null || 
-      this.userData.userImg === undefined) {
-        this.currentImg = this.defaultImg
-      } else {
-        this.currentImg = this.userData.userImg
-      }
-    },
-
-    handleUser() {
-      this.userImageHandler();
-      this.userData.userName = this.$route.query.userName;
-      if (
-        this.userData.userName === "" ||
-        this.userData.userName === null ||
-        this.userData.userName === undefined
-      ) {
-        this.hideLogin = false;
-      } else {
-        this.hideLogin = true;
-      }
-    },
-
     passData() {
       this.$router.push;
     },

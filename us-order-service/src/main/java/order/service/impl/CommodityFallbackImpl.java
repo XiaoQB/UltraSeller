@@ -1,9 +1,9 @@
 package order.service.impl;
 
+import cn.edu.fudan.common.entities.ResponseEntity;
 import cn.edu.fudan.common.entities.dbo.Commodity;
 import cn.edu.fudan.common.entities.enums.ResponseEntityCode;
 import cn.edu.fudan.common.entities.enums.ResponseEntityMessage;
-import order.entities.ResponseEntity;
 import order.service.CommodityService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;

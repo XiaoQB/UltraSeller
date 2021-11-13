@@ -16,7 +16,7 @@ public interface UserMapper {
 
     boolean insertSaler(@Param("userName") String userName, @Param("email") String email, @Param("phone") String phone, @Param("password") String password);
 
-    boolean insertBuyer(String userName, String email, String phone, String password);
+    boolean insertBuyer(@Param("userName") String userName, @Param("email") String email, @Param("phone") String phone, @Param("password") String password);
 
     Integer isExistAdmin(String userName);
 
@@ -36,11 +36,11 @@ public interface UserMapper {
 
     List<User> getSalers(Integer num, Integer page);
 
-    Integer deleteAdmin(Integer id);
+    Integer deleteAdmin(String username);
 
-    Integer deleteBuyer(Integer id);
+    Integer deleteBuyer(String username);
 
-    Integer deleteSaler(Integer id);
+    Integer deleteSaler(String username);
 
     Integer updateAdmin(String userName, String password);
 

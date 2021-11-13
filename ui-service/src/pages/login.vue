@@ -87,7 +87,6 @@
 </template>
 
 <script>
-
 export default {
   name: "login",
   data() {
@@ -154,8 +153,7 @@ export default {
       },
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
     doLogin() {
       if (!this.user.username) {
@@ -164,9 +162,13 @@ export default {
       } else if (!this.user.password) {
         this.$message.error("请输入密码！");
         return;
-
-      } else {
-        this.$router.push({name: "admin"});
+      } else if (
+        this.user.role === null ||
+        this.user.role === "" ||
+        this.user.role === undefined
+      ) {
+        this.$message.error("请选择角色！");
+      }else if (this.user.role === "saler") {
         this.http
             .get(`/user/login`, {
               params: {
@@ -186,7 +188,6 @@ export default {
                 alert("您输入的用户名或密码错误！");
               }
             });
-
       }
     },
     doRegister() {
@@ -198,9 +199,11 @@ export default {
         method: "post",
 
         url: `/user/register`,
-        transformRequest: [function (data) {
-          return JSON.stringify(data)
-        }],
+        transformRequest: [
+          function(data) {
+            return JSON.stringify(data);
+          },
+        ],
 
         data: {
           role: this.register.identity,
