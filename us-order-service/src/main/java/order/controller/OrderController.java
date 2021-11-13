@@ -15,6 +15,7 @@ import order.service.WalletService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -61,7 +62,7 @@ public class OrderController {
     }
 
     @PutMapping("/change")
-    public ResponseEntity<String> changeOrder(@RequestBody UpdateOrderDTO updateOrderDTO) {
+    public ResponseEntity<String> changeOrder(@RequestBody @Valid UpdateOrderDTO updateOrderDTO) {
         Order order = updateOrderDTO.getOrder();
         List<SubOrder> subOrders = updateOrderDTO.getSubOrders();
         try {
@@ -97,8 +98,8 @@ public class OrderController {
 
     @GetMapping("/saler-list")
     public ResponseEntity<List<SubOrderVO>> getOrdersBySaler(@RequestParam("user_ids") List<Integer> userIds,
-                                                           @RequestParam("page") Integer page,
-                                                           @RequestParam("num") Integer num) {
+                                                             @RequestParam("page") Integer page,
+                                                             @RequestParam("num") Integer num) {
         try {
             List<SubOrderVO> orders = orderService.getOrdersBySaler(userIds, page, num);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
@@ -109,9 +110,9 @@ public class OrderController {
 
     @GetMapping("/saler-orders-status")
     public ResponseEntity<List<SubOrderVO>> getSalerOrderListByStatus(@RequestParam("user_id") Integer userId,
-                                                                    @RequestParam("status") String status,
-                                                                    @RequestParam("page") Integer page,
-                                                                    @RequestParam("num") Integer num) {
+                                                                      @RequestParam("status") String status,
+                                                                      @RequestParam("page") Integer page,
+                                                                      @RequestParam("num") Integer num) {
         try {
             List<SubOrderVO> orders = orderService.getSalerOrderListByStatus(userId, status, page, num);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
@@ -132,5 +133,15 @@ public class OrderController {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
         }
     }
+
+    @GetMapping("/order-detail")
+    public ResponseEntity<SubOrderVO> getSubOrderDetail(@RequestParam("subOrderId") String subOrderId) {
+        try {
+            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getSubOrderDetailById(subOrderId));
+        } catch (Exception e) {
+            return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
+        }
+    }
+
 
 }

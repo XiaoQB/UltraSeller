@@ -65,4 +65,6 @@ public interface OrderDao {
     List<SubOrder> getSalerOrderListByStatus(@Param("userId") Integer userId, @Param("status") String status, @Param("page") Integer page, @Param("num") Integer num);
 
     List<Order> getBuyerOrdersByStatus(@Param("userId") Integer userId, @Param("status") String status, @Param("page") Integer page, @Param("num") Integer num);
+
+    SubOrder getSubOrderDetailById(@Param("subOrderId") String subOrderId);
 }

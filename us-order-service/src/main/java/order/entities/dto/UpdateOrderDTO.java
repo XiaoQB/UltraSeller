@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -17,8 +18,10 @@ import java.util.List;
 @AllArgsConstructor
 public class UpdateOrderDTO {
 
+    @NotNull(message = "order is null")
     private Order order;
     private List<SubOrder> subOrders;
+    @NotNull(message = "username is null")
     private String userName;
 
 }

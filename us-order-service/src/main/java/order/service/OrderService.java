@@ -88,4 +88,5 @@ public interface OrderService {
      */
     List<OrderVO> getBuyerOrderListByStatus(Integer userId, String status, int page, int num) throws CommodityServiceException;
 
+    SubOrderVO getSubOrderDetailById(String subOrderId);
 }

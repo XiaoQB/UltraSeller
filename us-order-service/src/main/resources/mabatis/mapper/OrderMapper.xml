@@ -16,7 +16,7 @@
         <id property="subOrderId" column="id"/>
         <result property="orderId" column="order_id"/>
         <result property="status" column="status"/>
-        <result property="totalPrice" column="total_price"/>
+        <result property="totalPrice" column="totasubl_price"/>
         <result property="address" column="address"/>
         <result property="salerId" column="saler_id"/>
         <result property="createTime" column="create_time"/>
@@ -123,6 +123,13 @@
         where status = #{status}
           and buyer_id = #{userId}
         limit #{page},#{num}
+    </select>
+    <select id="getSubOrderDetailById" resultMap="subOrder"
+            parameterType="java.lang.String">
+        select
+        <include refid="sub_order_all_columns"/>
+        from `sub_order`
+        where id = #{subOrderId}
     </select>
 
 </mapper>

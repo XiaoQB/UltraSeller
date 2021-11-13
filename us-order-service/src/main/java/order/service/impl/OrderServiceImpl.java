@@ -10,6 +10,7 @@ import order.entities.vo.OrderVO;
 import order.entities.vo.SubOrderVO;
 import order.exception.CommodityServiceException;
 import order.exception.OrderNotFoundException;
+import order.service.CommodityService;
 import order.service.OrderService;
 import order.util.RestUtil;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     private SubOrderDao subOrderDao;
+
+    @Resource
+    private CommodityService commodityService;
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -136,5 +141,11 @@ public class OrderServiceImpl implements OrderService {
             orderVOList.add(new OrderVO(order, restUtil.getSubOrderVOList(subOrders)));
         }
         return orderVOList;
+    }
+
+    @Override
+    public SubOrderVO getSubOrderDetailById(String subOrderId) {
+        SubOrder subOrder = orderDao.getSubOrderDetailById(subOrderId);
+        return new SubOrderVO(subOrder, commodityService.getCommodityById(subOrder.getCommodityId()).getData());
     }
 }
