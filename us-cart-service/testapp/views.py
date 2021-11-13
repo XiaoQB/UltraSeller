@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from json import dumps
 
 from datetime import date, datetime
+from nacos_sdk_python import nacos 
 
 # 修正时间无法json格式化
 class ComplexEncoder(json.JSONEncoder):
@@ -73,7 +74,24 @@ def GetCart(request):
         update_time = obj.update_time
 # mac docker 无法获得宿主机IP 通过 host.docker.internal 获取 每台宿主机 不同 
 # linux 直接在 compose 中 使用 network: localhost 即可
-        url = 'http://192.168.65.2:8002/commodity/item'
+        # url = 'http://192.168.65.2:8002/commodity/item'
+        SERVER_ADDRESSES = '47.102.97.229:8848'
+        NAMESPACE = "public"
+
+        client = nacos.NacosClient(SERVER_ADDRESSES, namespace=NAMESPACE, username="nacos", password="nacos")
+
+        data_id = "us-gateway-service-dev.yml"
+        group = "DEV_GROUP"
+
+        service_name = "us-commodity-service"
+        nacosres = client.list_naming_instance(service_name = service_name, clusters = '', namespace_id = '', group_name = 'DEFAULT_GROUP',  healthy_only = True)
+        hosts =  nacosres.get("hosts")
+        if len(hosts) > 0:
+            host = hosts[0]
+            ip = host.get("ip")
+            port = host.get("port")
+        url = 'http://{}:{}/commodity/item'.format(ip, port)
+
         params = {'id': gid}
         response = requests.get(url=url, params=params, headers=headers)
         response = response.json()
@@ -181,6 +199,7 @@ def Cart2Order(request):
     res["commodities"] = commodities  
     # return HttpResponse(dumps(res))
     # 请求下单 
+
     url = 'http://192.168.65.2:8004/order/create?'
     headers = {'content-Type': 'application/json'}
     response = requests.post(url=url, data=dumps(res), headers=headers)
@@ -206,4 +225,4 @@ def Cart2Order(request):
     return HttpResponse(dumps(response))
     
    
-
+# delete 接口 

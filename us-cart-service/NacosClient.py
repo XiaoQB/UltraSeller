@@ -1,7 +1,6 @@
+from nacos_sdk_python import nacos 
+from nacos_sdk_python.nacos import NacosClient
 import uvicorn
-
-from nacos_client_python.nacos import NacosClient
-
 
 def register_server_to_nacos(service_ip, port, service_name, namespaceId, namespace, group):
     """
@@ -13,11 +12,10 @@ def register_server_to_nacos(service_ip, port, service_name, namespaceId, namesp
     :param namespace: 命名空间
     :return: None
     """
-    nacos_client = NacosClient('http://47.102.97.229', 8848)  # Nacos注册中心提供的ip和端口
-    # 注册服务
+    nacos_client = nacos.NacosClient('47.102.97.229', 8848, username="nacos", password="nacos")  # Nacos注册中心提供的ip和端口
+    # 注册服务 非持久化 自动上传心跳包
     try:
-        response = nacos_client.instance().register(ip=service_ip, port=port, serviceName=service_name, ephemeral=False )
-        # ephemeral=True,namespaceId=namespaceId, namespace=namespace, groupName=group
+        response = nacos_client.add_naming_instance(service_name = service_name, ip = service_ip, port = port)
         print('register', response)
     except Exception as e:
         print('register err:')
@@ -25,20 +23,19 @@ def register_server_to_nacos(service_ip, port, service_name, namespaceId, namesp
 
     # 查询服务详情
     try:
-        response = nacos_client.instance().detail(ip=service_ip, port=port, serviceName=service_name,
-                                                  namespaceId=namespaceId)
+        response = nacos_client.list_naming_instance(service_name = service_name, healthy_only = True)
         print('detail', response)
     except Exception as e:
         print(e.__str__())
 
-    # # 自动心跳包
-    # try:
-    #     response = nacos_client.instance().auto_beat(ip=service_ip, port=port, serviceName=service_name,
-    #                                                  namespaceId=namespaceId)
-    #     print('send_beat', response)
-    # except Exception as e:
-    #     print('send beat err:')
-    #     print(e.__str__())
+    # 自动心跳包
+    try:
+        response = nacos_client.send_heartbeat(service_name = service_name, ip = service_ip, port = port)                                             
+        print('send_beat', response)
+    except Exception as e:
+        print('send beat err:')
+        print(e.__str__())
+
 
 
 if __name__ == '__main__':
@@ -48,17 +45,15 @@ if __name__ == '__main__':
     service_name = 'us-cart-service'
 
     # django命名空间ID
-    namespaceId = '628da9e7-d34d-4e0c-b87e-118807ecca70'
+    namespaceId = ''
     # django命名空间
-    namespace = 'hsc-nwpu-django-namespace'
+    namespace = 'public'
     # django组
-    group = 'hsc-nwpu-django-group'
+    group = 'DEV_GROUP'
     # django服务器运行端口
     port = 8012
 
     register_server_to_nacos(service_ip, port, service_name, namespaceId, namespace, group)
-    # discover_service_on_nacos(service_name)
-
+    
     # uvicorn运行django程序
-    uvicorn.run("Shopcar.asgi:application", host="0.0.0.0", port=port, log_level="info", reload=False)
-
+    uvicorn.run("Shopcar.asgi:application", host=service_ip, port=port, log_level="info", reload=False)
