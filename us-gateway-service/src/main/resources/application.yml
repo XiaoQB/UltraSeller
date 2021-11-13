@@ -6,3 +6,11 @@ spring:
       discovery:
         locator:
           enabled: true #负载均衡
+#      globalcors:
+#        cors-configurations:
+#          '[/**]':
+#            allowCredentials: true
+#            allowOrigins: '*'
+#            allowMethods: '*'
+#            allowHeaders: '*'
+#            maxAge: 180
