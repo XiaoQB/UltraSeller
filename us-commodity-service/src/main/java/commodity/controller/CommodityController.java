@@ -20,7 +20,7 @@ public class CommodityController {
     private CommodityServiceImpl commodityService;
 
     /**
-     * All commodities list.
+     * All commodities of a saler list.
      *
      * @param username the username
      * @param pageNum  the page num
@@ -29,11 +29,26 @@ public class CommodityController {
      * @return the list
      */
     @GetMapping("/commodity/lists")
-    public ResponseEntity<PagedGridResult> allCommodities(@RequestParam("username") String username,
+    public ResponseEntity<PagedGridResult> CommoditiesByUsername(@RequestParam("username") String username,
                                           @RequestParam("page") int pageNum,
                                           @RequestParam("pagesize") int pageSize,
                                           @RequestParam("seq") int sequence) {
-        return new ResponseEntity<>(200,"",commodityService.selectAll(username, pageNum, pageSize, sequence));
+        return new ResponseEntity<>(200,"",commodityService.selectAllByUsername(username, pageNum, pageSize, sequence));
+    }
+
+    /**
+     * All commodities of a saler list.
+     *
+     * @param pageNum  the page num
+     * @param pageSize the page size
+     * @param sequence the sequence
+     * @return the list
+     */
+    @GetMapping("/commodity/listall")
+    public ResponseEntity<PagedGridResult> allCommodities(@RequestParam("page") int pageNum,
+                                                          @RequestParam("pagesize") int pageSize,
+                                                          @RequestParam("seq") int sequence) {
+        return new ResponseEntity<>(200,"",commodityService.selectAll(pageNum, pageSize, sequence));
     }
 
     /**

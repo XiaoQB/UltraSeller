@@ -5,7 +5,9 @@ import commodity.utils.PagedGridResult;
 
 public interface CommodityService {
 
-    PagedGridResult selectAll(String username, int pageNum, int pageSize, int sequence);
+    PagedGridResult selectAll(int pageNum, int pageSize, int sequence);
+
+    PagedGridResult selectAllByUsername(String username, int pageNum, int pageSize, int sequence);
 
     Commodity singleCommodity(String commodityId);
 

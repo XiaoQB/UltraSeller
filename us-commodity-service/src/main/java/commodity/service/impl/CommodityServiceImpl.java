@@ -19,7 +19,17 @@ public class CommodityServiceImpl implements CommodityService {
     CommodityMapper commodityMapper;
 
     @Override
-    public PagedGridResult selectAll(String username, int pageNum, int pageSize, int sequence) {
+    public PagedGridResult selectAllByUsername(String username, int pageNum, int pageSize, int sequence) {
+        PageHelper.startPage(pageNum, pageSize);
+        CommodityExample example = new CommodityExample();
+        CommodityExample.Criteria criteria = example.createCriteria();
+        criteria.andVendornameEqualTo(username);
+        List<Commodity> commodities = commodityMapper.selectByExample(example);
+        return setterPagedGrid(commodities, 1);
+    }
+
+    @Override
+    public PagedGridResult selectAll(int pageNum, int pageSize, int sequence) {
         PageHelper.startPage(pageNum, pageSize);
         CommodityExample example = new CommodityExample();
         List<Commodity> commodities = commodityMapper.selectByExample(example);
