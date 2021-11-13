@@ -230,6 +230,7 @@ export default {
     },
     getOrderList() {
         var that = this;
+
         this.http({
           headers: {
             'Content-Type': 'application/json;',
@@ -237,9 +238,9 @@ export default {
             'role':localStorage['role']
           },
           method: "get",
-          url: '/saler-list',
+          url: '/order/saler-list',
           params: {
-            user_id:localStorage["use_id"],
+            user_ids:1,
             page:this.formInline.currentPage,
             num:this.formInline.pageSize
           }
