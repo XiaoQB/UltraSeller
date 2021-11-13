@@ -1,10 +1,10 @@
-version: "3.4"
+version: "3"
 services:
   us-cart-service:
     restart: always
     build:
       context: .
-      network: host
+      # network: host
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python NacosClient.py"
     volumes:
       - .:/code

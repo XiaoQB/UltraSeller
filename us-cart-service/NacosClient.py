@@ -56,4 +56,4 @@ if __name__ == '__main__':
     register_server_to_nacos(service_ip, port, service_name, namespaceId, namespace, group)
     
     # uvicorn运行django程序
-    uvicorn.run("Shopcar.asgi:application", host=service_ip, port=port, log_level="info", reload=False)
+    uvicorn.run("Shopcar.asgi:application", host='0.0.0.0', port=port, log_level="info", reload=False)

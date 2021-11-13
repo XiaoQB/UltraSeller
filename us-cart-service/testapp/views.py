@@ -30,6 +30,31 @@ def getKwargs(data={}):
             kwargs[k] = v
     return kwargs
 
+SERVER_ADDRESSES = '47.102.97.229:8848'
+NAMESPACE = "public"
+
+client = nacos.NacosClient(SERVER_ADDRESSES, namespace=NAMESPACE, username="nacos", password="nacos")
+data_id = "us-gateway-service-dev.yml"
+group = "DEV_GROUP"
+
+def get_host(service_name):
+    nacosres = client.list_naming_instance(service_name = service_name, healthy_only = True)
+    hosts =  nacosres.get("hosts")
+    # 获取可用端口
+    num_host = len(hosts)
+    while num_host:
+        host = hosts[0]
+        ip = host.get("ip")
+        port = host.get("port")
+        url = 'http://{}:{}/'.format(ip, port)
+        try:
+            response = requests.get(url=url)
+            break
+        except requests.exceptions.RequestException:
+            num_host -= 1
+    if num_host == 0:
+        return HttpResponse("{} no availiable instance.".format(service_name))
+    return host
 
 
 
@@ -55,8 +80,7 @@ def index(request):
 # # 判断是否登录，使用header 中的 token
 
 
-# host.docker.internal
-
+@csrf_exempt
 @require_http_methods(["GET"]) # 返回所有
 def GetCart(request):
     uid = request.GET.get('uid')
@@ -72,28 +96,18 @@ def GetCart(request):
         status = obj.status
         create_time = obj.create_time
         update_time = obj.update_time
-# mac docker 无法获得宿主机IP 通过 host.docker.internal 获取 每台宿主机 不同 
-# linux 直接在 compose 中 使用 network: localhost 即可
-        # url = 'http://192.168.65.2:8002/commodity/item'
-        SERVER_ADDRESSES = '47.102.97.229:8848'
-        NAMESPACE = "public"
-
-        client = nacos.NacosClient(SERVER_ADDRESSES, namespace=NAMESPACE, username="nacos", password="nacos")
-
-        data_id = "us-gateway-service-dev.yml"
-        group = "DEV_GROUP"
+        params = {'id': gid}
+        # mac docker 无法获得宿主机IP 通过 host.docker.internal 获取 每台宿主机 不同 
+        # linux 直接在 compose 中 使用 network: localhost 即可
+        # url = 'http://localhost:8002/commodity/item'
 
         service_name = "us-commodity-service"
-        nacosres = client.list_naming_instance(service_name = service_name, clusters = '', namespace_id = '', group_name = 'DEFAULT_GROUP',  healthy_only = True)
-        hosts =  nacosres.get("hosts")
-        if len(hosts) > 0:
-            host = hosts[0]
-            ip = host.get("ip")
-            port = host.get("port")
+        host = get_host(service_name)
+        ip = host.get("ip")
+        port = host.get("port")
         url = 'http://{}:{}/commodity/item'.format(ip, port)
-
-        params = {'id': gid}
         response = requests.get(url=url, params=params, headers=headers)
+
         response = response.json()
         if response.get('code')== 200:
             good['data'] = response.get('data')
@@ -127,11 +141,17 @@ def AddCart(request):
         status = good.get("status")
         create_time = good.get("create_time")
         update_time = good.get("update_time")
-        # 请求库存 判断当前数量是否合法
-
-        url = 'http://192.168.65.2:8002/commodity/item'
         params = {'id': gid}
-        response = requests.get(url=url, params=params,  headers=headers)
+        # 请求库存 判断当前数量是否合法
+        # url = 'http://localhost:8002/commodity/item'
+
+        service_name = "us-commodity-service"
+        host = get_host(service_name)
+        ip = host.get("ip")
+        port = host.get("port")
+        url = 'http://{}:{}/commodity/item'.format(ip, port)
+        response = requests.get(url=url, params=params, headers=headers)
+        
         response = response.json()
 
         if response.get('code')== 200:
@@ -153,7 +173,8 @@ def AddCart(request):
             else:
                 return HttpResponse("Exceeding stock or purchase limits!")
         else:
-            return HttpResponse(response)
+            response["gid"] = gid
+            return HttpResponse(json.dumps(response))
     
     return HttpResponse("AddCart Succes!")
 
@@ -180,11 +201,18 @@ def Cart2Order(request):
         commodity["num"] = good.get("order_num")
         commodity["id"] = gid
         #status = good.get("status")
-        
-        # 请求库存 判断当前数量是否合法
-        url = 'http://192.168.65.2:8002/commodity/item'
         params = {'id': gid}
-        response = requests.get(url=url, params=params,  headers=headers)
+
+        # 请求库存 判断当前数量是否合法
+        # url = 'http://localhost:8002/commodity/item'
+        
+        service_name = "us-commodity-service"
+        host = get_host(service_name)
+        ip = host.get("ip")
+        port = host.get("port")
+        url = 'http://{}:{}/commodity/item'.format(ip, port)
+        response = requests.get(url=url, params=params, headers=headers)
+
         response = response.json()
         
         if response.get('code')== 200:
@@ -193,15 +221,22 @@ def Cart2Order(request):
             commodity["price"] = data.get("price")
             commodity["name"] = data.get("name")
         else:
-            return HttpResponse(response)
+            response["gid"] = gid
+            return HttpResponse(json.dumps(response))
         commodities.append(commodity)
     
     res["commodities"] = commodities  
     # return HttpResponse(dumps(res))
     # 请求下单 
-
-    url = 'http://192.168.65.2:8004/order/create?'
     headers = {'content-Type': 'application/json'}
+    # url = 'http://localhost:8004/order/create?'
+
+    service_name = "us-order-service"
+    host = get_host(service_name)
+    ip = host.get("ip")
+    port = host.get("port")
+    url = 'http://{}:{}/order/create?'.format(ip, port)
+    
     response = requests.post(url=url, data=dumps(res), headers=headers)
     response = response.json()
 
@@ -221,8 +256,18 @@ def Cart2Order(request):
                 obj.save()
             else:
                 obj.delete()  
-
+    else:
+        return HttpResponse(json.dumps(response))
     return HttpResponse(dumps(response))
     
    
-# delete 接口 
+# # delete 接口 
+# @csrf_exempt
+# @require_http_methods(["GET"]) # 返回所有
+# def GetCart(request):
+#     uid = request.GET.get('uid')
+#     objs = cart.objects.filter(buyer_id = uid)
+#     token = request.META.get("HTTP_TOKEN")
+#     headers = {"token":token}
+#     res = {}
+#     data = []
