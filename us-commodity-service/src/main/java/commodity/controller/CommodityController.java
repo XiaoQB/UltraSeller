@@ -2,12 +2,16 @@ package commodity.controller;
 
 import cn.edu.fudan.common.entities.ResponseEntity;
 import cn.edu.fudan.common.entities.dbo.Commodity;
+import com.netflix.client.http.HttpResponse;
 import commodity.service.impl.CommodityServiceImpl;
 import commodity.utils.IdGenerator;
 import commodity.utils.PagedGridResult;
 import commodity.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
+
+import javax.xml.soap.MimeHeaders;
 
 /**
  * The type Commodity controller.
@@ -85,7 +89,9 @@ public class CommodityController {
      * @return the response
      */
     @PostMapping("/commodity/item")
+    
     public Response<String> create(@RequestBody Commodity commodity) {
+
         commodity.setId(IdGenerator.generateId());
         commodityService.create(commodity);
         return new Response<>(201, "创建成功", null);
