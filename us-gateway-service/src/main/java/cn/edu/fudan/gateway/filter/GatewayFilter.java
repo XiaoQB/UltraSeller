@@ -7,14 +7,17 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
+
 
 /**
  * @author beethoven
@@ -22,6 +25,7 @@ import java.net.URI;
  */
 @Component
 @Slf4j
+@Configuration
 public class GatewayFilter implements GlobalFilter, Ordered {
 
     private static final String TOKEN = "token";
@@ -48,4 +52,6 @@ public class GatewayFilter implements GlobalFilter, Ordered {
     public int getOrder() {
         return 0;
     }
+
+
 }

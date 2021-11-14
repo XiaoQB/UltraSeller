@@ -299,13 +299,14 @@ export default {
          method:"get",
          url:"/order/saler-orders-status",
          params:{
-           user_id:localStorage['user_id'],
+           user_id:localStorage['id'],
            status:this.status,
            page:this.formInline.currentPage,
            num:this.formInline.pageSize
          }
        }).then(response=>{
          if(response.data.code===200){
+           this.tableData=response.data.data
            this.$message({
              type: 'success',
              message:'查询成功'
