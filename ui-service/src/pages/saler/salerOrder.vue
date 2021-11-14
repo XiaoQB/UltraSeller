@@ -82,8 +82,8 @@
             prop="price">
         </el-table-column>
         <el-table-column
-            label="买家id"
-            prop="buyer">
+            label="卖家id"
+            prop="salerId">
         </el-table-column>
         <el-table-column
             label="收货地址"
@@ -189,9 +189,9 @@ export default {
           subOrderId:"20210101001",
           price:"10",
           buyer:"好吃",
-          address:"10",
+          address:"北京",
           status:"未发货",
-          createTime:"2021",
+          createTime:"2021-11-10 17:35:37",
           num:'5',
           totalPrice:"50",
 
@@ -240,7 +240,7 @@ export default {
           method: "get",
           url: '/order/saler-list',
           params: {
-            user_ids:1,
+            user_ids:localStorage['id'],
             page:this.formInline.currentPage,
             num:this.formInline.pageSize
           }

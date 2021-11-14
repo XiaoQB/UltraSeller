@@ -135,12 +135,12 @@ export default {
         },
       ],
       orderInfo: {
-        subOrderId:"",
-        commodityName:"",
-        totalPrice:"",
-        num:"",
-        price:"",
-        createTime:"",
+        subOrderId:"99",
+        commodityName:"矿泉水",
+        totalPrice:"5.2",
+        num:"4",
+        price:"1.3",
+        createTime:"2021-11-11 19:01:22",
 
       }
     }
