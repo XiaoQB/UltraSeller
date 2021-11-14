@@ -240,6 +240,7 @@ def Cart2Order(request):
     ip = host.get("ip")
     port = host.get("port")
     url = 'http://{}:{}/order/create?'.format(ip, port)
+
     
     response = requests.post(url=url, data=dumps(res), headers=headers)
     response = response.json()
@@ -254,12 +255,13 @@ def Cart2Order(request):
             dictFor = getKwargs(dictCheck)
             #利用**解引用，进行数据条件查询
             obj = cart.objects.filter( **dictFor)
-            obj = obj[0]
-            obj.cart_num = obj.cart_num - order_num
-            if obj.cart_num > 0:
-                obj.save()
-            else:
-                obj.delete()  
+            if obj.count() > 0:
+                obj = obj[0]
+                obj.cart_num = obj.cart_num - order_num
+                if obj.cart_num > 0:
+                    obj.save()
+                else:
+                    obj.delete()  
     else:
         return HttpResponse(json.dumps(response))
     return HttpResponse(dumps(response))
