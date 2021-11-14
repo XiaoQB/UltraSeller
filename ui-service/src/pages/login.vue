@@ -228,13 +228,13 @@ export default {
               alert("您输入的用户名或密码错误！");
             }
           });
-        window.localStorage["token"] =
-          "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMTY2ZWQyYy1lMWYwLTQ4MTgtOTcyYi1iNzA4ZDVlMzQxZGUiLCJzdWIiOiJ7XCJyb2xlXCI6XCJidXllclwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInRlc3QwMVwifSIsImlzcyI6ImFkbWluIiwiaWF0IjoxNjM0OTk1NjQzLCJleHAiOjE2MzQ5OTkyNDN9.uubRdqHfSK3EA23d2STScP-_gZgCZ48oxJwOeXoxSVM";
-        window.localStorage["user_id"] = "temple";
-        this.$router.push({
-          name: "app",
-          path: "/storePage",
-        });
+        // window.localStorage["token"] =
+        //   "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMTY2ZWQyYy1lMWYwLTQ4MTgtOTcyYi1iNzA4ZDVlMzQxZGUiLCJzdWIiOiJ7XCJyb2xlXCI6XCJidXllclwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInRlc3QwMVwifSIsImlzcyI6ImFkbWluIiwiaWF0IjoxNjM0OTk1NjQzLCJleHAiOjE2MzQ5OTkyNDN9.uubRdqHfSK3EA23d2STScP-_gZgCZ48oxJwOeXoxSVM";
+        // window.localStorage["user_id"] = "temple";
+        // this.$router.push({
+        //   name: "app",
+        //   path: "/storePage",
+        // });
       }
     },
     doRegister() {
