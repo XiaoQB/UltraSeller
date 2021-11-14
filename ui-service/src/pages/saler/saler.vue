@@ -2,9 +2,9 @@
   <div class="saler">
     <el-header class="store-menu">
       <el-menu
-        :default-active="saler"
+
         mode="horizontal"
-        @select="handleSelect"
+        @select="handleSelect('seler')"
         background-color="#545c64"
         text-color="#fff"
         active-text-color="#ffd04b"
@@ -238,7 +238,7 @@ export default {
       search:""
     };
   },
-  mounted(){
+  mounted:function(){
     this.getList()
   },
   methods: {
@@ -261,10 +261,11 @@ export default {
       return true;
     },
     getList() {
+      console.log(localStorage['token'])
       this.http({
         headers: {
           'token': localStorage['token'],
-          'role':localStorage['user_id'],
+          'role':localStorage['role'],
         },
         method: "get",
         url: `/commodity/lists`,
@@ -275,9 +276,12 @@ export default {
           seq: this.seq,
         }
       })
-          .then( (response) =>{
-            this.commodityList = response.rows;
-            this.dataTotalCount = response.records;
+          .then(response=>{
+            if(response.data.code===200){
+              this.commodityList = response.data.data.rows;
+              this.dataTotalCount = response.data.data.records;
+            }
+
           })
           .catch(function (error) {
             this.$message({
@@ -329,7 +333,7 @@ export default {
           'role':localStorage['role']
         },
         method: "put",
-        url: `/commidity/item`,
+        url: `/commodity/item`,
         transformRequest: [function (data) {
           return JSON.stringify(data)
         }],
@@ -400,8 +404,8 @@ export default {
           'token': localStorage["token"],
           'role':localStorage['role']
         },
-        method: "put",
-        url: `/commidity/add`,
+        method: "post",
+        url: `/commodity/item`,
         transformRequest: [function (data) {
           return JSON.stringify(data)
         }],
@@ -411,8 +415,8 @@ export default {
           imgLink: this.commodity.imgLink,
           price: this.commodity.price,
           description: this.commodity.description,
-          inventory: localStorage["user_id"],
-          vendorName: this.commodity.vendorName,
+          inventory: this.commodity.inventory,
+          vendorName: localStorage["user_id"],
         },
       })
         .then((response) => {

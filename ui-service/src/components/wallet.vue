@@ -51,7 +51,7 @@
         <el-dialog title="订单详情" :visible.sync="showDialog" width="45%">
           <el-form ref="tableData" :model="tableData[nowRow]"  label-width="100px">
             <el-form-item label="订单编号" prop="id">
-              <span>{{orderInfo.id}}</span>
+              <span>{{orderInfo.subOrderId}}</span>
             </el-form-item>
             <el-form-item label="商品名称" prop="seller">
               <span >{{orderInfo.commodityName}}</span>
@@ -135,7 +135,7 @@ export default {
         },
       ],
       orderInfo: {
-        id:"",
+        subOrderId:"",
         commodityName:"",
         totalPrice:"",
         num:"",
@@ -163,7 +163,7 @@ export default {
         }
       })
           .then(response => {
-            this.money = response.data.balance
+            this.money = response.data.data.balance
           })
           .catch(function (error) {
             this.$message({
@@ -204,9 +204,9 @@ export default {
           'role': localStorage['role']
         },
         method: "get",
-        url: "/order/get",
+        url: "/order/order-detail",
         params: {
-          id: row.orderId
+          subOrderId: row.orderId
         }
       }).then(response => {
         if (response.data.code === 200) {
