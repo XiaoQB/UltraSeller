@@ -1,5 +1,5 @@
-FROM registry.cn-hangzhou.aliyuncs.com/xywu/openjdk:8-jre-slim
-COPY target/us-user-service-1.0-SNAPSHOT.jar /app/us-user-service.jar
+FROM openjdk:8u201-jdk-alpine3.9
+COPY target/us-user-service-0.0.1-SNAPSHOT.jar /app/us-user-service.jar
 
 ENV LANG C.UTF-8
 

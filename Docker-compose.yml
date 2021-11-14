@@ -1,54 +1,98 @@
 version: "3"
-services:
-  # mysql5:
-  # build: mysql/
-  # image: mysql:latest
-  # environment:
-  # MYSQL_ROOT_PASSWORD: 75560zcb
-  # MYSQL_USER: 'root'
-  # ports:
-  # - 3306:3306
-  # networks:
-  # - mynetwork
-
-  us-user-service:
-    # depends_on:
-    # - mysql5
-    build: us-user-service/
-    restart: always
-      # environment:
-      # USERNAME: root
-    # PASSWORD: 75560zcb
-    # DB_URL: mysql5:3306/
-    ports:
-      - 8002:8002
-    networks:
-      - mynetwork
-
-  us-commodity-service:
-    # depends_on:
-    #   - mysql5
-    build: us-commodity-service/
-    restart: always
-    # environment:
-    #   USERNAME: root
-    #   PASSWORD: 75560zcb
-    #   DB_URL: mysql5:3306/
-    ports:
-      - 8003:8003
-    networks:
-      - mynetwork
-
-  ui-service:
-    depends_on:
-      - us-user-service
-      - us-commodity-service
-    build: ui-service/
-    restart: always
-    ports:
-      - 1024:80
-    networks:
-      - mynetwork
 
 networks:
-  mynetwork: { }
+  us-service-net:
+    external: false
+
+services:
+  us-ui-serivce:
+    image: tomcat:9.0.45-jdk8-corretto
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+    networks:
+      - us-service-net
+    environment: # 配置环境变量
+      - TZ=Asia/Shanghai  # 设置时区
+    volumes:
+      - ./services/frontend:/usr/local/tomcat/webapps/ROOT
+    ports:
+      - "80:8080"
+
+  us-user-service:
+    container_name: us-user-service
+    image: openjdk:8u201-jdk-alpine3.9
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+    networks:
+      - us-service-net
+    ports:
+      - "8001:8001/tcp"
+    volumes:
+      - ./us-user-service/target/:/app/
+    command:
+      - java -jar /app/us-user-service-0.0.1-SNAPSHOT.jar
+
+  us-commodity-service:
+    container_name: us-user-service
+    image: openjdk:8u201-jdk-alpine3.9
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+    networks:
+      - us-service-net
+    ports:
+      - "8001:8001/tcp"
+    volumes:
+      - ./us-user-service/target/:/app/
+    command:
+      - java -jar /app/us-user-service-0.0.1-SNAPSHOT.jar
+
+  us-wallet-service:
+    container_name: us-user-service
+    image: openjdk:8u201-jdk-alpine3.9
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+    networks:
+      - us-service-net
+    ports:
+      - "8001:8001/tcp"
+    volumes:
+      - ./us-wallet-service/target/:/app/
+    command:
+      - java -jar /app/us-wallet-service-0.0.1-SNAPSHOT.jar
+
+  us-cart-service:
+    restart: always
+    build:
+      context: .
+      # network: host
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python NacosClient.py"
+    volumes:
+      - .:/code
+    ports:
+      - "8012:8012"
+
+  us-gateway-service:
+    image: oracle-jdk:8
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  nginx:
+    image: docker.io/nginx
+    container_name: nginx
+    restart: always
+    volumes:
+      - /pook/nginx/html:/usr/share/nginx/html            # html 文件挂载（前面是服务器目录，后面是docker容器目录）
+      - /pook/nginx/nginx.conf:/etc/nginx/nginx.conf    # conf  文件挂载
+      - /pook/nginx/log:/var/log/nginx                        # 日志  文件挂载
+    ports:
+      - "80:80"
