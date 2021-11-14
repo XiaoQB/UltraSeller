@@ -52,7 +52,7 @@ def get_host(service_name):
             break
         except requests.exceptions.RequestException:
             num_host -= 1
-    if num_host == 0:
+    if num_host == 0 or ip is None or port is None:
         return HttpResponse("{} no availiable instance.".format(service_name))
     return host
 
@@ -106,7 +106,11 @@ def GetCart(request):
         ip = host.get("ip")
         port = host.get("port")
         url = 'http://{}:{}/commodity/item'.format(ip, port)
-        response = requests.get(url=url, params=params, headers=headers)
+
+        if ip is None or port is None:
+            return HttpResponse("{} no availiable instance.".format(service_name))
+        else:
+            response = requests.get(url=url, params=params, headers=headers)
 
         response = response.json()
         if response.get('code')== 200:
