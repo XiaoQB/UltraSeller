@@ -38,6 +38,10 @@ const router = new VueRouter({
   mode: "history",
   routes: [
     {
+      path: "/",
+      redirect: '/storePage'
+    },
+    {
       name: "saler",
       path: "/saler",
       component: saler,
@@ -51,11 +55,6 @@ const router = new VueRouter({
       name: "wallet",
       path: "/wallet",
       component: wallet,
-    },
-    {
-      name: "storePage",
-      path: "/",
-      component: storePage,
     },
     {
       name: "storePage",

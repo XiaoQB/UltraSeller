@@ -15,6 +15,7 @@
         type="primary"
         icon="el-icon-search"
         align="right"
+        style="margin-left: 10px"
         >查询订单</el-button
       >
       <el-table :data="tableData" border stripe style="width: 100%">
@@ -55,19 +56,17 @@
           </template>
         </el-table-column>
         <el-table-column label="价格" prop="price"> </el-table-column>
-        <el-table-column label="买家id" prop="buyer"> </el-table-column>
+        <el-table-column label="描述" prop="description"> </el-table-column>
+        <el-table-column label="卖家" prop="vendorName"> </el-table-column>
         <el-table-column label="收货地址" prop="address"> </el-table-column>
         <el-table-column label="订单状态" prop="status"> </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <div v-if="scope.row.status === '未发货'">
-              <el-button size="mini" @click="shipments(scope.row)"
-                >发货</el-button
+            <div v-if="scope.row.status !== '已完成'">
+              <el-button size="mini" @click="returnBack(scope.row)"
+                >退货</el-button
               >
             </div>
-            <el-button size="mini" @click="changeAddress(scope.row)"
-              >修改地址</el-button
-            >
           </template>
         </el-table-column>
       </el-table>
@@ -134,10 +133,10 @@ export default {
           value: "已完成",
           label: "已完成",
         },
-        {
-          value: "已取消",
-          label: "已取消",
-        },
+        // {
+        //   value: "已取消",
+        //   label: "已取消",
+        // },
       ],
       tableData: [
         {
@@ -146,9 +145,21 @@ export default {
           imgLink:
             "https://ts3.cn.mm.bing.net/th/id/OIP-C.305fYj0cWoTv_Q8TIbJ02wHaHG?w=196&h=188&c=7&r=0&o=5&dpr=2&pid=1.7",
           price: "10",
-          buyer: "好吃",
-          address: "10",
+          description: "好吃",
+          vendorName: "test01",
+          address: "复旦大学",
           status: "未发货",
+        },
+        {
+          id: "20210101001",
+          name: "面包",
+          imgLink:
+            "https://ts3.cn.mm.bing.net/th/id/OIP-C.305fYj0cWoTv_Q8TIbJ02wHaHG?w=196&h=188&c=7&r=0&o=5&dpr=2&pid=1.7",
+          price: "10",
+          description: "好吃",
+          vendorName: "test01",
+          address: "复旦大学",
+          status: "待收货",
         },
       ],
       status: "",
@@ -177,13 +188,34 @@ export default {
     getList() {
       userService.getLists();
     },
+    returnBack(row) {
+      this.http({
+        headers: {
+          token: window.localStorage["token"],
+        },
+        method: "put",
+        url: "/order/change",
+        params: {
+          orderId: row.id,
+        },
+      }).then((response) => {
+        if (response.data.code === 200) {
+          this.getList(),
+            this.$message({
+              type: "success",
+              message: "退货完成",
+            });
+        }
+        this.getList();
+      });
+    },
     shipments(row) {
       this.http({
         headers: {
           token: window.localStorage["token"],
         },
         method: "put",
-        url: "",
+        url: "/order/change",
         params: {
           orderId: row.id,
         },

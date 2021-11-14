@@ -2,9 +2,10 @@
   <div id="app">
     <el-header class="store-menu" :hidden="hideMenu">
       <el-menu
-        @change="handleMenu()"
         :default-active="currentPage"
         mode="horizontal"
+        @select="handleSelect"
+        @change="handleMenu"
         router
         background-color="#545c64"
         text-color="#fff"
@@ -18,13 +19,18 @@
           >消息中心
         </el-menu-item>
         <el-menu-item index="/buyerWallet" :disabled="!hideLogin"
-          >我的钱包</el-menu-item
+          >我的购物车</el-menu-item
         >
         <el-menu-item class="user-login" index="/login" style="float: right">
           <div :hidden="hideLogin">
-            <el-avatar :size="50" :src="currentImg" @error="userImageHandler()">
+            <el-avatar
+              :size="50"
+              :src="currentImg"
+              @error="userImageHandler()"
+              @change="handleUser()"
+            >
             </el-avatar>
-            <a href="/login" style="marginLeft: 20px">登录/注册</a>
+            登录/注册
           </div>
           <div :hidden="!hideLogin">
             <el-avatar
@@ -55,7 +61,9 @@ export default {
   data() {
     return {
       hideMenu: false,
+      storePage: "storePage",
       userData: {
+        token: "",
         userName: "",
         userImg: "",
         userRole: "",
@@ -68,10 +76,10 @@ export default {
     };
   },
   mounted() {
-    this.handleUser();
     this.handleMenu();
+    this.userImageHandler();
   },
-  updated: {},
+  updated() {},
   methods: {
     handleMenu() {
       if (
@@ -85,11 +93,14 @@ export default {
       } else {
         this.hideMenu = true;
       }
-        this.handleUser();
+    },
+    handleSelect(key) {
+      this.currentPage = key;
     },
     handleUser() {
+      this.userData.userName = localStorage.getItem("user_id")
+      this.userData.token = localStorage.getItem("token")
       this.userImageHandler();
-      this.userData.userName = this.$route.query.userName;
       if (
         this.userData.userName === "" ||
         this.userData.userName === null ||
@@ -101,7 +112,21 @@ export default {
       }
     },
     userImageHandler() {
-      this.userData.userImg = this.$route.query.userImg;
+      // this.userData.userImg = this.http
+      //   .get(`/user/info`, {
+      //     params: {
+      //       Authorization: localStorage.getItem("token"),
+      //       userName: this.userData.userName,
+      //     },
+      //   })
+      //   .then((resp) => {
+      //     if (resp.data.status === 200) {
+      //       this.userData.userImg = resp.data.user_image;
+      //     } else {
+      //       this.userData.userImg = ""
+      //     }
+      //   });
+      this.userData.userImg = "";
       if (
         this.userData.userImg === "" ||
         this.userData.userImg === null ||
@@ -114,7 +139,10 @@ export default {
     },
   },
   watch: {
-    $route: "handleMenu",
+    $route() {
+      this.handleMenu()
+      this.handleUser()
+    }
   },
 };
 </script>
