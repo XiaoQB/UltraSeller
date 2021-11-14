@@ -1,6 +1,8 @@
-from nacos_sdk_python import nacos 
-from nacos_sdk_python.nacos import NacosClient
+from nacos_client_python.nacos import NacosClient
 import uvicorn
+import socket
+import requests
+import json
 
 def register_server_to_nacos(service_ip, port, service_name, namespaceId, namespace, group):
     """
@@ -12,10 +14,13 @@ def register_server_to_nacos(service_ip, port, service_name, namespaceId, namesp
     :param namespace: 命名空间
     :return: None
     """
-    nacos_client = nacos.NacosClient('47.102.97.229', 8848, username="nacos", password="nacos")  # Nacos注册中心提供的ip和端口
+    # nacos_client = nacos.NacosClient('47.102.97.229', 8848, username="nacos", password="nacos")  # Nacos注册中心提供的ip和端口
+    nacos_client = NacosClient('http://47.102.97.229', 8848)  # Nacos注册中心提供的ip和端口
     # 注册服务 非持久化 自动上传心跳包
     try:
-        response = nacos_client.add_naming_instance(service_name = service_name, ip = service_ip, port = port)
+        # response = nacos_client.add_naming_instance(service_name = service_name, ip = service_ip, port = port, ephemeral=False)
+        response = nacos_client.instance().register(ip=service_ip, port=port, serviceName=service_name, ephemeral=True )
+        
         print('register', response)
     except Exception as e:
         print('register err:')
@@ -23,14 +28,35 @@ def register_server_to_nacos(service_ip, port, service_name, namespaceId, namesp
 
     # 查询服务详情
     try:
-        response = nacos_client.list_naming_instance(service_name = service_name, healthy_only = True)
+        # nacosres = nacos_client.list_naming_instance(service_name = service_name, healthy_only = True)
+        response = nacos_client.instance().list(serviceName=service_name)
         print('detail', response)
+       
+        response = json.loads(response)
+       
+        hosts =  response.get("hosts")
+        # 获取可用端口
+        num_host = len(hosts)
+        print("num_host: {}".format(num_host))
+        while num_host:
+            host = hosts[0]
+            ip = host.get("ip")
+            port = host.get("port")
+            url = 'http://{}:{}/'.format(ip, port)
+            try:
+                response = requests.get(url=url)
+                print(response)
+                break
+            except requests.exceptions.RequestException:
+                num_host -= 1
+        print(num_host)
     except Exception as e:
         print(e.__str__())
 
     # 自动心跳包
     try:
-        response = nacos_client.send_heartbeat(service_name = service_name, ip = service_ip, port = port)                                             
+        # response = nacos_client.send_heartbeat(service_name = service_name, ip = service_ip, port = port)    
+        response = nacos_client.instance().auto_beat(ip=service_ip, port=port, serviceName=service_name)                                     
         print('send_beat', response)
     except Exception as e:
         print('send beat err:')
@@ -40,10 +66,12 @@ def register_server_to_nacos(service_ip, port, service_name, namespaceId, namesp
 
 if __name__ == '__main__':
     # django运行服务地址
+    # res = socket.gethostbyname_ex(socket.gethostname())[2]
+    # print(res)
     service_ip = 'localhost'
     # django运行服务名称
     service_name = 'us-cart-service'
-
+   
     # django命名空间ID
     namespaceId = ''
     # django命名空间

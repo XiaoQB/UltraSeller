@@ -5,5 +5,6 @@ urlpatterns = [
         path('', views.index, name = 'index'),
         path('shopcar/AddCart/', views.AddCart, name = 'addcart'), # post
         path('shopcar/GetCart/', views.GetCart, name = 'getcart'), # get
+        path('shopcar/DeleteCart/', views.DeleteCart, name = 'DeleteCart'), # get
         path('shopcar/Cart2Order/', views.Cart2Order, name = 'cart2Order'), 
 ]

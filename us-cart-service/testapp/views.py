@@ -265,13 +265,13 @@ def Cart2Order(request):
     return HttpResponse(dumps(response))
     
    
-# # delete 接口 
-# @csrf_exempt
-# @require_http_methods(["GET"]) # 返回所有
-# def GetCart(request):
-#     uid = request.GET.get('uid')
-#     objs = cart.objects.filter(buyer_id = uid)
-#     token = request.META.get("HTTP_TOKEN")
-#     headers = {"token":token}
-#     res = {}
-#     data = []
+# delete 接口 
+@csrf_exempt
+@require_http_methods(["GET"]) # 返回所有
+def DeleteCart(request):
+    uid = request.GET.get('uid')
+    objs = cart.objects.filter(buyer_id = uid)
+    token = request.META.get("HTTP_TOKEN")
+    headers = {"token":token}
+    cart.objects.get(buyer_id = uid).delete()
+    return HttpResponse("Delete {} success.".format(uid))
