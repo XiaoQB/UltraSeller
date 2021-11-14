@@ -72,7 +72,6 @@
             :span="4"
             v-for="(o, index) in commodityList"
             :key="o"
-            :offset="(index = 0)"
           >
 
             <el-card class="card"  shadow="hover">
@@ -404,7 +403,7 @@ export default {
           'token': localStorage["token"],
           'role':localStorage['role']
         },
-        method: "post",
+        method: "put",
         url: `/commodity/item`,
         transformRequest: [function (data) {
           return JSON.stringify(data)
