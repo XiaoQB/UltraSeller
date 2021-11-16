@@ -1,98 +1,121 @@
 version: "3"
-
-networks:
-  us-service-net:
-    external: false
-
 services:
-  us-ui-serivce:
-    image: tomcat:9.0.45-jdk8-corretto
-    restart: on-failure
-    deploy:
-      restart_policy:
-        condition: on-failure
+  us-mysql5:
+    build: us-mysql5/
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
     networks:
       - us-service-net
-    environment: # 配置环境变量
-      - TZ=Asia/Shanghai  # 设置时区
-    volumes:
-      - ./services/frontend:/usr/local/tomcat/webapps/ROOT
-    ports:
-      - "80:8080"
-
-  us-user-service:
-    container_name: us-user-service
-    image: openjdk:8u201-jdk-alpine3.9
-    restart: on-failure
-    deploy:
-      restart_policy:
-        condition: on-failure
-    networks:
-      - us-service-net
-    ports:
-      - "8001:8001/tcp"
-    volumes:
-      - ./us-user-service/target/:/app/
-    command:
-      - java -jar /app/us-user-service-0.0.1-SNAPSHOT.jar
-
-  us-commodity-service:
-    container_name: us-user-service
-    image: openjdk:8u201-jdk-alpine3.9
-    restart: on-failure
-    deploy:
-      restart_policy:
-        condition: on-failure
-    networks:
-      - us-service-net
-    ports:
-      - "8001:8001/tcp"
-    volumes:
-      - ./us-user-service/target/:/app/
-    command:
-      - java -jar /app/us-user-service-0.0.1-SNAPSHOT.jar
-
-  us-wallet-service:
-    container_name: us-user-service
-    image: openjdk:8u201-jdk-alpine3.9
-    restart: on-failure
-    deploy:
-      restart_policy:
-        condition: on-failure
-    networks:
-      - us-service-net
-    ports:
-      - "8001:8001/tcp"
-    volumes:
-      - ./us-wallet-service/target/:/app/
-    command:
-      - java -jar /app/us-wallet-service-0.0.1-SNAPSHOT.jar
-
-  us-cart-service:
-    restart: always
-    build:
-      context: .
-      # network: host
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python NacosClient.py"
-    volumes:
-      - .:/code
-    ports:
-      - "8012:8012"
 
   us-gateway-service:
-    image: oracle-jdk:8
-    restart: on-failure
-    deploy:
-      restart_policy:
-        condition: on-failure
-
-  nginx:
-    image: docker.io/nginx
-    container_name: nginx
-    restart: always
-    volumes:
-      - /pook/nginx/html:/usr/share/nginx/html            # html 文件挂载（前面是服务器目录，后面是docker容器目录）
-      - /pook/nginx/nginx.conf:/etc/nginx/nginx.conf    # conf  文件挂载
-      - /pook/nginx/log:/var/log/nginx                        # 日志  文件挂载
+    build: us-gateway-service
     ports:
-      - "80:80"
+      - "8000:8000"
+    networks:
+      - us-service-net
+
+  us-user-service:
+    build: us-user-service
+    depends_on:
+      - us-mysql5
+    environment:
+      USERNAME: root
+      PASSWORD: root
+      DB_URL: us-mysql5:3306/ultra_seller
+    ports:
+      - "8001:8001"
+    networks:
+      - us-service-net
+
+  us-commodity-service:
+    build: us-commodity-service
+    depends_on:
+      - us-mysql5
+    environment:
+      USERNAME: root
+      PASSWORD: root
+      DB_URL: mysql5:3306/ultra_seller
+    ports:
+      - "8002:8002"
+    networks:
+      - us-service-net
+
+  us-wallet-service:
+    build: us-wallet-service
+    depends_on:
+      - us-mysql5
+    environment:
+      USERNAME: root
+      PASSWORD: root
+      DB_URL: mysql5:3306/ultra_seller
+    ports:
+      - "8003:8003"
+    networks:
+      - us-service-net
+
+  us-order-service:
+    build: us-order-service
+    depends_on:
+      - us-mysql5
+    environment:
+      USERNAME: root
+      PASSWORD: root
+      DB_URL: mysql5:3306/ultra_seller
+    ports:
+      - "8004:8004"
+    networks:
+      - us-service-net
+
+#  us-cart-service:
+#    build: us-cart-service
+#    depends_on:
+#      - us-mysql5
+#    environment:
+#      USERNAME: root
+#      PASSWORD: root
+#      DB_URL: mysql5:3306/ultra_seller
+#    ports:
+#      - "8012:8012"
+#    networks:
+#      - us-service-net
+
+  ui-service:
+    depends_on:
+      - us-gateway-service
+    build: ui-service
+    restart: always
+    ports:
+      - 8080:80
+    networks:
+      - us-service-net
+
+  nacos:
+    image: nacos/nacos-server:1.2.1
+    container_name: nacos
+    restart: always
+    depends_on:
+      - us-mysql5
+    environment:
+      PREFER_HOST_MODE: hostname #如果支持主机名可以使用hostname,否则使用ip，默认也是ip
+      SPRING_DATASOURCE_PLATFORM: mysql #数据源平台 仅支持mysql或不保存empty
+      MODE: standalone
+      MYSQL_SERVICE_HOST: mysql5.7
+      MYSQL_SERVICE_DB_NAME: nacos
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_USER: root
+      MYSQL_SERVICE_PASSWORD: root
+      NACOS_APPLICATION_PORT: 9999
+      JVM_XMS: 512m
+      JVM_MMS: 320m
+    volumes:
+      - ./docker/nacos/standalone-logs/:/home/nacos/logs
+      - ./docker/nacos/plugins/:/home/nacos/plugins
+      - ./docker/nacos/conf/application.properties:/home/nacos/conf/application.properties
+    ports:
+      - "9999:9999"
+
+
+networks:
+  us-service-net: {}
