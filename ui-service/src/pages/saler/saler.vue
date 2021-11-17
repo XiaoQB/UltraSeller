@@ -72,7 +72,6 @@
             :span="4"
             v-for="(o, index) in commodityList"
             :key="o"
-            :offset="(index = 0)"
           >
 
             <el-card class="card"  shadow="hover">
@@ -177,11 +176,17 @@
           <el-input v-model="commodity.name"></el-input>
         </el-form-item>
         <el-form-item
-          placeholder="目前只支持输入图片链接"
           label="图片"
           prop="imgLink"
         >
-          <el-input v-model="commodity.imgLink"></el-input>
+          <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :before-upload = 'beforeAvatarUpload'
+              :http-request = 'handleUpload'>
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">jpg/png 文件大小小于500kb</div>
+          </el-upload>
         </el-form-item>
         <el-form-item label="价格" prop="price">
           <el-input v-model="commodity.price"></el-input>
@@ -204,6 +209,8 @@
 </template>
 
 <script>
+import {put,getFileNameUUID} from "../../services/alioss";
+
 export default {
   name: "saler",
 
@@ -217,6 +224,7 @@ export default {
       salerPage: "saler",
       input: "",
       commodityList: [{
+        imgLink: "http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/aaaaaa1637115988644_a5e08860",
 
       }
       ],
@@ -235,7 +243,8 @@ export default {
         pageSize: 10,
       },
       seq:0,
-      search:""
+      search:"",
+      uploadPic:"",
     };
   },
   mounted:function(){
@@ -404,7 +413,7 @@ export default {
           'token': localStorage["token"],
           'role':localStorage['role']
         },
-        method: "post",
+        method: "put",
         url: `/commodity/item`,
         transformRequest: [function (data) {
           return JSON.stringify(data)
@@ -412,7 +421,7 @@ export default {
 
         data: {
           name: this.commodity.name,
-          imgLink: this.commodity.imgLink,
+          imgLink: this.uploadPic,
           price: this.commodity.price,
           description: this.commodity.description,
           inventory: this.commodity.inventory,
@@ -434,6 +443,34 @@ export default {
           });
         });
     },
+    handleUpload(option) {
+      // 生成的文件名称
+      let objName = getFileNameUUID()
+
+      // 调用 ali-oss 中的方法
+      put(`${objName}`, option.file).then(res => {
+        this.uploadPic=res.url
+        console.log(+res.url)
+
+      })
+    },
+
+
+    beforeAvatarUpload (file) {
+      const isJPEG = file.name.split('.')[1] === 'jpeg';
+      const isJPG = file.name.split('.')[1] === 'jpg';
+      const isPNG = file.name.split('.')[1] === 'png';
+      const isLt500K = file.size / 1024 / 500 < 2;
+      if (!isJPG && !isJPEG && !isPNG) {
+        this.$message.error('上传图片只能是 JPEG/JPG/PNG 格式!');
+      }
+      if (!isLt500K) {
+        this.$message.error('单张图片大小不能超过 500KB!');
+      }
+
+      return (isJPEG || isJPG || isPNG) && isLt500K;
+    }
+
   },
 };
 </script>
