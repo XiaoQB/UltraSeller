@@ -23,10 +23,8 @@
           </router-link></el-menu-item
         >
         <el-menu-item
-
             index="to-login"
             style="float: right"
-
         >
           <el-col :span="12">
             <div class="user-image">
@@ -73,24 +71,18 @@
             v-for="(o, index) in commodityList"
             :key="o"
           >
-
             <el-card class="card"  shadow="hover">
-
               <img
                 :src="o.imgLink"
                 style="width: 250px;height: 250px"
                 class="item-image"
               />
               <el-descriptions title="商品信息" :column="1">
-                <el-descriptions-item label="名字">{{
-                  o.name
-                }}</el-descriptions-item>
+                <el-descriptions-item label="名字">{{o.name }}</el-descriptions-item>
                 <el-descriptions-item label="描述">
                   <el-tag size="small">{{ o.description }}</el-tag>
                 </el-descriptions-item>
-                <el-descriptions-item label="价格">{{
-                  o.price
-                }}</el-descriptions-item>
+                <el-descriptions-item label="价格">{{o.price }}</el-descriptions-item>
               </el-descriptions>
               <div style="padding: 5px">
                 <div class="bottom clearfix">
@@ -250,9 +242,9 @@ export default {
   mounted:function(){
     this.getList()
   },
+
   methods: {
     handleSizeChange: function (size) {
-
       this.formInline.pageSize = size;
       this.getList();
     },
@@ -269,6 +261,7 @@ export default {
     UserImageHandler() {
       return true;
     },
+
     getList() {
       console.log(localStorage['token'])
       this.http({
@@ -299,6 +292,7 @@ export default {
             });
           });
     },
+
     getDetail(o, index) {
       this.showDialog = true;
       this.index = index;
@@ -325,13 +319,13 @@ export default {
           });
         }
       });
-
       console.log(index, o);
     },
+
     handleEdit() {
       this.edit = true;
-      console("ddd");
     },
+
     handleSubmit() {
       this.showDialog = false;
       this.edit = false;
@@ -450,8 +444,6 @@ export default {
       // 调用 ali-oss 中的方法
       put(`${objName}`, option.file).then(res => {
         this.uploadPic=res.url
-        console.log(+res.url)
-
       })
     },
 
