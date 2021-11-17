@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/xywu/openjdk:8-jre-slim
+FROM openjdk:8u201-jdk-alpine3.9
 COPY target/us-commodity-service-1.0-SNAPSHOT.jar /app/us-commodity-service.jar
 
 ENV LANG C.UTF-8
