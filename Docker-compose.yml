@@ -68,18 +68,18 @@ services:
     networks:
       - us-service-net
 
-#  us-cart-service:
-#    build: us-cart-service
-#    depends_on:
-#      - us-mysql5
-#    environment:
-#      USERNAME: root
-#      PASSWORD: root
-#      DB_URL: mysql5:3306/ultra_seller
-#    ports:
-#      - "8012:8012"
-#    networks:
-#      - us-service-net
+  us-cart-service:
+    build: us-cart-service
+    depends_on:
+      - us-mysql5
+    environment:
+      USERNAME: root
+      PASSWORD: root
+      DB_URL: mysql5:3306/ultra_seller
+    ports:
+      - "8012:8012"
+    networks:
+      - us-service-net
 
   ui-service:
     depends_on:

@@ -15,3 +15,5 @@ ADD requirements.txt /code/
 RUN pip install -r requirements.txt
 # 将当前目录复制到容器的 code 目录
 ADD . /code/
+
+ENTRYPOINT bash -c python manage.py makemigrations && python manage.py migrate && python NacosClient.py
