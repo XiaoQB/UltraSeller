@@ -1,6 +1,4 @@
-import {baseURL} from "@/http";
-
-const userUrl = baseURL;
+const userUrl = '/api';
 
 function getLists(name, ps, page) {
     var that = this;

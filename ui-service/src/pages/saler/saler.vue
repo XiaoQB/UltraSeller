@@ -270,7 +270,7 @@ export default {
           'role':localStorage['role'],
         },
         method: "get",
-        url: `/commodity/lists`,
+        url: `/api/commodity/lists`,
         params: {
           username:localStorage['user_id'] ,
           pagesize: this.formInline.pageSize,
@@ -307,7 +307,7 @@ export default {
               'role':localStorage['role']
             },
             method: "delete",
-            url: `/commodity/item/${o.id}`,
+            url: `/api/commodity/item/${o.id}`,
           }
       ).then(res => {
         if (res.data.code === 200) {
@@ -336,7 +336,7 @@ export default {
           'role':localStorage['role']
         },
         method: "put",
-        url: `/commodity/item`,
+        url: `/api/commodity/item`,
         transformRequest: [function (data) {
           return JSON.stringify(data)
         }],
@@ -375,7 +375,7 @@ export default {
               'role':localStorage['role']
             },
             method: "get",
-            url: `/commodity/search`,
+            url: `/api/commodity/search`,
             params: {
               q: this.search,
               pagesize: this.formInline.pageSize,
@@ -408,7 +408,7 @@ export default {
           'role':localStorage['role']
         },
         method: "put",
-        url: `/commodity/item`,
+        url: `/api/commodity/item`,
         transformRequest: [function (data) {
           return JSON.stringify(data)
         }],

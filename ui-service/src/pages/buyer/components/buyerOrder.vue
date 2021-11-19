@@ -194,7 +194,7 @@ export default {
           token: window.localStorage["token"],
         },
         method: "put",
-        url: "/order/change",
+        url: "/api/order/change",
         params: {
           orderId: row.id,
         },
@@ -215,7 +215,7 @@ export default {
           token: window.localStorage["token"],
         },
         method: "put",
-        url: "/order/change",
+        url: "/api/order/change",
         params: {
           orderId: row.id,
         },

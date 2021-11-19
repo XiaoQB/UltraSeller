@@ -98,6 +98,7 @@
 </template>
 
 <script>
+
 export default {
   name: "login",
   data() {
@@ -181,7 +182,7 @@ export default {
         this.$message.error("请选择角色！");
       } else if (this.user.role === "saler") {
         this.http
-          .get(`/user/login`, {
+          .get(`/api/user/login`, {
             headers: {
               "Access-Control-Allow-Origin": "*",
             },
@@ -204,7 +205,7 @@ export default {
           });
       } else if (this.user.role === "buyer") {
         this.http
-          .get(`/user/login`, {
+          .get(`/api/user/login`, {
             params: {
               userName: this.user.username,
               password: this.user.password,
@@ -245,7 +246,7 @@ export default {
         },
         method: "post",
 
-        url: `/user/register`,
+        url: `/api/user/register`,
         transformRequest: [
           function(data) {
             return JSON.stringify(data);

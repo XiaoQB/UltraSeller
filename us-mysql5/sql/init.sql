@@ -525,3 +525,4 @@ INSERT INTO `us_wallet_record` VALUES (-1, 'xpc', '2021-11-12 21:42:27', 100, 99
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
+

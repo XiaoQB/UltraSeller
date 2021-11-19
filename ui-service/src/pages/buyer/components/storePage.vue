@@ -244,8 +244,7 @@
 </template>
 
 <script>
-import { baseURL } from "@/http";
-const commodityUrl = baseURL;
+const commodityUrl = '/api';
 export default {
   name: "storePage",
 
@@ -346,7 +345,7 @@ export default {
           token: localStorage["token"],
         },
         method: "get",
-        url: `/commidity/search`,
+        url: `/api/commidity/search`,
         params: {
           q: search,
           pagesize: this.pageSize,

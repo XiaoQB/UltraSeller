@@ -165,12 +165,11 @@
 </template>
 
 <script>
-import { baseURL } from "@/http";
 import {getFileNameUUID, put} from "../services/alioss";
 
-const commodityUrl = baseURL;
+const commodityUrl = '/api';
 
-const userUrl = baseURL;
+const userUrl = '/api';
 
 export default {
   name: "commodityManager",

@@ -63,9 +63,7 @@
 </template>
 
 <script>
-import { baseURL } from "@/http";
-
-const commodityUrl = baseURL;
+const commodityUrl = '/api';
 export default {
   name: "wallet",
   data() {

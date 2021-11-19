@@ -62,10 +62,7 @@
 </template>
 
 <script>
-
-import {baseURL} from "@/http";
-
-const userUrl = baseURL;
+const userUrl = '/api';
 export default {
   name: "buyerManager",
   data() {

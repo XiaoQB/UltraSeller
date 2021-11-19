@@ -238,7 +238,7 @@ export default {
             'role':localStorage['role']
           },
           method: "get",
-          url: '/order/saler-list',
+          url: '/api/order/saler-list',
           params: {
             user_ids:localStorage['id'],
             page:this.formInline.currentPage,
@@ -266,7 +266,7 @@ export default {
           'role':localStorage['role']
         },
         method:"put",
-        url:"/order/change",
+        url:"/api/order/change",
         data:{
           subOrderId:row.id,
           address:row.address,
@@ -297,7 +297,7 @@ export default {
            'role':localStorage['role']
          },
          method:"get",
-         url:"/order/saler-orders-status",
+         url:"/api/order/saler-orders-status",
          params:{
            user_id:localStorage['id'],
            status:this.status,
@@ -337,7 +337,7 @@ export default {
           'role':localStorage['role']
         },
         method:"put",
-        url:"/order/change",
+        url:"/api/order/change",
         data:{
           subOrderId:this.changeInfo.subOrderId,
           address:this.changeInfo.address,
