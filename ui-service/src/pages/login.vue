@@ -197,7 +197,7 @@ export default {
               window.localStorage["user_id"] = this.user.username;
               window.localStorage["id"] = res.data.data.userId;
               window.localStorage["role"] = this.user.role;
-              this.$router.push({ name: "app", path: "/storePage" });
+              this.$router.push({ name: "saler", path: "/saler" });
             } else {
               alert("您输入的用户名或密码错误！");
             }

@@ -65,7 +65,7 @@
 <script>
 import { baseURL } from "@/http";
 
-const commodityUrl = baseURL.commodity;
+const commodityUrl = baseURL;
 export default {
   name: "wallet",
   data() {

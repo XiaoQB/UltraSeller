@@ -244,13 +244,14 @@
 </template>
 
 <script>
+import { baseURL } from "@/http";
+const commodityUrl = baseURL;
 export default {
   name: "storePage",
 
   data() {
     return {
       num: 0,
-      age: 15,
       input: "",
       totalItems: 6,
       pageSize: 24,
@@ -316,15 +317,28 @@ export default {
   },
   methods: {
     updateCommodityData() {
-      if (
-        JSON.parse(this.$route.query.commodityData) === "" ||
-        JSON.parse(this.$route.query.commodityData) === null ||
-        JSON.parse(this.$route.query.commodityData) === undefined
-      ) {
-        JSON.parse(this.$route.query.commodityData).map((item) => {
-          return item;
+      this.http({
+        headers: {
+          token: localStorage["token"],
+        },
+        method: "get",
+        url: `${commodityUrl}/commodity/lists`,
+        params: {
+          username: localStorage.getItem("user_id"),
+          page: 1,
+          pagesize: 10,
+          seq: 0,
+        },
+      })
+        .then((response) => {
+          this.commodityData_id = response.data.id;
+        })
+        .catch(function(error) {
+          this.$message({
+            type: "error",
+            message: "系统异常：" + error,
+          });
         });
-      }
     },
     doSearch(search) {
       this.http({

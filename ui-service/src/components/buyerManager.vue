@@ -65,7 +65,7 @@
 
 import {baseURL} from "@/http";
 
-const userUrl = baseURL.user;
+const userUrl = baseURL;
 export default {
   name: "buyerManager",
   data() {

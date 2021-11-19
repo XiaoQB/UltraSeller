@@ -168,9 +168,9 @@
 import { baseURL } from "@/http";
 import {getFileNameUUID, put} from "../services/alioss";
 
-const commodityUrl = baseURL.commodity;
+const commodityUrl = baseURL;
 
-const userUrl = baseURL.user;
+const userUrl = baseURL;
 
 export default {
   name: "commodityManager",
