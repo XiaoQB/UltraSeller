@@ -396,8 +396,7 @@ CREATE TABLE `us_buyer` (
 -- Records of us_buyer
 -- ----------------------------
 BEGIN;
-INSERT INTO `us_buyer` VALUES (1, 'joshua', '111', '11', '1', '2021-11-12 16:49:47', '2021-11-12 16:49:50');
-INSERT INTO `us_buyer` VALUES (2, 'lingzixuan', 'e10adc3949ba59abbe56e057f20f883e', NULL, '10086', '2021-11-12 20:12:14', '2021-11-16 11:11:38');
+INSERT INTO `us_buyer` VALUES (1, 'buyer', '81dc9bdb52d04dc20036dbd8313ed055', '11', '1', '2021-11-12 16:49:47', '2021-11-12 16:49:50');
 COMMIT;
 
 -- ----------------------------
@@ -445,14 +444,7 @@ CREATE TABLE `us_saler` (
 -- Records of us_saler
 -- ----------------------------
 BEGIN;
-INSERT INTO `us_saler` VALUES (13, 'joshuaMe', '202cb962ac59075b964b07152d234b70', '123', '123@qq.com', '2021-11-13 12:40:34', '2021-11-13 12:40:34');
-INSERT INTO `us_saler` VALUES (14, 'saler', '03c91917aef63ae655821b365309432f', '123456', NULL, '2021-11-13 16:04:04', '2021-11-13 16:04:04');
-INSERT INTO `us_saler` VALUES (16, 'xpc', '81dc9bdb52d04dc20036dbd8313ed055', '10086', NULL, '2021-11-13 16:08:32', '2021-11-13 16:08:32');
-INSERT INTO `us_saler` VALUES (17, 'xxx', '202cb962ac59075b964b07152d234b70', '123', NULL, '2021-11-13 20:17:18', '2021-11-13 20:17:18');
-INSERT INTO `us_saler` VALUES (18, 'aaa', '81dc9bdb52d04dc20036dbd8313ed055', '10086', NULL, '2021-11-13 20:41:31', '2021-11-13 20:41:31');
-INSERT INTO `us_saler` VALUES (19, 'bbb', '81dc9bdb52d04dc20036dbd8313ed055', '10086', NULL, '2021-11-13 20:51:00', '2021-11-13 20:51:00');
-INSERT INTO `us_saler` VALUES (20, 'test', '81dc9bdb52d04dc20036dbd8313ed055', '10086', NULL, '2021-11-14 10:19:24', '2021-11-14 10:19:24');
-INSERT INTO `us_saler` VALUES (21, 't', '81dc9bdb52d04dc20036dbd8313ed055', '10086', NULL, '2021-11-14 10:22:59', '2021-11-14 10:22:59');
+INSERT INTO `us_saler` VALUES (1, 'saler', '81dc9bdb52d04dc20036dbd8313ed055', '123', '123@qq.com', '2021-11-13 12:40:34', '2021-11-13 12:40:34');
 COMMIT;
 
 -- ----------------------------
@@ -467,28 +459,6 @@ CREATE TABLE `us_wallet` (
                              PRIMARY KEY (`walletId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Records of us_wallet
--- ----------------------------
-BEGIN;
-INSERT INTO `us_wallet` VALUES ('heyue2', 202111101504369803, 0, 'seller');
-INSERT INTO `us_wallet` VALUES ('deangelo.rempel', 202111101837062363, 239.61, 'buyer');
-INSERT INTO `us_wallet` VALUES ('heyue', 2021111015035332514, 0, 'seller');
-INSERT INTO `us_wallet` VALUES ('heyue4', 2021111015173263553, 0, 'saler');
-INSERT INTO `us_wallet` VALUES ('heyue1', 2021111015180314494, 0, 'saler');
-INSERT INTO `us_wallet` VALUES ('admin', 2021111015413634737, 1898.4, 'admin');
-INSERT INTO `us_wallet` VALUES ('deangelo', 2021111019492065428, 0, 'buyer');
-INSERT INTO `us_wallet` VALUES ('lingzixuan', 2021111220121316525, 0, 'buyer');
-INSERT INTO `us_wallet` VALUES ('deangelo.rempel23', 2021111221415947194, 0, '53oe2o');
-INSERT INTO `us_wallet` VALUES ('deangelo.rempel333', 2021111221445546170, 0, '53oe2o');
-INSERT INTO `us_wallet` VALUES ('ling22zixuan', 2021111221502076911, 0, 'seller');
-INSERT INTO `us_wallet` VALUES ('xpc', 2021111316083210668, 100, 'saler');
-INSERT INTO `us_wallet` VALUES ('xqb', 2021111319353333782, 0, 'saler');
-INSERT INTO `us_wallet` VALUES ('aaa', 2021111320413166051, 0, 'saler');
-INSERT INTO `us_wallet` VALUES ('bbb', 2021111320510113883, 0, 'saler');
-INSERT INTO `us_wallet` VALUES ('test', 2021111410192493487, 0, 'saler');
-INSERT INTO `us_wallet` VALUES ('t', 2021111410225913189, 0, 'saler');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for us_wallet_record
@@ -502,27 +472,6 @@ CREATE TABLE `us_wallet_record` (
                                     `orderId` bigint(20) DEFAULT '-1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ----------------------------
--- Records of us_wallet_record
--- ----------------------------
-BEGIN;
-INSERT INTO `us_wallet_record` VALUES (-1, 'deangelo.rempel', '2021-11-10 18:58:20', -56.59, 725);
-INSERT INTO `us_wallet_record` VALUES (-1, 'deangelo.rempel', '2021-11-10 18:58:34', -56.59, 725);
-INSERT INTO `us_wallet_record` VALUES (-1, 'deangelo.rempel', '2021-11-10 19:03:43', -56.59, 725);
-INSERT INTO `us_wallet_record` VALUES (-1, 'deangelo.rempel', '2021-11-10 19:04:43', -56.59, 725);
-INSERT INTO `us_wallet_record` VALUES (-1, 'deangelo.rempel', '2021-11-10 19:06:22', 56.59, 725);
-INSERT INTO `us_wallet_record` VALUES (-1, 'deangelo.rempel', '2021-11-10 19:49:46', 56.59, 725);
-INSERT INTO `us_wallet_record` VALUES (-1, 'deangelo.rempel', '2021-11-10 19:52:02', 86.6, -1);
-INSERT INTO `us_wallet_record` VALUES (-1, 'admin', '2021-11-10 19:54:09', 86.6, -1);
-INSERT INTO `us_wallet_record` VALUES (-1, 'deangelo.rempel', '2021-11-10 19:55:41', -56.59, 725);
-INSERT INTO `us_wallet_record` VALUES (-1, 'admin', '2021-11-10 19:58:07', 1000000000, 725);
-INSERT INTO `us_wallet_record` VALUES (-1, 'admin', '2021-11-10 20:02:26', -1000000000, 725);
-INSERT INTO `us_wallet_record` VALUES (-1, 'deangelo.rempel', '2021-11-10 20:08:04', 86.6, -1);
-INSERT INTO `us_wallet_record` VALUES (-1, 'admin', '2021-11-10 20:08:31', 86.6, -1);
-INSERT INTO `us_wallet_record` VALUES (-1, 'admin', '2021-11-12 21:42:18', 862.6, -1);
-INSERT INTO `us_wallet_record` VALUES (-1, 'admin', '2021-11-12 21:42:27', 862.6, -1);
-INSERT INTO `us_wallet_record` VALUES (-1, 'xpc', '2021-11-12 21:42:27', 100, 99);
-COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
 

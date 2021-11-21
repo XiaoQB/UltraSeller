@@ -24,6 +24,7 @@ services:
       USERNAME: root
       PASSWORD: root
       DB_URL: us-mysql5:3306/ultra_seller
+    #      DB_URL: 47.102.97.229:3306/ultra_seller
     ports:
       - "8001:8001"
     networks:
@@ -84,7 +85,6 @@ services:
   ui-service:
     depends_on:
       - us-gateway-service
-#    build: ui-service
     image: nginx:latest
     restart: always
     volumes:
