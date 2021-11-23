@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oss
+  namespace: amp
+spec:
+  ports:
+    - port: 20010
+      targetPort: 20010
+  selector:
+    app: amp-oss-gateway
+

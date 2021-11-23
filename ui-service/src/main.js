@@ -53,7 +53,7 @@ const router = new VueRouter({
     },
     {
       name: "wallet",
-      path: "/wallet",
+      path: "/wallet.yaml",
       component: wallet,
     },
     {
