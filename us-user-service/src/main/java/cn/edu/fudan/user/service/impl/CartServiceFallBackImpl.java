@@ -18,7 +18,7 @@ public class CartServiceFallBackImpl implements CartService {
     }
 
     @Override
-    public ResponseEntity<String> createCart(Cart cart) {
-        return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + "购物车服务异常", null);
+    public String createCart(Cart cart) {
+        return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + "购物车服务异常", null).toString();
     }
 }

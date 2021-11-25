@@ -24,7 +24,7 @@ public interface CartService {
      * @param userName userName
      * @return string
      */
-    @DeleteMapping("/test")
+    @DeleteMapping("/test/")
     ResponseEntity<String> deleteCart(String userName);
 
     /**
@@ -33,6 +33,6 @@ public interface CartService {
      * @param Cart cart
      * @return string
      */
-    @PostMapping("/AddCart")
-    ResponseEntity<String> createCart(Cart cart);
+    @PostMapping("/AddCart/")
+    String createCart(Cart cart);
 }

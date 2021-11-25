@@ -63,7 +63,6 @@ def register_server_to_nacos(service_ip, port, service_name, namespaceId, namesp
         print(e.__str__())
 
 
-
 if __name__ == '__main__':
     # django运行服务地址
     # res = socket.gethostbyname_ex(socket.gethostname())[2]

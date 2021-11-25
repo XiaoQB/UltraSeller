@@ -85,18 +85,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'ultra_seller',
-#         'USER': 'root',
-#         'PASSWORD': '',
-#         'HOST':'localhost',
-#         'PORT': '',
-#     }
-# }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

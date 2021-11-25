@@ -3,6 +3,8 @@ from django.views.decorators.http import require_http_methods
 # Create your views here.
 from django.http import HttpResponse, response
 import requests
+
+from tool import db_connect
 from .models import cart
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -135,12 +137,13 @@ def AddCart(request):
     data = json.loads(request.body)
     uid = data.get('uid')
     goods_list = data.get('goods_list')
-
+    if goods_list is None:
+        goods_list = []
     token = request.META.get("HTTP_TOKEN")
     headers = {"token":token}
 
     for good in goods_list:
-        gid = good.get("id") 
+        gid = good.get("id")
         cart_num = good.get("cart_num")
         status = good.get("status")
         create_time = good.get("create_time")
@@ -155,11 +158,11 @@ def AddCart(request):
         port = host.get("port")
         url = 'http://{}:{}/commodity/item'.format(ip, port)
         response = requests.get(url=url, params=params, headers=headers)
-        
+
         response = response.json()
 
         if response.get('code')== 200:
-            data = response.get("data") 
+            data = response.get("data")
             inventory = data.get("inventory")
             if cart_num <= inventory:
                 dictCheck = {"buyer_id": uid, "commodity_id": gid}
@@ -167,7 +170,7 @@ def AddCart(request):
                 #利用**解引用，进行数据条件查询
                 obj = cart.objects.filter( **dictFor)
                 if obj.count() == 0:
-                    obj = cart.objects.create(buyer_id = uid, commodity_id = gid, cart_num = cart_num, status = status, 
+                    obj = cart.objects.create(buyer_id = uid, commodity_id = gid, cart_num = cart_num, status = status,
                                              create_time = create_time, update_time = update_time)
                 else:
                     obj = obj[0]
@@ -179,8 +182,8 @@ def AddCart(request):
         else:
             response["gid"] = gid
             return HttpResponse(json.dumps(response))
-    
     return HttpResponse("AddCart Succes!")
+
 
 
 @csrf_exempt
@@ -277,3 +280,18 @@ def DeleteCart(request):
     headers = {"token":token}
     cart.objects.get(buyer_id = uid).delete()
     return HttpResponse("Delete {} success.".format(uid))
+
+
+# @csrf_exempt
+# @require_http_methods(["POST"])
+# def createCart(request):
+#     data = json.loads(request.body)
+#     uid = data.get('uid')
+#     # todo
+#     token = request.META.get("HTTP_TOKEN")
+#     headers = {"token":token}
+#     session = db_connect(DB)
+#     ret = session.query(RepositoryModel.uuid).filter(RepositoryModel.url == url
+#                                                      and RepositoryModel.branch == branch).first()
+#     cart.objects.get(buyer_id=uid).delete()
+#     return HttpResponse("Delete {} success.".format(uid))

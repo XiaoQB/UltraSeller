@@ -1,6 +1,7 @@
 package cn.edu.fudan.user.controller;
 
 import cn.edu.fudan.common.entities.ResponseEntity;
+import cn.edu.fudan.common.entities.dbo.Cart;
 import cn.edu.fudan.common.entities.dbo.User;
 import cn.edu.fudan.common.entities.dbo.Wallet;
 import cn.edu.fudan.user.domain.dto.LoginDTO;
@@ -129,16 +130,15 @@ public class UserController {
                 }
                 user = userService.getUserByName(user.getRole(), user.getUserName());
                 log.info("user id:"+user.getId());
-                /*
                 Cart cart = new Cart(user.getId().toString(), null);
-                ResponseEntity<String> cartResponse = cartService.createCart(cart);
-                if (cartResponse.getCode() != 200) {
-                    walletService.deleteWallet(user.getUserName());
-                    userService.deleteUser(user.getRole(), user.getUserName());
-                    return cartResponse;
-                }
+                String cartResponse = cartService.createCart(cart);
+//                if (cartResponse.getCode() != 200) {
+//                    walletService.deleteWallet(user.getUserName());
+//                    userService.deleteUser(user.getRole(), user.getUserName());
+//                    return cartResponse;
+//                }
+                log.info("create cart:"+ cartResponse);
 
-                 */
                 return new ResponseEntity<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
             }
             return new ResponseEntity<>(ResultCode.REGISTER_FAIL.getCode(), ResultCode.REGISTER_FAIL.getMessage(), null);
