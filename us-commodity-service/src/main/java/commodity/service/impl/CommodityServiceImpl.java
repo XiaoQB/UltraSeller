@@ -42,24 +42,33 @@ public class CommodityServiceImpl implements CommodityService {
     }
 
     @Override
-    public void update(Commodity commodity) {
+    public boolean update(Commodity commodity) {
         CommodityExample example = new CommodityExample();
         CommodityExample.Criteria criteria = example.createCriteria();
         criteria.andIdEqualTo(commodity.getId() + "");
+        int count = commodityMapper.countByExample(example);
+        if (count == 0)
+            return false;
         commodityMapper.updateByExampleSelective(commodity, example);
+        return true;
     }
 
     @Override
-    public void create(Commodity commodity) {
+    public boolean create(Commodity commodity) {
         commodityMapper.insert(commodity);
+        return true;
     }
 
     @Override
-    public void delete(long itemId) {
+    public boolean delete(long itemId) {
         CommodityExample example = new CommodityExample();
         CommodityExample.Criteria criteria = example.createCriteria();
         criteria.andIdEqualTo(itemId + "");
+        int count = commodityMapper.countByExample(example);
+        if (count == 0)
+            return false;
         commodityMapper.deleteByExample(example);
+        return true;
     }
 
     @Override

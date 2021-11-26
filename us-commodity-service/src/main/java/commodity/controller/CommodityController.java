@@ -78,8 +78,11 @@ public class CommodityController {
      */
     @PutMapping("/commodity/item")
     public Response<String> update(@RequestBody Commodity commodity) {
-        commodityService.update(commodity);
-        return new Response<>(201, "更新成功", null);
+        boolean result = commodityService.update(commodity);
+        if (result)
+            return new Response<>(201, "更新成功", null);
+        else
+            return new Response<>(401, "更新失败", null);
     }
 
     /**
@@ -93,8 +96,11 @@ public class CommodityController {
     public Response<String> create(@RequestBody Commodity commodity) {
 
         commodity.setId(IdGenerator.generateId());
-        commodityService.create(commodity);
-        return new Response<>(201, "创建成功", null);
+        boolean result = commodityService.create(commodity);
+        if (result)
+            return new Response<>(201, "创建成功", null);
+        else
+            return new Response<>(401, "创建失败", null);
     }
 
     /**
@@ -105,8 +111,11 @@ public class CommodityController {
      */
     @DeleteMapping("/commodity/item/{itemId}")
     public Response<String> delete(@PathVariable long itemId) {
-        commodityService.delete(itemId);
-        return new Response<>(200, "删除成功", null);
+        boolean result = commodityService.delete(itemId);
+        if (result)
+            return new Response<>(200, "删除成功", null);
+        else
+            return new Response<>(402, "删除失败", null);
     }
 
     /**
@@ -120,7 +129,7 @@ public class CommodityController {
                                                 @RequestParam("page") int pageNum,
                                                 @RequestParam("pagesize") int pageSize,
                                                 @RequestParam(value = "seq", required = false, defaultValue = "0") String sequence) {
-        return new Response<>(200, "删除成功", commodityService.searchList(searchWords, pageNum, pageSize, sequence));
+        return new Response<>(200, "查找成功", commodityService.searchList(searchWords, pageNum, pageSize, sequence));
     }
 
     @Autowired

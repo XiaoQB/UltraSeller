@@ -11,11 +11,11 @@ public interface CommodityService {
 
     Commodity singleCommodity(String commodityId);
 
-    void update(Commodity commodity);
+    boolean update(Commodity commodity);
 
-    void create(Commodity commodity);
+    boolean create(Commodity commodity);
 
-    void delete(long itemId);
+    boolean delete(long itemId);
 
     PagedGridResult searchList(String searchWords, int pageNum, int pageSize, String sequences);
 }
