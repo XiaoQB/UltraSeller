@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
                     .orderId(orderId)
                     .totalPrice(totalPrice)
                     .address(createOrderDTO.getAddress())
-                    .salerId(commodity.getInventory())
+                    .salerId(commodity.getVendorId())
                     .commodityId(commodity.getId())
                     .commodityName(commodity.getName())
                     .price(commodity.getPrice())

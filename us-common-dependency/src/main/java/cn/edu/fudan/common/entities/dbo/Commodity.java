@@ -22,6 +22,7 @@ public class Commodity {
     private String description;
     private long inventory;
     private String vendorName;
+    private long vendorId;
     private String keywords;
     private List<String> typeList;
     private Integer typeIdx;
