@@ -48,10 +48,10 @@ public class WalletServiceImpl implements WalletService {
             return -1;
         }
         Wallet wallet = walletList.get(0);
-        if(wallet.getBalance() + difference < 0){
+        if(wallet.getBalance() - difference < 0){
             return -2;
         }
-        wallet.setBalance((double)Math.round((wallet.getBalance() + difference)*100)/100);
+        wallet.setBalance((double)Math.round((wallet.getBalance() - difference)*100)/100);
         walletMapper.updateByExample(wallet, example);
         return 0;
     }
