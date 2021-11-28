@@ -28,7 +28,7 @@ public class RestUtil {
         for (SubOrder subOrder : subOrders) {
             ResponseEntity<Commodity> response = commodityService.getCommodityById(subOrder.getCommodityId());
             if (ResponseEntityCode.OK.getCode() != response.getCode()) {
-                throw new CommodityServiceException("commodity service error");
+                throw new CommodityServiceException("commodity service error, can not get commodity id!");
             }
             Commodity commodity = response.getData();
             subOrderList.add(new SubOrderVO(subOrder, commodity));
