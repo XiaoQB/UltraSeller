@@ -34,7 +34,7 @@ public class GatewayFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
-        if ("user-service-route".equals(route.getId())) {
+        if ("user-service-route".equals(route.getId()) || route.getUri().getPath().contains("/listall")) {
             return chain.filter(exchange);
         }
         HttpHeaders headers = exchange.getRequest().getHeaders();
