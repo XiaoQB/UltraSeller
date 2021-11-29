@@ -98,7 +98,6 @@
 </template>
 
 <script>
-
 export default {
   name: "login",
   data() {
@@ -193,7 +192,7 @@ export default {
             },
           })
           .then((res) => {
-            if (res.data.code === 200 && this.user.role === "saler") {
+            if (res.data.code === 200) {
               window.localStorage["token"] = res.data.data.token;
               window.localStorage["user_id"] = this.user.username;
               window.localStorage["id"] = res.data.data.userId;
@@ -205,7 +204,7 @@ export default {
           });
       } else if (this.user.role === "buyer") {
         this.http
-          .get(`/api/user/login`, {
+          .get(`/user/login`, {
             params: {
               userName: this.user.username,
               password: this.user.password,
@@ -213,7 +212,7 @@ export default {
             },
           })
           .then((res) => {
-            if (res.data.status === 200) {
+            if (res.data.code === 200) {
               window.localStorage["token"] = JSON.stringify(res.data["token"]);
               window.localStorage["user_id"] = this.user.username;
               this.$router.push({
@@ -226,7 +225,6 @@ export default {
               });
             } else {
               this.$message.error("您输入的用户名或密码错误！");
-              alert("您输入的用户名或密码错误！");
             }
           });
         // window.localStorage["token"] =
@@ -246,7 +244,7 @@ export default {
         },
         method: "post",
 
-        url: `/api/user/register`,
+        url: `/user/register`,
         transformRequest: [
           function(data) {
             return JSON.stringify(data);
@@ -304,8 +302,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .logo {
-  width: 30%; 
-  height: 30%; 
+  width: 30%;
+  height: 30%;
   margin: auto;
 }
 .login {

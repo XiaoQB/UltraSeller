@@ -266,7 +266,7 @@ export default {
           token: localStorage["token"],
         },
         method: "get",
-        url: `${commodityUrl}/commodity/lists`,
+        url: `${commodityUrl}commodity/lists`,
         params: {
           username: "tet",
           pagesize: this.formInline.pageSize,
