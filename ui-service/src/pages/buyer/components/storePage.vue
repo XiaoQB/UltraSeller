@@ -321,7 +321,7 @@ export default {
           token: localStorage["token"],
         },
         method: "get",
-        url: `${commodityUrl}/commodity/lists`,
+        url: `${commodityUrl}commodity/lists`,
         params: {
           username: localStorage.getItem("user_id"),
           page: 1,
