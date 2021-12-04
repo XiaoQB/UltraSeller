@@ -182,9 +182,6 @@ export default {
       } else if (this.user.role === "saler") {
         this.http
           .get(`/api/user/login`, {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-            },
             params: {
               userName: this.user.username,
               password: this.user.password,
@@ -194,17 +191,22 @@ export default {
           .then((res) => {
             if (res.data.code === 200) {
               window.localStorage["token"] = res.data.data.token;
-              window.localStorage["user_id"] = this.user.username;
-              window.localStorage["id"] = res.data.data.userId;
-              window.localStorage["role"] = this.user.role;
+              window.localStorage["user_id"] = res.data.data.userId;
+              window.localStorage["user_name"] = this.user.username;
+              window.localStorage["user_role"] = this.user.role;
+              // window.localStorage["user_adress"] = "交叉二号楼 122"
               this.$router.push({ name: "saler", path: "/saler" });
-            } else {
-              alert("您输入的用户名或密码错误！");
             }
+          })
+          .catch(() => {
+            this.$message({
+              type: "error",
+              message: "用户名或密码不正确",
+            });
           });
       } else if (this.user.role === "buyer") {
         this.http
-          .get(`/user/login`, {
+          .get(`/api/user/login`, {
             params: {
               userName: this.user.username,
               password: this.user.password,
@@ -213,49 +215,46 @@ export default {
           })
           .then((res) => {
             if (res.data.code === 200) {
-              window.localStorage["token"] = JSON.stringify(res.data["token"]);
-              window.localStorage["user_id"] = this.user.username;
+              window.localStorage["token"] = res.data.data.token;
+              window.localStorage["user_id"] = res.data.data.userId;
+              window.localStorage["user_name"] = this.user.username;
+              window.localStorage["user_role"] = this.user.role;
               this.$router.push({
-                name: "app",
+                path: "/storePage",
                 query: {
                   userName: this.user.username,
-                  token: res.data["token"],
                   role: this.user.role,
                 },
               });
-            } else {
-              this.$message.error("您输入的用户名或密码错误！");
             }
+          })
+          .catch(() => {
+            this.$message({
+              type: "error",
+              message: "用户名或密码不正确",
+            });
           });
-        // window.localStorage["token"] =
-        //   "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMTY2ZWQyYy1lMWYwLTQ4MTgtOTcyYi1iNzA4ZDVlMzQxZGUiLCJzdWIiOiJ7XCJyb2xlXCI6XCJidXllclwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInRlc3QwMVwifSIsImlzcyI6ImFkbWluIiwiaWF0IjoxNjM0OTk1NjQzLCJleHAiOjE2MzQ5OTkyNDN9.uubRdqHfSK3EA23d2STScP-_gZgCZ48oxJwOeXoxSVM";
-        // window.localStorage["user_id"] = "temple";
-        // this.$router.push({
-        //   name: "app",
-        //   path: "/storePage",
-        // });
       }
     },
     doRegister() {
       this.submitForm("register");
       this.http({
-        headers: {
-          "Content-Type": "application/json;",
-        },
+        // headers: {
+        //   "Content-Type": "application/json;",
+        // },
         method: "post",
-
-        url: `/user/register`,
+        url: `/api/user/register`,
         transformRequest: [
           function(data) {
             return JSON.stringify(data);
           },
         ],
-
         data: {
           role: this.register.identity,
           userName: this.register.name,
           password: this.register.pwd,
           phone: this.register.number,
+          email: this.register.email,
         },
       }).then((res) => {
         if (res.data.code === 200) {
@@ -264,7 +263,7 @@ export default {
             type: "success",
             message: "恭喜你，注册成功，已经成为我们XX商城的一员啦！！！",
           });
-        } else if (res.data.code === 402) {
+        } else if (res.data.code === 409) {
           this.$message({
             type: "info",
             message: "注册失败，该账号已经被注册",

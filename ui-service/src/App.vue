@@ -98,7 +98,7 @@ export default {
       this.currentPage = key;
     },
     handleUser() {
-      this.userData.userName = localStorage.getItem("user_id")
+      this.userData.userName = localStorage.getItem("user_name")
       this.userData.token = localStorage.getItem("token")
       this.userImageHandler();
       if (

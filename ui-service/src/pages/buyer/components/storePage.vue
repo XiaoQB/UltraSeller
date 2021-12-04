@@ -20,215 +20,76 @@
         >搜索商品</el-button
       >
       <div class="goods" @change="updateCommodityData()">
-        <!-- <el-row>
-          <el-col
-            :span="4"
-            v-for="(cardKey, index) in this.mock"
-            :key="cardKey"
-          >
-            <el-card
-              class="card"
-              :body-style="{ padding: auto }"
-              shadow="hover"
-              :key="index"
-            >
-              <div style="padding: 5px">
-                <img :src="commidityData_imgLink" class="item-image" />
-                <el-descriptions title="商品信息" column="1">
-                  <el-descriptions-item label="名字">
-                    {{ commodityData_name }}</el-descriptions-item
-                  >
-                  <el-descriptions-item label="描述">{{
-                    commodityData_description
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="库存">{{
-                    commodityData_inventory
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="分类">
-                    <el-tag size="small">{{ commodityData_type }}</el-tag>
-                  </el-descriptions-item>
-                  <el-descriptions-item label="价格">{{
-                    commodityData_price
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="卖家名字">{{
-                    commodityData_vendorName
-                  }}</el-descriptions-item>
-                </el-descriptions>
-                <div class="card-action">
-                  <el-button
-                    type="primary"
-                    class="buy-commodity-bottom"
-                    @click="handleBuyClick()"
-                  >
-                    买它！
-                  </el-button>
-                </div>
-              </div>
-            </el-card>
-          </el-col>
-        </el-row> -->
-        <el-row>
-          <el-col :span="4">
-            <el-card
-              class="card"
-              :body-style="{ padding: auto }"
-              shadow="hover"
-            >
-              <div style="padding: 5px">
-                <img :src="mock[0].imgLink" class="item-image" />
-                <el-descriptions title="商品信息" column="1">
-                  <el-descriptions-item label="名字">
-                    {{ mock[0].name }}</el-descriptions-item
-                  >
-                  <el-descriptions-item label="描述">{{
-                    mock[0].description
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="库存">{{
-                    mock[0].inventory
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="分类">
-                    <el-tag size="small">{{ mock[0].type }}</el-tag>
-                  </el-descriptions-item>
-                  <el-descriptions-item label="价格">{{
-                    mock[0].price
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="卖家名字">{{
-                    mock[0].vendorName
-                  }}</el-descriptions-item>
-                </el-descriptions>
-                <div class="card-action">
-                  <el-button
-                    type="primary"
-                    class="buy-commodity-bottom"
-                    @click="handleBuyClick()"
-                  >
-                    买它！
-                  </el-button>
-                </div>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="4">
-            <el-card
-              class="card"
-              :body-style="{ padding: auto }"
-              shadow="hover"
-            >
-              <div style="padding: 5px">
-                <img :src="mock[1].imgLink" class="item-image" />
-                <el-descriptions title="商品信息" column="1">
-                  <el-descriptions-item label="名字">
-                    {{ mock[1].name }}</el-descriptions-item
-                  >
-                  <el-descriptions-item label="描述">{{
-                    mock[1].description
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="库存">{{
-                    mock[1].inventory
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="分类">
-                    <el-tag size="small">{{ mock[0].type }}</el-tag>
-                  </el-descriptions-item>
-                  <el-descriptions-item label="价格">{{
-                    mock[1].price
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="卖家名字">{{
-                    mock[1].vendorName
-                  }}</el-descriptions-item>
-                </el-descriptions>
-                <div class="card-action">
-                  <el-button
-                    type="primary"
-                    class="buy-commodity-bottom"
-                    @click="handleBuyClick()"
-                  >
-                    买它！
-                  </el-button>
-                </div>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="4">
-            <el-card
-              class="card"
-              :body-style="{ padding: auto }"
-              shadow="hover"
-            >
-              <div style="padding: 5px">
-                <img :src="mock[2].imgLink" class="item-image" />
-                <el-descriptions title="商品信息" column="1">
-                  <el-descriptions-item label="名字">
-                    {{ mock[2].name }}</el-descriptions-item
-                  >
-                  <el-descriptions-item label="描述">{{
-                    mock[2].description
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="库存">{{
-                    mock[2].inventory
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="分类">
-                    <el-tag size="small">{{ mock[0].type }}</el-tag>
-                  </el-descriptions-item>
-                  <el-descriptions-item label="价格">{{
-                    mock[2].price
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="卖家名字">{{
-                    mock[2].vendorName
-                  }}</el-descriptions-item>
-                </el-descriptions>
-                <div class="card-action">
-                  <el-button
-                    type="primary"
-                    class="buy-commodity-bottom"
-                    @click="handleBuyClick()"
-                  >
-                    买它！
-                  </el-button>
-                </div>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="4">
-            <el-card
-              class="card"
-              :body-style="{ padding: auto }"
-              shadow="hover"
-            >
-              <div style="padding: 5px">
-                <img :src="mock[3].imgLink" class="item-image" />
-                <el-descriptions title="商品信息" column="1">
-                  <el-descriptions-item label="名字">
-                    {{ mock[3].name }}</el-descriptions-item
-                  >
-                  <el-descriptions-item label="描述">{{
-                    mock[3].description
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="库存">{{
-                    mock[3].inventory
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="分类">
-                    <el-tag size="small">{{ mock[0].type }}</el-tag>
-                  </el-descriptions-item>
-                  <el-descriptions-item label="价格">{{
-                    mock[3].price
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="卖家名字">{{
-                    mock[3].vendorName
-                  }}</el-descriptions-item>
-                </el-descriptions>
-                <div class="card-action">
-                  <el-button
-                    type="primary"
-                    class="buy-commodity-bottom"
-                    @click="handleBuyClick()"
-                  >
-                    买它！
-                  </el-button>
-                </div>
-              </div>
-            </el-card>
-          </el-col>
-        </el-row>
+        <el-card
+          class="card"
+          v-for="(item, index) in this.commodityList"
+          :key="index"
+          :body-style="{ padding: 5 }"
+          shadow="hover"
+        >
+          <div style="padding: 5px">
+            <img :src="item.imgLink" class="item-image" />
+            <el-descriptions title="商品信息" column="1">
+              <el-descriptions-item label="名字">
+                {{ item.name }}</el-descriptions-item
+              >
+              <el-descriptions-item label="描述">{{
+                item.description
+              }}</el-descriptions-item>
+              <el-descriptions-item label="库存">{{
+                item.inventory
+              }}</el-descriptions-item>
+              <el-descriptions-item label="分类">
+                <el-tag size="small">{{ item.keywords }}</el-tag>
+              </el-descriptions-item>
+              <el-descriptions-item label="价格">{{
+                item.price
+              }}</el-descriptions-item>
+              <el-descriptions-item label="卖家">{{
+                item.vendorName
+              }}</el-descriptions-item>
+            </el-descriptions>
+            <div class="card-action">
+              <!-- <el-input-number
+                :key="index"
+                v-model="quantityToBuy"
+                @change="handleChange"
+                :min="1"
+              ></el-input-number> -->
+              <el-button
+                :key="index"
+                type="primary"
+                class="buy-commodity-bottom"
+                :disabled="disabledToBuy"
+                @click="handleVisible(index)"
+              >
+                买它！
+              </el-button>
+            </div>
+          </div>
+        </el-card>
+        <el-dialog title="创建订单" :visible.sync="dialogFormVisible">
+          {{ this.commodityList[this.commodityIndex] }}
+          <el-form :model="userForm">
+            <el-form-item label="收获地址:">
+              <el-input
+                v-model="userForm.userAddress"
+                autocomplete="off"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="请选择购买数量">
+              <el-input-number
+                v-model="userForm.quantityToBuy"
+                placeholder="请选择购买数量"
+              >
+              </el-input-number>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="doBuyClick()">确 定</el-button>
+          </div>
+        </el-dialog>
       </div>
       <div class="pagination">
         <el-pagination
@@ -244,7 +105,6 @@
 </template>
 
 <script>
-const commodityUrl = '/api';
 export default {
   name: "storePage",
 
@@ -252,90 +112,56 @@ export default {
     return {
       num: 0,
       input: "",
+      commodityIndex: -1, //商品索引
+      disabledToBuy: true,
       totalItems: 6,
       pageSize: 24,
-      commodityData_id: "",
-      commodityData_name: "",
-      commodityData_imgLink: "",
-      commodityData_description: "",
-      commodityData_inventory: 0,
-      commodityData_type: "",
-      commodityData_price: 0,
-      commodityData_vendorName: "",
-      mock: [
-        {
-          id: "20210101001",
-          name: "面包",
-          imgLink:
-            "https://ts3.cn.mm.bing.net/th/id/OIP-C.305fYj0cWoTv_Q8TIbJ02wHaHG?w=196&h=188&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "10",
-          type: "食品",
-          description: "好吃",
-          inventory: "10",
-          vendorName: "test01",
-        },
-        {
-          id: "20210101002",
-          name: "白酒",
-          imgLink:
-            "https://ts1.cn.mm.bing.net/th/id/OIP-C.PWh-k1csn9MRuq9-kqf0wwHaLG?w=196&h=293&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "100",
-          type: "饮品",
-          description: "一喝就倒",
-          inventory: "10",
-          vendorName: "test01",
-        },
-        {
-          id: "20210101003",
-          name: "卫生纸",
-          imgLink:
-            "https://ts2.cn.mm.bing.net/th/id/OIP-C.3yAPWpweG_grlE-hx0GSbQHaE7?w=255&h=180&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "10",
-          type: "生活用品",
-          description: "可以擦皮皮",
-          inventory: "10",
-          vendorName: "test01",
-        },
-        {
-          id: "20210101004",
-          name: "矿泉水",
-          imgLink:
-            "https://ts3.cn.mm.bing.net/th/id/OIP-C.fIfwcxCc6sjAUWxifyiJQAHaHa?w=205&h=205&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "2",
-          type: "饮品",
-          description: "没有虫卵的农夫山泉",
-          inventory: "25",
-          vendorName: "test01",
-        },
-      ],
+      commodityList: [],
+      dialogFormVisible: false, // 弹出框
+      userForm: {
+        quantityToBuy: 1, // 购买数量
+        userAddress: "", // 用户地址
+      },
     };
   },
   mounted() {
     this.updateCommodityData();
-    this.num = this.Mock.length;
   },
   methods: {
     updateCommodityData() {
       this.http({
         headers: {
-          token: localStorage["token"],
+          token: localStorage.getItem("token"),
+          role: localStorage.getItem("user_role"),
         },
-        method: "get",
-        url: `${commodityUrl}commodity/lists`,
+        method: "GET",
+        url: "/api/commodity/listall",
         params: {
-          username: localStorage.getItem("user_id"),
+          username: localStorage.getItem("user_name"),
           page: 1,
           pagesize: 10,
           seq: 0,
         },
       })
-        .then((response) => {
-          this.commodityData_id = response.data.id;
+        .then((resp) => {
+          this.commodityList = resp.data.data.rows;
+          if (
+            localStorage.getItem("user_name") !== null ||
+            localStorage.getItem("user_name") !== "" ||
+            localStorage.getItem("user_name") !== undefined
+          ) {
+            this.disabledToBuy = false
+          }
+          // this.$message({
+          //   type: "info",
+          //   message: "欢迎！" + localStorage.getItem("user_name"),
+          // });
         })
-        .catch(function(error) {
+        .catch((error) => {
+          console.error(error);
           this.$message({
             type: "error",
-            message: "系统异常：" + error,
+            message: "系统异常" + JSON.stringify(error),
           });
         });
     },
@@ -359,13 +185,70 @@ export default {
         } else {
           this.$message({
             type: "error",
-            message: "系统异常：",
+            message: "系统异常：" + res.data.msg,
           });
         }
       });
     },
-    handleBuyClick() {
-      console.log("买了");
+    handleVisible(value) {
+      this.dialogFormVisible = true;
+      this.$message({
+        type: "info",
+        message: value,
+      });
+      this.commodityIndex = value;
+    },
+    doBuyClick() {
+      this.http({
+        headers: {
+          token: localStorage.getItem("token"),
+          role: localStorage.getItem("user_role"),
+        },
+        method: "post",
+        url: `/api/order/create`,
+        data: {
+          buyerId: localStorage.getItem("user_id"),
+          address: this.userForm.userAddress,
+          status: "WAIT_TO_PAY",
+          commodities: [
+            {
+              id: this.commodityList[this.commodityIndex].id,
+              vendorId: this.commodityList[this.commodityIndex].vendorId,
+              name: this.commodityList[this.commodityIndex].name,
+              price: this.commodityList[this.commodityIndex].price,
+              num: this.userForm.quantityToBuy,
+            },
+          ],
+        },
+      }).then((res) => {
+        this.commodityIndex = -1;
+        this.userForm.quantityToBuy = 1;
+        this.userForm.userAddress = "";
+        this.dialogFormVisible = false;
+        if (res.data.code() === 200) {
+          this.$message({
+            type: "info",
+            message: "订单创建成功",
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: "订单创建失败",
+          });
+        }
+      });
+    },
+    // doPaymentClick() {
+    //   this.$message({
+    //     type: "info",
+    //     message: "付钱了",
+    //   });
+    // },
+    onchange() {
+      this.$message({
+        type: "info",
+        message: "test",
+      });
     },
   },
 };
@@ -375,10 +258,20 @@ export default {
   width: 100%;
   height: 100%;
 }
+.card {
+  max-width: 400px;
+  max-height: 600px;
+  margin: 10px;
+}
 .goods {
   width: 100%;
   height: 100%;
   margin-top: 50px;
+  display: grid;
+  /*  声明列的宽度  */
+  grid-template-columns: repeat(5, 20%);
+  /*  声明行的高度  */
+  grid-template-rows: 550px;
 }
 .item-image {
   width: 100%;
