@@ -1,47 +1,11 @@
 version: "3"
 services:
-  us-mysql-commodity:
-    build: us-mysql-commodity/
+  us-mysql5:
+    build: us-mysql5/
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
       - 53306:3306
-    networks:
-      - us-service-net
-  
-  us-mysql-order:
-    build: us-mysql-order/
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - 53307:3307
-    networks:
-      - us-service-net
-
-  us-mysql-shopcar:
-    build: us-mysql-shopcar/
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - 53308:3308
-    networks:
-      - us-service-net
-
-  us-mysql-user:
-    build: us-mysql-user/
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - 53309:3309
-    networks:
-      - us-service-net
-  
-  us-mysql-wallet:
-    build: us-mysql-wallet/
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - 53310:3310
     networks:
       - us-service-net
 
@@ -55,11 +19,11 @@ services:
   us-user-service:
     build: us-user-service
     depends_on:
-      - us-mysql-user
+      - us-mysql5
     environment:
       USERNAME: root
       PASSWORD: root
-      DB_URL: us-mysql-user:3309/ultra_seller_user
+      DB_URL: us-mysql5:3306/ultra_seller
 #      DB_URL: 47.102.97.229:3306/ultra_seller
     ports:
       - "8001:8001"
@@ -69,11 +33,11 @@ services:
   us-commodity-service:
     build: us-commodity-service
     depends_on:
-      - us-mysql-commodity
+      - us-mysql5
     environment:
       USERNAME: root
       PASSWORD: root
-      DB_URL: us-mysql-commodity:3306/ultra_seller_commodity
+      DB_URL: mysql5:3306/ultra_seller
     ports:
       - "8002:8002"
     networks:
@@ -82,12 +46,12 @@ services:
   us-wallet-service:
     build: us-wallet-service
     depends_on:
-      - us-mysql-wallet
+      - us-mysql5
     environment:
       USERNAME: root
       PASSWORD: root
 #      DB_URL: 47.102.97.229:3306/ultra_seller
-      DB_URL: us-mysql-wallet:3310/ultra_seller_wallet
+      DB_URL: mysql5:3306/ultra_seller
     ports:
       - "8003:8003"
     networks:
@@ -96,11 +60,11 @@ services:
   us-order-service:
     build: us-order-service
     depends_on:
-      - us-mysql-order
+      - us-mysql5
     environment:
       USERNAME: root
       PASSWORD: root
-      DB_URL: us-mysql-order:3307/ultra_seller_order
+      DB_URL: mysql5:3306/ultra_seller
     ports:
       - "8004:8004"
     networks:
@@ -109,11 +73,11 @@ services:
   us-cart-service:
     build: us-cart-service
     depends_on:
-      - us-mysql-shopcar
+      - us-mysql5
     environment:
       USERNAME: root
       PASSWORD: root
-      DB_URL: us-mysql-shopcar:3308/ultra_seller_shopcar
+      DB_URL: mysql5:3306/ultra_seller
     ports:
       - "8012:8012"
     networks:
