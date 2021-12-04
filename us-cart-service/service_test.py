@@ -5,7 +5,7 @@ import requests
 
 service_name = 'us-cart-service'
 
-nacos_client = nacos.NacosClient('47.102.97.229', 8848, username="nacos", password="nacos")  # Nacos注册中心提供的ip和端口
+nacos_client = nacos.NacosClient('10.176.34.97', 8848, username="nacos", password="nacos")  # Nacos注册中心提供的ip和端口
 try:
     nacosres = nacos_client.list_naming_instance(service_name = service_name, healthy_only = True)
     print('detail', nacosres)

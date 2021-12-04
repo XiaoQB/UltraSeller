@@ -15,7 +15,7 @@ def register_server_to_nacos(service_ip, port, service_name, namespaceId, namesp
     :return: None
     """
     # nacos_client = nacos.NacosClient('47.102.97.229', 8848, username="nacos", password="nacos")  # Nacos注册中心提供的ip和端口
-    nacos_client = NacosClient('http://47.102.97.229', 8848)  # Nacos注册中心提供的ip和端口
+    nacos_client = NacosClient('http://10.176.34.97', 8848)  # Nacos注册中心提供的ip和端口
     # 注册服务 非持久化 自动上传心跳包
     try:
         # response = nacos_client.add_naming_instance(service_name = service_name, ip = service_ip, port = port, ephemeral=False)
