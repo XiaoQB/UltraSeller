@@ -44,7 +44,10 @@ group = "DEV_GROUP"
 
 
 def get_host(service_name):
-    nacosres = client.list_naming_instance(service_name=service_name, healthy_only=True)
+    try:
+        nacosres = client.list_naming_instance(service_name=service_name, healthy_only=True)
+    except:
+        return HttpResponse("nacos is no availiable.")
     hosts = nacosres.get("hosts")
     # 获取可用端口
     num_host = len(hosts)
