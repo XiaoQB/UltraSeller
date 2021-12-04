@@ -1,49 +1,5 @@
 version: "3"
 services:
-  us-mysql-commodity:
-    build: us-mysql-commodity/
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - 53306:3306
-    networks:
-      - us-service-net
-  
-  us-mysql-order:
-    build: us-mysql-order/
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - 53307:3307
-    networks:
-      - us-service-net
-
-  us-mysql-shopcar:
-    build: us-mysql-shopcar/
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - 53308:3308
-    networks:
-      - us-service-net
-
-  us-mysql-user:
-    build: us-mysql-user/
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - 53309:3309
-    networks:
-      - us-service-net
-  
-  us-mysql-wallet:
-    build: us-mysql-wallet/
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - 53310:3310
-    networks:
-      - us-service-net
 
   us-gateway-service:
     build: us-gateway-service
@@ -60,7 +16,6 @@ services:
       USERNAME: root
       PASSWORD: root
       DB_URL: us-mysql-user:3309/ultra_seller_user
-#      DB_URL: 47.102.97.229:3306/ultra_seller
     ports:
       - "8001:8001"
     networks:
@@ -86,7 +41,6 @@ services:
     environment:
       USERNAME: root
       PASSWORD: root
-#      DB_URL: 47.102.97.229:3306/ultra_seller
       DB_URL: us-mysql-wallet:3310/ultra_seller_wallet
     ports:
       - "8003:8003"
@@ -106,63 +60,110 @@ services:
     networks:
       - us-service-net
 
-  us-cart-service:
-    build: us-cart-service
-    depends_on:
-      - us-mysql-shopcar
-    environment:
-      USERNAME: root
-      PASSWORD: root
-      DB_URL: us-mysql-shopcar:3308/ultra_seller_shopcar
-    ports:
-      - "8012:8012"
-    networks:
-      - us-service-net
+#  us-cart-service:
+#    build: us-cart-service
+#    depends_on:
+#      - us-mysql-shopcar
+#    environment:
+#      USERNAME: root
+#      PASSWORD: root
+##      DB_URL: us-mysql-shopcar:3308/ultra_seller_shopcar
+#      DB_URL: 47.102.97.229:3306/ultra_seller
+#    ports:
+#      - "8012:8012"
+#    networks:
+#      - us-service-net
 
-  ui-service:
-    depends_on:
-      - us-gateway-service
-    image: nginx:latest
-    restart: always
-    volumes:
-      - './ui-service/dist:/usr/share/nginx/html'
-      - './ui-service/default.conf:/etc/nginx/conf.d/default.conf'
-    ports:
-      - '8080:80'
-    networks:
-      - us-service-net
+#  ui-service:
+#    depends_on:
+#      - us-gateway-service
+#    image: nginx:latest
+#    restart: always
+#    volumes:
+#      - './ui-service/dist:/usr/share/nginx/html'
+#      - './ui-service/default.conf:/etc/nginx/conf.d/default.conf'
+#    ports:
+#      - '8080:80'
+#    networks:
+#      - us-service-net
 
-  nacos:
-    image: nacos/nacos-server:1.2.1
-    container_name: nacos
-    restart: always
-    depends_on:
-      - us-mysql-nacos
-    environment:
-      PREFER_HOST_MODE: hostname #如果支持主机名可以使用hostname,否则使用ip，默认也是ip
-      SPRING_DATASOURCE_PLATFORM: mysql #数据源平台 仅支持mysql或不保存empty
-      MODE: standalone
-      MYSQL_SERVICE_HOST: mysql5.7
-      MYSQL_SERVICE_DB_NAME: nacos
-      MYSQL_SERVICE_PORT: 3306
-      MYSQL_SERVICE_USER: root
-      MYSQL_SERVICE_PASSWORD: root
-      NACOS_APPLICATION_PORT: 9999
-      JVM_XMS: 512m
-      JVM_MMS: 320m
-    volumes:
-      - ./docker/nacos/standalone-logs/:/home/nacos/logs
-      - ./docker/nacos/plugins/:/home/nacos/plugins
-      - ./docker/nacos/conf/application.properties:/home/nacos/conf/application.properties
-    ports:
-      - "9999:9999"
+#  nacos:
+#    image: nacos/nacos-server:1.2.1
+#    container_name: nacos
+#    restart: always
+#    depends_on:
+#      - us-mysql-nacos
+#    environment:
+#      PREFER_HOST_MODE: hostname #如果支持主机名可以使用hostname,否则使用ip，默认也是ip
+#      SPRING_DATASOURCE_PLATFORM: mysql #数据源平台 仅支持mysql或不保存empty
+#      MODE: standalone
+#      MYSQL_SERVICE_HOST: mysql5.7
+#      MYSQL_SERVICE_DB_NAME: nacos
+#      MYSQL_SERVICE_PORT: 3306
+#      MYSQL_SERVICE_USER: root
+#      MYSQL_SERVICE_PASSWORD: root
+#      NACOS_APPLICATION_PORT: 9999
+#      JVM_XMS: 512m
+#      JVM_MMS: 320m
+#    volumes:
+#      - ./docker/nacos/standalone-logs/:/home/nacos/logs
+#      - ./docker/nacos/plugins/:/home/nacos/plugins
+#      - ./docker/nacos/conf/application.properties:/home/nacos/conf/application.properties
+#    ports:
+#      - "9999:9999"
 
-  us-mysql-nacos:
-    build: us-mysql-nacos/
+#  us-mysql-nacos:
+#    build: us-mysql-nacos/
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#    ports:
+#      - 53306:3306
+#    networks:
+#      - us-service-net
+
+# Databases
+  us-mysql-commodity:
+    build: us-mysql-commodity/
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
       - 53306:3306
+    networks:
+      - us-service-net
+
+  us-mysql-order:
+    build: us-mysql-order/
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 53307:3307
+    networks:
+      - us-service-net
+
+#  us-mysql-shopcar:
+#    build: us-mysql-shopcar/
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#    ports:
+#      - 53308:3308
+#    networks:
+#      - us-service-net
+
+  us-mysql-user:
+    build: us-mysql-user/
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 53309:3309
+    networks:
+      - us-service-net
+
+  us-mysql-wallet:
+    build: us-mysql-wallet/
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 53310:3310
     networks:
       - us-service-net
 networks:
