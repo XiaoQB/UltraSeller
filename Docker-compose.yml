@@ -74,18 +74,18 @@ services:
 #    networks:
 #      - us-service-net
 
-#  ui-service:
-#    depends_on:
-#      - us-gateway-service
-#    image: nginx:latest
-#    restart: always
-#    volumes:
-#      - './ui-service/dist:/usr/share/nginx/html'
-#      - './ui-service/default.conf:/etc/nginx/conf.d/default.conf'
-#    ports:
-#      - '8080:80'
-#    networks:
-#      - us-service-net
+  ui-service:
+    depends_on:
+      - us-gateway-service
+    image: nginx:latest
+    restart: always
+    volumes:
+      - './ui-service/dist:/usr/share/nginx/html'
+      - './ui-service/default.conf:/etc/nginx/conf.d/default.conf'
+    ports:
+      - '8080:80'
+    networks:
+      - us-service-net
 
 #  nacos:
 #    image: nacos/nacos-server:1.2.1
@@ -123,13 +123,20 @@ services:
 
 # Databases
   us-mysql-commodity:
-    build: us-mysql-commodity/
+    build: us-mysql-commodity
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
       - 53306:3306
     networks:
       - us-service-net
+
+ # us-mysql-commodity:
+ #   image: mysql
+ #   expose:
+ #     - "3306"
+ #   environment:
+ #     MYSQL_ROOT_PASSWORD: root
 
   us-mysql-order:
     build: us-mysql-order/
