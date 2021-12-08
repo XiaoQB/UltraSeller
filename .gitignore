@@ -44,3 +44,4 @@ secrets.yml
 *.pyc
 *.pyc
 *.pyc
+/us-commodity-service/src/main/resources/static/

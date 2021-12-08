@@ -12,7 +12,8 @@ from django.views.decorators.csrf import csrf_exempt
 from json import dumps
 
 from datetime import date, datetime
-from nacos_sdk_python import nacos 
+from nacos_sdk_python import nacos
+
 
 # 修正时间无法json格式化
 class ComplexEncoder(json.JSONEncoder):
@@ -24,6 +25,7 @@ class ComplexEncoder(json.JSONEncoder):
         else:
             return json.JSONEncoder.default(self, obj)
 
+
 # 遍历筛选
 def getKwargs(data={}):
     kwargs = {}
@@ -32,16 +34,21 @@ def getKwargs(data={}):
             kwargs[k] = v
     return kwargs
 
-SERVER_ADDRESSES = '47.102.97.229:8848'
+
+SERVER_ADDRESSES = '10.176.34.97:8848'
 NAMESPACE = "public"
 
 client = nacos.NacosClient(SERVER_ADDRESSES, namespace=NAMESPACE, username="nacos", password="nacos")
 data_id = "us-gateway-service-dev.yml"
 group = "DEV_GROUP"
 
+
 def get_host(service_name):
-    nacosres = client.list_naming_instance(service_name = service_name, healthy_only = True)
-    hosts =  nacosres.get("hosts")
+    try:
+        nacosres = client.list_naming_instance(service_name=service_name, healthy_only=True)
+    except:
+        return HttpResponse("nacos is no availiable.")
+    hosts = nacosres.get("hosts")
     # 获取可用端口
     num_host = len(hosts)
     while num_host:
@@ -59,8 +66,6 @@ def get_host(service_name):
     return host
 
 
-
-
 def index(request):
     return HttpResponse("Hello, world. Shopcar.")
 
@@ -73,7 +78,7 @@ def index(request):
 # 拿到参数 判断用户是否存在 判断商品是否存在  存入表（判断是否已经是加入购物车的）
 
 # 初始化购物车 get GetCart(uid)
-# 拿到参数  判断用户是否存在 返回表中数据 
+# 拿到参数  判断用户是否存在 返回表中数据
 
 # 下订单 post CartToOrder(uid, gids, cart_nums)
 # 拿到参数，判断用户是否存在，判断商品是否存在，调创建订单接口，更新表
@@ -83,12 +88,12 @@ def index(request):
 
 
 @csrf_exempt
-@require_http_methods(["GET"]) # 返回所有
+@require_http_methods(["GET"])  # 返回所有
 def GetCart(request):
     uid = request.GET.get('uid')
-    objs = cart.objects.filter(buyer_id = uid)
+    objs = cart.objects.filter(buyer_id=uid)
     token = request.META.get("HTTP_TOKEN")
-    headers = {"token":token}
+    headers = {"token": token}
     res = {}
     data = []
     for obj in objs:
@@ -99,7 +104,7 @@ def GetCart(request):
         create_time = obj.create_time
         update_time = obj.update_time
         params = {'id': gid}
-        # mac docker 无法获得宿主机IP 通过 host.docker.internal 获取 每台宿主机 不同 
+        # mac docker 无法获得宿主机IP 通过 host.docker.internal 获取 每台宿主机 不同
         # linux 直接在 compose 中 使用 network: localhost 即可
         # url = 'http://localhost:8002/commodity/item'
 
@@ -115,20 +120,22 @@ def GetCart(request):
             response = requests.get(url=url, params=params, headers=headers)
 
         response = response.json()
-        if response.get('code')== 200:
+        if response.get('code') == 200:
             good['data'] = response.get('data')
             good['cart_num'] = cart_num
             good['status'] = status
             good['create_time'] = create_time
             good['update_time'] = update_time
         else:
-            return HttpResponse(response)
+            res['msg'] = response.get('msg')
+            res['code'] = response.get('code')
+            return HttpResponse(json.dumps(res, cls=ComplexEncoder))
         data.append(good)
-    
+
     res['uid'] = uid
     res['goods_list'] = data
 
-    return HttpResponse(json.dumps(res,cls=ComplexEncoder))
+    return HttpResponse(json.dumps(res, cls=ComplexEncoder))
 
 
 @csrf_exempt
@@ -140,7 +147,7 @@ def AddCart(request):
     if goods_list is None:
         goods_list = []
     token = request.META.get("HTTP_TOKEN")
-    headers = {"token":token}
+    headers = {"token": token}
 
     for good in goods_list:
         gid = good.get("id")
@@ -161,17 +168,17 @@ def AddCart(request):
 
         response = response.json()
 
-        if response.get('code')== 200:
+        if response.get('code') == 200:
             data = response.get("data")
             inventory = data.get("inventory")
             if cart_num <= inventory:
                 dictCheck = {"buyer_id": uid, "commodity_id": gid}
                 dictFor = getKwargs(dictCheck)
-                #利用**解引用，进行数据条件查询
-                obj = cart.objects.filter( **dictFor)
+                # 利用**解引用，进行数据条件查询
+                obj = cart.objects.filter(**dictFor)
                 if obj.count() == 0:
-                    obj = cart.objects.create(buyer_id = uid, commodity_id = gid, cart_num = cart_num, status = status,
-                                             create_time = create_time, update_time = update_time)
+                    obj = cart.objects.create(buyer_id=uid, commodity_id=gid, cart_num=cart_num, status=status,
+                                              create_time=create_time, update_time=update_time)
                 else:
                     obj = obj[0]
                     obj.cart_num = cart_num
@@ -183,7 +190,6 @@ def AddCart(request):
             response["gid"] = gid
             return HttpResponse(json.dumps(response))
     return HttpResponse("AddCart Succes!")
-
 
 
 @csrf_exempt
@@ -200,19 +206,19 @@ def Cart2Order(request):
     res['status'] = data.get('status')
     commodities = []
     token = request.META.get("HTTP_TOKEN")
-    headers = {"token":token}
+    headers = {"token": token}
 
     for good in goods_list:
         commodity = {}
-        gid = good.get("data").get("id") 
+        gid = good.get("data").get("id")
         commodity["num"] = good.get("order_num")
         commodity["id"] = gid
-        #status = good.get("status")
+        # status = good.get("status")
         params = {'id': gid}
 
         # 请求库存 判断当前数量是否合法
         # url = 'http://localhost:8002/commodity/item'
-        
+
         service_name = "us-commodity-service"
         host = get_host(service_name)
         ip = host.get("ip")
@@ -221,9 +227,9 @@ def Cart2Order(request):
         response = requests.get(url=url, params=params, headers=headers)
 
         response = response.json()
-        
-        if response.get('code')== 200:
-            data = response.get("data") 
+
+        if response.get('code') == 200:
+            data = response.get("data")
             commodity["inventory"] = data.get("inventory")
             commodity["price"] = data.get("price")
             commodity["name"] = data.get("name")
@@ -231,10 +237,10 @@ def Cart2Order(request):
             response["gid"] = gid
             return HttpResponse(json.dumps(response))
         commodities.append(commodity)
-    
-    res["commodities"] = commodities  
+
+    res["commodities"] = commodities
     # return HttpResponse(dumps(res))
-    # 请求下单 
+    # 请求下单
     headers = {'content-Type': 'application/json'}
     # url = 'http://localhost:8004/order/create?'
 
@@ -244,43 +250,44 @@ def Cart2Order(request):
     port = host.get("port")
     url = 'http://{}:{}/order/create?'.format(ip, port)
 
-    
     response = requests.post(url=url, data=dumps(res), headers=headers)
     response = response.json()
 
     # 下单成功 修改数据库
     if response.get('code') == 200:
         for good in goods_list:
-            gid = good.get("id")
+            gid = good.get("data").get("id")
             order_num = good.get("order_num")
-            
             dictCheck = {"buyer_id": uid, "commodity_id": gid}
             dictFor = getKwargs(dictCheck)
-            #利用**解引用，进行数据条件查询
-            obj = cart.objects.filter( **dictFor)
+            # 利用**解引用，进行数据条件查询
+            obj = cart.objects.filter(**dictFor)
             if obj.count() > 0:
                 obj = obj[0]
                 obj.cart_num = obj.cart_num - order_num
                 if obj.cart_num > 0:
                     obj.save()
                 else:
-                    obj.delete()  
+                    obj.delete()
     else:
         return HttpResponse(json.dumps(response))
     return HttpResponse(dumps(response))
-    
-   
-# delete 接口 
-@csrf_exempt
-@require_http_methods(["GET"]) # 返回所有
-def DeleteCart(request):
-    uid = request.GET.get('uid')
-    objs = cart.objects.filter(buyer_id = uid)
-    token = request.META.get("HTTP_TOKEN")
-    headers = {"token":token}
-    cart.objects.get(buyer_id = uid).delete()
-    return HttpResponse("Delete {} success.".format(uid))
 
+
+# delete 接口
+@csrf_exempt
+@require_http_methods(["POST"])  # 返回所有
+def DeleteCart(request):
+    data = json.loads(request.body)
+    uid = data.get('uid')
+    gids = data.get('gids')
+    token = request.META.get("HTTP_TOKEN")
+    headers = {"token": token}
+    for gid in gids:
+        dictCheck = {"buyer_id": uid, "commodity_id": gid}
+        dictFor = getKwargs(dictCheck)
+        obj = cart.objects.filter(**dictFor).delete()
+    return HttpResponse("Delete {} {}success.".format(uid, gids))
 
 # @csrf_exempt
 # @require_http_methods(["POST"])

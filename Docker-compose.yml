@@ -1,13 +1,5 @@
 version: "3"
 services:
-  us-mysql5:
-    build: us-mysql5/
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - 53306:3306
-    networks:
-      - us-service-net
 
   us-gateway-service:
     build: us-gateway-service
@@ -19,12 +11,11 @@ services:
   us-user-service:
     build: us-user-service
     depends_on:
-      - us-mysql5
+      - us-mysql-user
     environment:
       USERNAME: root
       PASSWORD: root
-      DB_URL: us-mysql5:3306/ultra_seller
-#      DB_URL: 47.102.97.229:3306/ultra_seller
+      DB_URL: us-mysql-user:3309/ultra_seller_user
     ports:
       - "8001:8001"
     networks:
@@ -33,11 +24,11 @@ services:
   us-commodity-service:
     build: us-commodity-service
     depends_on:
-      - us-mysql5
+      - us-mysql-commodity
     environment:
       USERNAME: root
       PASSWORD: root
-      DB_URL: mysql5:3306/ultra_seller
+      DB_URL: us-mysql-commodity:3306/ultra_seller_commodity
     ports:
       - "8002:8002"
     networks:
@@ -46,12 +37,11 @@ services:
   us-wallet-service:
     build: us-wallet-service
     depends_on:
-      - us-mysql5
+      - us-mysql-wallet
     environment:
       USERNAME: root
       PASSWORD: root
-#      DB_URL: 47.102.97.229:3306/ultra_seller
-      DB_URL: mysql5:3306/ultra_seller
+      DB_URL: us-mysql-wallet:3310/ultra_seller_wallet
     ports:
       - "8003:8003"
     networks:
@@ -60,28 +50,29 @@ services:
   us-order-service:
     build: us-order-service
     depends_on:
-      - us-mysql5
+      - us-mysql-order
     environment:
       USERNAME: root
       PASSWORD: root
-      DB_URL: mysql5:3306/ultra_seller
+      DB_URL: us-mysql-order:3307/ultra_seller_order
     ports:
       - "8004:8004"
     networks:
       - us-service-net
 
-  us-cart-service:
-    build: us-cart-service
-    depends_on:
-      - us-mysql5
-    environment:
-      USERNAME: root
-      PASSWORD: root
-      DB_URL: mysql5:3306/ultra_seller
-    ports:
-      - "8012:8012"
-    networks:
-      - us-service-net
+#  us-cart-service:
+#    build: us-cart-service
+#    depends_on:
+#      - us-mysql-shopcar
+#    environment:
+#      USERNAME: root
+#      PASSWORD: root
+##      DB_URL: us-mysql-shopcar:3308/ultra_seller_shopcar
+#      DB_URL: 47.102.97.229:3306/ultra_seller
+#    ports:
+#      - "8012:8012"
+#    networks:
+#      - us-service-net
 
   ui-service:
     depends_on:
@@ -101,7 +92,7 @@ services:
 #    container_name: nacos
 #    restart: always
 #    depends_on:
-#      - us-mysql5
+#      - us-mysql-nacos
 #    environment:
 #      PREFER_HOST_MODE: hostname #如果支持主机名可以使用hostname,否则使用ip，默认也是ip
 #      SPRING_DATASOURCE_PLATFORM: mysql #数据源平台 仅支持mysql或不保存empty
@@ -121,6 +112,66 @@ services:
 #    ports:
 #      - "9999:9999"
 
+#  us-mysql-nacos:
+#    build: us-mysql-nacos/
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#    ports:
+#      - 53306:3306
+#    networks:
+#      - us-service-net
 
+# Databases
+  us-mysql-commodity:
+    build: us-mysql-commodity
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 53306:3306
+    networks:
+      - us-service-net
+
+ # us-mysql-commodity:
+ #   image: mysql
+ #   expose:
+ #     - "3306"
+ #   environment:
+ #     MYSQL_ROOT_PASSWORD: root
+
+  us-mysql-order:
+    build: us-mysql-order/
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 53307:3307
+    networks:
+      - us-service-net
+
+#  us-mysql-shopcar:
+#    build: us-mysql-shopcar/
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#    ports:
+#      - 53308:3308
+#    networks:
+#      - us-service-net
+
+  us-mysql-user:
+    build: us-mysql-user/
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 53309:3309
+    networks:
+      - us-service-net
+
+  us-mysql-wallet:
+    build: us-mysql-wallet/
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 53310:3310
+    networks:
+      - us-service-net
 networks:
   us-service-net: {}
