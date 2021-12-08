@@ -155,7 +155,7 @@ export default {
   data() {
     return {
       showDialog:false,
-      address:"beijking",
+      address:"",
       dataTotalCount: 0,      //查询条件的总数据量
       formInline: {
         currentPage: 1,
@@ -259,6 +259,7 @@ export default {
       },
 
     shipments(row){
+      console.log(row.address)
       this.http({
         headers:{
           'Content-Type': 'application/json;',
@@ -268,9 +269,15 @@ export default {
         method:"put",
         url:"/api/order/change",
         data:{
-          subOrderId:row.id,
-          address:row.address,
-          status:row.status
+          order:{},
+          subOrders:[ {
+            subOrderId:row.subOrderId,
+            address:row.address,
+            status:row.status,
+          }],
+
+
+          userName:localStorage['user_id']
         }
       }).then(response=>{
         if(response.data.code===200){
@@ -323,7 +330,7 @@ export default {
     changeAddress(row){
       this.showDialog=true;
       this.changeInfo = {
-        subOrderId:row.id,
+        subOrderId:row.subOrderId,
         address:row.address,
         status:row.status
       }
@@ -339,9 +346,13 @@ export default {
         method:"put",
         url:"/api/order/change",
         data:{
-          subOrderId:this.changeInfo.subOrderId,
-          address:this.changeInfo.address,
-          status:this.changeInfo.status
+          order:{},
+          subOrders:[ {
+            subOrderId:this.changeInfo.subOrderId,
+            address:this.address,
+            status:this.changeInfo.status,
+          }],
+          userName:localStorage['user_id']
         }
 
       })

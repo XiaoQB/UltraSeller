@@ -201,7 +201,7 @@
 </template>
 
 <script>
-import {put,getFileNameUUID} from "../../services/alioss";
+import {put,getFileNameUUID} from "../../../services/alioss";
 
 export default {
   name: "saler",

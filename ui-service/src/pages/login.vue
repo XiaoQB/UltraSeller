@@ -196,6 +196,11 @@ export default {
               window.localStorage["user_role"] = this.user.role;
               // window.localStorage["user_adress"] = "交叉二号楼 122"
               this.$router.push({ name: "saler", path: "/saler" });
+
+
+            } else {
+              alert("您输入的用户名或密码错误！");
+
             }
           })
           .catch(() => {
