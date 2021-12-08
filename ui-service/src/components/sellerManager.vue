@@ -100,8 +100,8 @@ export default {
       var that = this;
       this.http({
         headers: {
-          Authorization:
-            "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwNzRiYjk0Ni03OGMzLTRkZDktYWVkZC1mYzQyYWI2ZjI0NzUiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzQ5Nzg2OTAsImV4cCI6MTYzNDk4MjI5MH0.a_KtQzdymitJWicbYY7lmfrF4qPeNJ7W6I9SlsFLBHY",
+          Authorization:localStorage['token'],
+          role:"admin"
         },
         method: "get",
         url: `${userUrl}/user/info`,
@@ -138,6 +138,7 @@ export default {
         headers: {
           "Content-Type": "application/json;",
           Authorization: localStorage["token"],
+          role:"admin"
         },
         method: "delete",
         url: `${userUrl}/user/delete`,
@@ -178,6 +179,7 @@ export default {
         headers: {
           "Content-Type": "application/json;",
           Authorization: localStorage["token"],
+          role:"admin"
         },
         method: "put",
         url: `${userUrl}/user/modify`,
