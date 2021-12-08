@@ -11,10 +11,12 @@ import order.entities.enums.OrderStatus;
 import order.entities.vo.Notification;
 import order.entities.vo.OrderVO;
 import order.entities.vo.SubOrderVO;
+
 import order.service.KafkaService;
 import order.service.OrderService;
 import order.service.WalletService;
 import org.springframework.kafka.core.KafkaTemplate;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -36,8 +38,10 @@ public class OrderController {
     @Resource
     private WalletService walletService;
 
+
     @Resource
     private KafkaService kafkaService;
+
 
     @PostMapping("/create")
     public ResponseEntity<String> createOrder(@RequestBody CreateOrderDTO createOrderDTO) {
@@ -79,10 +83,12 @@ public class OrderController {
             }
             for (SubOrder subOrder : subOrders) {
                 if (OrderStatus.WAIT_TO_TRANSFER.toString().equals(subOrder.getStatus())) {
+
                     // todo 没有钱包服务需要的参数，无法调，自动返回成功
                     //ResponseEntity<String> response = walletService.changeBalance(updateOrderDTO.getBuyerId(), subOrder.getTotalPrice());
                     //return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), "wallet service error", null);
                     kafkaService.sendPayMessage(subOrder, updateOrderDTO.getBuyerId());
+
                 }
                 if(OrderStatus.WAIT_TO_RECEIPT.toString().equals(subOrder.getStatus())){
                     kafkaService.sendReceiveMsg(subOrder, updateOrderDTO.getBuyerId());
@@ -159,6 +165,7 @@ public class OrderController {
         }
     }
 
+
     @GetMapping("/notification/saler/pay")
     public ResponseEntity<List<Notification>> getPayNotification(@RequestParam("salerId") String salerId) {
         try {
@@ -185,5 +192,6 @@ public class OrderController {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
         }
     }
+
 
 }
