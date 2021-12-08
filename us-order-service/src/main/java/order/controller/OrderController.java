@@ -84,6 +84,7 @@ public class OrderController {
             for (SubOrder subOrder : subOrders) {
                 if (OrderStatus.WAIT_TO_TRANSFER.toString().equals(subOrder.getStatus())) {
 
+
                     // todo 没有钱包服务需要的参数，无法调，自动返回成功
                     //ResponseEntity<String> response = walletService.changeBalance(updateOrderDTO.getBuyerId(), subOrder.getTotalPrice());
                     //return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), "wallet service error", null);
@@ -92,6 +93,7 @@ public class OrderController {
                 }
                 if(OrderStatus.WAIT_TO_RECEIPT.toString().equals(subOrder.getStatus())){
                     kafkaService.sendReceiveMsg(subOrder, updateOrderDTO.getBuyerId());
+
                 }
                 if(OrderStatus.COMPLETE.toString().equals(subOrder.getStatus())){
                     kafkaService.sendCompleteMsg(subOrder, updateOrderDTO.getBuyerId());
