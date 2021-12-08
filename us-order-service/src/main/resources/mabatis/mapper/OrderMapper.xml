@@ -131,5 +131,18 @@
         from `sub_order`
         where id = #{subOrderId}
     </select>
+    <select id="getPaymentNotification" resultType="order.entities.vo.Notification">
+        select id, type, sub_order_id as subOrderId, saler_id as salerId, buyer_id as buyerId, create_time as createTime, update_time as updateTime, price, num, address, commodity_id as commodityId, commodity_name as commodityName
+        from sys_message where saler_id = #{salerId} and type = 'WAIT_TO_TRANSFER';
+    </select>
+    <select id="getCompleteNotication" resultType="order.entities.vo.Notification">
+        select id, type, sub_order_id as subOrderId, saler_id as salerId, buyer_id as buyerId, create_time as createTime, update_time as updateTime, price, num, address, commodity_id as commodityId, commodity_name as commodityName
+        from sys_message where saler_id = #{salerId} and type = 'COMPLETE';
+    </select>
+    <select id="getReceiveNotification" resultType="order.entities.vo.Notification">
+        select id, type, sub_order_id as subOrderId, saler_id as salerId, buyer_id as buyerId, create_time as createTime, update_time as updateTime, price, num, address, commodity_id as commodityId, commodity_name as commodityName
+        from sys_message where buyer_id = #{buyerId} and type = 'WAIT_TO_RECEIPT';
+    </select>
+
 
 </mapper>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="order.dao.MessageDao">
+
+    <insert id="saveMessage">
+        insert ignore into sys_message (type, sub_order_id,
+                                 saler_id, buyer_id, commodity_id, commodity_name, price, num, address)
+        values (#{subOrder.status},#{subOrder.subOrderId},#{subOrder.salerId},#{subOrder.buyerId},#{subOrder.commodityId},
+                #{subOrder.commodityName},#{subOrder.price},#{subOrder.num},#{subOrder.address})
+    </insert>
+</mapper>

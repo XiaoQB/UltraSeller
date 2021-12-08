@@ -1,5 +1,6 @@
-package cn.edu.fudan.common.entities.dbo;
+package order.entities.dto;
 
+import com.alibaba.fastjson.annotation.JSONPOJOBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,14 +10,16 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author beethoven
- * @date 2021-11-02 16:14:38
- */
+ * description:
+ *
+ * @author caoyufei
+ * create:
+ **/
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class SubOrder implements Serializable {
+public class SubOrderDTO implements Serializable {
 
     protected String subOrderId;
     protected String orderId;
@@ -30,5 +33,7 @@ public class SubOrder implements Serializable {
     protected Integer num;
     protected Date createTime;
     protected Date updateTime;
+    protected Integer buyerId;
+
 
 }

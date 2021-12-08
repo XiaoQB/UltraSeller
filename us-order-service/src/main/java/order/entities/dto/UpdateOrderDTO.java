@@ -22,6 +22,6 @@ public class UpdateOrderDTO {
     private Order order;
     private List<SubOrder> subOrders;
     @NotNull(message = "username is null")
-    private String userName;
+    private Integer buyerId;
 
 }

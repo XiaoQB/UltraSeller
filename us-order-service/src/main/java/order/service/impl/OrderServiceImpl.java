@@ -6,6 +6,7 @@ import cn.edu.fudan.common.entities.dbo.SubOrder;
 import order.dao.OrderDao;
 import order.dao.SubOrderDao;
 import order.entities.dto.CreateOrderDTO;
+import order.entities.vo.Notification;
 import order.entities.vo.OrderVO;
 import order.entities.vo.SubOrderVO;
 import order.exception.CommodityServiceException;
@@ -147,5 +148,20 @@ public class OrderServiceImpl implements OrderService {
     public SubOrderVO getSubOrderDetailById(String subOrderId) {
         SubOrder subOrder = orderDao.getSubOrderDetailById(subOrderId);
         return new SubOrderVO(subOrder, commodityService.getCommodityById(subOrder.getCommodityId()).getData());
+    }
+
+    @Override
+    public List<Notification> getPaymentNotification(String salerId) {
+        return orderDao.getPaymentNotification(Integer.valueOf(salerId));
+    }
+
+    @Override
+    public List<Notification> getCompleteNotification(String salerId) {
+        return orderDao.getCompleteNotication(salerId);
+    }
+
+    @Override
+    public List<Notification> getReceiveNotification(String buyerId) {
+        return orderDao.getReceiveNotification(buyerId);
     }
 }

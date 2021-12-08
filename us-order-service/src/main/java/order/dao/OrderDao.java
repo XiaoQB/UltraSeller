@@ -2,6 +2,7 @@ package order.dao;
 
 import cn.edu.fudan.common.entities.dbo.Order;
 import cn.edu.fudan.common.entities.dbo.SubOrder;
+import order.entities.vo.Notification;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -67,4 +68,10 @@ public interface OrderDao {
     List<Order> getBuyerOrdersByStatus(@Param("userId") Integer userId, @Param("status") String status, @Param("page") Integer page, @Param("num") Integer num);
 
     SubOrder getSubOrderDetailById(@Param("subOrderId") String subOrderId);
+
+    List<Notification> getPaymentNotification(Integer salerId);
+
+    List<Notification> getCompleteNotication(String salerId);
+
+    List<Notification> getReceiveNotification(String buyerId);
 }

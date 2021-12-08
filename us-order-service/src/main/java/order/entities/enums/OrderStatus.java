@@ -10,3 +10,4 @@ public enum OrderStatus {
      */
     WAIT_TO_PAY, WAIT_TO_TRANSFER, WAIT_TO_RECEIPT, CANCEL, COMPLETE;
 }
+

@@ -3,6 +3,7 @@ package order.service;
 import cn.edu.fudan.common.entities.dbo.Order;
 import cn.edu.fudan.common.entities.dbo.SubOrder;
 import order.entities.dto.CreateOrderDTO;
+import order.entities.vo.Notification;
 import order.entities.vo.OrderVO;
 import order.entities.vo.SubOrderVO;
 import order.exception.CommodityServiceException;
@@ -89,4 +90,11 @@ public interface OrderService {
     List<OrderVO> getBuyerOrderListByStatus(Integer userId, String status, int page, int num) throws CommodityServiceException;
 
     SubOrderVO getSubOrderDetailById(String subOrderId);
+
+    List<Notification> getPaymentNotification(String salerId);
+
+    List<Notification> getCompleteNotification(String salerId);
+
+
+    List<Notification> getReceiveNotification(String buyerId);
 }

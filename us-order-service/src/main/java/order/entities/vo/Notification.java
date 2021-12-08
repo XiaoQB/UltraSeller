@@ -1,29 +1,28 @@
-package cn.edu.fudan.common.entities.dbo;
+package order.entities.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author beethoven
- * @date 2021-11-02 16:14:38
- */
+ * description:
+ *
+ * @author caoyufei
+ * create:
+ **/
+@EqualsAndHashCode(callSuper = false)
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class SubOrder implements Serializable {
+public class Notification implements Serializable {
 
+    private Integer id;
+    protected String type;
     protected String subOrderId;
-    protected String orderId;
-    protected String status;
     protected Float totalPrice;
     protected String address;
     protected Long salerId;
+    protected Long buyerId;
     protected String commodityId;
     protected String commodityName;
     protected Float price;
