@@ -108,7 +108,7 @@ services:
 #    volumes:
 #      - ./docker/nacos/standalone-logs/:/home/nacos/logs
 #      - ./docker/nacos/plugins/:/home/nacos/plugins
-#      - ./docker/nacos/conf/application.properties:/home/nacos/conf/application.properties
+#      - ./docker/nacos/conf/application.yml:/home/nacos/conf/application.yml
 #    ports:
 #      - "9999:9999"
 
@@ -123,9 +123,11 @@ services:
 
 # Databases
   us-mysql-commodity:
-    build: us-mysql-commodity
+    image: docker.io/mysql/mysql-server:5.7
     environment:
       MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - './us-mysql/us-mysql-commodity.sql:/docker-entrypoint-initdb.d/'
     ports:
       - 53306:3306
     networks:
