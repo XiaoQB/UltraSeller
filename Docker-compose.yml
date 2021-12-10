@@ -75,6 +75,7 @@ services:
 #      - us-service-net
 
   ui-service:
+    build: ui-service
     depends_on:
       - us-gateway-service
     image: nginx:latest
@@ -133,17 +134,12 @@ services:
     networks:
       - us-service-net
 
- # us-mysql-commodity:
- #   image: mysql
- #   expose:
- #     - "3306"
- #   environment:
- #     MYSQL_ROOT_PASSWORD: root
-
   us-mysql-order:
-    build: us-mysql-order/
+    image: docker.io/mysql/mysql-server:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: root
+        MYSQL_ROOT_PASSWORD: root
+    volumes:
+        - './us-mysql/us-mysql-order.sql:/docker-entrypoint-initdb.d/'
     ports:
       - 53307:3307
     networks:
@@ -159,18 +155,22 @@ services:
 #      - us-service-net
 
   us-mysql-user:
-    build: us-mysql-user/
+    image: docker.io/mysql/mysql-server:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: root
+        MYSQL_ROOT_PASSWORD: root
+    volumes:
+        - './us-mysql/us-mysql-user.sql:/docker-entrypoint-initdb.d/'
     ports:
       - 53309:3309
     networks:
       - us-service-net
 
   us-mysql-wallet:
-    build: us-mysql-wallet/
+    image: docker.io/mysql/mysql-server:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: root
+        MYSQL_ROOT_PASSWORD: root
+    volumes:
+        - './us-mysql/us-mysql-wallet.sql:/docker-entrypoint-initdb.d/'
     ports:
       - 53310:3310
     networks:
