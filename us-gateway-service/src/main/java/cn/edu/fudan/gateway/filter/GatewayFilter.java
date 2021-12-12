@@ -37,6 +37,8 @@ public class GatewayFilter implements GlobalFilter, Ordered {
         Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
         String userId = "user-service-route";
         String commodityListAll = "lb://us-commodity-service/listall";
+        log.info(route.getId());
+        log.info(route.getUri().toString());
         assert route != null;
         if (userId.equals(route.getId()) ||
                 Objects.equals(route.getUri().toString(), commodityListAll)) {
