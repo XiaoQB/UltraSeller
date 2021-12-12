@@ -17,6 +17,7 @@ import org.springframework.web.server.ServerWebExchange;
 
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
 
 
 /**
@@ -34,7 +35,11 @@ public class GatewayFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
-        if ("user-service-route".equals(route.getId()) || route.getUri().getPath().contains("/listall")) {
+        String userId = "user-service-route";
+        String commodityListAll = "lb://us-commodity-service/listall";
+        assert route != null;
+        if (userId.equals(route.getId()) ||
+                Objects.equals(route.getUri().toString(), commodityListAll)) {
             return chain.filter(exchange);
         }
         HttpHeaders headers = exchange.getRequest().getHeaders();
