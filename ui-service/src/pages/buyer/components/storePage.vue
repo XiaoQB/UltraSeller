@@ -29,7 +29,7 @@
         >
           <div style="padding: 5px">
             <img :src="item.imgLink" class="item-image" />
-            <el-descriptions title="商品信息" column="1">
+            <el-descriptions title="商品信息" column="1" style="margin-top: 10px">
               <el-descriptions-item label="名字">
                 {{ item.name }}</el-descriptions-item
               >
@@ -50,12 +50,6 @@
               }}</el-descriptions-item>
             </el-descriptions>
             <div class="card-action">
-              <!-- <el-input-number
-                :key="index"
-                v-model="quantityToBuy"
-                @change="handleChange"
-                :min="1"
-              ></el-input-number> -->
               <el-button
                 :key="index"
                 type="primary"
@@ -63,13 +57,12 @@
                 :disabled="disabledToBuy"
                 @click="handleVisible(index)"
               >
-                买它！
+                买它!!!!!
               </el-button>
             </div>
           </div>
         </el-card>
         <el-dialog title="创建订单" :visible.sync="dialogFormVisible">
-          {{ this.commodityList[this.commodityIndex] }}
           <el-form :model="userForm">
             <el-form-item label="收获地址:">
               <el-input
@@ -87,7 +80,8 @@
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="doBuyClick()">确 定</el-button>
+            <el-button type="primary" @click="doBuyClick()">创 建</el-button>
+            <el-button type="primary" @click="doAddToCartClick()">加入购物车</el-button>
           </div>
         </el-dialog>
       </div>
@@ -150,7 +144,7 @@ export default {
             localStorage.getItem("user_name") !== "" ||
             localStorage.getItem("user_name") !== undefined
           ) {
-            this.disabledToBuy = false
+            this.disabledToBuy = false;
           }
           // this.$message({
           //   type: "info",
@@ -159,10 +153,6 @@ export default {
         })
         .catch((error) => {
           console.error(error);
-          this.$message({
-            type: "error",
-            message: "系统异常" + JSON.stringify(error),
-          });
         });
     },
     doSearch(search) {
@@ -185,17 +175,13 @@ export default {
         } else {
           this.$message({
             type: "error",
-            message: "系统异常：" + res.data.msg,
+            message: "系统异常: " + res.data.msg,
           });
         }
       });
     },
     handleVisible(value) {
       this.dialogFormVisible = true;
-      this.$message({
-        type: "info",
-        message: value,
-      });
       this.commodityIndex = value;
     },
     doBuyClick() {
@@ -238,16 +224,39 @@ export default {
         }
       });
     },
-    // doPaymentClick() {
-    //   this.$message({
-    //     type: "info",
-    //     message: "付钱了",
-    //   });
-    // },
-    onchange() {
-      this.$message({
-        type: "info",
-        message: "test",
+    doAddToCartClick() {
+      this.http({
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+        method: "post",
+        url: `/api/testapp/shopcar/AddCart/`,
+        data: {
+          uid: localStorage.getItem("user_id"),
+          address: this.userForm.userAddress,
+          good_list: [
+            {
+              id: this.commodityList[this.commodityIndex].id,
+              num: this.userForm.quantityToBuy,
+            },
+          ],
+        },
+      }).then((res) => {
+        this.commodityIndex = -1;
+        this.userForm.quantityToBuy = 1;
+        this.userForm.userAddress = "";
+        this.dialogFormVisible = false;
+        if (res.data.code() === 200) {
+          this.$message({
+            type: "info",
+            message: "已加入购物车",
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: "加入失败",
+          });
+        }
       });
     },
   },
@@ -282,7 +291,7 @@ export default {
   margin-top: 30px;
 }
 .buy-commodity-bottom {
+  width: 150px;
   float: center;
-  margin-top: 10px;
 }
 </style>

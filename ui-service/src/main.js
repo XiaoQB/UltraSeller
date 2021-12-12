@@ -13,6 +13,7 @@ import login from "@/pages/login";
 import storePage from "@/pages/buyer/components/storePage";
 import buyerOrder from "@/pages/buyer/components/buyerOrder";
 import messageCenter from "@/pages/buyer/components/messageCenter";
+import buyerCart from "@/pages/buyer/components/buyerCart";
 import buyerWallet from "@/pages/buyer/components/buyerWallet";
 
 import saler from "@/pages/saler/saler";
@@ -70,6 +71,11 @@ const router = new VueRouter({
       name: "messageCenter",
       path: "/messageCenter",
       component: messageCenter,
+    },
+    {
+      name: "buyerCart",
+      path: "/buyerCart",
+      components: buyerCart,
     },
     {
       name: "buyerWallet",

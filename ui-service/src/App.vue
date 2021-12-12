@@ -18,7 +18,7 @@
         <el-menu-item index="/messageCenter" :disabled="!hideLogin"
           >消息中心
         </el-menu-item>
-        <el-menu-item index="/buyerWallet" :disabled="!hideLogin"
+        <el-menu-item index="/buyerCart" :disabled="!hideLogin"
           >我的购物车</el-menu-item
         >
         <el-menu-item class="user-login" index="/login" style="float: right">
@@ -44,6 +44,15 @@
             }}</span>
           </div>
         </el-menu-item>
+        <el-menu-item
+          index="/buyerWallet"
+          :disabled="!hideLogin"
+          style="float: right"
+        >
+          <span class="user-wallet-text" :aria-label="userData.userWallet"
+            >钱包余额:  {{ userData.userWallet }}</span
+          >
+        </el-menu-item>
       </el-menu>
     </el-header>
     <router-view></router-view>
@@ -67,6 +76,7 @@ export default {
         userName: "",
         userImg: "",
         userRole: "",
+        userWallet: "",
       },
       currentPage: "/storePage",
       hideLogin: false,
@@ -87,6 +97,7 @@ export default {
         this.$route.path === "/storePage" ||
         this.$route.path === "/buyerOrder" ||
         this.$route.path === "/messageCenter" ||
+        this.$router.path === "/buyerCart" ||
         this.$route.path === "/buyerWallet"
       ) {
         this.hideMenu = false;
@@ -98,8 +109,9 @@ export default {
       this.currentPage = key;
     },
     handleUser() {
-      this.userData.userName = localStorage.getItem("user_name")
-      this.userData.token = localStorage.getItem("token")
+      this.userData.userName = localStorage.getItem("user_name");
+      this.userData.token = localStorage.getItem("token");
+      this.userData.userWallet = localStorage.getItem("user_wallet");
       this.userImageHandler();
       if (
         this.userData.userName === "" ||
@@ -112,20 +124,6 @@ export default {
       }
     },
     userImageHandler() {
-      // this.userData.userImg = this.http
-      //   .get(`/user/info`, {
-      //     params: {
-      //       Authorization: localStorage.getItem("token"),
-      //       userName: this.userData.userName,
-      //     },
-      //   })
-      //   .then((resp) => {
-      //     if (resp.data.status === 200) {
-      //       this.userData.userImg = resp.data.user_image;
-      //     } else {
-      //       this.userData.userImg = ""
-      //     }
-      //   });
       this.userData.userImg = "";
       if (
         this.userData.userImg === "" ||
@@ -140,9 +138,9 @@ export default {
   },
   watch: {
     $route() {
-      this.handleMenu()
-      this.handleUser()
-    }
+      this.handleMenu();
+      this.handleUser();
+    },
   },
 };
 </script>
@@ -159,5 +157,8 @@ export default {
 .logo {
   width: 100%;
   height: 100%;
+}
+.user-wallet-text {
+  font-size: 20px;
 }
 </style>
