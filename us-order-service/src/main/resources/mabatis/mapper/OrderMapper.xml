@@ -80,6 +80,11 @@
         </set>
         where id = #{subOrderId}
     </update>
+    <update id="changeNotificationStatus">
+        update sys_message
+        set `status`=0
+        where id = #{id}
+    </update>
 
     <select id="getOrdersByUser" resultMap="order">
         select
@@ -132,16 +137,70 @@
         where id = #{subOrderId}
     </select>
     <select id="getPaymentNotification" resultType="order.entities.vo.Notification">
-        select id, type, sub_order_id as subOrderId, saler_id as salerId, buyer_id as buyerId, create_time as createTime, update_time as updateTime, price, num, address, commodity_id as commodityId, commodity_name as commodityName
-        from sys_message where saler_id = #{salerId} and type = 'WAIT_TO_TRANSFER';
+        select id,
+               type,
+               sub_order_id   as subOrderId,
+               saler_id       as salerId,
+               buyer_id       as buyerId,
+               create_time    as createTime,
+               update_time    as updateTime,
+               price,
+               num,
+               address,
+               commodity_id   as commodityId,
+               commodity_name as commodityName
+        from sys_message
+        where saler_id = #{salerId}
+          and type = 'WAIT_TO_TRANSFER';
     </select>
     <select id="getCompleteNotication" resultType="order.entities.vo.Notification">
-        select id, type, sub_order_id as subOrderId, saler_id as salerId, buyer_id as buyerId, create_time as createTime, update_time as updateTime, price, num, address, commodity_id as commodityId, commodity_name as commodityName
-        from sys_message where saler_id = #{salerId} and type = 'COMPLETE';
+        select id,
+               type,
+               sub_order_id   as subOrderId,
+               saler_id       as salerId,
+               buyer_id       as buyerId,
+               create_time    as createTime,
+               update_time    as updateTime,
+               price,
+               num,
+               address,
+               commodity_id   as commodityId,
+               commodity_name as commodityName
+        from sys_message
+        where saler_id = #{salerId}
+          and type = 'COMPLETE';
     </select>
     <select id="getReceiveNotification" resultType="order.entities.vo.Notification">
-        select id, type, sub_order_id as subOrderId, saler_id as salerId, buyer_id as buyerId, create_time as createTime, update_time as updateTime, price, num, address, commodity_id as commodityId, commodity_name as commodityName
-        from sys_message where buyer_id = #{buyerId} and type = 'WAIT_TO_RECEIPT';
+        select id,
+               type,
+               sub_order_id   as subOrderId,
+               saler_id       as salerId,
+               buyer_id       as buyerId,
+               create_time    as createTime,
+               update_time    as updateTime,
+               price,
+               num,
+               address,
+               commodity_id   as commodityId,
+               commodity_name as commodityName,
+               `status`       as status
+        from sys_message
+        where buyer_id = #{buyerId}
+          and type = 'WAIT_TO_RECEIPT'
+        order by `status` desc
+        limit #{page},#{num};
+    </select>
+    <select id="getTotalComplete" resultType="java.lang.Integer">
+        select count(*)
+        from sys_message
+        where buyer_id = #{buyerId}
+          and type = 'COMPLETE';
+    </select>
+    <select id="getTotalReceive" resultType="java.lang.Integer">
+        select count(*)
+        from sys_message
+        where buyer_id = #{buyerId}
+          and type = 'WAIT_TO_RECEIPT';
     </select>
 
 

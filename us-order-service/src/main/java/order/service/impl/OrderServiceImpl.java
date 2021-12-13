@@ -8,6 +8,7 @@ import order.dao.SubOrderDao;
 import order.entities.dto.CreateOrderDTO;
 import order.entities.vo.Notification;
 import order.entities.vo.OrderVO;
+import order.entities.vo.PageResult;
 import order.entities.vo.SubOrderVO;
 import order.exception.CommodityServiceException;
 import order.exception.OrderNotFoundException;
@@ -151,17 +152,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Notification> getPaymentNotification(String salerId) {
-        return orderDao.getPaymentNotification(Integer.valueOf(salerId));
+    public List<Notification> getPaymentNotification(Integer salerId) {
+        return orderDao.getPaymentNotification(salerId);
     }
 
     @Override
-    public List<Notification> getCompleteNotification(String salerId) {
+    public List<Notification> getCompleteNotification(Integer salerId) {
         return orderDao.getCompleteNotication(salerId);
     }
 
     @Override
-    public List<Notification> getReceiveNotification(String buyerId) {
-        return orderDao.getReceiveNotification(buyerId);
+    public PageResult getReceiveNotification(Integer buyerId,Integer page,Integer num) {
+        List<Notification> notifications = orderDao.getReceiveNotification(buyerId,page-1,num);
+        Integer total = orderDao.getTotalReceive(buyerId);
+        return new PageResult(total,notifications);
     }
 }

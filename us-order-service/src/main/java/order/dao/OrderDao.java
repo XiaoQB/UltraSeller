@@ -71,7 +71,14 @@ public interface OrderDao {
 
     List<Notification> getPaymentNotification(Integer salerId);
 
-    List<Notification> getCompleteNotication(String salerId);
+    List<Notification> getCompleteNotication(Integer salerId);
 
-    List<Notification> getReceiveNotification(String buyerId);
+    List<Notification> getReceiveNotification(@Param("buyerId") Integer buyerId,
+                                              @Param("page") Integer page,@Param("num") Integer num);
+
+    Integer getTotalComplete(Integer buyerId);
+
+    void changeNotificationStatus(Integer id);
+
+    Integer getTotalReceive(Integer buyerId);
 }
