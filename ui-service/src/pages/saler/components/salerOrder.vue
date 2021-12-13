@@ -10,29 +10,36 @@
           active-text-color="#ffd04b"
       >
         <el-menu-item index="saler">
-          <router-link to="/saler">商品信息</router-link>
+          <router-link class = "a"  to="/saler">商品信息</router-link>
         </el-menu-item>
         <el-menu-item index="salerOrder">
-          <router-link to="salerOrder">
+          <router-link class = "a"  to="salerOrder">
             订单信息
           </router-link>
         </el-menu-item>
         <el-menu-item index="wallet"
-        > <router-link to="/wallet">
+        > <router-link class = "a"  to="/wallet">
           钱包
         </router-link></el-menu-item
         >
+        <el-menu-item index="message">
+          <router-link class = "a"  to="message">
+            消息
+          </router-link>
+        </el-menu-item>
         <el-menu-item
             index="to-login"
             style="float: right"
         >
           <el-col :span="12">
             <div class="user-image">
+              <router-link class = "a" to="/login">
+                退出
+              </router-link>
               <el-avatar :size="50">
                 <img
                     src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                 />
-
               </el-avatar>
             </div>
           </el-col>
@@ -202,7 +209,8 @@ export default {
       changeInfo:{
         subOrderId:"",
         address:"",
-        status:""
+        status:"",
+        totalPrice: 0
       }
       // currentDate: new Date()
     };
@@ -241,7 +249,7 @@ export default {
           method: "get",
           url: '/api/order/saler-list',
           params: {
-            user_ids:localStorage['id'],
+            user_ids:localStorage['user_id'],
             page:this.formInline.currentPage,
             num:this.formInline.pageSize
           }
@@ -275,10 +283,11 @@ export default {
             subOrderId:row.subOrderId,
             address:row.address,
             status:row.status,
+            totalPrice:row.totalPrice
           }],
 
 
-          userName:localStorage['user_id']
+          userName:localStorage['user_name']
         }
       }).then(response=>{
         if(response.data.code===200){
@@ -333,7 +342,8 @@ export default {
       this.changeInfo = {
         subOrderId:row.subOrderId,
         address:row.address,
-        status:row.status
+        status:row.status,
+        totalPrice: row.totalPrice
       }
     },
     changeSubmit(){
@@ -352,8 +362,9 @@ export default {
             subOrderId:this.changeInfo.subOrderId,
             address:this.address,
             status:this.changeInfo.status,
+            totalPrice:this.changeInfo.totalPrice
           }],
-          userName:localStorage['user_id']
+          userName:localStorage['user_name']
         }
 
       })
@@ -388,5 +399,8 @@ export default {
 .item-image {
   width: 100%;
   display: block;
+}
+.a{
+  text-decoration: none;
 }
 </style>

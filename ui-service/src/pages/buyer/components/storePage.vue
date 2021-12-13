@@ -134,13 +134,10 @@ export default {
           token: localStorage.getItem("token"),
           role: localStorage.getItem("user_role"),
         },
-<<<<<<< HEAD
+
         method: "GET",
         url: "/api/commodity/listall",
-=======
-        method: "get",
-        url: `${commodityUrl}/commodity/lists`,
->>>>>>> 0eb8053 (fix: 前端bug)
+
         params: {
           username: localStorage.getItem("user_name"),
           page: 1,
@@ -287,7 +284,6 @@ export default {
   margin-top: 30px;
 }
 .buy-commodity-bottom {
-  float: center;
   margin-top: 10px;
 }
 </style>

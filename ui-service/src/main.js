@@ -18,6 +18,7 @@ import buyerWallet from "@/pages/buyer/components/buyerWallet";
 import saler from "./pages/saler/components/saler";
 import salerOrder from "./pages/saler/components/salerOrder";
 import wallet from "./pages/saler/components/wallet";
+import message from "./pages/saler/components/message";
 
 import error from "@/pages/404";
 import http from "./http";
@@ -55,6 +56,11 @@ const router = new VueRouter({
       name: "wallet",
       path: "/wallet",
       component: wallet,
+    },
+    {
+      name: "message",
+      path: "/message",
+      component: message,
     },
     {
       name: "storePage",

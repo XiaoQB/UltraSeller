@@ -74,18 +74,18 @@ services:
 #    networks:
 #      - us-service-net
 
-  ui-service:
-    depends_on:
-      - us-gateway-service
-    image: nginx:latest
-    restart: always
-    volumes:
-      - './ui-service/dist:/usr/share/nginx/html'
-      - './ui-service/default.conf:/etc/nginx/conf.d/default.conf'
-    ports:
-      - '8080:80'
-    networks:
-      - us-service-net
+#  ui-service:
+#    depends_on:
+#      - us-gateway-service
+#    image: nginx:latest
+#    restart: always
+#    volumes:
+#      - './ui-service/dist:/usr/share/nginx/html'
+#      - './ui-service/default.conf:/etc/nginx/conf.d/default.conf'
+#    ports:
+#      - '8080:80'
+#    networks:
+#      - us-service-net
 
 #  nacos:
 #    image: nacos/nacos-server:1.2.1
