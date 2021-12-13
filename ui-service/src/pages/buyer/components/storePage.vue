@@ -114,7 +114,7 @@ export default {
       dialogFormVisible: false, // 弹出框
       userForm: {
         quantityToBuy: 1, // 购买数量
-        userAddress: "", // 用户地址
+        userAddress: "二叉楼", // 用户地址
       },
     };
   },
@@ -244,7 +244,7 @@ export default {
       }).then((res) => {
         this.commodityIndex = -1;
         this.userForm.quantityToBuy = 1;
-        this.userForm.userAddress = "";
+        this.userForm.userAddress = "二叉楼";
         this.dialogFormVisible = false;
         if (res.data.code() === 200) {
           this.$message({

@@ -4,7 +4,12 @@
       <div class="block" style="display: flex; margin-bottom: 20px">
         <el-avatar shape="square" :size="125" :src="defaultImg"></el-avatar>
       </div>
-      <el-descriptions title="用户信息" column="1" style="width: 400px" border>
+      <el-descriptions
+        title="用户信息"
+        column="1"
+        style="width: 800px; font-size: 20px"
+        border
+      >
         <el-descriptions-item>
           <template slot="label">
             <i class="el-icon-user"></i>
@@ -30,6 +35,12 @@
             <i class="el-icon-message"></i>
             邮箱地址
           </template>
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-office-building"></i>
+            默认收货地址</template
+          >二叉楼
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
@@ -112,16 +123,23 @@ export default {
         url: `/api/wallet/user`,
         params: {
           username: this.userData.userName,
-          difference: -this.money,
+          difference: this.money,
         },
-      }).then((resp) => {
-        if (resp.data.code === 200) {
+      })
+        .then((resp) => {
+          if (resp.data.code === 200) {
+            this.$message({
+              type: "success",
+              message: "已完成充值" + this.money + "RMB",
+            });
+          }
+        })
+        .catch(() => {
           this.$message({
-            type: "success",
-            message: "已完成充值" + this.money + "RMB",
-          });
-        }
-      });
+            type: "error",
+            message: "服务器异常"
+          })
+        });
       this.money = 0;
       this.visible = false;
     },
