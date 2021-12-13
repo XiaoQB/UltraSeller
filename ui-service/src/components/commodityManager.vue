@@ -264,11 +264,12 @@ export default {
       this.http({
         headers: {
           token: localStorage["token"],
+          role:"admin"
         },
         method: "get",
         url: `${commodityUrl}commodity/lists`,
         params: {
-          username: "tet",
+          username: "admin",
           pagesize: this.formInline.pageSize,
           page: this.formInline.currentPage,
           seq: this.seq,
@@ -298,6 +299,7 @@ export default {
       this.http({
         headers: {
           token: localStorage["token"],
+          role:"admin"
         },
         method: "delete",
         url: `${commodityUrl}/commodity/item/${row.id}`,

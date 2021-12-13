@@ -12,33 +12,37 @@
         >
 
           <el-menu-item index="saler">
-            <router-link to="/saler">
+            <router-link class = "a"  to="/saler">
               商品信息
             </router-link>
           </el-menu-item>
           <el-menu-item index="/salerOrder">
-            <router-link to="/salerOrder">
+            <router-link class = "a"  to="/salerOrder">
               订单信息
-
             </router-link></el-menu-item>
           <el-menu-item index="message-center-page"
-          ><router-link to="/wallet">
+          ><router-link class = "a"  to="/wallet">
             钱包
           </router-link></el-menu-item>
+          <el-menu-item index="message">
+            <router-link class = "a"  to="message">
+              消息
+            </router-link>
+          </el-menu-item>
           <el-menu-item
               index="to-login"
               style="float: right"
-              @change="handleUser"
-              @click="onclick"
           >
             <el-col :span="12">
               <div class="user-image">
-                <el-avatar :size="50" :src="circleUrl" @error="UserImageHandler">
+                <router-link class = "a" to="/login">
+                  退出
+                </router-link>
+                <el-avatar :size="50" >
                   <img
                       src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
                   />
                 </el-avatar>
-
               </div>
             </el-col>
           </el-menu-item>
@@ -157,9 +161,9 @@ export default {
           'role': localStorage['role']
         },
         method: "get",
-        url: `/wallet/user`,
+        url: `api/wallet/user`,
         params: {
-          username: localStorage['user_id'],
+          username: localStorage['user_name'],
         }
       })
           .then(response => {
@@ -181,9 +185,9 @@ export default {
           'role': localStorage['role']
         },
         method: "get",
-        url: `/wallet/user/deal`,
+        url: `api/wallet/user/deal`,
         params: {
-          username: localStorage['user_id'],
+          username: localStorage['user_name'],
           size:"-1"
         }
       })
@@ -204,7 +208,7 @@ export default {
           'role': localStorage['role']
         },
         method: "get",
-        url: "/order/order-detail",
+        url: "api/order/order-detail",
         params: {
           subOrderId: row.orderId
         }
@@ -235,5 +239,8 @@ export default {
   background-color: #409EFF;
   border-color: #409EFF;
   float: right
+}
+.a{
+  text-decoration: none;
 }
 </style>

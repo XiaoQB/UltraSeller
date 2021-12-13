@@ -174,7 +174,8 @@ export default {
       this.http({
         headers: {
           'Content-Type': 'application/json;',
-          'Authorization': localStorage['token']
+          'Authorization': localStorage['token'],
+          role:"admin"
         },
         method: "put",
         url: `${userUrl}/user/modify`,

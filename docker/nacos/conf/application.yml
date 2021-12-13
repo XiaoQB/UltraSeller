@@ -1,0 +1,25 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: order-service-route
+          uri: lb://us-order-service
+          predicates:
+            - Path=/order/**
+        - id: commodity-service-route
+          uri: lb://us-commodity-service
+          predicates:
+            - Path=/commodity/**
+        - id: wallet-service-route
+          uri: lb://us-wallet-service
+          predicates:
+            - Path=/wallet/**
+        - id: cart-service-route
+          uri: lb://us-cart-service
+          predicates:
+            - Path=/testapp/shopcar/**
+        - id: user-service-route
+          uri: lb://us-user-service
+          predicates:
+            - Path=/user/**
+          

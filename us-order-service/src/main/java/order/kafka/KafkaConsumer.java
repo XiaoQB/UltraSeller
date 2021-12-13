@@ -1,5 +1,6 @@
 package order.kafka;
 
+
 import cn.edu.fudan.common.entities.dbo.SubOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import order.dao.MessageDao;
@@ -33,7 +34,7 @@ public class KafkaConsumer {
         String v = record.value().toString();
         SubOrderDTO subOrder = objectMapper.readValue(record.value().toString(), SubOrderDTO.class);
         messageDao.saveMessage(subOrder);
-        System.out.println("简单消费："+record.topic()+"-"+record.partition()+"-"+record.value());
+        System.out.println("简单消费：" + record.topic() + "-" + record.partition() + "-" + record.value());
     }
 
     @KafkaListener(groupId = "default", topics = {"receive"})
@@ -42,7 +43,7 @@ public class KafkaConsumer {
         String v = record.value().toString();
         SubOrderDTO subOrder = objectMapper.readValue(record.value().toString(), SubOrderDTO.class);
         messageDao.saveMessage(subOrder);
-        System.out.println("简单消费："+record.topic()+"-"+record.partition()+"-"+record.value());
+        System.out.println("简单消费：" + record.topic() + "-" + record.partition() + "-" + record.value());
     }
 
     @KafkaListener(groupId = "default", topics = {"complete"})
@@ -51,7 +52,6 @@ public class KafkaConsumer {
         String v = record.value().toString();
         SubOrderDTO subOrder = objectMapper.readValue(record.value().toString(), SubOrderDTO.class);
         messageDao.saveMessage(subOrder);
-        System.out.println("简单消费："+record.topic()+"-"+record.partition()+"-"+record.value());
+        System.out.println("简单消费：" + record.topic() + "-" + record.partition() + "-" + record.value());
     }
-
 }

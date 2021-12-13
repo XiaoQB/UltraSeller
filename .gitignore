@@ -45,3 +45,5 @@ secrets.yml
 *.pyc
 *.pyc
 /us-commodity-service/src/main/resources/static/
+/node_modules/
+/docker/

@@ -9,25 +9,33 @@
         text-color="#fff"
         active-text-color="#ffd04b"
       >
-        <el-menu-item index="saler"><router-link to="/saler">
+        <el-menu-item index="saler"><router-link class = "a"  to="/saler">
           商品信息
         </router-link></el-menu-item>
         <el-menu-item index="salerOrder">
-          <router-link to="/salerOrder">
+          <router-link class = "a"  to="/salerOrder">
             订单信息
           </router-link>
         </el-menu-item>
         <el-menu-item index="wallet"
-          ><router-link to="/wallet">
+          ><router-link class = "a"  to="/wallet">
             钱包
           </router-link></el-menu-item
         >
+        <el-menu-item index="message">
+          <router-link class = "a"  to="message">
+            消息
+          </router-link>
+        </el-menu-item>
         <el-menu-item
             index="to-login"
             style="float: right"
         >
           <el-col :span="12">
             <div class="user-image">
+              <router-link class = "a" to="/login">
+                退出
+              </router-link>
               <el-avatar :size="50" >
                 <img
                   src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
@@ -201,14 +209,14 @@
 </template>
 
 <script>
-import {put,getFileNameUUID} from "../../services/alioss";
+import {put,getFileNameUUID} from "../../../services/alioss";
 
 export default {
   name: "saler",
 
   data() {
     return {
-      userName:window.localStorage['user_id'],
+      userName:window.localStorage['user_name'],
       showDialog2: false,
       showDialog: false,
       edit: false,
@@ -267,12 +275,12 @@ export default {
       this.http({
         headers: {
           'token': localStorage['token'],
-          'role':localStorage['role'],
+          'role':localStorage['user_role'],
         },
         method: "get",
         url: `/api/commodity/lists`,
         params: {
-          username:localStorage['user_id'] ,
+          username:localStorage['user_name'] ,
           pagesize: this.formInline.pageSize,
           page: this.formInline.currentPage,
           seq: this.seq,
@@ -304,7 +312,7 @@ export default {
       this.http({
             headers: {
               'token': localStorage['token'],
-              'role':localStorage['role']
+              'role':localStorage['user_role']
             },
             method: "delete",
             url: `/api/commodity/item/${o.id}`,
@@ -312,6 +320,10 @@ export default {
       ).then(res => {
         if (res.data.code === 200) {
           this.getList();
+          this.$message({
+            type: "success",
+            message: "删除成功：",
+          });
         } else {
           this.$message({
             type: "error",
@@ -369,7 +381,6 @@ export default {
 
     doSearch() {
       this.http({
-
             headers: {
               'token': localStorage['token'],
               'role':localStorage['role']
@@ -384,7 +395,6 @@ export default {
             }
           }
       ).then(res => {
-        console.log(res.data.code)
         if (res.data.code === 200) {
           this.commodityList = res.data.data.rows;
           this.dataTotalCount = res.data.data.records;
@@ -407,7 +417,7 @@ export default {
           'token': localStorage["token"],
           'role':localStorage['role']
         },
-        method: "put",
+        method: "post",
         url: `/api/commodity/item`,
         transformRequest: [function (data) {
           return JSON.stringify(data)
@@ -419,7 +429,7 @@ export default {
           price: this.commodity.price,
           description: this.commodity.description,
           inventory: this.commodity.inventory,
-          vendorName: localStorage["user_id"],
+          vendorName: localStorage["user_name"],
         },
       })
         .then((response) => {
@@ -492,5 +502,8 @@ export default {
 .item-image {
   width: 100%;
   display: block;
+}
+.a{
+  text-decoration: none;
 }
 </style>

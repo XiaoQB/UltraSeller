@@ -11,3 +11,4 @@ RUN chmod +x /home/admin/*.sh
 WORKDIR /home/admin
 
 ENTRYPOINT ["/home/admin/start.sh"]
+

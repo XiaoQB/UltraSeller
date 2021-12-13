@@ -1,75 +1,57 @@
-## 系统文件介绍
+# UltraSeller
+### 关于Lab4
 
-- .workbench
-    - 不可删除，云开发平台应用部署配置文件
-    - fcRouteDefault，「路由/函数入口」配置入口，当应用采用FC计算服务时需要用到。
-    - serviceConfig，还没有开放到「部署配置」管理界面上，一些特殊小众的部署配置。
+lab发布时间：2021年11月23日 
 
-- Dockerfile
-    - 镜像构建文件，在不了解里面的机制之前不要去修改它，能覆盖绝大多数场景。
-
-- prepare.sh
-    - 镜像构建准备脚本，一些镜像构建前一些参数需要准备。当前包含2部分：应用配置准备 和 容器启动命名准备。
-
-## 基础脚手架简介
-
-- 1、该工程是一个SpringBoot工程；
-- 2、里面包含应用配置、NAS访问、Nat访问外网验证、MongoDB使用例子；
-- 3、pom.xml说明，如下配置不要修改，是云开发平台的约束:
-
-```
-   <properties>
-        <applicationName>${project.artifactId}</applicationName>
-        <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
-   </properties>
-   ...
-   <build>
-      <finalName>${applicationName}</finalName>
-      <plugins>
-        <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <version>${spring-boot.version}</version>
-            <configuration>
-                <!--需要替换您的springboot启动类-->
-                <mainClass>com.alibaba.sca.temp.web.Application</mainClass>
-                <layout>ZIP</layout>
-            </configuration>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>repackage</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-      </plugins>
-      ...
-    </build>
-```
-
-最好再加上java编译版本，1.8：（可选）
-
-```
-   <build>
-      <plugins>
-           <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            ...
-        </plugins>
-    </build>
-```
-
-- 4、在CloudIDE启动：在cloudide的右下角Termial中的命令行中，输入启动命名：mvn spring-boot:run
-  ,验证是否能在IDE容器中启动成功，启动成功后在IDE左下角有一个“预览”功能，可以把云端IDE启动的服务在本地浏览器中访问到，则说明CloudIDE配置是OK的。
+lab截止时间：2021年12月15日晚上6点 
 
 
-   
+**实践目标：**
+
+掌握K8S部署运维
+学习压测工具，对系统进行扩容缩容实践，学会可观测性工具的使用, 扩缩容实现
+
+Kubernetes 基本概念：https://kubernetes.io/zh/docs/concepts/
+
+Kubernetes HPA官方文档：https://kubernetes.io/zh/docs/tasks/run-application/horizontal-pod-autoscale/
+
+HPA 搭建教程：https://github.com/stefanprodan/k8s-prom-hpa/
+
+​ https://www.qikqiak.com/post/k8s-hpa-usage/
+
+
+### DDL
+#### 11月28日前
+
+萧泉彬，葛祖浩，曾鹏武：已有模块跑通，通过docker-compose可以启动。  
+
+凌子轩，匡舒磊，萧泉彬，曾鹏武，葛祖浩，谢沛成：完成k8s基本部署的学习。
+
+彭佳汉，曹雨菲：完成lab4功能需求（订单服务改写，添加消息队列：谢沛成技术支持）
+
+David，谢沛成，漆思浩：前端编写
+
+#### 12月5日前
+
+凌子轩，匡舒磊，萧泉彬，曾鹏武，葛祖浩，谢沛成：完成k8s的HPA部署学习，并尝试初步部署
+
+凌子轩，匡舒磊，萧泉彬，曾鹏武，葛祖浩，谢沛成：前后端联调跑通
+
+#### 12月12日前
+
+漆思浩：完成lab4基础实验报告编写。
+
+凌子轩，匡舒磊，萧泉彬，曾鹏武，葛祖浩：完成k8s扩容实验。
+
+#### 12月15日 中午12.前
+
+吴宇婷：完成lab4 扩容压测实验报告编写。
+
+
+Lab实验报告：
+
+Lab4:
+
+Lab3:  https://www.overleaf.com/project/61774b157139a9f6193f78b6
+
+Lab2:  https://www.overleaf.com/read/hwfnpmjcwbqh

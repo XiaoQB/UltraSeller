@@ -154,10 +154,6 @@ export default {
                 console.log(localStorage["token"])
                 this.$router.push({
                   name: "admin",
-                  "params": {
-                    "name": this.user.username,
-                    "token": res.data['token'],
-                  }
                 });
               }
             });
