@@ -19,8 +19,8 @@
           >消息中心
         </el-menu-item>
         <el-menu-item index="/buyerCart" :disabled="!hideLogin"
-          >我的购物车</el-menu-item
-        >
+          >我的购物车
+        </el-menu-item>
         <el-menu-item class="user-login" index="/login" style="float: right">
           <div :hidden="hideLogin">
             <el-avatar
@@ -50,7 +50,7 @@
           style="float: right"
         >
           <span class="user-wallet-text" :aria-label="userData.userWallet"
-            >钱包余额:  {{ userData.userWallet }}</span
+            >钱包余额: {{ userData.userWallet }}</span
           >
         </el-menu-item>
       </el-menu>
@@ -97,7 +97,7 @@ export default {
         this.$route.path === "/storePage" ||
         this.$route.path === "/buyerOrder" ||
         this.$route.path === "/messageCenter" ||
-        this.$router.path === "/buyerCart" ||
+        this.$route.path === "/buyerCart" ||
         this.$route.path === "/buyerWallet"
       ) {
         this.hideMenu = false;
@@ -111,7 +111,6 @@ export default {
     handleUser() {
       this.userData.userName = localStorage.getItem("user_name");
       this.userData.token = localStorage.getItem("token");
-      this.userData.userWallet = localStorage.getItem("user_wallet");
       this.userImageHandler();
       if (
         this.userData.userName === "" ||
@@ -122,6 +121,7 @@ export default {
       } else {
         this.hideLogin = true;
       }
+      this.handleUserWallet();
     },
     userImageHandler() {
       this.userData.userImg = "";
@@ -134,6 +134,30 @@ export default {
       } else {
         this.currentImg = this.userData.userImg;
       }
+    },
+    handleUserWallet() {
+      this.http({
+        headers: {
+          token: localStorage.getItem("token"),
+          role: localStorage.getItem("user_role"),
+        },
+        method: "GET",
+        url: "/api/wallet/user",
+        params: {
+          username: localStorage.getItem("user_name"),
+        },
+      })
+        .then((resp) => {
+          window.localStorage["user_walletId"] = resp.data.data.walletId;
+          window.localStorage["user_wallet"] = resp.data.data.balance;
+          this.userData.userWallet = resp.data.data.balance;
+        })
+        .catch(() => {
+          this.$message({
+            type: "error",
+            message: "钱包获取失败",
+          });
+        });
     },
   },
   watch: {

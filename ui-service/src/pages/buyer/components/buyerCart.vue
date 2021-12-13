@@ -1,36 +1,19 @@
 <template>
   <div id="buyerCart" class="buyerCart">
     <el-main>
-      <div className="search-bar">
-        <el-select v-model="status" placeholder="Select" align="right">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-        <el-button
-          @click="doSearch()"
-          type="primary"
-          icon="el-icon-search"
-          align="right"
-          style="margin-left: 10px"
-          >查询订单</el-button
-        >
-      </div>
-      <el-table :data="tableData" border stripe style="margin-top: 20px">
-        <el-table-column label="序号" align="center" width="70px">
-          <template slot-scope="scope">
-            {{
-              (formInline.currentPage - 1) * formInline.pageSize +
-                scope.$index +
-                1
-            }}
-          </template>
+      {{ mock.goods_list }}
+      <el-table
+        :data="mock.goods_list"
+        borders
+        stripe
+        style="margin-top: 20px"
+        ref="multipleTable"
+        @selection-change="handleSelectionChange()"
+      >
+        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column type="index" label="序号" width="70px">
         </el-table-column>
-        <el-table-column label="订单编号" prop="id"> </el-table-column>
+        <el-table-column label="商品ID" prop="commodityId"> </el-table-column>
         <el-table-column label="商品名称" prop="name">
           <template slot-scope="scope">
             <el-input
@@ -57,51 +40,15 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column label="价格" prop="price"> </el-table-column>
+        <el-table-column label="单价" prop="price"> </el-table-column>
         <el-table-column label="描述" prop="description"> </el-table-column>
         <el-table-column label="卖家" prop="vendorName"> </el-table-column>
+        <el-table-column label="购买数量" prop="num"> </el-table-column>
         <el-table-column label="收货地址" prop="address"> </el-table-column>
-        <el-table-column label="订单状态" prop="status"> </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <div v-if="scope.row.status !== '已完成'">
-              <el-button size="medium" @click="returnBack(scope.row)"
-                >退货</el-button
-              >
-              <el-button>jajaj</el-button>
-            </div>
-          </template>
-        </el-table-column>
+        <el-table-column label="总价" prop="totalPrice"> </el-table-column>
+        <el-table-column label="操作"> </el-table-column>
       </el-table>
-      <el-pagination
-        background
-        layout="total, prev, pager, next, sizes,jumper"
-        :page-sizes="[5, 10, 15]"
-        :page-size="formInline.pageSize"
-        :total="dataTotalCount"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      >
-      </el-pagination>
     </el-main>
-    <el-footer>
-      <div class="customer-service"></div>
-    </el-footer>
-    <el-dialog title="修改收货地址" :visible.sync="showDialog" width="45%">
-      <el-form ref="commodityList" :model="address" label-width="100px">
-        <el-form-item
-          placeholder="目前只支持输入图片链接"
-          label="收货地址"
-          prop="address"
-        >
-          <el-input v-model="address"></el-input>
-        </el-form-item>
-      </el-form>
-
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="changeSubmit()">提交</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -110,168 +57,112 @@ export default {
   name: "buyerCart",
   data() {
     return {
-      showDialog: false,
-      address: "beijking",
       dataTotalCount: 0, //查询条件的总数据量
-      formInline: {
-        currentPage: 1,
-        pageSize: 10,
+      userCartList: [],
+      SelectedTotalPrice: 0, //选中的总价格
+      SelectedCommodities: [],
+      mock: {
+        uid: "",
+        goods_list: [
+          {
+            commodityId: "1",
+            name: "白酒",
+            imgLink:
+              "https://tse1-mm.cn.bing.net/th/id/OIP-C.Ysp5JXpNQ13Jpx75yhIfYAHaHa?w=214&h=214&c=7&r=0&o=5&dpr=2&pid=1.7",
+            totalPrice: 2880.0,
+            price: 2880.0,
+            description: "酒",
+            inventory: 10,
+            vendorName: "茅台 01",
+            vendorId: 1,
+            keywords: "酒",
+            address: "地址 01", // 送货地址
+            num: 1, //需要的数量
+          },
+          {
+            commodityId: "2",
+            name: "白酒",
+            imgLink:
+              "https://tse1-mm.cn.bing.net/th/id/OIP-C.Ysp5JXpNQ13Jpx75yhIfYAHaHa?w=214&h=214&c=7&r=0&o=5&dpr=2&pid=1.7",
+            totalPrice: 5760.0,
+            price: 2880.0,
+            description: "酒",
+            inventory: 10,
+            vendorName: "茅台 02",
+            vendorId: 2,
+            keywords: "酒",
+            address: "地址 02", // 送货地址
+            num: 2, //需要的数量
+          },
+          {
+            commodityId: "3",
+            name: "白酒",
+            imgLink:
+              "https://tse1-mm.cn.bing.net/th/id/OIP-C.Ysp5JXpNQ13Jpx75yhIfYAHaHa?w=214&h=214&c=7&r=0&o=5&dpr=2&pid=1.7",
+            totalPrice: 8640.0,
+            price: 2880.0,
+            description: "酒",
+            inventory: 10,
+            vendorName: "茅台 03",
+            vendorId: 3,
+            keywords: "酒",
+            address: "地址 03", // 送货地址
+            num: 3, //需要的数量
+          },
+          {
+            commodityId: "4",
+            name: "白酒",
+            imgLink:
+              "https://tse1-mm.cn.bing.net/th/id/OIP-C.Ysp5JXpNQ13Jpx75yhIfYAHaHa?w=214&h=214&c=7&r=0&o=5&dpr=2&pid=1.7",
+            totalPrice: 11520.0,
+            price: 2880.0,
+            description: "酒",
+            inventory: 10,
+            vendorName: "茅台 04",
+            vendorId: 4,
+            keywords: "酒",
+            address: "地址 04", // 送货地址
+            num: 4, //需要的数量
+          },
+        ],
       },
-      userOrderList: [],
-      options: [
-        {
-          value: "待付款",
-          label: "待付款",
-        },
-        {
-          value: "待发货",
-          label: "待发货",
-        },
-        {
-          value: "待收货",
-          label: "待收货",
-        },
-        {
-          value: "已完成",
-          label: "已完成",
-        },
-        // {
-        //   value: "已取消",
-        //   label: "已取消",
-        // },
-      ],
-      tableData: [
-        {
-          id: "20210101001",
-          name: "面包",
-          imgLink:
-            "https://ts3.cn.mm.bing.net/th/id/OIP-C.305fYj0cWoTv_Q8TIbJ02wHaHG?w=196&h=188&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "10",
-          description: "好吃",
-          vendorName: "test01",
-          address: "复旦大学",
-          status: "未发货",
-        },
-        {
-          id: "20210101001",
-          name: "面包",
-          imgLink:
-            "https://ts3.cn.mm.bing.net/th/id/OIP-C.305fYj0cWoTv_Q8TIbJ02wHaHG?w=196&h=188&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "10",
-          description: "好吃",
-          vendorName: "test01",
-          address: "复旦大学",
-          status: "待收货",
-        },
-      ],
-      status: "",
-      // currentDate: new Date()
     };
   },
   mounted() {
-    this.updateUserOrderList();
+    this.updateUserCartList();
   },
   methods: {
-    //分页 初始页currentPage、初始每页数据数pagesize和数据testpage--->控制每页几条
-    handleSizeChange: function(size) {
-      this.formInline.pageSize = size;
-      this.getList();
-    },
-
-    // 控制页面的切换
-    handleCurrentChange: function(currentpage) {
-      this.formInline.currentPage = currentpage;
-      this.getList();
-    },
-    handleSelect(key) {
-      this.salerPage = key;
-    },
-    // UserImageHandler() {
-    //   return true;
-    // },
-    updateUserOrderList() {
+    updateUserCartList() {
       this.http({
         headers: {
           token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
         },
         method: "GET",
-        url: "/api/order/list",
+        url: "/api/testapp/shopcar/GetCart/",
         params: {
-          user_ids: localStorage.getItem("user_id"),
-          page: this.currentPage,
-          num: this.pageSize,
+          uid: localStorage.getItem("user_id"),
         },
-      }).then((resp) => {
-        this.userOrderList = resp.data.data;
-      });
-    },
-    returnBack(row) {
-      this.http({
-        headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
-        },
-        method: "put",
-        url: "/api/order/change",
-        params: {
-          orderId: row.id,
-        },
-      }).then((response) => {
-        if (response.data.code === 200) {
-          this.getList(),
-            this.$message({
-              type: "success",
-              message: "退货完成",
-            });
-        }
-        this.getList();
-      });
-    },
-    shipments(row) {
-      this.http({
-        headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
-        },
-        method: "put",
-        url: "/api/order/change",
-        params: {
-          orderId: row.id,
-        },
-      }).then((response) => {
-        if (response.data.code === 200) {
-          this.getList(),
-            this.$message({
-              type: "success",
-              message: "发货成功",
-            });
-        }
-        this.getList();
-      });
-    },
-    doSearch() {
-      this.http({
-        headers: {
-          token: window.localStorage["token"],
-        },
-        method: "get",
-        params: {
-          status: this.status,
-        },
-      }).then((response) => {
-        if (response.data.code === 200) {
+      })
+        .then((resp) => {
+          this.userCartList = resp.goods_list;
           this.$message({
-            type: "success",
-            message: "查询成功",
+            type: "info",
+            message: this.userCartList,
           });
-        }
-      });
+        })
+        .catch(() => {
+          this.$message({
+            type: "error",
+            message: "购物车获取失败",
+          });
+        });
     },
-    changeAddress() {
-      this.showDialog = true;
+    handleSelectionChange(index) {
+      this.$message({
+            type: "error",
+            message: "编号" + index,
+          });
     },
-    changeSubmit() {},
   },
 };
 </script>
