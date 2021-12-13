@@ -35,7 +35,7 @@ def getKwargs(data={}):
     return kwargs
 
 
-SERVER_ADDRESSES = '47.102.97.229:8848'
+SERVER_ADDRESSES = '10.176.34.97:8848'
 NAMESPACE = "public"
 
 client = nacos.NacosClient(SERVER_ADDRESSES, namespace=NAMESPACE, username="nacos", password="nacos")
