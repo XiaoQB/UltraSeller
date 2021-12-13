@@ -16,9 +16,10 @@ import messageCenter from "@/pages/buyer/components/messageCenter";
 import buyerCart from "@/pages/buyer/components/buyerCart";
 import buyerWallet from "@/pages/buyer/components/buyerWallet";
 
-import saler from "@/pages/saler/saler";
-import salerOrder from "./pages/saler/salerOrder";
-import wallet from "./components/wallet";
+import saler from "./pages/saler/components/saler";
+import salerOrder from "./pages/saler/components/salerOrder";
+import wallet from "./pages/saler/components/wallet";
+import message from "./pages/saler/components/message";
 
 import error from "@/pages/404";
 import http from "./http";
@@ -54,8 +55,13 @@ const router = new VueRouter({
     },
     {
       name: "wallet",
-      path: "/wallet.yaml",
+      path: "/wallet",
       component: wallet,
+    },
+    {
+      name: "message",
+      path: "/message",
+      component: message,
     },
     {
       name: "storePage",

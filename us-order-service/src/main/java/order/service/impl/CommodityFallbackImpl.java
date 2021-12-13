@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Service
 public class CommodityFallbackImpl implements CommodityService {
-
     @Override
     public ResponseEntity<Commodity> getCommodityById(@RequestParam("id") String commodityId) {
         return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR, null);

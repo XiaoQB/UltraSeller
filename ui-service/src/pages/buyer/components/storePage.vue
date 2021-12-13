@@ -128,8 +128,10 @@ export default {
           token: localStorage.getItem("token"),
           role: localStorage.getItem("user_role"),
         },
+
         method: "GET",
         url: "/api/commodity/listall",
+
         params: {
           username: localStorage.getItem("user_name"),
           page: 1,
@@ -291,7 +293,9 @@ export default {
   margin-top: 30px;
 }
 .buy-commodity-bottom {
+
   width: 150px;
   float: center;
+
 }
 </style>

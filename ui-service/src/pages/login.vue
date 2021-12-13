@@ -191,9 +191,12 @@ export default {
           .then((res) => {
             if (res.data.code === 200) {
               window.localStorage["token"] = res.data.data.token;
+
+
               window.localStorage["user_id"] = res.data.data.userId;
               window.localStorage["user_name"] = this.user.username;
               window.localStorage["user_role"] = this.user.role;
+
               this.http({
                 headers: {
                   token: res.data.data.token,
@@ -214,7 +217,11 @@ export default {
                     message: "钱包获取失败请重新登录",
                   });
                 });
+
               this.$router.push({ name: "saler", path: "/saler" });
+            } else {
+              alert("您输入的用户名或密码错误！");
+
             }
           })
           .catch(() => {

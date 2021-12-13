@@ -5,21 +5,26 @@ import cn.edu.fudan.common.entities.dbo.Order;
 import cn.edu.fudan.common.entities.dbo.SubOrder;
 import cn.edu.fudan.common.entities.enums.ResponseEntityCode;
 import cn.edu.fudan.common.entities.enums.ResponseEntityMessage;
+import order.dao.OrderDao;
 import order.entities.dto.CreateOrderDTO;
 import order.entities.dto.UpdateOrderDTO;
 import order.entities.enums.OrderStatus;
 import order.entities.vo.Notification;
 import order.entities.vo.OrderVO;
+import order.entities.vo.PageResult;
 import order.entities.vo.SubOrderVO;
+
 import order.service.KafkaService;
 import order.service.OrderService;
 import order.service.WalletService;
 import org.springframework.kafka.core.KafkaTemplate;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.zip.InflaterInputStream;
 
 /**
  * @author beethoven
@@ -36,8 +41,13 @@ public class OrderController {
     @Resource
     private WalletService walletService;
 
+
     @Resource
     private KafkaService kafkaService;
+
+
+    @Resource
+    private OrderDao orderDao;
 
     @PostMapping("/create")
     public ResponseEntity<String> createOrder(@RequestBody CreateOrderDTO createOrderDTO) {
@@ -79,13 +89,17 @@ public class OrderController {
             }
             for (SubOrder subOrder : subOrders) {
                 if (OrderStatus.WAIT_TO_TRANSFER.toString().equals(subOrder.getStatus())) {
+
+
                     // todo 没有钱包服务需要的参数，无法调，自动返回成功
                     //ResponseEntity<String> response = walletService.changeBalance(updateOrderDTO.getBuyerId(), subOrder.getTotalPrice());
                     //return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), "wallet service error", null);
                     kafkaService.sendPayMessage(subOrder, updateOrderDTO.getBuyerId());
+
                 }
                 if(OrderStatus.WAIT_TO_RECEIPT.toString().equals(subOrder.getStatus())){
                     kafkaService.sendReceiveMsg(subOrder, updateOrderDTO.getBuyerId());
+
                 }
                 if(OrderStatus.COMPLETE.toString().equals(subOrder.getStatus())){
                     kafkaService.sendCompleteMsg(subOrder, updateOrderDTO.getBuyerId());
@@ -159,8 +173,9 @@ public class OrderController {
         }
     }
 
+
     @GetMapping("/notification/saler/pay")
-    public ResponseEntity<List<Notification>> getPayNotification(@RequestParam("salerId") String salerId) {
+    public ResponseEntity<List<Notification>> getPayNotification(@RequestParam("salerId") Integer salerId) {
         try {
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getPaymentNotification(salerId));
         } catch (Exception e) {
@@ -169,7 +184,7 @@ public class OrderController {
     }
 
     @GetMapping("/notification/saler/complete")
-    public ResponseEntity<List<Notification>> getCompleteNotification(@RequestParam("salerId") String salerId) {
+    public ResponseEntity<List<Notification>> getCompleteNotification(@RequestParam("salerId") Integer salerId) {
         try {
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getCompleteNotification(salerId));
         } catch (Exception e) {
@@ -178,12 +193,25 @@ public class OrderController {
     }
 
     @GetMapping("/notification/buyer/receive")
-    public ResponseEntity<List<Notification>> getSalerNotification(@RequestParam("buyerId") String buyerId) {
+    public ResponseEntity<PageResult> getSalerNotification(@RequestParam("buyerId") Integer buyerId,
+                                                           @RequestParam("page") Integer page,
+                                                           @RequestParam("num") Integer num) {
         try {
-            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getReceiveNotification(buyerId));
+            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getReceiveNotification(buyerId,page,num));
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
         }
     }
+
+    @PostMapping("/notification/change")
+    public ResponseEntity<String> changeStatus(@RequestParam("id") Integer id) {
+        try {
+            orderDao.changeNotificationStatus(id);
+            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, null);
+        } catch (Exception e) {
+            return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
+        }
+    }
+
 
 }

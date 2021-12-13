@@ -74,6 +74,7 @@ services:
 #    networks:
 #      - us-service-net
 
+
   ui-service:
     build: ui-service
     depends_on:
@@ -87,6 +88,7 @@ services:
       - '8080:80'
     networks:
       - us-service-net
+
 
 #  nacos:
 #    image: nacos/nacos-server:1.2.1
