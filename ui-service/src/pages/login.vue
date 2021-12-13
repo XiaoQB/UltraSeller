@@ -197,6 +197,27 @@ export default {
               window.localStorage["user_name"] = this.user.username;
               window.localStorage["user_role"] = this.user.role;
 
+              this.http({
+                headers: {
+                  token: res.data.data.token,
+                  role: this.user.role,
+                },
+                method: "GET",
+                url: "/api/wallet/user",
+                params: {
+                  username: localStorage.getItem("user_name"),
+                },
+              })
+                .then((resp) => {
+                  window.localStorage["user_wallet"] = resp.data.data.balance;
+                })
+                .catch(() => {
+                  this.$message({
+                    type: "error",
+                    message: "钱包获取失败请重新登录",
+                  });
+                });
+
               this.$router.push({ name: "saler", path: "/saler" });
             } else {
               alert("您输入的用户名或密码错误！");

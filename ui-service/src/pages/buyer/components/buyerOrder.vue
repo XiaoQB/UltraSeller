@@ -1,234 +1,195 @@
 <template>
   <div id="buyerOrder" class="buyerOrder">
     <el-main>
-      <el-select v-model="status" placeholder="Select" align="right">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+      <div className="search-bar">
+        <el-select v-model="searchedStatus" placeholder="Select" align="right">
+          <el-option
+            v-for="item in statusOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+        <el-button
+          @click="doSearch()"
+          type="primary"
+          icon="el-icon-search"
+          align="right"
+          style="margin-left: 10px"
+          >查询订单</el-button
         >
-        </el-option>
-      </el-select>
-      <el-button
-        @click="doSearch()"
-        type="primary"
-        icon="el-icon-search"
-        align="right"
-        style="margin-left: 10px"
-        >查询订单</el-button
+        <el-button
+          @click="updateUserOrderList()"
+          type="primary"
+          align="right"
+          style="margin-left: 10px"
+          >重置</el-button
+        >
+      </div>
+      <div
+        class="order-tables"
+        style="margin-bottom: 20px; margin-top: 20px"
+        v-for="(item, index) in userOrderList"
+        :key="index"
       >
-      <el-table :data="tableData" border stripe style="width: 100%">
-        <el-table-column label="序号" align="center" width="70px">
-          <template slot-scope="scope">
-            {{
-              (formInline.currentPage - 1) * formInline.pageSize +
-                scope.$index +
-                1
-            }}
-          </template>
-        </el-table-column>
-        <el-table-column label="订单编号" prop="id"> </el-table-column>
-        <el-table-column label="商品名称" prop="name">
-          <template slot-scope="scope">
-            <el-input
-              placeholder="请输入内容"
-              v-show="scope.row.show"
-              v-model="scope.row.name"
-            ></el-input>
-            <span v-show="!scope.row.show">{{ scope.row.name }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="图片" prop="imgLink">
-          <template slot-scope="scope">
-            <el-popover placement="top-start" title="" trigger="hover">
-              <img
-                :src="scope.row.imgLink"
-                alt=""
-                style="width: 150px;height: 150px"
-              />
-              <img
-                slot="reference"
-                :src="scope.row.imgLink"
-                style="width: 100px;height: 100px"
-              />
-            </el-popover>
-          </template>
-        </el-table-column>
-        <el-table-column label="价格" prop="price"> </el-table-column>
-        <el-table-column label="描述" prop="description"> </el-table-column>
-        <el-table-column label="卖家" prop="vendorName"> </el-table-column>
-        <el-table-column label="收货地址" prop="address"> </el-table-column>
-        <el-table-column label="订单状态" prop="status"> </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <div v-if="scope.row.status !== '已完成'">
-              <el-button size="mini" @click="returnBack(scope.row)"
-                >退货</el-button
+        <span style="float: left; margin-bottom: 10px"
+          >父订单号: {{ item.orderId }}</span
+        >
+        <span style="margin-bottom: 10px">总价格: {{ item.totalPrice }}</span>
+        <span style="margin-bottom: 10px; float: right"
+          >总订单状态: {{ handleTranslateStatus(item.status) }}</span
+        >
+        <el-table :data="item.subOrders" border>
+          <el-table-column label="商品详情" type="expand">
+            <template slot-scope="props">
+              <el-descriptions
+                title="商品信息"
+                column="2"
+                style="margin-left: 20px"
               >
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        background
-        layout="total, prev, pager, next, sizes,jumper"
-        :page-sizes="[5, 10, 15]"
-        :page-size="formInline.pageSize"
-        :total="dataTotalCount"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      >
-      </el-pagination>
+                <el-descriptions-item label="商品图">
+                  <img :src="props.row.commodity.imgLink" class="item-image" />
+                </el-descriptions-item>
+                <el-descriptions-item label="商品 ID">
+                  <div>{{ props.row.commodity.id }}</div>
+                </el-descriptions-item>
+                <el-descriptions-item label="商品名称">
+                  <div>{{ props.row.commodity.name }}</div>
+                </el-descriptions-item>
+                <el-descriptions-item label="商品分类">
+                  <div>{{ props.row.commodity.keywords }}</div>
+                </el-descriptions-item>
+                <el-descriptions-item label="商品描述">
+                  <div>{{ props.row.commodity.description }}</div>
+                </el-descriptions-item>
+                <el-descriptions-item label="商家">
+                  <div>{{ props.row.commodity.vendorName }}</div>
+                </el-descriptions-item>
+                <el-descriptions-item label="库存">
+                  <div>{{ props.row.commodity.inventory }}</div>
+                </el-descriptions-item>
+              </el-descriptions>
+            </template>
+          </el-table-column>
+          <el-table-column prop="commodityName" label="商品名">
+          </el-table-column>
+          <el-table-column prop="price" label="单价"></el-table-column>
+          <el-table-column prop="num" label="购买数量"></el-table-column>
+          <el-table-column prop="totalPrice" label="总价"></el-table-column>
+          <el-table-column prop="address" label="地址"></el-table-column>
+          <el-table-column prop="status" label="状态"></el-table-column>
+          <!-- {{
+            item.subOrders.map((resp) => {
+              return handleTranslateStatus(resp.status);
+            })
+          }} -->
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <span
+                v-if="scope.row.status === 'WAIT_TO_PAY'"
+                style="margin-left: 10px"
+              >
+                <el-button
+                  size="medium"
+                  type="primary"
+                  @click="doPay(scope.row)"
+                  >付款</el-button
+                >
+              </span>
+              <span
+                v-if="scope.row.status === 'WAIT_TO_RECEIPT'"
+                style="margin-left: 10px"
+              >
+                <el-button
+                  size="medium"
+                  type="primary"
+                  @click="
+                    confirmReceived(scope.row.orderId, scope.row.subOrderId)
+                  "
+                  >确认收货</el-button
+                >
+              </span>
+              <span
+                v-if="
+                  scope.row.status !== 'COMPLETE' &&
+                    scope.row.status !== 'CANCEL'
+                "
+                style="margin-left: 10px"
+              >
+                <el-button
+                  size="medium"
+                  type="primary"
+                  @click="returnBack(scope.row.orderId, scope.row.subOrderId)"
+                  >退货</el-button
+                >
+              </span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-main>
-    <el-footer>
-      <div class="customer-service"></div>
-    </el-footer>
-    <el-dialog title="修改收货地址" :visible.sync="showDialog" width="45%">
-      <el-form ref="commodityList" :model="address" label-width="100px">
-        <el-form-item
-          placeholder="目前只支持输入图片链接"
-          label="收货地址"
-          prop="address"
-        >
-          <el-input v-model="address"></el-input>
-        </el-form-item>
-      </el-form>
-
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="changeSubmit()">提交</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import userService from "../../../services/user";
-
 export default {
-  name: "saler",
+  name: "buyerOrder",
   data() {
     return {
+      index: 1,
       showDialog: false,
-      address: "beijking",
       dataTotalCount: 0, //查询条件的总数据量
       formInline: {
         currentPage: 1,
         pageSize: 10,
       },
-      options: [
+      userOrderList: [],
+      statusOptions: [
         {
-          value: "待付款",
+          value: "WAIT_TO_PAY",
           label: "待付款",
         },
         {
-          value: "待发货",
+          value: "WAIT_TO_TRANSFER",
           label: "待发货",
         },
         {
-          value: "待收货",
+          value: "WAIT_TO_RECEIPT",
           label: "待收货",
         },
         {
-          value: "已完成",
+          value: "COMPLETE",
           label: "已完成",
         },
-        // {
-        //   value: "已取消",
-        //   label: "已取消",
-        // },
-      ],
-      tableData: [
         {
-          id: "20210101001",
-          name: "面包",
-          imgLink:
-            "https://ts3.cn.mm.bing.net/th/id/OIP-C.305fYj0cWoTv_Q8TIbJ02wHaHG?w=196&h=188&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "10",
-          description: "好吃",
-          vendorName: "test01",
-          address: "复旦大学",
-          status: "未发货",
-        },
-        {
-          id: "20210101001",
-          name: "面包",
-          imgLink:
-            "https://ts3.cn.mm.bing.net/th/id/OIP-C.305fYj0cWoTv_Q8TIbJ02wHaHG?w=196&h=188&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "10",
-          description: "好吃",
-          vendorName: "test01",
-          address: "复旦大学",
-          status: "待收货",
+          value: "CANCEL",
+          label: "已取消",
         },
       ],
-      status: "",
-      // currentDate: new Date()
+      searchedStatus: "",
     };
   },
+  mounted() {
+    this.updateUserOrderList();
+  },
   methods: {
-    //分页 初始页currentPage、初始每页数据数pagesize和数据testpage--->控制每页几条
-    handleSizeChange: function(size) {
-      this.formInline.pageSize = size;
-      this.getList();
-    },
-
-    // 控制页面的切换
-    handleCurrentChange: function(currentpage) {
-      this.formInline.currentPage = currentpage;
-      this.getList();
-    },
-    handleSelect(key) {
-      this.salerPage = key;
-    },
-
-    UserImageHandler() {
-      return true;
-    },
-    getList() {
-      userService.getLists();
-    },
-    returnBack(row) {
-      this.http({
-        headers: {
-          token: window.localStorage["token"],
-        },
-        method: "put",
-        url: "/api/order/change",
-        params: {
-          orderId: row.id,
-        },
-      }).then((response) => {
-        if (response.data.code === 200) {
-          this.getList(),
-            this.$message({
-              type: "success",
-              message: "退货完成",
-            });
-        }
-        this.getList();
-      });
-    },
-    shipments(row) {
-      this.http({
-        headers: {
-          token: window.localStorage["token"],
-        },
-        method: "put",
-        url: "/api/order/change",
-        params: {
-          orderId: row.id,
-        },
-      }).then((response) => {
-        if (response.data.code === 200) {
-          this.getList(),
-            this.$message({
-              type: "success",
-              message: "发货成功",
-            });
-        }
-        this.getList();
-      });
+    // 翻译订单状态
+    handleTranslateStatus(value) {
+      switch (value) {
+        case "WAIT_TO_PAY":
+          return "待付款";
+        case "WAIT_TO_TRANSFER":
+          return "待发货";
+        case "WAIT_TO_RECEIPT":
+          return "待收货";
+        case "COMPLETE":
+          return "已完成";
+        case "CANCEL":
+          return "已取消";
+        default:
+          return value;
+      }
     },
     doSearch() {
       this.http({
@@ -237,7 +198,7 @@ export default {
         },
         method: "get",
         params: {
-          status: this.status,
+          status: this.searchedStatus,
         },
       }).then((response) => {
         if (response.data.code === 200) {
@@ -248,10 +209,154 @@ export default {
         }
       });
     },
-    changeAddress() {
-      this.showDialog = true;
+    updateUserOrderList() {
+      this.http({
+        headers: {
+          token: localStorage.getItem("token"),
+          role: localStorage.getItem("user_role"),
+        },
+        method: "GET",
+        url: "/api/order/list",
+        params: {
+          user_ids: localStorage.getItem("user_id"),
+          page: 1,
+          num: 10,
+        },
+      }).then((resp) => {
+        this.userOrderList = resp.data.data;
+      });
+      this.searchedStatus = "";
     },
-    changeSubmit() {},
+    confirmReceived(orderId, subOrderId) {
+      this.http({
+        headers: {
+          token: localStorage.getItem("token"),
+          role: localStorage.getItem("user_role"),
+        },
+        method: "put",
+        url: "/api/order/change",
+        data: {
+          order: {
+            orderId: orderId,
+            // address: '',
+          },
+          subOrders: [{ subOrderId: subOrderId, status: "COMPLETE" }],
+          userName: localStorage.getItem("user_name"),
+        },
+      })
+        .then((response) => {
+          if (response.data.code === 200) {
+            this.$message({
+              type: "success",
+              message: "确认收货",
+            });
+          }
+        })
+        .catch(
+          this.$message({
+            type: "error",
+            message: "没有收货" + orderId + subOrderId,
+          })
+        );
+      this.updateUserOrderList();
+    },
+    returnBack(orderId, subOrderId) {
+      this.http({
+        headers: {
+          token: localStorage.getItem("token"),
+          role: localStorage.getItem("user_role"),
+        },
+        method: "put",
+        url: "/api/order/change",
+        data: {
+          order: {
+            orderId: orderId,
+            // address: '',
+          },
+          subOrders: [{ subOrderId: subOrderId, status: "CANCEL" }],
+          userName: localStorage.getItem("user_name"),
+        },
+      })
+        .then((response) => {
+          if (response.data.code === 200) {
+            this.$message({
+              type: "success",
+              message: "退货完成",
+            });
+          }
+        })
+        .catch(
+          this.$message({
+            type: "error",
+            message: "退货失败" + orderId + subOrderId,
+          })
+        );
+      this.updateUserOrderList();
+    },
+    doPay(rows) {
+      this.http({
+        headers: {
+          token: localStorage.getItem("token"),
+          role: localStorage.getItem("user_role"),
+        },
+        method: "PUT",
+        url: `/api/wallet/deal`,
+        data: {
+          sellerName: rows.commodity.vendorName,
+          buyerName: localStorage.getItem("user_name"),
+          // dealId: 725,
+          price: rows.totalPrice,
+          // id: "148",
+          // dealStatus: "o37mha",
+        },
+      })
+        .then((response) => {
+          if (response.data.code === 200) {
+            this.$message({
+              type: "success",
+              message: "付款成功",
+            });
+            this.http({
+              headers: {
+                token: localStorage.getItem("token"),
+                role: localStorage.getItem("user_role"),
+              },
+              method: "put",
+              url: "/api/order/change",
+              data: {
+                order: {
+                  orderId: rows.orderId,
+                },
+                subOrders: [
+                  { subOrderId: rows.subOrderId, status: "WAIT_TO_TRANSFER" },
+                ],
+                userName: localStorage.getItem("user_name"),
+              },
+            })
+              .then((resp) => {
+                if (resp.data.code === 200) {
+                  this.$message({
+                    type: "success",
+                    message: "订单更新成功",
+                  });
+                }
+              })
+              .catch(
+                this.$message({
+                  type: "error",
+                  message: "订单更新失败",
+                })
+              );
+          }
+        })
+        .catch(
+          this.$message({
+            type: "error",
+            message: "付款失败",
+          })
+        );
+      this.updateUserOrderList();
+    },
   },
 };
 </script>

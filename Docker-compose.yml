@@ -74,18 +74,21 @@ services:
 #    networks:
 #      - us-service-net
 
-#  ui-service:
-#    depends_on:
-#      - us-gateway-service
-#    image: nginx:latest
-#    restart: always
-#    volumes:
-#      - './ui-service/dist:/usr/share/nginx/html'
-#      - './ui-service/default.conf:/etc/nginx/conf.d/default.conf'
-#    ports:
-#      - '8080:80'
-#    networks:
-#      - us-service-net
+
+  ui-service:
+    build: ui-service
+    depends_on:
+      - us-gateway-service
+    image: nginx:latest
+    restart: always
+    volumes:
+      - './ui-service/dist:/usr/share/nginx/html'
+      - './ui-service/default.conf:/etc/nginx/conf.d/default.conf'
+    ports:
+      - '8080:80'
+    networks:
+      - us-service-net
+
 
 #  nacos:
 #    image: nacos/nacos-server:1.2.1
@@ -108,7 +111,7 @@ services:
 #    volumes:
 #      - ./docker/nacos/standalone-logs/:/home/nacos/logs
 #      - ./docker/nacos/plugins/:/home/nacos/plugins
-#      - ./docker/nacos/conf/application.properties:/home/nacos/conf/application.properties
+#      - ./docker/nacos/conf/application.yml:/home/nacos/conf/application.yml
 #    ports:
 #      - "9999:9999"
 
@@ -123,25 +126,22 @@ services:
 
 # Databases
   us-mysql-commodity:
-    build: us-mysql-commodity
+    image: docker.io/mysql/mysql-server:5.7
     environment:
       MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - './us-mysql/us-mysql-commodity.sql:/docker-entrypoint-initdb.d/'
     ports:
       - 53306:3306
     networks:
       - us-service-net
 
- # us-mysql-commodity:
- #   image: mysql
- #   expose:
- #     - "3306"
- #   environment:
- #     MYSQL_ROOT_PASSWORD: root
-
   us-mysql-order:
-    build: us-mysql-order/
+    image: docker.io/mysql/mysql-server:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: root
+        MYSQL_ROOT_PASSWORD: root
+    volumes:
+        - './us-mysql/us-mysql-order.sql:/docker-entrypoint-initdb.d/'
     ports:
       - 53307:3307
     networks:
@@ -157,18 +157,22 @@ services:
 #      - us-service-net
 
   us-mysql-user:
-    build: us-mysql-user/
+    image: docker.io/mysql/mysql-server:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: root
+        MYSQL_ROOT_PASSWORD: root
+    volumes:
+        - './us-mysql/us-mysql-user.sql:/docker-entrypoint-initdb.d/'
     ports:
       - 53309:3309
     networks:
       - us-service-net
 
   us-mysql-wallet:
-    build: us-mysql-wallet/
+    image: docker.io/mysql/mysql-server:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: root
+        MYSQL_ROOT_PASSWORD: root
+    volumes:
+        - './us-mysql/us-mysql-wallet.sql:/docker-entrypoint-initdb.d/'
     ports:
       - 53310:3310
     networks:
