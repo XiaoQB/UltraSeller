@@ -75,7 +75,7 @@ const router = new VueRouter({
     {
       name: "buyerCart",
       path: "/buyerCart",
-      components: buyerCart,
+      component: buyerCart,
     },
     {
       name: "buyerWallet",
