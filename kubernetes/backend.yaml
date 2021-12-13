@@ -17,8 +17,8 @@ spec:
         - name: registry-pull-secret
       containers:
         - name: us-commodity-service
-          image: shelahkuang/commodity:latest
-          imagePullPolicy: Always
+          image: 75560/commodity:v1
+          imagePullPolicy: IfNotPresent
           ports:
             - protocol: TCP
               containerPort: 8002
@@ -64,8 +64,8 @@ spec:
         - name: registry-pull-secret
       containers:
         - name: us-order-service
-          image: shelahkuang/order:latest
-          imagePullPolicy: Always
+          image: 75560/order:v1
+          imagePullPolicy: IfNotPresent
           ports:
             - protocol: TCP
               containerPort: 8004
@@ -111,8 +111,8 @@ spec:
         - name: registry-pull-secret
       containers:
         - name: us-user-service
-          image: shelahkuang/user:latest
-          imagePullPolicy: Always
+          image: 75560/user:v1
+          imagePullPolicy: IfNotPresent
           ports:
             - protocol: TCP
               containerPort: 8001
@@ -158,8 +158,8 @@ spec:
         - name: registry-pull-secret
       containers:
         - name: us-wallet-service
-          image: shelahkuang/wallet:latest
-          imagePullPolicy: Always
+          image: 75560/wallet:v1
+          imagePullPolicy: IfNotPresent
           ports:
             - protocol: TCP
               containerPort: 8003
