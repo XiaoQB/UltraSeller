@@ -35,7 +35,7 @@ def getKwargs(data={}):
     return kwargs
 
 
-SERVER_ADDRESSES = '10.176.34.97:8848'
+SERVER_ADDRESSES = '47.102.97.229:8848'
 NAMESPACE = "public"
 
 client = nacos.NacosClient(SERVER_ADDRESSES, namespace=NAMESPACE, username="nacos", password="nacos")
@@ -103,6 +103,7 @@ def GetCart(request):
         status = obj.status
         create_time = obj.create_time
         update_time = obj.update_time
+        address  = obj.address
         params = {'id': gid}
         # mac docker 无法获得宿主机IP 通过 host.docker.internal 获取 每台宿主机 不同
         # linux 直接在 compose 中 使用 network: localhost 即可
@@ -155,6 +156,7 @@ def AddCart(request):
         status = good.get("status")
         create_time = good.get("create_time")
         update_time = good.get("update_time")
+        address = good.get('address')
         params = {'id': gid}
         # 请求库存 判断当前数量是否合法
         # url = 'http://localhost:8002/commodity/item'
@@ -178,7 +180,7 @@ def AddCart(request):
                 obj = cart.objects.filter(**dictFor)
                 if obj.count() == 0:
                     obj = cart.objects.create(buyer_id=uid, commodity_id=gid, cart_num=cart_num, status=status,
-                                              create_time=create_time, update_time=update_time)
+                                              create_time=create_time, update_time=update_time, address = address)
                 else:
                     obj = obj[0]
                     obj.cart_num = cart_num
