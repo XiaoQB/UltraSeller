@@ -1,18 +1,30 @@
 <template>
   <div id="buyerCart" class="buyerCart">
     <el-main>
-      {{ mock.goods_list }}
+      <span>收货地址 : </span>
+      <el-input
+        v-model="userAddress"
+        :disabled="noCommodityChose"
+        autocomplete="off"
+        placeholder="地址"
+        style="width: 600px; margin-bottom: 20px; margin-right: 50px"
+      ></el-input>
+      <el-button
+        type="primary"
+        :disabled="noCommodityChose"
+        @click="doBuyClick(selectedCommodities, userAddress)"
+        style="margin-bottom: 20px; width: 300px"
+        >购买选中的订单</el-button
+      >
       <el-table
         :data="mock.goods_list"
         borders
         stripe
         style="margin-top: 20px"
         ref="multipleTable"
-        @selection-change="handleSelectionChange()"
+        @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column type="index" label="序号" width="70px">
-        </el-table-column>
         <el-table-column label="商品ID" prop="commodityId"> </el-table-column>
         <el-table-column label="商品名称" prop="name">
           <template slot-scope="scope">
@@ -44,9 +56,7 @@
         <el-table-column label="描述" prop="description"> </el-table-column>
         <el-table-column label="卖家" prop="vendorName"> </el-table-column>
         <el-table-column label="购买数量" prop="num"> </el-table-column>
-        <el-table-column label="收货地址" prop="address"> </el-table-column>
         <el-table-column label="总价" prop="totalPrice"> </el-table-column>
-        <el-table-column label="操作"> </el-table-column>
       </el-table>
     </el-main>
   </div>
@@ -59,8 +69,9 @@ export default {
     return {
       dataTotalCount: 0, //查询条件的总数据量
       userCartList: [],
-      SelectedTotalPrice: 0, //选中的总价格
-      SelectedCommodities: [],
+      userAddress: "",
+      selectedCommodities: [],
+      noCommodityChose: true, //没有选择商品时，不能购买
       mock: {
         uid: "",
         goods_list: [
@@ -147,7 +158,7 @@ export default {
           this.userCartList = resp.goods_list;
           this.$message({
             type: "info",
-            message: this.userCartList,
+            message: resp,
           });
         })
         .catch(() => {
@@ -158,10 +169,55 @@ export default {
         });
     },
     handleSelectionChange(index) {
-      this.$message({
-            type: "error",
-            message: "编号" + index,
+      this.selectedCommodities = index;
+      if (this.selectedCommodities.length !== 0) {
+        this.noCommodityChose = false;
+      } else {
+        this.noCommodityChose = true;
+      }
+    },
+    doBuyClick(rows, address) {
+      if (address === null || address === "" || address === undefined) {
+        return this.$message({
+          type: "error",
+          message: "请输入地址",
+        });
+      }
+      this.http({
+        headers: {
+          token: localStorage.getItem("token"),
+          role: localStorage.getItem("user_role"),
+        },
+        method: "post",
+        url: `/api/order/create`,
+        data: {
+          buyerId: localStorage.getItem("user_id"),
+          address: address,
+          status: "WAIT_TO_PAY",
+          commodities: rows.map((resp) => {
+            return {
+              id: resp.commodityId,
+              vendorId: resp.vendorId,
+              name: resp.name,
+              price: resp.price,
+              num: resp.num,
+            };
+          }),
+        },
+      }).then((res) => {
+        if (res.data.code() === 200) {
+          this.$message({
+            type: "info",
+            message: "订单创建成功",
           });
+          this.userAddress = "";
+        } else {
+          this.$message({
+            type: "error",
+            message: "订单创建失败",
+          });
+        }
+      });
     },
   },
 };
