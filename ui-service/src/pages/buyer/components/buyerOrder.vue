@@ -354,36 +354,36 @@ export default {
               data: {
                 order: {
                   orderId: rows.orderId,
+                  address: rows.address,
                 },
                 subOrders: [
                   {
                     subOrderId: rows.subOrderId,
+                    address: rows.address,
                     status: "WAIT_TO_TRANSFER",
-                    totalPrice: rows.totalPrice,
+                    commodityId: rows.commodityId,
+                    commodityName: rows.commodityName,
+                    price: rows.price,
+                    num: rows.num,
+                    salerId: rows.salerId,
                   },
                 ],
-                userName: localStorage.getItem("user_name"),
+                buyerId: localStorage.getItem("user_id"),
               },
-            })
-              .then((response) => {
-                if (response.data.code === 200) {
-                  this.$message({
-                    type: "success",
-                    message: "订单更新成功",
-                  });
-                }
-              })
-              .catch(
+            }).then((response) => {
+              if (response.data.code === 200) {
                 this.$message({
-                  type: "error",
-                  message: "订单更新失败",
-                })
-              );
+                  type: "success",
+                  message: "订单更新成功",
+                });
+                this.updateUserOrderList();
+              }
+            });
           } else if (resp.data.code === 401) {
             this.$message({
-                  type: "error",
-                  message: resp.data.msg,
-                })
+              type: "error",
+              message: resp.data.msg,
+            });
           }
         })
         .catch(() => {
@@ -392,7 +392,6 @@ export default {
             message: "付款失败",
           });
         });
-      this.updateUserOrderList();
     },
   },
 };
