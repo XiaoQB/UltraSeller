@@ -345,7 +345,7 @@ export default {
         headers: {
           "Content-Type": "application/json;",
           token: localStorage["token"],
-          'role':localStorage['role']
+          'role':localStorage['user_role']
         },
         method: "put",
         url: `/api/commodity/item`,
@@ -383,7 +383,7 @@ export default {
       this.http({
             headers: {
               'token': localStorage['token'],
-              'role':localStorage['role']
+              'role':localStorage['user_role']
             },
             method: "get",
             url: `/api/commodity/search`,
@@ -415,7 +415,7 @@ export default {
         headers: {
           "Content-Type": "application/json;",
           'token': localStorage["token"],
-          'role':localStorage['role']
+          'role':localStorage['user_role']
         },
         method: "post",
         url: `/api/commodity/item`,

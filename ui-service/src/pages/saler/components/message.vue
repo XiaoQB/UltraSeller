@@ -250,6 +250,7 @@ export default {
       },
       payTableData: [
         {
+          id:"1",
           subOrderId:"20210101001",
           price:"10",
           buyerId:"10",
@@ -265,6 +266,7 @@ export default {
       ],
       doneTableData:[
         {
+          id:"1",
           subOrderId:"20210101001",
           price:"10",
           buyerId:"10",
@@ -311,19 +313,20 @@ export default {
         headers: {
           'Content-Type': 'application/json;',
           'token': localStorage['token'],
-          'role':localStorage['role']
+          'role':localStorage['user_role']
         },
         method: "get",
-        url: 'api/notification/saler/pay',
+        url: 'api/order/notification/saler/pay',
         params: {
-          user_ids:localStorage['user_id'],
+          salerId:localStorage['user_id'],
           page:this.formInline.currentPage,
           num:this.formInline.pageSize
         }
       })
           .then(response=> {
             if(response.data.code===200){
-              this.payTableData = response.data.data
+              this.payTableData = response.data.data.rows
+              this.dataTotalCount0 = response.data.data.total
             }
           })
           .catch(function (error) {
@@ -340,10 +343,10 @@ export default {
       this.http({
         headers: {
           'token': localStorage['token'],
-          'role':localStorage['role']
+          'role':localStorage['user_role']
         },
-        method: "get",
-        url: 'api/notification/',
+        method: "post",
+        url: 'api/order/notification/change',
         params: {
           id:messageId
         }
@@ -366,10 +369,10 @@ export default {
       this.http({
         headers: {
           'token': localStorage['token'],
-          'role':localStorage['role']
+          'role':localStorage['user_role']
         },
-        method: "get",
-        url: 'api/notification/',
+        method: "post",
+        url: 'api/order/notification/change',
         params: {
           id:messageId
         }
@@ -392,20 +395,20 @@ export default {
         headers: {
           'Content-Type': 'application/json;',
           'token': localStorage['token'],
-          'role':localStorage['role']
+          'role':localStorage['user_role']
         },
         method: "get",
-        url: 'api/notification/saler/complete',
+        url: 'api/order/notification/saler/complete',
         params: {
-          user_ids:localStorage['user_id'],
+          salerId:localStorage['user_id'],
           page:this.formInline.currentPage0,
           num:this.formInline.pageSize0
         }
       })
           .then(response=> {
             if(response.data.code===200){
-              this.doneTableData = response.data.data
-              this.dataTotalCount0 = response
+              this.doneTableData = response.data.data.rows
+              this.dataTotalCount = response.data.data.total
             }
           })
           .catch(function (error) {

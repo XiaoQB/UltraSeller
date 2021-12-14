@@ -244,7 +244,7 @@ export default {
           headers: {
             'Content-Type': 'application/json;',
             'token': localStorage['token'],
-            'role':localStorage['role']
+            'role':localStorage['user_role']
           },
           method: "get",
           url: '/api/order/saler-list',
@@ -273,7 +273,7 @@ export default {
         headers:{
           'Content-Type': 'application/json;',
           'token':window.localStorage['token'],
-          'role':localStorage['role']
+          'role':localStorage['user_role']
         },
         method:"put",
         url:"/api/order/change",
@@ -311,7 +311,7 @@ export default {
        this.http({
          headers:{
            'token':window.localStorage['token'],
-           'role':localStorage['role']
+           'role':localStorage['user_role']
          },
          method:"get",
          url:"/api/order/saler-orders-status",
@@ -352,7 +352,7 @@ export default {
         headers:{
           'Content-Type': 'application/json;',
           'token':window.localStorage['token'],
-          'role':localStorage['role']
+          'role':localStorage['user_role']
         },
         method:"put",
         url:"/api/order/change",

@@ -158,7 +158,7 @@ export default {
       this.http({
         headers: {
           'token': localStorage['token'],
-          'role': localStorage['role']
+          'role': localStorage['user_role']
         },
         method: "get",
         url: `api/wallet/user`,
@@ -182,7 +182,7 @@ export default {
       this.http({
         headers: {
           'token': localStorage['token'],
-          'role': localStorage['role']
+          'role': localStorage['user_role']
         },
         method: "get",
         url: `api/wallet/user/deal`,
@@ -205,7 +205,7 @@ export default {
       this.http({
         headers: {
           'token': localStorage['token'],
-          'role': localStorage['role']
+          'role': localStorage['user_role']
         },
         method: "get",
         url: "api/order/order-detail",

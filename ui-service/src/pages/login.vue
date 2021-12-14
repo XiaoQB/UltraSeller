@@ -265,9 +265,9 @@ export default {
     doRegister() {
       this.submitForm("register");
       this.http({
-        // headers: {
-        //   "Content-Type": "application/json;",
-        // },
+        headers: {
+          "Content-Type": "application/json;",
+        },
         method: "post",
         url: `/api/user/register`,
         transformRequest: [
