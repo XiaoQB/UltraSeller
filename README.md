@@ -1,6 +1,23 @@
 # UltraSeller
-### 关于Lab4
 
+## 前端打包
+```shell
+cd ui-service
+npm install
+npm run build
+```
+单独启动前端： 打包后`npm start`
+
+## 后端打包
+在项目根路径
+```
+mvn clean package
+```
+
+
+
+
+## 关于Lab4
 lab发布时间：2021年11月23日 
 
 lab截止时间：2021年12月15日晚上6点 
