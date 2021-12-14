@@ -1,7 +1,7 @@
 <template>
   <div id="buyerOrder" class="buyerOrder">
     <el-main>
-      <div className="search-bar">
+      <!-- <div className="search-bar">
         <el-select v-model="searchedStatus" placeholder="Select" align="right">
           <el-option
             v-for="item in statusOptions"
@@ -26,7 +26,7 @@
           style="margin-left: 10px"
           >重置</el-button
         >
-      </div>
+      </div> -->
       <div
         class="order-tables"
         style="margin-bottom: 20px; margin-top: 20px"
@@ -36,10 +36,12 @@
         <span style="float: left; margin-bottom: 10px"
           >父订单号: {{ item.orderId }}</span
         >
-        <span style="margin-bottom: 10px">总价格: {{ item.totalPrice }}</span>
         <span style="margin-bottom: 10px; float: right"
-          >总订单状态: {{ handleTranslateStatus(item.status) }}</span
+          >总价格: {{ item.totalPrice }}</span
         >
+        <!-- <span style="margin-bottom: 10px; float: right"
+          >总订单状态: {{ handleTranslateStatus(item.status) }}</span
+        > -->
         <el-table :data="item.subOrders" border>
           <el-table-column label="商品详情" type="expand">
             <template slot-scope="props">
@@ -104,9 +106,7 @@
                 <el-button
                   size="medium"
                   type="primary"
-                  @click="
-                    confirmReceived(scope.row.orderId, scope.row.subOrderId)
-                  "
+                  @click="confirmReceived(scope.row)"
                   >确认收货</el-button
                 >
               </span>
@@ -120,7 +120,7 @@
                 <el-button
                   size="medium"
                   type="primary"
-                  @click="returnBack(scope.row.orderId, scope.row.subOrderId)"
+                  @click="returnBack(scope.row)"
                   >退货</el-button
                 >
               </span>
@@ -145,28 +145,6 @@ export default {
         pageSize: 10,
       },
       userOrderList: [],
-      statusOptions: [
-        {
-          value: "WAIT_TO_PAY",
-          label: "待付款",
-        },
-        {
-          value: "WAIT_TO_TRANSFER",
-          label: "待发货",
-        },
-        {
-          value: "WAIT_TO_RECEIPT",
-          label: "待收货",
-        },
-        {
-          value: "COMPLETE",
-          label: "已完成",
-        },
-        {
-          value: "CANCEL",
-          label: "已取消",
-        },
-      ],
       searchedStatus: "",
     };
   },
@@ -191,24 +169,24 @@ export default {
           return value;
       }
     },
-    doSearch() {
-      this.http({
-        headers: {
-          token: window.localStorage["token"],
-        },
-        method: "get",
-        params: {
-          status: this.searchedStatus,
-        },
-      }).then((response) => {
-        if (response.data.code === 200) {
-          this.$message({
-            type: "success",
-            message: "查询成功",
-          });
-        }
-      });
-    },
+    // doSearch() {
+    //   this.http({
+    //     headers: {
+    //       token: window.localStorage["token"],
+    //     },
+    //     method: "get",
+    //     params: {
+    //       status: this.searchedStatus,
+    //     },
+    //   }).then((response) => {
+    //     if (response.data.code === 200) {
+    //       this.$message({
+    //         type: "success",
+    //         message: "查询成功",
+    //       });
+    //     }
+    //   });
+    // },
     updateUserOrderList() {
       this.http({
         headers: {
@@ -227,70 +205,121 @@ export default {
       });
       this.searchedStatus = "";
     },
-    confirmReceived(orderId, subOrderId) {
+    confirmReceived(rows) {
       this.http({
         headers: {
           token: localStorage.getItem("token"),
           role: localStorage.getItem("user_role"),
         },
-        method: "put",
-        url: "/api/order/change",
+        method: "PUT",
+        url: `/api/wallet/deal`,
         data: {
-          order: {
-            orderId: orderId,
-            // address: '',
-          },
-          subOrders: [{ subOrderId: subOrderId, status: "COMPLETE" }],
-          userName: localStorage.getItem("user_name"),
+          sellerName: rows.commodity.vendorName,
+          buyerName: localStorage.getItem("user_name"),
+          dealId: -1,
+          price: rows.totalPrice,
+          dealStatus: "finish",
         },
       })
-        .then((response) => {
-          if (response.data.code === 200) {
-            this.$message({
-              type: "success",
-              message: "确认收货",
-            });
+        .then((resp) => {
+          if (resp.data.code === 200) {
+            this.http({
+              headers: {
+                token: localStorage.getItem("token"),
+                role: localStorage.getItem("user_role"),
+              },
+              method: "put",
+              url: "/api/order/change",
+              data: {
+                order: {
+                  orderId: rows.orderId,
+                },
+                subOrders: [
+                  { subOrderId: rows.subOrderId, status: "COMPLETE" },
+                ],
+                userName: localStorage.getItem("user_name"),
+              },
+            })
+              .then((response) => {
+                if (response.data.code === 200) {
+                  this.$message({
+                    type: "success",
+                    message: "确认收货",
+                  });
+                }
+              })
+              .catch(
+                this.$message({
+                  type: "error",
+                  message: "没有收货" + rows.orderId + rows.subOrderId,
+                })
+              );
           }
         })
-        .catch(
+        .catch(() => {
           this.$message({
             type: "error",
-            message: "没有收货" + orderId + subOrderId,
-          })
-        );
+            message: "未完成订单" + rows.orderId + rows.subOrderId,
+          });
+        });
       this.updateUserOrderList();
     },
-    returnBack(orderId, subOrderId) {
+    returnBack(rows) {
       this.http({
         headers: {
           token: localStorage.getItem("token"),
           role: localStorage.getItem("user_role"),
         },
-        method: "put",
-        url: "/api/order/change",
+        method: "PUT",
+        url: `/api/wallet/deal`,
         data: {
-          order: {
-            orderId: orderId,
-            // address: '',
-          },
-          subOrders: [{ subOrderId: subOrderId, status: "CANCEL" }],
-          userName: localStorage.getItem("user_name"),
+          sellerName: rows.commodity.vendorName,
+          buyerName: localStorage.getItem("user_name"),
+          dealId: -1,
+          price: rows.totalPrice,
+          dealStatus: "refund",
         },
       })
-        .then((response) => {
-          if (response.data.code === 200) {
-            this.$message({
-              type: "success",
-              message: "退货完成",
-            });
+        .then((resp) => {
+          if (resp.data.code === 200) {
+            this.http({
+              headers: {
+                token: localStorage.getItem("token"),
+                role: localStorage.getItem("user_role"),
+              },
+              method: "put",
+              url: "/api/order/change",
+              data: {
+                order: {
+                  orderId: rows.orderId,
+                  // address: '',
+                },
+                subOrders: [{ subOrderId: rows.subOrderId, status: "CANCEL" }],
+                userName: localStorage.getItem("user_name"),
+              },
+            })
+              .then((response) => {
+                if (response.data.code === 200) {
+                  this.$message({
+                    type: "success",
+                    message: "退货完成",
+                  });
+                }
+              })
+              .catch(
+                this.$message({
+                  type: "error",
+                  message: "退货失败" + rows.orderId + rows.subOrderId,
+                })
+              );
           }
         })
-        .catch(
+        .catch(() => {
           this.$message({
             type: "error",
-            message: "退货失败" + orderId + subOrderId,
-          })
-        );
+            message: "退货失败",
+          });
+        });
       this.updateUserOrderList();
     },
     doPay(rows) {
@@ -304,14 +333,13 @@ export default {
         data: {
           sellerName: rows.commodity.vendorName,
           buyerName: localStorage.getItem("user_name"),
-          // dealId: 725,
+          dealId: -1,
           price: rows.totalPrice,
-          // id: "148",
-          // dealStatus: "o37mha",
+          dealStatus: "pending",
         },
       })
-        .then((response) => {
-          if (response.data.code === 200) {
+        .then((resp) => {
+          if (resp.data.code === 200) {
             this.$message({
               type: "success",
               message: "付款成功",
@@ -326,36 +354,44 @@ export default {
               data: {
                 order: {
                   orderId: rows.orderId,
+                  address: rows.address,
                 },
                 subOrders: [
-                  { subOrderId: rows.subOrderId, status: "WAIT_TO_TRANSFER" },
+                  {
+                    subOrderId: rows.subOrderId,
+                    address: rows.address,
+                    status: "WAIT_TO_TRANSFER",
+                    commodityId: rows.commodityId,
+                    commodityName: rows.commodityName,
+                    price: rows.price,
+                    num: rows.num,
+                    salerId: rows.salerId,
+                  },
                 ],
-                userName: localStorage.getItem("user_name"),
+                buyerId: localStorage.getItem("user_id"),
               },
-            })
-              .then((resp) => {
-                if (resp.data.code === 200) {
-                  this.$message({
-                    type: "success",
-                    message: "订单更新成功",
-                  });
-                }
-              })
-              .catch(
+            }).then((response) => {
+              if (response.data.code === 200) {
                 this.$message({
-                  type: "error",
-                  message: "订单更新失败",
-                })
-              );
+                  type: "success",
+                  message: "订单更新成功",
+                });
+                this.updateUserOrderList();
+              }
+            });
+          } else if (resp.data.code === 401) {
+            this.$message({
+              type: "error",
+              message: resp.data.msg,
+            });
           }
         })
-        .catch(
+        .catch(() => {
           this.$message({
             type: "error",
             message: "付款失败",
-          })
-        );
-      this.updateUserOrderList();
+          });
+        });
     },
   },
 };

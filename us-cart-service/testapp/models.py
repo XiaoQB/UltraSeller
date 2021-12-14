@@ -20,6 +20,7 @@ class cart(models.Model):
     status = models.CharField(max_length=32, default= 1)
     create_time = models.DateTimeField(blank=True, null=True)
     update_time = models.DateTimeField(blank=True, null=True)
+    address = models.TextField(max_length=256, null = True) # add 地址
     
     class Meta:
         db_table = 'Shopcar'

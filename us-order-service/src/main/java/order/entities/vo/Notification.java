@@ -27,7 +27,9 @@ public class Notification implements Serializable {
     protected String commodityName;
     protected Float price;
     protected Integer num;
+    protected Integer status;
     protected Date createTime;
     protected Date updateTime;
+
 
 }

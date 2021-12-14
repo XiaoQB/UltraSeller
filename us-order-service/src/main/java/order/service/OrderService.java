@@ -5,6 +5,7 @@ import cn.edu.fudan.common.entities.dbo.SubOrder;
 import order.entities.dto.CreateOrderDTO;
 import order.entities.vo.Notification;
 import order.entities.vo.OrderVO;
+import order.entities.vo.PageResult;
 import order.entities.vo.SubOrderVO;
 import order.exception.CommodityServiceException;
 import order.exception.OrderNotFoundException;
@@ -91,10 +92,10 @@ public interface OrderService {
 
     SubOrderVO getSubOrderDetailById(String subOrderId);
 
-    List<Notification> getPaymentNotification(String salerId);
+    List<Notification> getPaymentNotification(Integer salerId);
 
-    List<Notification> getCompleteNotification(String salerId);
+    List<Notification> getCompleteNotification(Integer salerId);
 
 
-    List<Notification> getReceiveNotification(String buyerId);
+    PageResult getReceiveNotification(Integer buyerId, Integer page, Integer num);
 }
