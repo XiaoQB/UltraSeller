@@ -128,6 +128,7 @@
           </el-table-column>
         </el-table>
       </div>
+      <el-empty v-if="noData" description="暂无订单"></el-empty>
     </el-main>
   </div>
 </template>
@@ -146,6 +147,7 @@ export default {
       },
       userOrderList: [],
       searchedStatus: "",
+      noData: false,
     };
   },
   mounted() {
@@ -201,7 +203,18 @@ export default {
           num: 10,
         },
       }).then((resp) => {
-        this.userOrderList = resp.data.data;
+        if (resp.data.code === 200) {
+          this.userOrderList = resp.data.data;
+          if (this.userOrderList.length === 0) {
+            this.noData = true;
+          }
+        } else {
+          this.$message({
+            type: "error",
+            message: "无法连接到服务器"
+          })
+          this.noData = true;
+        }
       });
       this.searchedStatus = "";
     },

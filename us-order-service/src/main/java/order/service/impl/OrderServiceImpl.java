@@ -112,9 +112,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderVO> getOrdersByUser(List<Integer> userIds, int page, int num) throws CommodityServiceException {
+    public List<OrderVO> getOrdersByUser(List<Integer> userIds) throws CommodityServiceException {
         List<OrderVO> orderVOList = new ArrayList<>();
-        List<Order> orders = orderDao.getOrdersByUser(userIds, (page - 1) * num, num);
+        List<Order> orders = orderDao.getOrdersByUser(userIds);
         for (Order order : orders) {
             List<SubOrder> subOrders = subOrderDao.getSubOrdersByOrder(order.getOrderId());
             orderVOList.add(new OrderVO(order, restUtil.getSubOrderVOList(subOrders)));

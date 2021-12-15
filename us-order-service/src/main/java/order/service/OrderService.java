@@ -64,7 +64,7 @@ public interface OrderService {
      * @return order list
      * @throws CommodityServiceException CommodityServiceException
      */
-    List<OrderVO> getOrdersByUser(List<Integer> userIds, int page, int num) throws CommodityServiceException;
+    List<OrderVO> getOrdersByUser(List<Integer> userIds) throws CommodityServiceException;
 
     /**
      * 根据 user id 获取 order list
