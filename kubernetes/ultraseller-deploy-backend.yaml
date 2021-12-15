@@ -1,0 +1,289 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: us-gateway-service
+  labels:
+    app: us-gateway-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: us-gateway-service
+  template:
+    metadata:
+      labels:
+        app: us-gateway-service
+    spec:
+      containers:
+        - name: us-gateway-service
+          image: 75560/gateway:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+          envFrom:
+            - configMapRef:
+                name: us-global-config
+            - configMapRef:
+                name: us-gateway-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: us-gateway-service
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 32002
+  selector:
+    app: us-gateway-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: us-cart-service
+  labels:
+    app: us-cart-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: us-cart-service
+  template:
+    metadata:
+      labels:
+        app: us-cart-service
+    spec:
+      containers:
+        - name: us-cart-service
+          image: 75560/cart:v1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          envFrom:
+            - configMapRef:
+                name: us-global-config
+            - configMapRef:
+                name: us-cart-config
+          ports:
+            - containerPort: 8684
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: us-cart-service
+spec:
+  ports:
+    - port: 8684
+      targetPort: 8684
+  selector:
+    app: us-cart-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: us-commodity-service
+  labels:
+    app: us-commodity-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: us-commodity-service
+  template:
+    metadata:
+      labels:
+        app: us-commodity-service
+    spec:
+      containers:
+        - name: us-commodity-service
+          image: 75560/commodity:v1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          envFrom:
+            - configMapRef:
+                name: us-global-config
+            - configMapRef:
+                name: us-commodity-config
+          ports:
+            - containerPort: 8681
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: us-commodity-service
+spec:
+  ports:
+    - port: 8681
+      targetPort: 8681
+  selector:
+    app: us-commodity-service
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: us-order-service
+  labels:
+    app: us-order-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: us-order-service
+  template:
+    metadata:
+      labels:
+        app: us-order-service
+    spec:
+      containers:
+        - name: us-order-service
+          image: 75560/order:v1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          envFrom:
+            - configMapRef:
+                name: us-global-config
+            - configMapRef:
+                name: us-order-config
+            - configMapRef:
+                name: us-rabbitmq-config
+          ports:
+            - containerPort: 8580
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: us-order-service
+spec:
+  ports:
+    - port: 8580
+      targetPort: 8580
+  selector:
+    app: us-order-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: us-user-service
+  labels:
+    app: us-user-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: us-user-service
+  template:
+    metadata:
+      labels:
+        app: us-user-service
+    spec:
+      containers:
+        - name: us-user-service
+          image: 75560/user:v1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          envFrom:
+            - configMapRef:
+                name: us-global-config
+            - configMapRef:
+                name: us-user-config
+          ports:
+            - containerPort: 8680
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: us-user-service
+spec:
+  ports:
+    - port: 8680
+      targetPort: 8680
+  selector:
+    app: us-user-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: us-wallet-service
+  labels:
+    app: us-wallet-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: us-wallet-service
+  template:
+    metadata:
+      labels:
+        app: us-wallet-service
+    spec:
+      containers:
+        - name: us-wallet-service
+          image: 75560/wallet:v1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          envFrom:
+            - configMapRef:
+                name: us-global-config
+            - configMapRef:
+                name: us-wallet-config
+          ports:
+            - containerPort: 8685
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: us-wallet-service
+spec:
+  ports:
+    - port: 8685
+      targetPort: 8685
+  selector:
+    app: us-wallet-service
