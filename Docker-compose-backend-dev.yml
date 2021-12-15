@@ -1,0 +1,47 @@
+version: "3"
+services:
+
+  us-gateway-service:
+    build: us-gateway-service
+    ports:
+      - "8000:8000"
+    networks:
+      - us-service-net
+
+  us-user-service:
+    build: us-user-service
+    ports:
+      - "8001:8001"
+    networks:
+      - us-service-net
+
+  us-commodity-service:
+    build: us-commodity-service
+    ports:
+      - "8002:8002"
+    networks:
+      - us-service-net
+
+  us-wallet-service:
+    build: us-wallet-service
+    ports:
+      - "8003:8003"
+    networks:
+      - us-service-net
+
+  us-order-service:
+    build: us-order-service
+    ports:
+      - "8004:8004"
+    networks:
+      - us-service-net
+
+  us-cart-service:
+    build: us-cart-service
+    ports:
+      - "8012:8012"
+    networks:
+      - us-service-net
+
+networks:
+  us-service-net: {}
