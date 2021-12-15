@@ -119,8 +119,24 @@
            <div v-if="scope.row.status==='未发货'">
              <el-button
                  size="mini"
-                 @click="shipments(scope.row)">发货</el-button>
+                 @click="showDialogTran()">发货</el-button>
            </div>
+            <el-dialog title="选择物流公司" :visible.sync="showDialogTrans" width="45%">
+              <el-form ref="commodityList" :model="address"  label-width="100px">
+                <el-select v-model="trans" placeholder="Select" align="right">
+                  <el-option
+                      v-for="item in optionsTrans"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form>
+
+              <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="shipments(scope.row)">提交</el-button>
+      </span>
+            </el-dialog>
             <el-button
                 size="mini"
                 @click="changeAddress(scope.row)">修改地址</el-button>
@@ -154,6 +170,8 @@
             <el-button type="primary" @click="changeSubmit()">提交</el-button>
       </span>
     </el-dialog>
+
+
   </div>
 </template>
 
@@ -163,6 +181,7 @@ export default {
   data() {
     return {
       showDialog:false,
+      showDialogTrans:false,
       address:"",
       dataTotalCount: 0,      //查询条件的总数据量
       formInline: {
@@ -185,6 +204,20 @@ export default {
         value: '已取消',
         label: '已取消'
       }],
+      optionsTrans: [{
+        value: '顺丰',
+        label: '顺丰'
+      }, {
+        value: '圆通',
+        label: '圆通'
+      }, {
+        value: '神通',
+        label: '神通'
+      }, {
+        value: '此路不通',
+        label: '此路不通'
+      }],
+      trans:'',
       columnIndex:['图片','商品名称'],
       tableData: [
         {
@@ -266,6 +299,9 @@ export default {
               });
             });
       },
+    showDialogTran(){
+      this.showDialogTrans = true
+    },
 
     shipments(row){
       console.log(row.address)
@@ -282,7 +318,7 @@ export default {
           subOrders:[ {
             subOrderId:row.subOrderId,
             address:row.address,
-            status:row.status,
+            status:"WAIT_TO_RECEIPT",
             totalPrice:row.totalPrice
           }],
 
