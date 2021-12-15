@@ -115,11 +115,9 @@ public class OrderController {
 
     @GetMapping("/list")
     //买家订单
-    public ResponseEntity<List<OrderVO>> getOrdersByUser(@RequestParam("user_ids") List<Integer> userIds,
-                                                         @RequestParam("page") Integer page,
-                                                         @RequestParam("num") Integer num) {
+    public ResponseEntity<List<OrderVO>> getOrdersByUser(@RequestParam("user_ids") List<Integer> userIds) {
         try {
-            List<OrderVO> orders = orderService.getOrdersByUser(userIds, page, num);
+            List<OrderVO> orders = orderService.getOrdersByUser(userIds);
             return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orders);
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);

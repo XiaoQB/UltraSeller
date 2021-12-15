@@ -59,7 +59,7 @@ public interface OrderDao {
      * @param userIds userIds
      * @return order list
      */
-    List<Order> getOrdersByUser(@Param("userIds") List<Integer> userIds, @Param("page") Integer page, @Param("num") Integer num);
+    List<Order> getOrdersByUser(@Param("userIds") List<Integer> userIds);
 
     List<SubOrder> getSubOrdersByUser(@Param("userIds") List<Integer> userIds, @Param("page") Integer page, @Param("num") Integer num);
 

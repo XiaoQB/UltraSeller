@@ -98,7 +98,6 @@
                 </foreach>
             </if>
         </where>
-        limit #{page},#{num}
     </select>
 
     <select id="getSubOrdersByUser" resultMap="subOrder">
