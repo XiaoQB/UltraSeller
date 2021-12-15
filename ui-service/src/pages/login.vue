@@ -191,12 +191,9 @@ export default {
           .then((res) => {
             if (res.data.code === 200) {
               window.localStorage["token"] = res.data.data.token;
-
-
               window.localStorage["user_id"] = res.data.data.userId;
               window.localStorage["user_name"] = this.user.username;
               window.localStorage["user_role"] = this.user.role;
-
               this.http({
                 headers: {
                   token: res.data.data.token,
@@ -221,7 +218,6 @@ export default {
               this.$router.push({ name: "saler", path: "/saler" });
             } else {
               alert("您输入的用户名或密码错误！");
-
             }
           })
           .catch(() => {
@@ -265,9 +261,9 @@ export default {
     doRegister() {
       this.submitForm("register");
       this.http({
-        // headers: {
-        //   "Content-Type": "application/json;",
-        // },
+        headers: {
+          "Content-Type": "application/json;",
+        },
         method: "post",
         url: `/api/user/register`,
         transformRequest: [

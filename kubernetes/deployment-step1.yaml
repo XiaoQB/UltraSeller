@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nacos-server
+  labels:
+    app: nacos-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nacos-server
+  template:
+    metadata:
+      labels:
+        app: nacos-server
+    spec:
+      containers:
+        - name: nacos-server
+          image: 75560/nacos:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8848
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: naocs-server
+spec:
+  ports:
+    - port: 8848
+      targetPort: 8848
+  selector:
+    app: nacos-server

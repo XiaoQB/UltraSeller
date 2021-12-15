@@ -7,7 +7,7 @@
       <el-input
         class="input"
         placeholder="请输入商品名"
-        v-model="input"
+        v-model="search"
         clearable
         style="width: 600px"
       >
@@ -15,9 +15,16 @@
       <el-button
         class="search-button"
         type="primary"
-        @click="doSearch()"
+        @click="doSearch(search)"
         style="marginLeft: 20px"
         >搜索商品</el-button
+      >
+      <el-button
+        class="search-button"
+        type="primary"
+        @click="updateCommodityData()"
+        style="marginLeft: 20px"
+        >重置</el-button
       >
       <div class="goods" @change="updateCommodityData()">
         <el-card
@@ -29,7 +36,11 @@
         >
           <div style="padding: 5px">
             <img :src="item.imgLink" class="item-image" />
-            <el-descriptions title="商品信息" column="1" style="margin-top: 10px">
+            <el-descriptions
+              title="商品信息"
+              column="1"
+              style="margin-top: 10px"
+            >
               <el-descriptions-item label="名字">
                 {{ item.name }}</el-descriptions-item
               >
@@ -81,7 +92,9 @@
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
             <el-button type="primary" @click="doBuyClick()">创 建</el-button>
-            <el-button type="primary" @click="doAddToCartClick()">加入购物车</el-button>
+            <el-button type="primary" @click="doAddToCartClick()"
+              >加入购物车</el-button
+            >
           </div>
         </el-dialog>
       </div>
@@ -105,7 +118,7 @@ export default {
   data() {
     return {
       num: 0,
-      input: "",
+      search: "",
       commodityIndex: -1, //商品索引
       disabledToBuy: true,
       totalItems: 6,
@@ -114,7 +127,7 @@ export default {
       dialogFormVisible: false, // 弹出框
       userForm: {
         quantityToBuy: 1, // 购买数量
-        userAddress: "", // 用户地址
+        userAddress: "二叉楼", // 用户地址
       },
     };
   },
@@ -128,12 +141,10 @@ export default {
           token: localStorage.getItem("token"),
           role: localStorage.getItem("user_role"),
         },
-
         method: "GET",
         url: "/api/commodity/listall",
-
         params: {
-          username: localStorage.getItem("user_name"),
+          // username: localStorage.getItem("user_name"),
           page: 1,
           pagesize: 10,
           seq: 0,
@@ -148,37 +159,33 @@ export default {
           ) {
             this.disabledToBuy = false;
           }
-          // this.$message({
-          //   type: "info",
-          //   message: "欢迎！" + localStorage.getItem("user_name"),
-          // });
         })
         .catch((error) => {
           console.error(error);
         });
     },
-    doSearch(search) {
+    doSearch(value) {
       this.http({
         headers: {
-          token: localStorage["token"],
+          token: localStorage.getItem("token"),
+          role: localStorage.getItem("user_role"),
         },
         method: "get",
-        url: `/api/commidity/search`,
+        url: `/api/commodity/search`,
         params: {
-          q: search,
-          pagesize: this.pageSize,
-          page: this.currentPage,
-          seq: 0,
+          q: value,
+          pagesize: 20,
+          page: 1,
         },
       }).then((res) => {
-        if (res.data.code() === 200) {
-          this.commodityList = res.data.rows;
-          this.dataTotalCount = res.data.records;
-        } else {
-          this.$message({
-            type: "error",
-            message: "系统异常: " + res.data.msg,
-          });
+        if (res.data.code === 200) {
+          this.commodityList = res.data.data.rows;
+          if (this.commodityList.length === 0) {
+            this.$message({
+              type: "info",
+              message: "没有该商品",
+            });
+          }
         }
       });
     },
@@ -246,7 +253,7 @@ export default {
       }).then((res) => {
         this.commodityIndex = -1;
         this.userForm.quantityToBuy = 1;
-        this.userForm.userAddress = "";
+        this.userForm.userAddress = "二叉楼";
         this.dialogFormVisible = false;
         if (res.data.code() === 200) {
           this.$message({
@@ -293,9 +300,7 @@ export default {
   margin-top: 30px;
 }
 .buy-commodity-bottom {
-
   width: 150px;
   float: center;
-
 }
 </style>
