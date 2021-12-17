@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: ultraseller-mysql-container
-          image: 75560/ultraseller-mysql:latest
+          image: 75560/ultraseller-mysql:latest1
           imagePullPolicy: IfNotPresent
           env:
             - name: MYSQL_ROOT_PASSWORD

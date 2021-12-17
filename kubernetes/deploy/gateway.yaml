@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: us-user-service
+  name: us-gateway-service
   namespace: ase-ns-12
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: us-user-service
+      app: us-gateway-service
   template:
     metadata:
       labels:
-        app: us-user-service
+        app: us-gateway-service
     spec:
       imagePullSecrets:
         - name: registry-pull-secret
       containers:
-        - name: us-user-service
-          image: 75560/user:v3
-          imagePullPolicy: Always
+        - name: us-gateway-service
+          image: 75560/ultraseller-gateway:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - protocol: TCP
-              containerPort: 8001
+              containerPort: 8000
           env:
             - name: JAVA_OPTS
               value: "-Xmx1g"
@@ -34,24 +34,23 @@ spec:
               memory: 1Gi
           readinessProbe:
             tcpSocket:
-              port: 8001
+              port: 8000
             initialDelaySeconds: 60
             periodSeconds: 10
           livenessProbe:
             tcpSocket:
-              port: 8001
+              port: 8000
             initialDelaySeconds: 60
             periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: us-user-service
+  name: us-gateway-service
   namespace: ase-ns-12
 spec:
-  type: LoadBalancer
   ports:
-    - name: http
-      port: 8001
+     - port: 8000
+       protocol: TCP
   selector:
-    app: us-user-service
+    app: ultraseller-gateway-label
