@@ -1,3 +1,4 @@
+mvn clean package
 echo "login  with password" & docker login --username=75560 --password 75560zcb
 echo "build docker images and tag" & docker build -t ultraseller-users:latest ./us-user-service
 docker build -t 75560/ultraseller-commodity:latest ./us-commodity-service
