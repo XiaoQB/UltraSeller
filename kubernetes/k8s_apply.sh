@@ -1,5 +1,6 @@
 kubectl apply -f commodity.yaml
 kubectl apply -f user.yaml
+kubectl apply -f ui.yaml
 #kubectl apply -f gateway.yaml
 #kubectl apply -f cart.yaml
 
