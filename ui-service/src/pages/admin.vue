@@ -18,10 +18,11 @@
         <el-tab-pane label="商品管理" name="commodityManager">
           <commodityManager v-if="activeName == 'commodityManager'" ref="commodityManager"></commodityManager>
         </el-tab-pane>
-
       </el-tabs>
+
     </el-main>
   </el-container>
+
 
 
 </template>

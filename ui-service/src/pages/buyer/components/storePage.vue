@@ -117,6 +117,7 @@ export default {
 
   data() {
     return {
+      curretDate: "",
       num: 0,
       search: "",
       commodityIndex: -1, //商品索引
@@ -133,6 +134,7 @@ export default {
   },
   mounted() {
     this.updateCommodityData();
+    this.getCurretDate();
   },
   methods: {
     updateCommodityData() {
@@ -189,6 +191,29 @@ export default {
         }
       });
     },
+    getCurretDate() {
+      var nowDate = new Date();
+      let date = {
+        year: nowDate.getFullYear(),
+        month: nowDate.getMonth() + 1,
+        day: nowDate.getDate(),
+        hour: nowDate.getHours(),
+        min: nowDate.getMinutes(),
+        sec: nowDate.getSeconds(),
+      };
+      this.curretDate =
+        date.year +
+        "/" +
+        date.month +
+        "/" +
+        date.day +
+        " " +
+        date.hour +
+        ":" +
+        date.min +
+        ":" +
+        date.sec;
+    },
     handleVisible(value) {
       this.dialogFormVisible = true;
       this.commodityIndex = value;
@@ -237,36 +262,41 @@ export default {
       this.http({
         headers: {
           token: localStorage.getItem("token"),
+          // "Content-Type": "application/json",
+          role: localStorage.getItem("user_role"),
         },
-        method: "post",
-        url: `/api/testapp/shopcar/AddCart/`,
+        method: "POST",
+        url: "/api/testapp/shopcar/AddCart/",
         data: {
           uid: localStorage.getItem("user_id"),
-          address: this.userForm.userAddress,
           good_list: [
             {
               id: this.commodityList[this.commodityIndex].id,
-              num: this.userForm.quantityToBuy,
+              cart_num: this.userForm.quantityToBuy,
+              status: "1",
+              creat_time: this.curretDate,
+              update_time: this.curretDate,
             },
           ],
         },
-      }).then((res) => {
-        this.commodityIndex = -1;
-        this.userForm.quantityToBuy = 1;
-        this.userForm.userAddress = "二叉楼";
-        this.dialogFormVisible = false;
-        if (res.data.code() === 200) {
+      })
+        .then((res) => {
+          this.commodityIndex = -1;
+          this.userForm.quantityToBuy = 1;
+          this.userForm.userAddress = "二叉楼";
+          this.dialogFormVisible = false;
+
           this.$message({
             type: "info",
-            message: "已加入购物车",
+            message: res,
           });
-        } else {
+        })
+        .catch(() => {
           this.$message({
             type: "error",
-            message: "加入失败",
+            message: "系统服务异常",
           });
-        }
-      });
+        });
     },
   },
 };

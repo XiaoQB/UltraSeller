@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: ui-service
-          image: shelahkuang/ui-service:latest
+          image: 75560/ui-service:v1
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

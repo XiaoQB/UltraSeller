@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ultraseller-ui-deployment
+  namespace: ase-ns-12
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: ultraseller-ui-label
+  template:
+    metadata:
+      labels:
+        name: ultraseller-ui-label
+    spec:
+      containers:
+        - name: ultraseller-ui-container
+          image: 75560/ultraseller-ui:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              memory: 1Gi
+              cpu: 500m
+            requests:
+              memory: 1Gi
+              cpu: 500m
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ultraseller-ui
+  namespace: ase-ns-12
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+  selector:
+    name: ultraseller-ui-label
+  type: LoadBalancer

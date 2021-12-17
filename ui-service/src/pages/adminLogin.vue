@@ -151,7 +151,9 @@ export default {
                   message: "登录成功"
                 })
                 window.localStorage["token"] = JSON.stringify(res.data.data);
-                console.log(localStorage["token"])
+                window.localStorage["user_name"] = "admin"
+                window.localStorage["user_role"] = "admin"
+
                 this.$router.push({
                   name: "admin",
                 });
