@@ -147,6 +147,7 @@ export default {
       this.http({
         headers: {
           token: localStorage.getItem("token"),
+          role: localStorage.getItem("user_role"),
         },
         method: "GET",
         url: "/api/testapp/shopcar/GetCart/",

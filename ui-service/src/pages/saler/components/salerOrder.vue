@@ -110,6 +110,10 @@
             prop="status">
         </el-table-column>
         <el-table-column
+            label="物流公司"
+            prop="logistics">
+        </el-table-column>
+        <el-table-column
             label="创建时间"
             prop="createTime">
         </el-table-column>
@@ -189,19 +193,19 @@ export default {
         pageSize: 10,
       },
       options: [{
-        value: '待付款',
+        value: 'WAIT_TO_PAY',
         label: '待付款'
       }, {
-        value: '待发货',
+        value: 'WAIT_TO_TRANSFER',
         label: '待发货'
       }, {
-        value: '待收货',
+        value: 'WAIT_TO_RECEIPT',
         label: '待收货'
       }, {
-        value: '已完成',
+        value: 'COMPLETE',
         label: '已完成'
       }, {
-        value: '已取消',
+        value: 'CANCEL',
         label: '已取消'
       }],
       optionsTrans: [{
@@ -217,7 +221,7 @@ export default {
         value: '此路不通',
         label: '此路不通'
       }],
-      trans:'',
+      trans:'',//物流公司
       columnIndex:['图片','商品名称'],
       tableData: [
         {
@@ -235,6 +239,7 @@ export default {
           createTime:"2021-11-10 17:35:37",
           num:'5',
           totalPrice:"50",
+          logistics:"顺丰"
 
         },
       ],
@@ -243,9 +248,9 @@ export default {
         subOrderId:"",
         address:"",
         status:"",
-        totalPrice: 0
-      }
-      // currentDate: new Date()
+        totalPrice: 0,
+        logistics:""
+      },
     };
   },
   mounted(){
@@ -270,6 +275,9 @@ export default {
     UserImageHandler() {
       return true;
     },
+    /**
+     * 获取更新订单list
+     */
     getOrderList() {
         var that = this;
 
@@ -302,7 +310,10 @@ export default {
     showDialogTran(){
       this.showDialogTrans = true
     },
-
+    /**
+     * 发货
+     * @param row
+     */
     shipments(row){
       console.log(row.address)
       this.http({
@@ -314,16 +325,16 @@ export default {
         method:"put",
         url:"/api/order/change",
         data:{
-          order:{},
+          order:{
+          },
           subOrders:[ {
             subOrderId:row.subOrderId,
             address:row.address,
             status:"WAIT_TO_RECEIPT",
-            totalPrice:row.totalPrice
+            totalPrice:row.totalPrice,
+            logistics:this.trans
           }],
-
-
-          userName:localStorage['user_name']
+          buyerId:""
         }
       }).then(response=>{
         if(response.data.code===200){
@@ -379,7 +390,8 @@ export default {
         subOrderId:row.subOrderId,
         address:row.address,
         status:row.status,
-        totalPrice: row.totalPrice
+        totalPrice: row.totalPrice,
+        logistics:row.logistics,
       }
     },
     changeSubmit(){
@@ -393,14 +405,16 @@ export default {
         method:"put",
         url:"/api/order/change",
         data:{
-          order:{},
+          order:{
+          },
           subOrders:[ {
             subOrderId:this.changeInfo.subOrderId,
             address:this.address,
             status:this.changeInfo.status,
-            totalPrice:this.changeInfo.totalPrice
+            totalPrice:this.changeInfo.totalPrice,
+            logistics: this.changeInfo.logistics
           }],
-          userName:localStorage['user_name']
+          buyerId:""
         }
 
       })

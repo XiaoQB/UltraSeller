@@ -1,234 +1,180 @@
 <template>
   <div>
-    <div>
-      <el-input
-        placeholder="请输入搜索商品的名称"
+    <el-input
+        class="input"
+        placeholder="请输入商品"
         v-model="search"
-        style="width:200px;"
-      ></el-input>
-      <el-button
-        @click="doSearch(search)"
+        clearable
+    >
+    </el-input>
+    <el-button
+        @click="doSearch()"
         type="primary"
         icon="el-icon-search"
         align="right"
-        >搜索商品</el-button
-      >
-      <el-button
+    >搜索商品</el-button
+    >
+    <el-button
         type="primary"
         class="buttonadd"
-        @click="addCommodity"
+        @click="addCommodity()"
         round
         style="width:100px;"
-        >添加商品</el-button
-      >
-      <el-dialog title="商品详情" :visible.sync="showDialog" width="45%">
-        <el-form ref="tableData" :model="tableData[nowRow]" label-width="100px">
-          <el-form-item label="编号" prop="id">
-            <span v-if="!edit">{{ tableData[nowRow].id }}</span>
-            <el-input v-else v-model="tableData[nowRow].id"></el-input>
-          </el-form-item>
-          <el-form-item label="商品名称" prop="name">
-            <span v-if="!edit">{{ tableData[nowRow].name }}</span>
-            <el-input v-else v-model="tableData[nowRow].name"></el-input>
-          </el-form-item>
-          <el-form-item label="图片" prop="imgLink">
-            <img
-              :src="tableData[nowRow].imgLink"
-              alt=""
-              style="width: 150px;height: 150px"
-            />
-          </el-form-item>
-          <el-form-item label="价格" prop="price">
-            <span v-if="!edit">{{ tableData[nowRow].price }}</span>
-            <el-input v-else v-model="tableData[nowRow].price"></el-input>
-          </el-form-item>
-          <el-form-item label="商品描述" prop="description">
-            <span v-if="!edit">{{ tableData[nowRow].description }}</span>
-            <el-input v-else v-model="tableData[nowRow].description"></el-input>
-          </el-form-item>
-          <el-form-item label="库存" prop="inventory">
-            <span v-if="!edit">{{ tableData[nowRow].inventory }}</span>
-            <el-input v-else v-model="tableData[nowRow].inventory"></el-input>
-          </el-form-item>
-          <el-form-item label="所有者名字" prop="vendorName">
-            <span v-if="!edit">{{ tableData[nowRow].vendorName }}</span>
-            <el-input v-else v-model="tableData[nowRow].vendorName"></el-input>
-          </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          ` <el-button @click="handleEdit(nowRow)">编辑</el-button>
-          <el-button type="primary" @click="handleSubmit()">提交</el-button>
-        </span>
-      </el-dialog>
-      <el-dialog title="添加商品" :visible.sync="showDialog2" width="45%">
-        <el-form ref="commodity1" :model="commodity1" label-width="100px">
-          <el-form-item label="商品名称" prop="name">
-            <el-input v-model="commodity1.name"></el-input>
-          </el-form-item>
-          <el-form-item
-              label="图片"
-              prop="imgLink"
-          >
-            <el-upload
-                class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :before-upload = 'beforeAvatarUpload'
-                :http-request = 'handleUpload'>
-              <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">jpg/png 文件大小小于500kb</div>
-            </el-upload>
-          </el-form-item>
-          <el-form-item label="价格" prop="price">
-            <el-input v-model="commodity1.price"></el-input>
-          </el-form-item>
-          <el-form-item label="商品描述" prop="description">
-            <el-input v-model="commodity1.description"></el-input>
-          </el-form-item>
-          <el-form-item label="库存" prop="inventory">
-            <el-input v-model="commodity1.inventory"></el-input>
-          </el-form-item>
-          <el-form-item label="所有者名字" prop="vendorName">
-            <el-input v-model="commodity1.vendorName"></el-input>
-          </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="handleAdd()">提交</el-button>
-        </span>
-      </el-dialog>
-    </div>
-    <el-table :data="tableData" border stripe style="width: 100%">
-      <el-table-column label="序号" align="center" width="70px">
-        <template slot-scope="scope">
-          {{
-            (formInline.currentPage - 1) * formInline.pageSize +
-              scope.$index +
-              1
-          }}
-        </template>
-      </el-table-column>
-      <el-table-column label="商品编号" prop="id"> </el-table-column>
-      <el-table-column label="商品名称" prop="name">
-        <template slot-scope="scope">
-          <el-input
-            placeholder="请输入内容"
-            v-show="scope.row.show"
-            v-model="scope.row.name"
-          ></el-input>
-          <span v-show="!scope.row.show">{{ scope.row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="图片" prop="imgLink">
-        <template slot-scope="scope">
-          <el-popover placement="top-start" title="" trigger="hover">
-            <img
-              :src="scope.row.imgLink"
-              alt=""
-              style="width: 150px;height: 150px"
-            />
-            <img
-              slot="reference"
-              :src="scope.row.imgLink"
-              style="width: 100px;height: 100px"
-            />
-          </el-popover>
-        </template>
-      </el-table-column>
-      <el-table-column label="价格" prop="price"> </el-table-column>
-      <el-table-column label="商品描述" prop="description"> </el-table-column>
-      <el-table-column label="库存" prop="inventory"> </el-table-column>
-      <el-table-column label="所有者名字" prop="vendorName"> </el-table-column>
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="getDetail(scope.$index, scope.row)"
-            >详情
-          </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
-            >删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      background
-      layout="total, prev, pager, next, sizes,jumper"
-      :page-sizes="[6, 12, 18]"
-      :page-size="formInline.pageSize"
-      :total="dataTotalCount"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
+    >添加商品</el-button
     >
-    </el-pagination>
+    <div class="goods">
+      <el-row>
+        <el-col
+            :span="4"
+            v-for="(o, index) in commodityList"
+            :key="o"
+        >
+          <el-card class="card"  shadow="hover">
+            <img
+                :src="o.imgLink"
+                style="width: 250px;height: 250px"
+                class="item-image"
+            />
+            <el-descriptions title="商品信息" :column="1">
+              <el-descriptions-item label="名字">{{o.name }}</el-descriptions-item>
+              <el-descriptions-item label="描述">
+                <el-tag size="small">{{ o.description }}</el-tag>
+              </el-descriptions-item>
+              <el-descriptions-item label="价格">{{o.price }}</el-descriptions-item>
+            </el-descriptions>
+            <div style="padding: 5px">
+              <div class="bottom clearfix">
+                <!-- <time class="time">{{ currentDate }}</time> -->
+                <el-button size="mini" @click="getDetail(o, index)"
+                >详情
+                </el-button>
+                <el-button
+                    size="mini"
+                    type="danger"
+                    @click="handleDelete(o, index)"
+                >删除
+                </el-button>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-pagination
+          background
+          layout="total, prev, pager, next, sizes,jumper"
+          :page-sizes="[5, 10, 15]"
+          :page-size="this.formInline.pageSize"
+          :total="this.dataTotalCount"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+      >
+      </el-pagination>
+    </div>
+    <el-dialog title="商品详情" :visible.sync="showDialog" width="45%">
+      <el-form
+          ref="commodityList"
+          :model="commodityList[index]"
+          label-width="100px"
+      >
+        <el-form-item label="编号" prop="id">
+          <span v-if="!edit">{{ commodityList[index].id }}</span>
+          <el-input v-else v-model="commodityList[index].id"></el-input>
+        </el-form-item>
+        <el-form-item label="商品名称" prop="name">
+          <span v-if="!edit">{{ commodityList[index].name }}</span>
+          <el-input v-else v-model="commodityList[index].name"></el-input>
+        </el-form-item>
+        <el-form-item label="图片" prop="imgLink">
+          <img
+              :src="commodityList[index].imgLink"
+              alt=""
+              style="width: 150px;height: 150px"
+          />
+        </el-form-item>
+        <el-form-item label="价格" prop="price">
+          <span v-if="!edit">{{ commodityList[index].price }}</span>
+          <el-input v-else v-model="commodityList[index].price"></el-input>
+        </el-form-item>
+        <el-form-item label="商品描述" prop="description">
+          <span v-if="!edit">{{ commodityList[index].description }}</span>
+          <el-input
+              v-else
+              v-model="commodityList[index].description"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="库存" prop="inventory">
+          <span v-if="!edit">{{ commodityList[index].inventory }}</span>
+          <el-input v-else v-model="commodityList[index].inventory"></el-input>
+        </el-form-item>
+        <el-form-item label="所有者名字" prop="vendorName">
+          <span v-if="!edit">{{ commodityList[index].vendorName }}</span>
+          <el-input v-else v-model="commodityList[index].vendorName"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        ` <el-button @click="handleEdit(index)">编辑</el-button>
+        <el-button type="primary" @click="handleSubmit()">提交</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="添加商品" :visible.sync="showDialog2" width="45%">
+      <el-form ref="commodityList" :model="commodity" label-width="100px">
+        <el-form-item label="商品名称" prop="name">
+          <el-input v-model="commodity.name"></el-input>
+        </el-form-item>
+        <el-form-item
+            label="图片"
+            prop="imgLink"
+        >
+          <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :before-upload = 'beforeAvatarUpload'
+              :http-request = 'handleUpload'>
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">jpg/png 文件大小小于500kb</div>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="价格" prop="price">
+          <el-input v-model="commodity.price"></el-input>
+        </el-form-item>
+        <el-form-item label="商品描述" prop="description">
+          <el-input v-model="commodity.description"></el-input>
+        </el-form-item>
+        <el-form-item label="库存" prop="inventory">
+          <el-input v-model="commodity.inventory"></el-input>
+        </el-form-item>
+        <el-form-item label="所有者名字" prop="vendorName">
+          <el-input v-model="userName"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="handleAdd()">提交</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import {getFileNameUUID, put} from "../services/alioss";
 
-const commodityUrl = '/api';
-
-const userUrl = '/api';
-
 export default {
   name: "commodityManager",
   data() {
     return {
-      showDialog: false,
+      userName:window.localStorage['user_name'],
       showDialog2: false,
+      showDialog: false,
       edit: false,
-      nowRow: 0,
-      seq: 0,
-      search: "",
-      dataTotalCount: 0, //查询条件的总数据量
-      formInline: {
-        currentPage: 1,
-        pageSize: 10,
-      },
-      tableData: [
-        {
-          id: "20210101001",
-          name: "面包",
-          imgLink:
-            "https://ts3.cn.mm.bing.net/th/id/OIP-C.305fYj0cWoTv_Q8TIbJ02wHaHG?w=196&h=188&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "10",
-          description: "好吃",
-          inventory: "10",
-          vendorName: "test01",
-        },
-        {
-          id: "20210101002",
-          name: "白酒",
-          imgLink:
-            "https://ts1.cn.mm.bing.net/th/id/OIP-C.PWh-k1csn9MRuq9-kqf0wwHaLG?w=196&h=293&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "100",
-          description: "一喝就倒",
-          inventory: "10",
-          vendorName: "test01",
-        },
-        {
-          id: "20210101003",
-          name: "卫生纸",
-          imgLink:
-            "https://ts2.cn.mm.bing.net/th/id/OIP-C.3yAPWpweG_grlE-hx0GSbQHaE7?w=255&h=180&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "10",
-          description: "可以擦皮皮",
-          inventory: "10",
-          vendorName: "test01",
-        },
-        {
-          id: "20210101004",
-          name: "矿泉水",
-          imgLink:
-            "https://ts3.cn.mm.bing.net/th/id/OIP-C.fIfwcxCc6sjAUWxifyiJQAHaHa?w=205&h=205&c=7&r=0&o=5&dpr=2&pid=1.7",
-          price: "2",
-          description: "没有虫卵的农夫山泉",
-          inventory: "25",
-          vendorName: "test01",
-        },
+      index: 0,
+      salerPage: "saler",
+      input: "",
+      commodityList: [{
+        imgLink: "http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/aaaaaa1637115988644_a5e08860",
+
+      }
       ],
-      commodity1: {
+      commodity: {
+        id: "",
         name: "",
         imgLink: "",
         price: "",
@@ -236,13 +182,18 @@ export default {
         inventory: "",
         vendorName: "",
       },
-      salerList: {},
-      uploadPic:""
+      dataTotalCount: 0, //查询条件的总数据量
+      formInline: {
+        currentPage: 1,
+        pageSize: 10,
+      },
+      seq:0,
+      search:"",
+      uploadPic:"",
     };
   },
   methods: {
-    //分页 初始页currentPage、初始每页数据数pagesize和数据testpage--->控制每页几条
-    handleSizeChange: function(size) {
+    handleSizeChange: function (size) {
       this.formInline.pageSize = size;
       this.getList();
     },
@@ -252,63 +203,67 @@ export default {
       this.formInline.currentPage = currentpage;
       this.getList();
     },
+    handleSelect(key) {
+      this.salerPage = key;
+    },
 
-    getList(data) {
-      if (data) {
-        this.formInline.info = data.info;
-        this.formInline.pType = data.pType;
-        this.formInline.floor = data.floor;
-      }
+    UserImageHandler() {
+      return true;
+    },
 
-      var that = this;
+    getList() {
+      console.log(localStorage['token'])
       this.http({
         headers: {
-          token: localStorage["token"],
-          role:"admin"
+          'token': localStorage['token'],
+          'role':localStorage['user_role'],
         },
         method: "get",
-        url: `${commodityUrl}commodity/lists`,
+        url: `/api/commodity/lists`,
         params: {
-          username: "admin",
+          username:localStorage['user_name'] ,
           pagesize: this.formInline.pageSize,
           page: this.formInline.currentPage,
           seq: this.seq,
-        },
+        }
       })
-        .then((response) => {
-          that.$message({
-            type: "success",
-            message: "获取列表成功",
+          .then(response=>{
+            if(response.data.code===200){
+              this.commodityList = response.data.data.rows;
+              this.dataTotalCount = response.data.data.records;
+            }
+
+          })
+          .catch(function (error) {
+            this.$message({
+              type: 'error',
+              message: '系统异常：' + error
+            });
           });
-          that.tableData = response.data.rows;
-          that.dataTotalCount = response.data.records;
-        })
-        .catch(function(error) {
-          that.$message({
-            type: "error",
-            message: "系统异常：" + error,
-          });
-        });
     },
-    getDetail(index, row) {
+
+    getDetail(o, index) {
       this.showDialog = true;
-      this.nowRow = index;
-      console.log(index, row);
+      this.index = index;
+      console.log(o, index);
     },
-    handleDelete(index, row) {
+
+    handleDelete(o, index) {
+      console.log(o.id)
       this.http({
-        headers: {
-          token: localStorage["token"],
-          role:"admin"
-        },
-        method: "delete",
-        url: `${commodityUrl}/commodity/item/${row.id}`,
-      }).then((res) => {
+            headers: {
+              'token': localStorage['token'],
+              'role':localStorage['user_role']
+            },
+            method: "delete",
+            url: `/api/commodity/item/${o.id}`,
+          }
+      ).then(res => {
         if (res.data.code === 200) {
           this.getList();
           this.$message({
             type: "success",
-            message: "删除成功",
+            message: "删除成功：",
           });
         } else {
           this.$message({
@@ -317,35 +272,11 @@ export default {
           });
         }
       });
+      console.log(index, o);
     },
+
     handleEdit() {
       this.edit = true;
-    },
-    getSalerList() {
-      var that = this;
-      this.http({
-        headers: {
-          Authorization: localStorage["token"],
-        },
-        method: "get",
-        url: `${userUrl}/user/info`,
-        params: {
-          role: "saler",
-          num: this.formInline.pageSize,
-          page: this.formInline.currentPage,
-        },
-      })
-        .then((response) => {
-          if (response.data.code === 200) {
-            that.salerList = response.data.data.userList;
-          }
-        })
-        .catch(function(error) {
-          that.$message({
-            type: "error",
-            message: "获取卖家信息：" + error,
-          });
-        });
     },
 
     handleSubmit() {
@@ -355,64 +286,65 @@ export default {
         headers: {
           "Content-Type": "application/json;",
           token: localStorage["token"],
+          'role':localStorage['user_role']
         },
         method: "put",
-        url: `${commodityUrl}/commodity/item`,
-        transformRequest: [
-          function(data) {
-            return JSON.stringify(data);
-          },
-        ],
+        url: `/api/commodity/item`,
+        transformRequest: [function (data) {
+          return JSON.stringify(data)
+        }],
+
         data: {
-          id: this.tableData[this.nowRow].id,
-          name: this.tableData[this.nowRow].name,
-          imgLink: this.tableData[this.nowRow].imgLink,
-          price: this.tableData[this.nowRow].price,
-          description: this.tableData[this.nowRow].description,
-          inventory: this.tableData[this.nowRow].inventory,
-          vendorName: this.tableData[this.nowRow].vendorName,
+          id: this.commodityList[this.index].id,
+          name: this.commodityList[this.index].name,
+          imgLink: this.commodityList[this.index].imgLink,
+          price: this.commodityList[this.index].price,
+          description: this.commodityList[this.index].description,
+          inventory: this.commodityList[this.index].inventory,
+          vendorName: this.commodityList[this.index].vendorName,
         },
       })
-        .then((response) => {
-          if (response.data.code === 201) {
-            this.getList();
+          .then((response) => {
+            if (response.data.data.code === 200) {
+              this.$message({
+                type: "success",
+                message: "修改成功：",
+              });
+            }
+          })
+          .catch(function(error) {
             this.$message({
-              type: "success",
-              message: "修改成功：",
+              type: "error",
+              message: "系统异常：" + error,
             });
-          }
-        })
-        .catch(function(error) {
-          this.$message({
-            type: "error",
-            message: "系统异常：" + error,
           });
-        });
     },
 
-    doSearch(search) {
+    doSearch() {
       this.http({
-        headers: {
-          token: localStorage["token"],
-        },
-        method: "get",
-        url: `${commodityUrl}/commodity/search`,
-        params: {
-          q: search,
-          pagesize: this.formInline.pageSize,
-          page: this.formInline.currentPage,
-          seq: this.seq,
-        },
-      }).then((res) => {
+            headers: {
+              'token': localStorage['token'],
+              'role':localStorage['user_role']
+            },
+            method: "get",
+            url: `/api/commodity/search`,
+            params: {
+              q: this.search,
+              pagesize: this.formInline.pageSize,
+              page: this.formInline.currentPage,
+              seq: this.seq
+            }
+          }
+      ).then(res => {
         if (res.data.code === 200) {
-          this.tableData = res.data.data.rows;
+          this.commodityList = res.data.data.rows;
           this.dataTotalCount = res.data.data.records;
-        } else {
-          this.$message({
-            type: "error",
-            message: "没有找到相关商品",
-          });
         }
+      }).catch(function(error) {
+        this.$message({
+          type: "error",
+          message: "系统异常：" + error,
+        });
       });
     },
     addCommodity() {
@@ -423,31 +355,38 @@ export default {
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          token: localStorage["token"],
+          'token': localStorage["token"],
+          'role':localStorage['user_role']
         },
         method: "post",
-        url: `${commodityUrl}/commodity/item`,
-        transformRequest: [
-          function(data) {
-            return JSON.stringify(data);
-          },
-        ],
+        url: `/api/commodity/item`,
+        transformRequest: [function (data) {
+          return JSON.stringify(data)
+        }],
+
         data: {
-          name: this.commodity1.name,
+          name: this.commodity.name,
           imgLink: this.uploadPic,
-          price: this.commodity1.price,
-          description: this.commodity1.description,
-          inventory: this.commodity1.inventory,
-          vendorName: this.commodity1.vendorName,
+          price: this.commodity.price,
+          description: this.commodity.description,
+          inventory: this.commodity.inventory,
+          vendorName: localStorage["user_name"],
         },
-      }).then((response) => {
-        if (response.data.code === 201) {
-          this.$message({
-            type: "success",
-            message: "添加成功：",
+      })
+          .then((response) => {
+            if (response.data.data.code === 200) {
+              this.$message({
+                type: "success",
+                message: "添加成功：",
+              });
+            }
+          })
+          .catch(function(error) {
+            this.$message({
+              type: "error",
+              message: "系统异常：" + error,
+            });
           });
-        }
-      });
     },
     handleUpload(option) {
       // 生成的文件名称
@@ -456,8 +395,6 @@ export default {
       // 调用 ali-oss 中的方法
       put(`${objName}`, option.file).then(res => {
         this.uploadPic=res.url
-        console.log(+res.url)
-
       })
     },
 
@@ -476,6 +413,7 @@ export default {
 
       return (isJPEG || isJPG || isPNG) && isLt500K;
     }
+
   },
 };
 </script>

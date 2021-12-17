@@ -47,21 +47,33 @@ const router = new VueRouter({
       name: "saler",
       path: "/saler",
       component: saler,
+      meta:{
+        requireAuth: true
+      }
     },
     {
       name: "salerOrder",
       path: "/salerOrder",
       component: salerOrder,
+      meta:{
+        requireAuth: true
+      }
     },
     {
       name: "wallet",
       path: "/wallet",
       component: wallet,
+      meta:{
+        requireAuth: true
+      }
     },
     {
       name: "message",
       path: "/message",
       component: message,
+      meta:{
+        requireAuth: true
+      }
     },
     {
       name: "storePage",
@@ -72,21 +84,33 @@ const router = new VueRouter({
       name: "buyerOrder",
       path: "/buyerOrder",
       component: buyerOrder,
+      meta:{
+        requireAuth: true
+      }
     },
     {
       name: "messageCenter",
       path: "/messageCenter",
       component: messageCenter,
+      meta:{
+        requireAuth: true
+      }
     },
     {
       name: "buyerCart",
       path: "/buyerCart",
       component: buyerCart,
+      meta:{
+        requireAuth: true
+      }
     },
     {
       name: "buyerWallet",
       path: "/buyerWallet",
       component: buyerWallet,
+      meta:{
+        requireAuth: true
+      }
     },
     {
       path: "/login",
@@ -101,9 +125,6 @@ const router = new VueRouter({
       name: "admin",
       path: "/admin",
       component: admin,
-      meta: {
-        requireAuth: true,
-      },
     },
     {
       name: "commodityManager",
@@ -120,8 +141,24 @@ const router = new VueRouter({
     },
   ],
 });
-
+router.beforeEach((to, from ,next)=>{
+  if(to.matched.some((r)=>r.meta.requireAuth)){
+    let user = localStorage['user_name'];
+    if(user){
+      next();
+    }else{
+      next({
+        path:"/login",
+        query: {redirect: to.fullPath}
+      })
+    }
+  }else{
+    next();
+  }
+});
 new Vue({
   router,
   render: (h) => h(App),
 }).$mount("#app");
+
+export default VueRouter;
