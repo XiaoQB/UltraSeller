@@ -89,17 +89,10 @@ public class OrderController {
             }
             for (SubOrder subOrder : subOrders) {
                 if (OrderStatus.WAIT_TO_TRANSFER.toString().equals(subOrder.getStatus())) {
-
-
-                    // todo 没有钱包服务需要的参数，无法调，自动返回成功
-                    //ResponseEntity<String> response = walletService.changeBalance(updateOrderDTO.getBuyerId(), subOrder.getTotalPrice());
-                    //return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), "wallet service error", null);
                     kafkaService.sendPayMessage(subOrder, updateOrderDTO.getBuyerId());
-
                 }
                 if(OrderStatus.WAIT_TO_RECEIPT.toString().equals(subOrder.getStatus())){
                     kafkaService.sendReceiveMsg(subOrder, updateOrderDTO.getBuyerId());
-
                 }
                 if(OrderStatus.COMPLETE.toString().equals(subOrder.getStatus())){
                     kafkaService.sendCompleteMsg(subOrder, updateOrderDTO.getBuyerId());
@@ -173,18 +166,23 @@ public class OrderController {
 
 
     @GetMapping("/notification/saler/pay")
-    public ResponseEntity<List<Notification>> getPayNotification(@RequestParam("salerId") Integer salerId) {
+    public ResponseEntity<PageResult> getPayNotification(@RequestParam("salerId") Integer salerId,
+                                                                 @RequestParam("page") Integer page,
+                                                                 @RequestParam("num") Integer num) {
         try {
-            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getPaymentNotification(salerId));
+            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getPaymentNotification(salerId,page,num));
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
         }
     }
 
     @GetMapping("/notification/saler/complete")
-    public ResponseEntity<List<Notification>> getCompleteNotification(@RequestParam("salerId") Integer salerId) {
+    public ResponseEntity<PageResult> getCompleteNotification(@RequestParam("salerId") Integer salerId,
+                                                                      @RequestParam("page") Integer page,
+                                                                      @RequestParam("num") Integer num
+                                                                      ) {
         try {
-            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getCompleteNotification(salerId));
+            return new ResponseEntity<>(ResponseEntityCode.OK.getCode(), ResponseEntityMessage.SUCCESS, orderService.getCompleteNotification(salerId,page,num));
         } catch (Exception e) {
             return new ResponseEntity<>(ResponseEntityCode.ERROR.getCode(), ResponseEntityMessage.ERROR + e.getMessage(), null);
         }

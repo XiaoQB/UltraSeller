@@ -18,10 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 public class UpdateOrderDTO {
 
-    @NotNull(message = "order is null")
     private Order order;
     private List<SubOrder> subOrders;
-    @NotNull(message = "username is null")
     private Integer buyerId;
 
 }

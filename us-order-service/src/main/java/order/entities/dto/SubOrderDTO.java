@@ -34,6 +34,7 @@ public class SubOrderDTO implements Serializable {
     protected Date createTime;
     protected Date updateTime;
     protected Integer buyerId;
+    protected String logistics;
 
 
 }

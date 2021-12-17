@@ -35,6 +35,7 @@ public class KafkaServiceImpl implements KafkaService {
                 .buyerId(buyerId)
                 .salerId(subOrder.getSalerId())
                 .status(subOrder.getStatus())
+                .logistics(subOrder.getLogistics())
                 .build();
         String s = objectMapper.writeValueAsString(subOrderDTO);
         kafkaTemplate.send("payment", s);
@@ -52,6 +53,7 @@ public class KafkaServiceImpl implements KafkaService {
                 .buyerId(buyerId)
                 .salerId(subOrder.getSalerId())
                 .status(subOrder.getStatus())
+                .logistics(subOrder.getLogistics())
                 .build();
         String s = objectMapper.writeValueAsString(subOrderDTO);
         kafkaTemplate.send("receive", s);
@@ -69,6 +71,7 @@ public class KafkaServiceImpl implements KafkaService {
                 .buyerId(buyerId)
                 .salerId(subOrder.getSalerId())
                 .status(subOrder.getStatus())
+                .logistics(subOrder.getLogistics())
                 .build();
         String s = objectMapper.writeValueAsString(subOrderDTO);
         kafkaTemplate.send("complete", s);
