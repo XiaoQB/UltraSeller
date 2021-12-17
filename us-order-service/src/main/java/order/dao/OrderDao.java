@@ -49,7 +49,7 @@ public interface OrderDao {
     /**
      * 更新 order
      *
-     * @param order order
+     * @param subOrder order
      */
     void changeSubOrder(SubOrder subOrder);
 
@@ -69,16 +69,20 @@ public interface OrderDao {
 
     SubOrder getSubOrderDetailById(@Param("subOrderId") String subOrderId);
 
-    List<Notification> getPaymentNotification(Integer salerId);
+    List<Notification> getPaymentNotification(@Param("salerId") Integer salerId,
+                                              @Param("page") Integer page,@Param("num") Integer num);
 
-    List<Notification> getCompleteNotication(Integer salerId);
+    List<Notification> getCompleteNotication(@Param("salerId") Integer salerId,
+                                             @Param("page") Integer page,@Param("num") Integer num);
 
     List<Notification> getReceiveNotification(@Param("buyerId") Integer buyerId,
                                               @Param("page") Integer page,@Param("num") Integer num);
 
-    Integer getTotalComplete(Integer buyerId);
+    Integer getTotalComplete(Integer salerId);
 
     void changeNotificationStatus(Integer id);
 
     Integer getTotalReceive(Integer buyerId);
+
+    Integer getTotalPay(Integer salerId);
 }

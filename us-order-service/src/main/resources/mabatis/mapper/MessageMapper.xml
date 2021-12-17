@@ -6,8 +6,11 @@
 
     <insert id="saveMessage">
         insert ignore into sys_message (type, sub_order_id,
-                                 saler_id, buyer_id, commodity_id, commodity_name, price, num, address,`status`)
-        values (#{subOrder.status},#{subOrder.subOrderId},#{subOrder.salerId},#{subOrder.buyerId},#{subOrder.commodityId},
-                #{subOrder.commodityName},#{subOrder.price},#{subOrder.num},#{subOrder.address},1)
+                                        saler_id, buyer_id, commodity_id, commodity_name, price, num, address, `status`,
+                                        logistics)
+        values (#{subOrder.status}, #{subOrder.subOrderId}, #{subOrder.salerId}, #{subOrder.buyerId},
+                #{subOrder.commodityId},
+                #{subOrder.commodityName}, #{subOrder.price}, #{subOrder.num}, #{subOrder.address}, 1,
+                #{subOrder.logistics})
     </insert>
 </mapper>

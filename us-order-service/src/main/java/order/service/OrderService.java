@@ -92,9 +92,9 @@ public interface OrderService {
 
     SubOrderVO getSubOrderDetailById(String subOrderId);
 
-    List<Notification> getPaymentNotification(Integer salerId);
+    PageResult getPaymentNotification(Integer salerId,Integer page,Integer num);
 
-    List<Notification> getCompleteNotification(Integer salerId);
+    PageResult getCompleteNotification(Integer salerId,Integer page,Integer num);
 
 
     PageResult getReceiveNotification(Integer buyerId, Integer page, Integer num);
