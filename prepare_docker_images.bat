@@ -3,6 +3,7 @@ echo "build docker images and tag" & docker build -t ultraseller-users:latest ./
 docker build -t 75560/ultraseller-commodity:latest ./us-commodity-service
 docker build -t 75560/ultraseller-gateway:latest ./us-gateway-service
 docker build -t 75560/ultraseller-wallet:latest ./us-wallet-service
+docker build -t 75560/ultraseller-mysql:latest ./ui-service
 docker build -t 75560/ultraseller-order:latest ./us-order-service
 docker build -t 75560/ultraseller-cart:latest ./us-cart-service
 docker build -t 75560/ultraseller-ui:latest ./ui-service
@@ -10,5 +11,6 @@ echo "push docke images to /75560" & docker push ultraseller-user:latest
 docker push 75560/ultraseller-gateway:latest
 docker push 75560/ultraseller-wallet:latest
 docker push 75560/ultraseller-ui:latest
+docker push 75560/ultraseller-mysql:latest
 docker push 75560/ultraseller-order:latest
 docker push 75560/ultraseller-cart:latest
