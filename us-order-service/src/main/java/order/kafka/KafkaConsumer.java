@@ -31,10 +31,8 @@ public class KafkaConsumer {
     @KafkaListener(groupId = "default", topics = {"payment"})
     public void onMessage1(ConsumerRecord<?, ?> record) throws IOException {
         //消费的哪个topic、partition的消息,打印出消息内容
-        String v = record.value().toString();
         SubOrderDTO subOrder = objectMapper.readValue(record.value().toString(), SubOrderDTO.class);
         messageDao.saveMessage(subOrder);
-        System.out.println("简单消费：" + record.topic() + "-" + record.partition() + "-" + record.value());
     }
 
     @KafkaListener(groupId = "default", topics = {"receive"})

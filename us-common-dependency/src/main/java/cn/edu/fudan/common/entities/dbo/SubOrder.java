@@ -31,4 +31,6 @@ public class SubOrder implements Serializable {
     protected Date createTime;
     protected Date updateTime;
 
+    protected String logistics;
+
 }

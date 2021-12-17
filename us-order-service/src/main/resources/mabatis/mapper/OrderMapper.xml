@@ -77,6 +77,9 @@
             <if test="address != null and address != ''">
                 address = #{address},
             </if>
+            <if test="logistics != null and logistics != ''">
+                logistics = #{logistics},
+            </if>
         </set>
         where id = #{subOrderId}
     </update>
@@ -150,7 +153,9 @@
                commodity_name as commodityName
         from sys_message
         where saler_id = #{salerId}
-          and type = 'WAIT_TO_TRANSFER';
+          and type = 'WAIT_TO_TRANSFER'
+        order by `status` desc
+        limit #{page},#{num};
     </select>
     <select id="getCompleteNotication" resultType="order.entities.vo.Notification">
         select id,
@@ -167,7 +172,9 @@
                commodity_name as commodityName
         from sys_message
         where saler_id = #{salerId}
-          and type = 'COMPLETE';
+          and type = 'COMPLETE'
+        order by `status` desc
+        limit #{page},#{num};
     </select>
     <select id="getReceiveNotification" resultType="order.entities.vo.Notification">
         select id,
@@ -192,7 +199,7 @@
     <select id="getTotalComplete" resultType="java.lang.Integer">
         select count(*)
         from sys_message
-        where buyer_id = #{buyerId}
+        where saler_id = #{salerId}
           and type = 'COMPLETE';
     </select>
     <select id="getTotalReceive" resultType="java.lang.Integer">
@@ -200,6 +207,12 @@
         from sys_message
         where buyer_id = #{buyerId}
           and type = 'WAIT_TO_RECEIPT';
+    </select>
+    <select id="getTotalPay" resultType="java.lang.Integer">
+        select count(*)
+        from sys_message
+        where saler_id = #{salerId}
+        and type = 'WAIT_TO_TRANSFER';
     </select>
 
 
