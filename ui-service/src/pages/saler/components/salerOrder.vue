@@ -326,9 +326,6 @@ export default {
         url:"/api/order/change",
         data:{
           order:{
-            "orderId":"fdbc2082-39da-456d-98f1-6d5fb3592440",
-            "address":"江湾生活园区",
-            "status":"done"
           },
           subOrders:[ {
             subOrderId:row.subOrderId,
@@ -337,7 +334,7 @@ export default {
             totalPrice:row.totalPrice,
             logistics:this.trans
           }],
-          buyerId:"1"
+          buyerId:""
         }
       }).then(response=>{
         if(response.data.code===200){
@@ -409,9 +406,6 @@ export default {
         url:"/api/order/change",
         data:{
           order:{
-            "orderId":"fdbc2082-39da-456d-98f1-6d5fb3592440",
-            "address":"江湾生活园区",
-            "status":"done"
           },
           subOrders:[ {
             subOrderId:this.changeInfo.subOrderId,
@@ -420,7 +414,7 @@ export default {
             totalPrice:this.changeInfo.totalPrice,
             logistics: this.changeInfo.logistics
           }],
-          buyerId:"1"
+          buyerId:""
         }
 
       })
