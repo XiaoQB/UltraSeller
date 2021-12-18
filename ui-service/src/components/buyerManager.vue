@@ -101,7 +101,7 @@ export default {
       var that = this;
       this.http({
         headers: {
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
         },
         method: "get",
         url: `/api/user/info`,
@@ -139,7 +139,7 @@ export default {
     handleDelete(name) {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
+          token: sessionStorage.getItem("token"),
           role: "buyer",
         },
         method: "delete",
@@ -169,7 +169,7 @@ export default {
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
           role: "admin",
         },
         method: "put",

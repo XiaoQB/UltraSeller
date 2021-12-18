@@ -140,13 +140,13 @@ export default {
     updateCommodityData() {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "GET",
         url: "/api/commodity/listall",
         params: {
-          // username: localStorage.getItem("user_name"),
+          // username: sessionStorage.getItem("user_name"),
           page: 1,
           pagesize: 10,
           seq: 0,
@@ -155,9 +155,9 @@ export default {
         .then((resp) => {
           this.commodityList = resp.data.data.rows;
           if (
-            localStorage.getItem("user_name") !== null ||
-            localStorage.getItem("user_name") !== "" ||
-            localStorage.getItem("user_name") !== undefined
+            sessionStorage.getItem("user_name") !== null ||
+            sessionStorage.getItem("user_name") !== "" ||
+            sessionStorage.getItem("user_name") !== undefined
           ) {
             this.disabledToBuy = false;
           }
@@ -169,8 +169,8 @@ export default {
     doSearch(value) {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "get",
         url: `/api/commodity/search`,
@@ -221,13 +221,13 @@ export default {
     doBuyClick() {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "post",
         url: `/api/order/create`,
         data: {
-          buyerId: localStorage.getItem("user_id"),
+          buyerId: sessionStorage.getItem("user_id"),
           address: this.userForm.userAddress,
           status: "WAIT_TO_PAY",
           commodities: [
@@ -261,14 +261,14 @@ export default {
     doAddToCartClick() {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
+          token: sessionStorage.getItem("token"),
           // "Content-Type": "application/json",
-          role: localStorage.getItem("user_role"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "POST",
         url: "/api/testapp/shopcar/AddCart/",
         data: {
-          uid: localStorage.getItem("user_id"),
+          uid: sessionStorage.getItem("user_id"),
           good_list: [
             {
               id: this.commodityList[this.commodityIndex].id,

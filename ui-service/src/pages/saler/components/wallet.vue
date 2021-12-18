@@ -136,13 +136,13 @@ export default {
     getMoney() {
       this.http({
         headers: {
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "get",
         url: `api/wallet/user`,
         params: {
-          username: localStorage["user_name"],
+          username: sessionStorage["user_name"],
         },
       })
         .then((response) => {
@@ -159,13 +159,13 @@ export default {
       var that = this;
       this.http({
         headers: {
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "get",
         url: `api/wallet/user/deal`,
         params: {
-          username: localStorage["user_name"],
+          username: sessionStorage["user_name"],
           size: "-1",
         },
       })
@@ -182,8 +182,8 @@ export default {
     getDetail(index, row) {
       this.http({
         headers: {
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "get",
         url: "api/order/order-detail",
