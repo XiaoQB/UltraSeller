@@ -54,3 +54,4 @@ spec:
        protocol: TCP
   selector:
     app: us-gateway-service
+  type: LoadBalancer
