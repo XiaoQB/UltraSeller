@@ -80,8 +80,8 @@ DATABASES = {
         'NAME': 'ultra_seller',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST':'47.102.97.229',
-        'PORT': '',
+        'HOST':'us-mysql-service',
+        'PORT': ''
     }
 }
 

@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ultraseller-mysql-deployment
+  name: us-mysql-service
   namespace: ase-ns-12
 spec:
   selector:
     matchLabels:
-      name: ultraseller-mysql-label
+      name: us-mysql-service
   template:
     metadata:
       labels:
-        name: ultraseller-mysql-label
+        name: us-mysql-service
     spec:
       containers:
-        - name: ultraseller-mysql-container
-          image: 75560/ultraseller-mysql:latest1
+        - name: us-mysql-service
+          image: 75560/ultraseller-mysql:k8s-deploy
           imagePullPolicy: IfNotPresent
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: advanced
+              value: root
           ports:
             - containerPort: 3306
               protocol: TCP
@@ -27,12 +27,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ultraseller-mysql
+  name: us-mysql-service
   namespace: ase-ns-12
 spec:
   ports:
     - port: 3306
       protocol: TCP
   selector:
-    name: ultraseller-mysql-label
+    name: us-mysql-service
   type: LoadBalancer

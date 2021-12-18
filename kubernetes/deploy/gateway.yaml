@@ -13,16 +13,16 @@ spec:
       labels:
         app: us-gateway-service
     spec:
-      imagePullSecrets:
-        - name: registry-pull-secret
       containers:
         - name: us-gateway-service
-          image: 75560/ultraseller-gateway:latest
+          image: 75560/ultraseller-gateway:k8s-deploy4
           imagePullPolicy: IfNotPresent
           ports:
             - protocol: TCP
               containerPort: 8000
           env:
+            - name: NACOS_SERVER
+              value: 47.102.97.229:8848
             - name: JAVA_OPTS
               value: "-Xmx1g"
           resources:
@@ -53,4 +53,4 @@ spec:
      - port: 8000
        protocol: TCP
   selector:
-    app: ultraseller-gateway-label
+    app: us-gateway-service
