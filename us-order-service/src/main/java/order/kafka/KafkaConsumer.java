@@ -32,6 +32,7 @@ public class KafkaConsumer {
     public void onMessage1(ConsumerRecord<?, ?> record) throws IOException {
         //消费的哪个topic、partition的消息,打印出消息内容
         SubOrderDTO subOrder = objectMapper.readValue(record.value().toString(), SubOrderDTO.class);
+        System.out.println("消费message：" + record.topic() + "-" + record.partition() + "-" + record.value());
         messageDao.saveMessage(subOrder);
     }
 
@@ -41,7 +42,7 @@ public class KafkaConsumer {
         String v = record.value().toString();
         SubOrderDTO subOrder = objectMapper.readValue(record.value().toString(), SubOrderDTO.class);
         messageDao.saveMessage(subOrder);
-        System.out.println("简单消费：" + record.topic() + "-" + record.partition() + "-" + record.value());
+        System.out.println("消费message：" + record.topic() + "-" + record.partition() + "-" + record.value());
     }
 
     @KafkaListener(groupId = "default", topics = {"complete"})
@@ -50,6 +51,6 @@ public class KafkaConsumer {
         String v = record.value().toString();
         SubOrderDTO subOrder = objectMapper.readValue(record.value().toString(), SubOrderDTO.class);
         messageDao.saveMessage(subOrder);
-        System.out.println("简单消费：" + record.topic() + "-" + record.partition() + "-" + record.value());
+        System.out.println("消费message：" + record.topic() + "-" + record.partition() + "-" + record.value());
     }
 }

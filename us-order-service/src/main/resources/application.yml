@@ -17,7 +17,7 @@ spring:
     password: root
 
   kafka:
-    bootstrap-servers: 10.176.34.96:9092
+    bootstrap-servers: 114.115.145.15:9092
     producer:
       retries: 0
       batch-size: 16384
