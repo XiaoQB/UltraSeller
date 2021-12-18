@@ -152,12 +152,7 @@ export default {
           window.sessionStorage["user_wallet"] = resp.data.data.balance;
           this.userData.userWallet = resp.data.data.balance;
         })
-        .catch(() => {
-          this.$message({
-            type: "error",
-            message: "钱包获取失败",
-          });
-        });
+
     },
   },
   watch: {
