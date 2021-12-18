@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sw-us-wallet-service
+  namespace: ase-ns-12
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sw-us-wallet-service
+  template:
+    metadata:
+      labels:
+        app: sw-us-wallet-service
+    spec:
+      containers:
+        - name: sw-us-wallet-service
+          image: 75560/ultraseller-wallet:sw
+          imagePullPolicy: Always
+          env:
+            - name: NACOS_SERVER
+              value: 47.102.97.229:8848
+            - name: DB_URL
+              value: us-mysql-service/ultra_seller
+            - name: USERNAME
+              value: root
+            - name: PASSWORD
+              value: root
+            - name: JAVA_OPTS
+              value: "-Xmx1g"
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: "49.233.221.184:11800"
+            - name: SW_GRPC_LOG_SERVER_HOST
+              value: "49.233.221.184"
+            - name: SW_GRPC_LOG_SERVER_PORT
+              value: "11800"
+          ports:
+            - protocol: TCP
+              containerPort: 8003
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sw-us-wallet-service
+  namespace: ase-ns-12
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 8003
+  selector:
+    app: sw-us-wallet-service
