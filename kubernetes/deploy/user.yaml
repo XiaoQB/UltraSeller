@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: us-user-service
+  namespace: ase-ns-12
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: us-user-service
+  template:
+    metadata:
+      labels:
+        app: us-user-service
+    spec:
+      containers:
+        - name: us-user-service
+          image: 75560/ultraseller-user:k8s-deploy
+          imagePullPolicy: Always
+          env:
+            - name: NACOS_SERVER
+              value: 47.102.97.229:8848
+            - name: DB_URL
+              value: us-mysql-service/ultra_seller
+            - name: USERNAME
+              value: root
+            - name: PASSWORD
+              value: root
+            - name: JAVA_OPTS
+              value: "-Xmx1g"
+          ports:
+            - protocol: TCP
+              containerPort: 8001
+          resources:
+              requests:
+                cpu: 0.5
+                memory: 256Mi
+              limits:
+                cpu: 1
+                memory: 1Gi
+          readinessProbe:
+              tcpSocket:
+                port: 8001
+              initialDelaySeconds: 60
+              periodSeconds: 10
+          livenessProbe:
+              tcpSocket:
+                port: 8001
+              initialDelaySeconds: 60
+              periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: us-user-service
+  namespace: ase-ns-12
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 8001
+  selector:
+    app: us-user-service
