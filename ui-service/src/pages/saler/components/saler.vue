@@ -257,13 +257,22 @@ export default {
   methods: {
     handleSizeChange: function(size) {
       this.formInline.pageSize = size;
-      this.getList();
+      if(this.q != null){
+        this.doSearch()
+      }else{
+        this.getList()
+      }
+
     },
 
     // 控制页面的切换
     handleCurrentChange: function(currentpage) {
       this.formInline.currentPage = currentpage;
-      this.getList();
+      if(this.q != null){
+        this.doSearch()
+      }else{
+        this.getList()
+      }
     },
     handleSelect(key) {
       this.salerPage = key;
@@ -411,6 +420,7 @@ export default {
     },
     addCommodity() {
       this.showDialog2 = true;
+      console.log("1234567896543111313")
     },
     handleAdd() {
       this.showDialog2 = false;
