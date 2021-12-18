@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: us-commodity-service
+  namespace: test1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: us-commodity-service
+  template:
+    metadata:
+      labels:
+        app: us-commodity-service
+    spec:
+      containers:
+        - name: us-commodity-service
+          image: 75560/ultraseller-commodity:sw
+          imagePullPolicy: Always
+          env:
+            - name: NACOS_SERVER
+              value: 47.102.97.229:8848
+            - name: DB_URL
+              value: us-mysql-service/ultra_seller
+            - name: USERNAME
+              value: root
+            - name: PASSWORD
+              value: root
+            - name: JAVA_OPTS
+              value: "-Xmx1g"
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: "49.233.221.184:11800"
+            - name: SW_GRPC_LOG_SERVER_HOST
+              value: "49.233.221.184"
+            - name: SW_GRPC_LOG_SERVER_PORT
+              value: "11800"
+          ports:
+            - protocol: TCP
+              containerPort: 8002
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: us-commodity-service
+  namespace: test1
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 8002
+  selector:
+    app: us-commodity-service
