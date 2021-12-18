@@ -17,9 +17,6 @@ spec:
         - name: us-user-service
           image: 75560/ultraseller-user:k8s-deploy
           imagePullPolicy: Always
-          ports:
-            - protocol: TCP
-              containerPort: 8001
           env:
             - name: NACOS_SERVER
               value: 47.102.97.229:8848
@@ -31,6 +28,9 @@ spec:
               value: root
             - name: JAVA_OPTS
               value: "-Xmx1g"
+          ports:
+            - protocol: TCP
+              containerPort: 8001
           resources:
               requests:
                 cpu: 0.5
@@ -60,4 +60,4 @@ spec:
     - name: http
       port: 8001
   selector:
-    app: ultraseller-user-label
+    app: us-user-service

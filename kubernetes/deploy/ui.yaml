@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ultraseller-ui-deployment
+  name:  us-ui-service
   namespace: ase-ns-12
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: ultraseller-ui-label
+      name: us-ui-service
   template:
     metadata:
       labels:
-        name: ultraseller-ui-label
+        name: us-ui-service
     spec:
       containers:
-        - name: ultraseller-ui-container
+        - name:  us-ui-service
           image: 75560/ultraseller-ui:k8s-deploy
           imagePullPolicy: IfNotPresent
           ports:
@@ -33,12 +33,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ultraseller-ui
+  name: us-ui-service
   namespace: ase-ns-12
 spec:
   ports:
     - port: 80
       protocol: TCP
   selector:
-    name: ultraseller-ui-label
+    name: us-ui-service
   type: LoadBalancer

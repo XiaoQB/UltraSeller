@@ -25,7 +25,7 @@ spec:
             - name: USERNAME
               value: root
             - name: PASSWORD
-              value: advanced
+              value: root
             - name: JAVA_OPTS
               value: "-Xmx1g"
           ports:

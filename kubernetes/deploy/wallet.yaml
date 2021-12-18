@@ -60,4 +60,4 @@ spec:
     - name: http
       port: 8003
   selector:
-    app: ultraseller-wallet-label
+    app: us-wallet-service

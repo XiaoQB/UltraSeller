@@ -60,4 +60,4 @@ spec:
     - name: http
       port: 8004
   selector:
-    app: ultraseller-order-label
+    app: us-order-service

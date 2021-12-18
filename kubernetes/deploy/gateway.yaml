@@ -53,4 +53,4 @@ spec:
      - port: 8000
        protocol: TCP
   selector:
-    app: ultraseller-gateway-label
+    app: us-gateway-service
