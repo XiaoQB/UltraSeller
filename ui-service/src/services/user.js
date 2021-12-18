@@ -8,7 +8,7 @@ function getLists(name, ps, page) {
             'token': localStorage['token']
         },
         method: "get",
-        url: `${userUrl}/seller/lists`,
+        url: `/api/seller/lists`,
         params: {
             role: "seller",
             name: name,

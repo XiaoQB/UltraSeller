@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  us-ui-service
+  namespace: ase-ns-12
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: us-ui-service
+  template:
+    metadata:
+      labels:
+        name: us-ui-service
+    spec:
+      containers:
+        - name:  us-ui-service
+          image: 75560/ultraseller-ui:k8s-ultimate
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources:
+            limits:
+              memory: 1Gi
+              cpu: 500m
+            requests:
+              memory: 1Gi
+              cpu: 500m
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: us-ui-service
+  namespace: ase-ns-12
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+  selector:
+    name: us-ui-service
+  type: LoadBalancer

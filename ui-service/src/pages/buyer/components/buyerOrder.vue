@@ -29,7 +29,7 @@
       </div> -->
       <div
         class="order-tables"
-        style="margin-bottom: 20px; margin-top: 20px"
+        style="margin-bottom: 20px; margin-top: 20px; font-size: 20px"
         v-for="(item, index) in userOrderList"
         :key="index"
       >
@@ -42,13 +42,13 @@
         <!-- <span style="margin-bottom: 10px; float: right"
           >总订单状态: {{ handleTranslateStatus(item.status) }}</span
         > -->
-        <el-table :data="item.subOrders" border>
+        <el-table :data="item.subOrders" border style="font-size: 20px">
           <el-table-column label="商品详情" type="expand">
             <template slot-scope="props">
               <el-descriptions
                 title="商品信息"
                 column="2"
-                style="margin-left: 20px"
+                style="margin-left: 20px; font-size: 20px"
               >
                 <el-descriptions-item label="商品图">
                   <img :src="props.row.commodity.imgLink" class="item-image" />
