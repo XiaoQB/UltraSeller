@@ -99,7 +99,6 @@
               </el-descriptions>
               <div style="padding: 5px">
                 <div class="bottom clearfix">
-                  <!-- <time class="time">{{ currentDate }}</time> -->
                   <el-button size="mini" @click="getDetail(o, index)"
                     >详情
                   </el-button>
@@ -131,43 +130,40 @@
     </el-footer>
     <el-dialog title="商品详情" :visible.sync="showDialog" width="45%">
       <el-form
-        ref="commodityList"
-        :model="commodityList[index]"
+        ref="commodityDetail"
+        :model="commodityDetail"
         label-width="100px"
       >
         <el-form-item label="编号" prop="id">
-          <span v-if="!edit">{{ commodityList[index].id }}</span>
-          <el-input v-else v-model="commodityList[index].id"></el-input>
+          <span v-if="!edit">{{ commodityDetail.id }}</span>
+          <el-input v-else v-model="commodityDetail.id"></el-input>
         </el-form-item>
         <el-form-item label="商品名称" prop="name">
-          <span v-if="!edit">{{ commodityList[index].name }}</span>
-          <el-input v-else v-model="commodityList[index].name"></el-input>
+          <span v-if="!edit">{{ commodityDetail.name }}</span>
+          <el-input v-else v-model="commodityDetail.name"></el-input>
         </el-form-item>
         <el-form-item label="图片" prop="imgLink">
           <img
-            :src="commodityList[index].imgLink"
+            :src="commodityDetail.imgLink"
             alt=""
             style="width: 150px;height: 150px"
           />
         </el-form-item>
         <el-form-item label="价格" prop="price">
-          <span v-if="!edit">{{ commodityList[index].price }}</span>
-          <el-input v-else v-model="commodityList[index].price"></el-input>
+          <span v-if="!edit">{{ commodityDetail.price }}</span>
+          <el-input v-else v-model="commodityDetail.price"></el-input>
         </el-form-item>
         <el-form-item label="商品描述" prop="description">
-          <span v-if="!edit">{{ commodityList[index].description }}</span>
-          <el-input
-            v-else
-            v-model="commodityList[index].description"
-          ></el-input>
+          <span v-if="!edit">{{ commodityDetail.description }}</span>
+          <el-input v-else v-model="commodityDetail.description"></el-input>
         </el-form-item>
         <el-form-item label="库存" prop="inventory">
-          <span v-if="!edit">{{ commodityList[index].inventory }}</span>
-          <el-input v-else v-model="commodityList[index].inventory"></el-input>
+          <span v-if="!edit">{{ commodityDetail.inventory }}</span>
+          <el-input v-else v-model="commodityDetail.inventory"></el-input>
         </el-form-item>
         <el-form-item label="所有者名字" prop="vendorName">
-          <span v-if="!edit">{{ commodityList[index].vendorName }}</span>
-          <el-input v-else v-model="commodityList[index].vendorName"></el-input>
+          <span v-if="!edit">{{ commodityDetail.vendorName }}</span>
+          <el-input v-else v-model="commodityDetail.vendorName"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -230,6 +226,15 @@ export default {
       input: "",
       commodityList: [],
       commodity: {
+        id: "",
+        name: "",
+        imgLink: "",
+        price: "",
+        description: "",
+        inventory: "",
+        vendorName: "",
+      },
+      commodityDetail: {
         id: "",
         name: "",
         imgLink: "",
@@ -301,7 +306,7 @@ export default {
     getDetail(o, index) {
       this.showDialog = true;
       this.index = index;
-      console.log(o, index);
+      this.commodityDetail = o;
     },
 
     handleDelete(o, index) {
