@@ -220,13 +220,13 @@ export default {
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "get",
         url: "api/order/notification/saler/pay",
         params: {
-          salerId: localStorage["user_id"],
+          salerId: sessionStorage["user_id"],
           page: this.formInline.currentPage,
           num: this.formInline.pageSize,
         },
@@ -248,8 +248,8 @@ export default {
       var messageId = this.doneTableData[row.id - 1].id;
       this.http({
         headers: {
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "post",
         url: "api/order/notification/change",
@@ -273,8 +273,8 @@ export default {
       var messageId = this.payTableData[row.id - 1].id;
       this.http({
         headers: {
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "post",
         url: "api/order/notification/change",
@@ -298,13 +298,13 @@ export default {
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "get",
         url: "api/order/notification/saler/complete",
         params: {
-          salerId: localStorage["user_id"],
+          salerId: sessionStorage["user_id"],
           page: this.formInline.currentPage0,
           num: this.formInline.pageSize0,
         },

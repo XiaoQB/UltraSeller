@@ -146,13 +146,13 @@ export default {
     updateUserCartList() {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "GET",
         url: "/api/testapp/shopcar/GetCart/",
         params: {
-          uid: localStorage.getItem("user_id"),
+          uid: sessionStorage.getItem("user_id"),
         },
       })
         .then((resp) => {
@@ -186,13 +186,13 @@ export default {
       }
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "post",
         url: `/api/order/create`,
         data: {
-          buyerId: localStorage.getItem("user_id"),
+          buyerId: sessionStorage.getItem("user_id"),
           address: address,
           status: "WAIT_TO_PAY",
           commodities: rows.map((resp) => {

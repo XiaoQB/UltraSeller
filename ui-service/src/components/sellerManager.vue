@@ -73,7 +73,7 @@ export default {
       var that = this;
       this.http({
         headers: {
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
           role: "admin",
         },
         method: "get",
@@ -108,7 +108,7 @@ export default {
     handleDelete(index) {
       this.http({
         headers: {
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
           role: "saler",
         },
         method: "delete",
@@ -138,7 +138,7 @@ export default {
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          Authorization: localStorage["token"],
+          Authorization: sessionStorage["token"],
           role: "admin",
         },
         method: "put",

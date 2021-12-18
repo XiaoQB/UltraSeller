@@ -179,7 +179,7 @@ export default {
     getList() {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
+          token: sessionStorage.getItem("token"),
           role: "admin",
         },
         method: "GET",
@@ -212,7 +212,7 @@ export default {
       console.log(o.id);
       this.http({
         headers: {
-          token: localStorage["token"],
+          token: sessionStorage["token"],
           role: "admin",
         },
         method: "delete",
@@ -241,8 +241,8 @@ export default {
       this.edit = false;
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "put",
         url: `/api/commodity/item`,
@@ -274,7 +274,7 @@ export default {
     doSearch(search) {
       this.http({
         headers: {
-          token: localStorage["token"],
+          token: sessionStorage["token"],
         },
         method: "get",
         url: `/api/commodity/search`,
@@ -302,8 +302,8 @@ export default {
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "post",
         url: `/api/commodity/item`,

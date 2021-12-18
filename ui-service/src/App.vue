@@ -109,8 +109,8 @@ export default {
       this.currentPage = key;
     },
     handleUser() {
-      this.userData.userName = localStorage.getItem("user_name");
-      this.userData.token = localStorage.getItem("token");
+      this.userData.userName = sessionStorage.getItem("user_name");
+      this.userData.token = sessionStorage.getItem("token");
       this.userImageHandler();
       if (
         this.userData.userName === "" ||
@@ -138,18 +138,18 @@ export default {
     handleUserWallet() {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "GET",
         url: "/api/wallet/user",
         params: {
-          username: localStorage.getItem("user_name"),
+          username: sessionStorage.getItem("user_name"),
         },
       })
         .then((resp) => {
-          window.localStorage["user_walletId"] = resp.data.data.walletId;
-          window.localStorage["user_wallet"] = resp.data.data.balance;
+          window.sessionStorage["user_walletId"] = resp.data.data.walletId;
+          window.sessionStorage["user_wallet"] = resp.data.data.balance;
           this.userData.userWallet = resp.data.data.balance;
         })
         .catch(() => {

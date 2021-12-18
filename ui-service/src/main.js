@@ -143,7 +143,7 @@ const router = new VueRouter({
 });
 router.beforeEach((to, from ,next)=>{
   if(to.matched.some((r)=>r.meta.requireAuth)){
-    let user = localStorage['user_name'];
+    let user = sessionStorage['user_name'];
     if(user){
       next();
     }else{
