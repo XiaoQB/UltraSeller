@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: us-cart-service
-          image: 75560/ultraseller-cart:k8s-deploy2
+          image: 75560/ultraseller-cart:k8s-deploy4
           imagePullPolicy: Always
           ports:
             - protocol: TCP
@@ -24,7 +24,7 @@ spec:
             - name: NACOS_SERVER
               value: 47.102.97.229:8848
             - name: DB_URL
-              value: ultraseller-mysql/ultra_seller
+              value: us-mysql-service/ultra_seller
             - name: USERNAME
               value: root
             - name: PASSWORD
@@ -60,4 +60,4 @@ spec:
     - name: http
       port: 8012
   selector:
-    app: ultraseller-cart-label
+    app: us-cart-service
