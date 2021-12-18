@@ -9,6 +9,7 @@
         <result column="description" property="description" jdbcType="CHAR"/>
         <result column="inventory" property="inventory" jdbcType="INTEGER"/>
         <result column="vendorName" property="vendorName" jdbcType="CHAR"/>
+        <result column="vendorId" property="vendorId" jdbcType="CHAR"/>
         <result column="keywords" property="keywords" jdbcType="CHAR"/>
     </resultMap>
 
@@ -118,7 +119,9 @@
         description, inventory, vendorName,vendorId
         keywords)
         values (#{id,jdbcType=CHAR}, #{name,jdbcType=CHAR}, #{imgLink,jdbcType=CHAR}, #{price,jdbcType=INTEGER},
-        #{description,jdbcType=CHAR}, #{inventory,jdbcType=INTEGER}, #{vendorName,jdbcType=CHAR},#{vendorId}
+
+        #{description,jdbcType=CHAR}, #{inventory,jdbcType=INTEGER}, #{vendorName,jdbcType=CHAR}, #{vendorId,jdbcType=CHAR},
+
         #{keywords,jdbcType=CHAR})
     </insert>
 
@@ -146,6 +149,9 @@
             <if test="vendorName != null">
                 vendorName,
             </if>
+            <if test="vendorId != null">
+                vendorId,
+            </if>
             <if test="keywords != null">
                 keywords,
             </if>
@@ -171,6 +177,9 @@
             </if>
             <if test="vendorName != null">
                 #{vendorName,jdbcType=CHAR},
+            </if>
+            <if test="vendorId != null">
+                #{vendorId,jdbcType=CHAR},
             </if>
             <if test="keywords != null">
                 #{keywords,jdbcType=CHAR},
@@ -209,6 +218,9 @@
             <if test="record.vendorName != null">
                 vendorName = #{record.vendorName,jdbcType=CHAR},
             </if>
+            <if test="record.vendorId != null">
+                vendorId = #{record.vendorId,jdbcType=CHAR},
+            </if>
             <if test="record.keywords != null">
                 keywords = #{record.keywords,jdbcType=CHAR},
             </if>
@@ -227,6 +239,7 @@
         description = #{record.description,jdbcType=CHAR},
         inventory = #{record.inventory,jdbcType=INTEGER},
         vendorName = #{record.vendorName,jdbcType=CHAR},
+        vendorId = #{record.vendorId,jdbcType=CHAR},
         keywords = #{record.keywords,jdbcType=CHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -254,6 +267,9 @@
             <if test="vendorName != null">
                 vendorName = #{vendorName,jdbcType=CHAR},
             </if>
+            <if test="vendorId != null">
+                vendorId = #{vendorId,jdbcType=CHAR},
+            </if>
             <if test="keywords != null">
                 keywords = #{keywords,jdbcType=CHAR},
             </if>
@@ -269,6 +285,7 @@
         description = #{description,jdbcType=CHAR},
         inventory = #{inventory,jdbcType=INTEGER},
         vendorName = #{vendorName,jdbcType=CHAR},
+        vendorId = #{vendorId,jdbcType=CHAR},
         keywords = #{keywords,jdbcType=CHAR}
         where id = #{id,jdbcType=CHAR}
     </update>
