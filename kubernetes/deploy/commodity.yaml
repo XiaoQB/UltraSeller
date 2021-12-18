@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: us-commodity-service
-          image: 75560/ultraseller-commodity:k8s-deploy
+          image: 75560/ultraseller-commodity:k8s-ultimate
           imagePullPolicy: Always
           env:
             - name: NACOS_SERVER

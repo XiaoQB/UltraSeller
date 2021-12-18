@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: us-order-service
-          image: 75560/ultraseller-order:k8s-deploy
+          image: 75560/ultraseller-order:k8s-ultimate
           imagePullPolicy: Always
           ports:
             - protocol: TCP

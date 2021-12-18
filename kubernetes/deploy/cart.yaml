@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: us-cart-service
-          image: 75560/ultraseller-cart:k8s-deploy4
+          image: 75560/ultraseller-cart:k8s-ultimate
           imagePullPolicy: Always
           ports:
             - protocol: TCP

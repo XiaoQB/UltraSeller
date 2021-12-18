@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: us-mysql-service
-          image: 75560/ultraseller-mysql:k8s-deploy
+          image: 75560/ultraseller-mysql:k8s-ultimate
           imagePullPolicy: IfNotPresent
           env:
             - name: MYSQL_ROOT_PASSWORD
