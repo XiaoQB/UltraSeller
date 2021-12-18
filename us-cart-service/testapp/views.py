@@ -4,7 +4,6 @@ from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse, response
 import requests
 
-from tool import db_connect
 from .models import cart
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -35,7 +34,7 @@ def getKwargs(data={}):
     return kwargs
 
 
-SERVER_ADDRESSES = '10.176.34.97:8848'
+SERVER_ADDRESSES = '47.102.97.229:8848'
 NAMESPACE = "public"
 
 client = nacos.NacosClient(SERVER_ADDRESSES, namespace=NAMESPACE, username="nacos", password="nacos")
@@ -291,16 +290,3 @@ def DeleteCart(request):
         obj = cart.objects.filter(**dictFor).delete()
     return HttpResponse("Delete {} {}success.".format(uid, gids))
 
-# @csrf_exempt
-# @require_http_methods(["POST"])
-# def createCart(request):
-#     data = json.loads(request.body)
-#     uid = data.get('uid')
-#     # todo
-#     token = request.META.get("HTTP_TOKEN")
-#     headers = {"token":token}
-#     session = db_connect(DB)
-#     ret = session.query(RepositoryModel.uuid).filter(RepositoryModel.url == url
-#                                                      and RepositoryModel.branch == branch).first()
-#     cart.objects.get(buyer_id=uid).delete()
-#     return HttpResponse("Delete {} success.".format(uid))

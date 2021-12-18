@@ -14,11 +14,11 @@ spec:
     spec:
       containers:
         - name: ultraseller-mysql-container
-          image: 75560/ultraseller-mysql:latest1
+          image: 75560/ultraseller-mysql:k8s-deploy
           imagePullPolicy: IfNotPresent
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: advanced
+              value: root
           ports:
             - containerPort: 3306
               protocol: TCP

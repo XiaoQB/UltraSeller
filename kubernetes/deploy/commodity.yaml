@@ -15,8 +15,19 @@ spec:
     spec:
       containers:
         - name: us-commodity-service
-          image: 75560/ultraseller-commodity:latest
+          image: 75560/ultraseller-commodity:k8s-deploy
           imagePullPolicy: Always
+          env:
+            - name: NACOS_SERVER
+              value: 47.102.97.229:8848
+            - name: DB_URL
+              value: ultraseller-mysql/ultra_seller
+            - name: USERNAME
+              value: root
+            - name: PASSWORD
+              value: advanced
+            - name: JAVA_OPTS
+              value: "-Xmx1g"
           ports:
             - protocol: TCP
               containerPort: 8002

@@ -7,8 +7,8 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 47.102.97.229:8848
+        server-addr: ${NACOS_SERVER}
       config:
-        server-addr: 47.102.97.229:8848
+        server-addr: ${NACOS_SERVER}
         file-extension: yml
         group: DEV_GROUP
