@@ -253,7 +253,6 @@ export default {
           price: data.price,
           description: data.description,
           inventory: data.inventory,
-          vendorName: data.vendorName,
         },
       })
         .then((response) => {
