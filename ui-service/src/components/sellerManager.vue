@@ -35,10 +35,7 @@
           <el-button size="mini" @click="getDetail(scope.$index)"
             >详情
           </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index)"
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row)"
             >删除
           </el-button>
         </template>
@@ -111,20 +108,13 @@ export default {
     handleDelete(index) {
       this.http({
         headers: {
-          "Content-Type": "application/json;",
-          Authorization: localStorage["token"],
-          role: "admin",
+          Authorization: localStorage.getItem("token"),
+          role: "saler",
         },
         method: "delete",
         url: `/api/user/delete`,
-        transformRequest: [
-          function(data) {
-            return JSON.stringify(data);
-          },
-        ],
         data: {
-          id: this.tableData[index].id,
-          userName: this.tableData[index].name,
+          userName: index.userName,
           role: "saler",
         },
       }).then((res) => {
