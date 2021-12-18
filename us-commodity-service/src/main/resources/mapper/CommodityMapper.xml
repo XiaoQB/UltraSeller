@@ -75,7 +75,7 @@
     </sql>
 
     <sql id="Base_Column_List">
-        id, name, imgLink, price, description, inventory, vendorName, keywords
+        id, name, imgLink, price, description, inventory, vendorName, vendorId, keywords
     </sql>
 
     <select id="selectByExample" resultMap="BaseResultMap" parameterType="commodity.domain.CommodityExample">
@@ -115,10 +115,10 @@
 
     <insert id="insert" parameterType="cn.edu.fudan.common.entities.dbo.Commodity">
         insert into us_commodity (id, name, imgLink, price,
-        description, inventory, vendorName,
+        description, inventory, vendorName,vendorId
         keywords)
         values (#{id,jdbcType=CHAR}, #{name,jdbcType=CHAR}, #{imgLink,jdbcType=CHAR}, #{price,jdbcType=INTEGER},
-        #{description,jdbcType=CHAR}, #{inventory,jdbcType=INTEGER}, #{vendorName,jdbcType=CHAR},
+        #{description,jdbcType=CHAR}, #{inventory,jdbcType=INTEGER}, #{vendorName,jdbcType=CHAR},#{vendorId}
         #{keywords,jdbcType=CHAR})
     </insert>
 

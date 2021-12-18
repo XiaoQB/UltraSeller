@@ -448,6 +448,7 @@ export default {
           description: this.commodity.description,
           inventory: this.commodity.inventory,
           vendorName: sessionStorage["user_name"],
+          vendorId:sessionStorage["user_id"]
         },
       })
         .then((response) => {
