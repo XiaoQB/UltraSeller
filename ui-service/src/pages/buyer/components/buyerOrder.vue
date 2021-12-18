@@ -29,7 +29,7 @@
       </div> -->
       <div
         class="order-tables"
-        style="margin-bottom: 20px; margin-top: 20px"
+        style="margin-bottom: 20px; margin-top: 20px; font-size: 20px"
         v-for="(item, index) in userOrderList"
         :key="index"
       >
@@ -42,13 +42,13 @@
         <!-- <span style="margin-bottom: 10px; float: right"
           >总订单状态: {{ handleTranslateStatus(item.status) }}</span
         > -->
-        <el-table :data="item.subOrders" border>
+        <el-table :data="item.subOrders" border style="font-size: 20px">
           <el-table-column label="商品详情" type="expand">
             <template slot-scope="props">
               <el-descriptions
                 title="商品信息"
                 column="2"
-                style="margin-left: 20px"
+                style="margin-left: 20px; font-size: 20px"
               >
                 <el-descriptions-item label="商品图">
                   <img :src="props.row.commodity.imgLink" class="item-image" />
@@ -174,7 +174,7 @@ export default {
     // doSearch() {
     //   this.http({
     //     headers: {
-    //       token: window.localStorage["token"],
+    //       token: window.sessionStorage["token"],
     //     },
     //     method: "get",
     //     params: {
@@ -192,13 +192,13 @@ export default {
     updateUserOrderList() {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "GET",
         url: "/api/order/list",
         params: {
-          user_ids: localStorage.getItem("user_id"),
+          user_ids: sessionStorage.getItem("user_id"),
           page: 1,
           num: 10,
         },
@@ -221,14 +221,14 @@ export default {
     confirmReceived(rows) {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "PUT",
         url: `/api/wallet/deal`,
         data: {
           sellerName: rows.commodity.vendorName,
-          buyerName: localStorage.getItem("user_name"),
+          buyerName: sessionStorage.getItem("user_name"),
           dealId: -1,
           price: rows.totalPrice,
           dealStatus: "finish",
@@ -238,8 +238,8 @@ export default {
           if (resp.data.code === 200) {
             this.http({
               headers: {
-                token: localStorage.getItem("token"),
-                role: localStorage.getItem("user_role"),
+                token: sessionStorage.getItem("token"),
+                role: sessionStorage.getItem("user_role"),
               },
               method: "put",
               url: "/api/order/change",
@@ -250,7 +250,7 @@ export default {
                 subOrders: [
                   { subOrderId: rows.subOrderId, status: "COMPLETE" },
                 ],
-                userName: localStorage.getItem("user_name"),
+                userName: sessionStorage.getItem("user_name"),
               },
             })
               .then((response) => {
@@ -280,14 +280,14 @@ export default {
     returnBack(rows) {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "PUT",
         url: `/api/wallet/deal`,
         data: {
           sellerName: rows.commodity.vendorName,
-          buyerName: localStorage.getItem("user_name"),
+          buyerName: sessionStorage.getItem("user_name"),
           dealId: -1,
           price: rows.totalPrice,
           dealStatus: "refund",
@@ -297,8 +297,8 @@ export default {
           if (resp.data.code === 200) {
             this.http({
               headers: {
-                token: localStorage.getItem("token"),
-                role: localStorage.getItem("user_role"),
+                token: sessionStorage.getItem("token"),
+                role: sessionStorage.getItem("user_role"),
               },
               method: "put",
               url: "/api/order/change",
@@ -308,7 +308,7 @@ export default {
                   // address: '',
                 },
                 subOrders: [{ subOrderId: rows.subOrderId, status: "CANCEL" }],
-                userName: localStorage.getItem("user_name"),
+                userName: sessionStorage.getItem("user_name"),
               },
             })
               .then((response) => {
@@ -338,14 +338,14 @@ export default {
     doPay(rows) {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "PUT",
         url: `/api/wallet/deal`,
         data: {
           sellerName: rows.commodity.vendorName,
-          buyerName: localStorage.getItem("user_name"),
+          buyerName: sessionStorage.getItem("user_name"),
           dealId: -1,
           price: rows.totalPrice,
           dealStatus: "pending",
@@ -359,8 +359,8 @@ export default {
             });
             this.http({
               headers: {
-                token: localStorage.getItem("token"),
-                role: localStorage.getItem("user_role"),
+                token: sessionStorage.getItem("token"),
+                role: sessionStorage.getItem("user_role"),
               },
               method: "put",
               url: "/api/order/change",
@@ -381,7 +381,7 @@ export default {
                     salerId: rows.salerId,
                   },
                 ],
-                buyerId: localStorage.getItem("user_id"),
+                buyerId: sessionStorage.getItem("user_id"),
               },
             }).then((response) => {
               if (response.data.code === 200) {

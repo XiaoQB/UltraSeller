@@ -16,18 +16,14 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        ` <el-button @click="handleEdit(nowRow)">编辑</el-button>
+        ` <el-button @click="edit = true">编辑</el-button>
         <el-button type="primary" @click="handleSubmit()">提交</el-button>
       </span>
     </el-dialog>
     <el-table :data="tableData" border stripe style="width: 100%">
       <el-table-column label="序号" align="center" width="70px">
         <template slot-scope="scope">
-          {{
-            (formInline.currentPage - 1) * formInline.pageSize +
-              scope.$index +
-              1
-          }}
+          {{ (currentPage - 1) * pageSize + scope.$index + 1 }}
         </template>
       </el-table-column>
       <el-table-column label="id" prop="id"> </el-table-column>
@@ -36,19 +32,16 @@
       <el-table-column label="邮箱号" prop="email"> </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" @click="getDetail(scope.$index, scope.row)"
+          <el-button size="mini" @click="getDetail(scope.$index)"
             >详情
           </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row)"
             >删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
+    <!-- <el-pagination
       background
       layout="total, prev, pager, next, sizes,jumper"
       :page-sizes="[5, 10, 15]"
@@ -57,12 +50,11 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     >
-    </el-pagination>
+    </el-pagination> -->
   </div>
 </template>
 
 <script>
-const userUrl = '/api';
 export default {
   name: "sellerManager",
   data() {
@@ -71,44 +63,25 @@ export default {
       edit: false,
       nowRow: 0,
       dataTotalCount: 0, //查询条件的总数据量
-      formInline: {
-        currentPage: 1,
-        pageSize: 10,
-      },
+      currentPage: 1,
+      pageSize: 10,
       tableData: [],
     };
   },
   methods: {
-    //分页 初始页currentPage、初始每页数据数pagesize和数据testpage--->控制每页几条
-    handleSizeChange: function(size) {
-      this.formInline.pageSize = size;
-      this.getList();
-    },
-
-    // 控制页面的切换
-    handleCurrentChange: function(currentpage) {
-      this.formInline.currentPage = currentpage;
-      this.getList();
-    },
-
-    getList(data) {
-      if (data) {
-        this.formInline.info = data.info;
-        this.formInline.pType = data.pType;
-        this.formInline.floor = data.floor;
-      }
+    getList() {
       var that = this;
       this.http({
         headers: {
-          Authorization:localStorage['token'],
-          role:"admin"
+          Authorization: sessionStorage.getItem("token"),
+          role: "admin",
         },
         method: "get",
-        url: `${userUrl}/user/info`,
+        url: `/api/user/info`,
         params: {
           role: "saler",
-          num: this.formInline.pageSize,
-          page: this.formInline.currentPage,
+          num: this.pageSize,
+          page: this.currentPage,
         },
       })
         .then((response) => {
@@ -128,29 +101,21 @@ export default {
           });
         });
     },
-    getDetail(index, row) {
+    getDetail(index) {
       this.showDialog = true;
       this.nowRow = index;
-      console.log(index, row);
     },
-    handleDelete(index, row) {
+    handleDelete(index) {
       this.http({
         headers: {
-          "Content-Type": "application/json;",
-          Authorization: localStorage["token"],
-          role:"admin"
+          Authorization: sessionStorage.getItem("token"),
+          role: "saler",
         },
         method: "delete",
-        url: `${userUrl}/user/delete`,
-        transformRequest: [
-          function(data) {
-            return JSON.stringify(data);
-          },
-        ],
+        url: `/api/user/delete`,
         data: {
-          id: this.tableData[index].id,
+          userName: index.userName,
           role: "saler",
-          userName: this.tableData[index].name,
         },
       }).then((res) => {
         if (res.data.code === 200) {
@@ -166,11 +131,6 @@ export default {
           });
         }
       });
-
-      console.log(index, row);
-    },
-    handleEdit() {
-      this.edit = true;
     },
     handleSubmit() {
       this.showDialog = false;
@@ -178,22 +138,15 @@ export default {
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          Authorization: localStorage["token"],
-          role:"admin"
+          Authorization: sessionStorage["token"],
+          role: "admin",
         },
         method: "put",
-        url: `${userUrl}/user/modify`,
-        transformRequest: [
-          function(data) {
-            return JSON.stringify(data);
-          },
-        ],
+        url: `/api/user/modify`,
         data: {
           id: this.tableData[this.nowRow].id,
           userName: this.tableData[this.nowRow].name,
           role: "saler",
-          phone: this.tableData[this.nowRow].phone,
-          email: this.tableData[this.nowRow].email,
         },
       })
         .then((response) => {

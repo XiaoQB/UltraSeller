@@ -1,22 +1,25 @@
 <template>
   <div>
     <el-dialog title="买家详情" :visible.sync="showDialog" width="45%">
-      <el-form ref="tableData" :model="tableData[nowRow]" label-width="100px">
+      <el-form ref="tableData" :model="detailData" label-width="100px">
+        <el-form-item label="用户ID" prop="id">
+          <span>{{ detailData.id }}</span>
+        </el-form-item>
         <el-form-item label="昵称" prop="userName">
-          <span v-if="!edit">{{ tableData[nowRow].userName }}</span>
-          <el-input v-else v-model="tableData[nowRow].userName"></el-input>
+          <span v-if="!edit">{{ detailData.userName }}</span>
+          <el-input v-else v-model="detailData.userName"></el-input>
         </el-form-item>
         <el-form-item label="联系电话" prop="phone">
-          <span v-if="!edit">{{ tableData[nowRow].phone }}</span>
-          <el-input v-else v-model="tableData[nowRow].phone"></el-input>
+          <span v-if="!edit">{{ detailData.phone }}</span>
+          <el-input v-else v-model="detailData.phone"></el-input>
         </el-form-item>
         <el-form-item label="邮箱号" prop="email">
-          <span v-if="!edit">{{ tableData[nowRow].email }}</span>
-          <el-input v-else v-model="tableData[nowRow].email"></el-input>
+          <span v-if="!edit">{{ detailData.email }}</span>
+          <el-input v-else v-model="detailData.email"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        ` <el-button @click="handleEdit(nowRow)">编辑</el-button>
+        ` <el-button @click="edit = true">编辑</el-button>
         <el-button type="primary" @click="handleSubmit()">提交</el-button>
       </span>
     </el-dialog>
@@ -36,19 +39,19 @@
       <el-table-column label="邮箱号" prop="email"> </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" @click="getDetail(scope.$index, scope.row)"
+          <el-button size="mini" @click="getDetail(scope.row)"
             >详情
           </el-button>
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
+            @click="handleDelete(scope.row.userName)"
             >删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
+    <!-- <el-pagination
       background
       layout="total, prev, pager, next, sizes,jumper"
       :page-sizes="[5, 10, 15]"
@@ -57,12 +60,11 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     >
-    </el-pagination>
+    </el-pagination> -->
   </div>
 </template>
 
 <script>
-const userUrl = '/api';
 export default {
   name: "buyerManager",
   data() {
@@ -70,147 +72,131 @@ export default {
       showDialog: false,
       edit: false,
       nowRow: 0,
-      dataTotalCount: 0,      //查询条件的总数据量
+      dataTotalCount: 0, //查询条件的总数据量
       formInline: {
         currentPage: 1,
         pageSize: 10,
       },
-      tableData: [
-      ],
-    }
+      tableData: [],
+      detailData: {
+        id: "",
+        userName: "",
+        phone: "",
+        email: "",
+      },
+    };
   },
   methods: {
-
     //分页 初始页currentPage、初始每页数据数pagesize和数据testpage--->控制每页几条
-    handleSizeChange: function (size) {
+    handleSizeChange: function(size) {
       this.formInline.pageSize = size;
       this.getList();
     },
-
     // 控制页面的切换
-    handleCurrentChange: function (currentpage) {
+    handleCurrentChange: function(currentpage) {
       this.formInline.currentPage = currentpage;
       this.getList();
     },
-
     getList() {
       var that = this;
       this.http({
-        headers:{
-          'Authorization':'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4ODUxNGU2YS00Mjc3LTQwNDQtYjVlZS02YTRlM2UzYjkyNjkiLCJzdWIiOiJ7XCJyb2xlXCI6XCJhZG1pblwiLFwic3VjY2Vzc1wiOlwiU1VDQ0VTU1wiLFwidXNlcm5hbWVcIjpcInhpYW9xdWFuYmluXCJ9IiwiaXNzIjoiYWRtaW4iLCJpYXQiOjE2MzUwNTI2NjQsImV4cCI6MTYzNTA1NjI2NH0.L-74lwuvnDW4gqMi2WYiN9DvWD5QKxg_EKppP6WbSks'
+        headers: {
+          Authorization: sessionStorage.getItem("token"),
         },
         method: "get",
-        url: `${userUrl}/user/info`,
+        url: `/api/user/info`,
         params: {
           role: "buyer",
           num: this.formInline.pageSize,
-          page: this.formInline.currentPage
-        }
+          page: this.formInline.currentPage,
+        },
       })
-          .then(response => {
-            console.log(response.data.data)
-            if(response.data.code === 200){
-              that.$message({
-                type: 'success',
-                message: '获得列表成功'
-              });
-              this.tableData = response.data.data.userList;
-              that.dataTotalCount = response.data.data.num;
-            }
-          })
-          .catch(function (error) {
+        .then((response) => {
+          console.log(response.data.data);
+          if (response.data.code === 200) {
             that.$message({
-              type: 'error',
-              message: '系统异常：' + error
+              type: "success",
+              message: "获得列表成功",
             });
-          });
-    },
-
-    getDetail(index, row) {
-      this.showDialog = true;
-      this.nowRow = index;
-      console.log(index, row);
-    },
-    handleDelete(index, row) {
-      this.http({
-            headers: {
-              'Content-Type': 'application/json;',
-              'Authorization': localStorage['token']
-            },
-            method: "delete",
-            url: `${userUrl}/user/delete`,
-            transformRequest: [function (data) {
-              return JSON.stringify(data)
-            }],
-            data: {
-              id: this.tableData[index].id,
-              role: "buyer",
-            }
+            this.tableData = response.data.data.userList;
+            that.dataTotalCount = response.data.data.num;
           }
-      ).then(res => {
+        })
+        .catch((error) => {
+          that.$message({
+            type: "error",
+            message: "系统异常：" + error,
+          });
+        });
+    },
+    getDetail(data) {
+      this.showDialog = true;
+      this.detailData.id = data.id;
+      this.detailData.userName = data.userName;
+      this.detailData.phone = data.phone;
+      this.detailData.email = data.email;
+    },
+    handleDelete(name) {
+      this.http({
+        headers: {
+          token: sessionStorage.getItem("token"),
+          role: "buyer",
+        },
+        method: "delete",
+        url: `/api/user/delete`,
+        data: {
+          userName: name,
+          role: "buyer",
+        },
+      }).then((res) => {
         if (res.data.code === 200) {
           this.$message({
-            type: 'success',
-            message: '删除成功：'
+            type: "success",
+            message: "删除成功：",
           });
           this.getList();
         } else {
           this.$message({
-            type: 'error',
-            message: '系统异常：'
+            type: "error",
+            message: "系统异常：",
           });
         }
-      })
-
-      console.log(index, row);
-
-    },
-    handleEdit() {
-      this.edit = true;
+      });
     },
     handleSubmit() {
       this.showDialog = false;
       this.edit = false;
       this.http({
         headers: {
-          'Content-Type': 'application/json;',
-          'Authorization': localStorage['token'],
-          role:"admin"
+          "Content-Type": "application/json;",
+          Authorization: sessionStorage.getItem("token"),
+          role: "admin",
         },
         method: "put",
-        url: `${userUrl}/user/modify`,
-        transformRequest: [function (data) {
-          return JSON.stringify(data)
-        }],
+        url: `/api/user/modify`,
         data: {
-          id: this.tableData[this.nowRow].id,
-          userName: this.tableData[this.nowRow].name,
+          id: this.detailData.id,
+          userName: this.detailData.userName,
           role: "buyer",
-          phone: this.tableData[this.nowRow].phone,
-          email: this.tableData[this.nowRow].email,
-        }
+        },
       })
-          .then(response => {
-            if (response.data.code === 200) {
-              this.$message({
-                type: 'success',
-                message: '修改成功：'
-              });
-            }
-          })
-          .catch(function (error) {
+        .then((response) => {
+          if (response.data.code === 200) {
             this.$message({
-              type: 'error',
-              message: '系统异常：' + error
+              type: "success",
+              message: "修改成功：",
             });
+          }
+        })
+        .catch(function(error) {
+          this.$message({
+            type: "error",
+            message: "系统异常：" + error,
           });
-
-
-    }
-
-
-  }
-}
+        });
+    },
+  },
+};
 </script>
 
 <style scoped></style>

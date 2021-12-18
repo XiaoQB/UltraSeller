@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: us-mysql-service
+  namespace: ase-ns-12
+spec:
+  selector:
+    matchLabels:
+      name: us-mysql-service
+  template:
+    metadata:
+      labels:
+        name: us-mysql-service
+    spec:
+      containers:
+        - name: us-mysql-service
+          image: 75560/ultraseller-mysql:k8s-ultimate
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+          ports:
+            - containerPort: 3306
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: us-mysql-service
+  namespace: ase-ns-12
+spec:
+  ports:
+    - port: 3306
+      protocol: TCP
+  selector:
+    name: us-mysql-service
+  type: LoadBalancer

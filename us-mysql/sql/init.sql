@@ -14,6 +14,9 @@
  Date: 17/12/2021 19:08:15
 */
 
+create database `ultra_seller` default character set utf8 collate utf8_general_ci;
+use ultra_seller;
+
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 

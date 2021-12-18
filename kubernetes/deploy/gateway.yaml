@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: us-gateway-service
+  namespace: ase-ns-12
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: us-gateway-service
+  template:
+    metadata:
+      labels:
+        app: us-gateway-service
+    spec:
+      containers:
+        - name: us-gateway-service
+          image: 75560/ultraseller-gateway:k8s-ultimate
+          imagePullPolicy: IfNotPresent
+          ports:
+            - protocol: TCP
+              containerPort: 8000
+          env:
+            - name: NACOS_SERVER
+              value: 47.102.97.229:8848
+            - name: JAVA_OPTS
+              value: "-Xmx1g"
+          resources:
+            requests:
+              cpu: 0.5
+              memory: 256Mi
+            limits:
+              cpu: 1
+              memory: 1Gi
+          readinessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: us-gateway-service
+  namespace: ase-ns-12
+spec:
+  ports:
+     - port: 8000
+       protocol: TCP
+  selector:
+    app: us-gateway-service
+  type: LoadBalancer
