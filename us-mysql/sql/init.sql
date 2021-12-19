@@ -661,8 +661,8 @@ INSERT INTO `us_commodity` VALUES ('2021121509191122753', 'VR眼镜', 'http://ul
 INSERT INTO `us_commodity` VALUES ('2021121509214626412', '刺客信条：黑棋', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639560015236_44f18232', 212, '刺客信条限量版DLC', 20, 'xpc',16, NULL);
 INSERT INTO `us_commodity` VALUES ('2021121509275823395', '雷姆', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639560454254_a83d739b', 199999, '你老婆', 1, 'xpc', 16,NULL);
 INSERT INTO `us_commodity` VALUES ('2021121509311008040', '？？？？', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639560649894_6fbab276', 0, '？？？？', 0, 'xpc',16, NULL);
-INSERT INTO `us_commodity` VALUES ('2021121709343544772', '学习英语', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639733649832_1eea957a', 100, '英语教程', 20000, '无良商家', NULL);
-INSERT INTO `us_commodity` VALUES ('2021121709344450682', '学习英语', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639733649832_1eea957a', 100, '英语教程', 20000, '无良商家', NULL);
+INSERT INTO `us_commodity` VALUES ('2021121709343544772', '学习英语', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639733649832_1eea957a', 100, '英语教程', 20000, '无良商家',30, NULL);
+INSERT INTO `us_commodity` VALUES ('2021121709344450682', '学习英语', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639733649832_1eea957a', 100, '英语教程', 20000, '无良商家',30, NULL);
 COMMIT;
 
 -- ----------------------------
