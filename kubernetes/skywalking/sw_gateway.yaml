@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: sw-us-gateway-service
-          image: 75560/ultraseller-gateway:sw
+          image: keyon2580/ultraseller-gateway:sw2
           imagePullPolicy: Always
           env:
             - name: NACOS_SERVER

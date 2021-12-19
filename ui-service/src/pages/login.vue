@@ -3,8 +3,8 @@
     <el-main style="margin-top: 50px">
       <img
         class="logo"
-        src="@/assets/store_logo.png"
-        style="width: 30%; height: 30%; margin: auto"
+        src="@/assets/ultraseller.png"
+        style="width: 300px; height: 300px; margin: auto "
       />
       <div class="login-wrap">
         <el-row type="flex" justify="center">
@@ -330,7 +330,7 @@ export default {
 .login {
   width: 100%;
   height: 100%;
-  background: url("../assets/left-pic.jpeg") no-repeat;
+  background: url("../assets/bg.jpeg") no-repeat;
   background-size: cover;
   overflow: hidden;
   opacity: 30;

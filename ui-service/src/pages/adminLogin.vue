@@ -205,7 +205,7 @@ export default {
 .login {
   width: 100%;
   height: 100%;
-  background: url("../assets/left-pic.jpeg") no-repeat;
+  background: url("../assets/bg.jpeg") no-repeat;
   background-size: cover;
   overflow: hidden;
   opacity: 30;

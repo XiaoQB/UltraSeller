@@ -1,7 +1,7 @@
 <template>
   <div id="storePage" class="storePage">
-    <el-header style="width: 30%; height: 30%; margin: auto">
-      <img class="logo" src="@/assets/store_logo.png" />
+    <el-header style="width: 300px; height: 300px; margin: auto">
+      <img class="logo" src="@/assets/ultraseller.png" />
     </el-header>
     <el-main>
       <el-input
