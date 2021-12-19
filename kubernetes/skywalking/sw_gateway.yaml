@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: sw-us-gateway-service
+  name: us-gateway-service
   namespace: ase-ns-12
 spec:
   type: LoadBalancer
