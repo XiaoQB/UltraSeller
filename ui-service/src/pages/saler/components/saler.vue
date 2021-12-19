@@ -217,7 +217,7 @@ export default {
 
   data() {
     return {
-      userName: window.localStorage["user_name"],
+      userName: window.sessionStorage["user_name"],
       showDialog2: false,
       showDialog: false,
       edit: false,
@@ -253,17 +253,29 @@ export default {
       uploadPic: "",
     };
   },
+  mounted() {
+    this.getList();
+  },
 
   methods: {
     handleSizeChange: function(size) {
       this.formInline.pageSize = size;
-      this.getList();
+      if(this.q != null){
+        this.doSearch()
+      }else{
+        this.getList()
+      }
+
     },
 
     // 控制页面的切换
     handleCurrentChange: function(currentpage) {
       this.formInline.currentPage = currentpage;
-      this.getList();
+      if(this.q != null){
+        this.doSearch()
+      }else{
+        this.getList()
+      }
     },
     handleSelect(key) {
       this.salerPage = key;
@@ -276,13 +288,13 @@ export default {
     getList() {
       this.http({
         headers: {
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "get",
         url: `/api/commodity/lists`,
         params: {
-          username: localStorage["user_name"],
+          username: sessionStorage["user_name"],
           pagesize: this.formInline.pageSize,
           page: this.formInline.currentPage,
           seq: this.seq,
@@ -313,8 +325,8 @@ export default {
       console.log(o.id);
       this.http({
         headers: {
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "delete",
         url: `/api/commodity/item/${o.id}`,
@@ -345,8 +357,8 @@ export default {
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "put",
         url: `/api/commodity/item`,
@@ -384,8 +396,8 @@ export default {
     doSearch() {
       this.http({
         headers: {
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "get",
         url: `/api/commodity/search`,
@@ -411,14 +423,15 @@ export default {
     },
     addCommodity() {
       this.showDialog2 = true;
+      console.log("1234567896543111313")
     },
     handleAdd() {
       this.showDialog2 = false;
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "post",
         url: `/api/commodity/item`,
@@ -434,7 +447,8 @@ export default {
           price: this.commodity.price,
           description: this.commodity.description,
           inventory: this.commodity.inventory,
-          vendorName: localStorage["user_name"],
+          vendorName: sessionStorage["user_name"],
+          vendorId:sessionStorage["user_id"]
         },
       })
         .then((response) => {
@@ -500,6 +514,11 @@ export default {
   width: 100%;
   height: 100%;
   margin-top: 50px;
+  display: grid;
+  /*  声明列的宽度  */
+  grid-template-columns: repeat(5, 20%);
+  /*  声明行的高度  */
+  grid-template-rows: 550px;
 }
 
 .item-image {

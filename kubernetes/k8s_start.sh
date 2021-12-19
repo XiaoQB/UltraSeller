@@ -8,4 +8,4 @@ kubectl apply -f deploy/wallet.yaml
 kubectl apply -f deploy/order.yaml
 kubectl apply -f deploy/cart.yaml
 
-kubectl apply -f hpa/hap_deploy.yaml
+kubectl apply -f hpa/hpa_deploy.yml

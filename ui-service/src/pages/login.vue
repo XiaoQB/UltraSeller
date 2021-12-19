@@ -190,10 +190,10 @@ export default {
           })
           .then((res) => {
             if (res.data.code === 200) {
-              window.localStorage["token"] = res.data.data.token;
-              window.localStorage["user_id"] = res.data.data.userId;
-              window.localStorage["user_name"] = this.user.username;
-              window.localStorage["user_role"] = this.user.role;
+              window.sessionStorage["token"] = res.data.data.token;
+              window.sessionStorage["user_id"] = res.data.data.userId;
+              window.sessionStorage["user_name"] = this.user.username;
+              window.sessionStorage["user_role"] = this.user.role;
               this.http({
                 headers: {
                   token: res.data.data.token,
@@ -202,11 +202,11 @@ export default {
                 method: "GET",
                 url: "/api/wallet/user",
                 params: {
-                  username: localStorage.getItem("user_name"),
+                  username: sessionStorage.getItem("user_name"),
                 },
               })
                 .then((resp) => {
-                  window.localStorage["user_wallet"] = resp.data.data.balance;
+                  window.sessionStorage["user_wallet"] = resp.data.data.balance;
                 })
                 .catch(() => {
                   this.$message({
@@ -237,10 +237,10 @@ export default {
           })
           .then((res) => {
             if (res.data.code === 200) {
-              window.localStorage["token"] = res.data.data.token;
-              window.localStorage["user_id"] = res.data.data.userId;
-              window.localStorage["user_name"] = this.user.username;
-              window.localStorage["user_role"] = this.user.role;
+              window.sessionStorage["token"] = res.data.data.token;
+              window.sessionStorage["user_id"] = res.data.data.userId;
+              window.sessionStorage["user_name"] = this.user.username;
+              window.sessionStorage["user_role"] = this.user.role;
               this.$router.push({
                 path: "/storePage",
                 query: {

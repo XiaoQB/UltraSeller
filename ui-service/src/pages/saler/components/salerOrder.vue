@@ -104,7 +104,7 @@
         <el-table-column label="创建时间" prop="createTime"> </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <div v-if="scope.row.status === '未发货'">
+            <div v-if="scope.row.status === 'WAIT_TO_TRANSFER'">
               <el-button size="mini" @click="showDialogTran()">发货</el-button>
             </div>
             <el-dialog
@@ -282,13 +282,13 @@ export default {
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "get",
         url: "/api/order/saler-list",
         params: {
-          user_ids: localStorage["user_id"],
+          user_ids: sessionStorage["user_id"],
           page: this.formInline.currentPage,
           num: this.formInline.pageSize,
         },
@@ -317,8 +317,8 @@ export default {
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          token: window.localStorage["token"],
-          role: localStorage["user_role"],
+          token: window.sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "put",
         url: "/api/order/change",
@@ -355,13 +355,13 @@ export default {
       } else {
         this.http({
           headers: {
-            token: window.localStorage["token"],
-            role: localStorage["user_role"],
+            token: window.sessionStorage["token"],
+            role: sessionStorage["user_role"],
           },
           method: "get",
           url: "/api/order/saler-orders-status",
           params: {
-            user_id: localStorage["id"],
+            user_id: sessionStorage["id"],
             status: this.status,
             page: this.formInline.currentPage,
             num: this.formInline.pageSize,
@@ -399,8 +399,8 @@ export default {
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          token: window.localStorage["token"],
-          role: localStorage["user_role"],
+          token: window.sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "put",
         url: "/api/order/change",
