@@ -102,8 +102,9 @@
         <el-pagination
           background
           layout="prev, pager, next, jumper"
+          :total="records"
           :page-size="pageSize"
-          :total="totalItems"
+          :current-page.sync="currentPage"
         >
         </el-pagination>
       </div>
@@ -118,12 +119,12 @@ export default {
   data() {
     return {
       curretDate: "",
-      num: 0,
       search: "",
       commodityIndex: -1, //商品索引
       disabledToBuy: true,
-      totalItems: 6,
-      pageSize: 24,
+      currentPage: 1,  // 当前页
+      records: 0,   // 总数据量
+      pageSize: 12,   // 每页显示条数
       commodityList: [],
       dialogFormVisible: false, // 弹出框
       userForm: {
@@ -146,13 +147,13 @@ export default {
         method: "GET",
         url: "/api/commodity/listall",
         params: {
-          // username: sessionStorage.getItem("user_name"),
-          page: 1,
-          pagesize: 10,
+          page: this.currentPage,
+          pagesize: this.pageSize,
           seq: 0,
         },
       })
         .then((resp) => {
+          this.records = resp.data.data.records;
           this.commodityList = resp.data.data.rows;
           if (
             sessionStorage.getItem("user_name") !== null ||
@@ -176,8 +177,8 @@ export default {
         url: `/api/commodity/search`,
         params: {
           q: value,
-          pagesize: 20,
-          page: 1,
+          pagesize: this.pageSize,
+          page: this.currentPage,
         },
       }).then((res) => {
         if (res.data.code === 200) {
