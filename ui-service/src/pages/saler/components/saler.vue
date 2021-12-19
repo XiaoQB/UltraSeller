@@ -44,8 +44,8 @@
         </el-menu-item>
       </el-menu>
     </el-header>
-    <el-header style="width: 30%; height: 30%; margin: auto">
-      <img class="logo" src="@/assets/store_logo.png" />
+    <el-header style="width: 300px; height: 300px; margin: auto">
+      <img class="logo" src="@/assets/ultraseller.png" />
     </el-header>
     <el-main>
       <el-input

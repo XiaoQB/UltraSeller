@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: sw-us-wallet-service
-          image: 75560/ultraseller-wallet:sw
+          image: keyon2580/ultraseller-wallet:sw2
           imagePullPolicy: Always
           env:
             - name: NACOS_SERVER
