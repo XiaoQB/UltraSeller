@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: sw-us-cart-service
-          image: keyon2580/ultraseller-cart:sw2
+          image: 75560/ultraseller-cart:sw3
           imagePullPolicy: Always
           env:
             - name: NACOS_SERVER
