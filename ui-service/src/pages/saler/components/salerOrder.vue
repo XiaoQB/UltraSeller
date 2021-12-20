@@ -108,17 +108,17 @@
               <el-button size="mini" @click="showDialogTran()">发货</el-button>
             </div>
             <el-dialog
-              title="选择物流公司"
-              :visible.sync="showDialogTrans"
-              width="45%"
+                title="选择物流公司"
+                :visible.sync="showDialogTrans"
+                width="45%"
             >
               <el-form ref="commodityList" :model="address" label-width="100px">
                 <el-select v-model="trans" placeholder="Select" align="right">
                   <el-option
-                    v-for="item in optionsTrans"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
+                      v-for="item in optionsTrans"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
                   >
                   </el-option>
                 </el-select>
@@ -126,10 +126,11 @@
 
               <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="shipments(scope.row)"
-                  >提交</el-button
+                >提交</el-button
                 >
               </span>
             </el-dialog>
+
             <el-button size="mini" @click="changeAddress(scope.row)"
               >修改地址</el-button
             >
@@ -165,6 +166,7 @@
         <el-button type="primary" @click="changeSubmit()">提交</el-button>
       </span>
     </el-dialog>
+
   </div>
 </template>
 
@@ -313,7 +315,7 @@ export default {
      * @param row
      */
     shipments(row) {
-      console.log(row.address);
+      this.showDialogTrans = false
       this.http({
         headers: {
           "Content-Type": "application/json;",
@@ -323,7 +325,6 @@ export default {
         method: "put",
         url: "/api/order/change",
         data: {
-          order: {},
           subOrders: [
             {
               subOrderId: row.subOrderId,
@@ -405,7 +406,6 @@ export default {
         method: "put",
         url: "/api/order/change",
         data: {
-          order: {},
           subOrders: [
             {
               subOrderId: this.changeInfo.subOrderId,

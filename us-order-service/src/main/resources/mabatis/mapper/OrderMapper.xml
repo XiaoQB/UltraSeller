@@ -25,6 +25,7 @@
         <result property="commodityId" column="commodity_id"/>
         <result property="price" column="price"/>
         <result property="num" column="num"/>
+        <result property="logistics" column="logistics"/>
     </resultMap>
 
     <sql id="order_all_columns">
@@ -32,7 +33,7 @@
     </sql>
 
     <sql id="sub_order_all_columns">
-        id, order_id, status, total_price, address, saler_id, create_time, update_time, commodity_name, commodity_id, price, num
+        id, order_id, status, total_price, address, saler_id, create_time, update_time, commodity_name, commodity_id, price, num,logistics
     </sql>
 
     <insert id="createOrder" parameterType="cn.edu.fudan.common.entities.dbo.Order">
