@@ -166,10 +166,10 @@ export default {
           })
           .then((res) => {
             if (res.data.code === 200) {
-              window.localStorage["token"] = res.data.data.token;
-              window.localStorage["user_id"] = res.data.data.userId;
-              window.localStorage["user_name"] = "admin";
-              window.localStorage["user_role"] = "admin";
+              window.sessionStorage["token"] = res.data.data.token;
+              window.sessionStorage["user_id"] = res.data.data.userId;
+              window.sessionStorage["user_name"] = "admin";
+              window.sessionStorage["user_role"] = "admin";
               this.$router.push({
                 name: "admin",
               });
@@ -205,7 +205,7 @@ export default {
 .login {
   width: 100%;
   height: 100%;
-  background: url("../assets/left-pic.jpeg") no-repeat;
+  background: url("../assets/bg.jpeg") no-repeat;
   background-size: cover;
   overflow: hidden;
   opacity: 30;

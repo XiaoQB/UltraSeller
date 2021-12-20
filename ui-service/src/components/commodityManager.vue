@@ -23,42 +23,48 @@
         >添加商品</el-button
       >
       <el-dialog title="商品详情" :visible.sync="showDetail" width="45%">
-        <el-form ref="tableData" :model="tableData[nowRow]" label-width="100px">
+        <el-form
+          ref="commodityDetail"
+          :model="commodityDetail"
+          label-width="100px"
+        >
           <el-form-item label="编号" prop="id">
-            <span v-if="!edit">{{ tableData[nowRow].id }}</span>
-            <el-input v-else v-model="tableData[nowRow].id"></el-input>
+            <span v-if="!edit">{{ commodityDetail.id }}</span>
+            <el-input v-else v-model="commodityDetail.id"></el-input>
           </el-form-item>
           <el-form-item label="商品名称" prop="name">
-            <span v-if="!edit">{{ tableData[nowRow].name }}</span>
-            <el-input v-else v-model="tableData[nowRow].name"></el-input>
+            <span v-if="!edit">{{ commodityDetail.name }}</span>
+            <el-input v-else v-model="commodityDetail.name"></el-input>
           </el-form-item>
           <el-form-item label="图片" prop="imgLink">
             <img
-              :src="o.imgLink"
+              :src="commodityDetail.imgLink"
               style="width: 250px;height: 250px"
               class="item-image"
             />
           </el-form-item>
           <el-form-item label="价格" prop="price">
-            <span v-if="!edit">{{ tableData[nowRow].price }}</span>
-            <el-input v-else v-model="tableData[nowRow].price"></el-input>
+            <span v-if="!edit">{{ commodityDetail.price }}</span>
+            <el-input v-else v-model="commodityDetail.price"></el-input>
           </el-form-item>
           <el-form-item label="商品描述" prop="description">
-            <span v-if="!edit">{{ tableData[nowRow].description }}</span>
-            <el-input v-else v-model="tableData[nowRow].description"></el-input>
+            <span v-if="!edit">{{ commodityDetail.description }}</span>
+            <el-input v-else v-model="commodityDetail.description"></el-input>
           </el-form-item>
           <el-form-item label="库存" prop="inventory">
-            <span v-if="!edit">{{ tableData[nowRow].inventory }}</span>
-            <el-input v-else v-model="tableData[nowRow].inventory"></el-input>
+            <span v-if="!edit">{{ commodityDetail.inventory }}</span>
+            <el-input v-else v-model="commodityDetail.inventory"></el-input>
           </el-form-item>
           <el-form-item label="所有者名字" prop="vendorName">
-            <span v-if="!edit">{{ tableData[nowRow].vendorName }}</span>
-            <el-input v-else v-model="tableData[nowRow].vendorName"></el-input>
+            <span v-if="!edit">{{ commodityDetail.vendorName }}</span>
+            <el-input v-else v-model="commodityDetail.vendorName"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
           ` <el-button @click="edit = true">编辑</el-button>
-          <el-button type="primary" @click="handleSubmit()">提交</el-button>
+          <el-button type="primary" @click="handleSubmit(commodityDetail)"
+            >提交</el-button
+          >
         </span>
       </el-dialog>
       <el-dialog title="添加商品" :visible.sync="showAddCommodity" width="45%">
@@ -105,7 +111,15 @@
         <el-table-column label="编号" type="index"></el-table-column>
         <el-table-column prop="id" label="商品编号"></el-table-column>
         <el-table-column prop="name" label="商品名称"></el-table-column>
-        <el-table-column prop="imgLink" label="商品图片"></el-table-column>
+        <el-table-column label="商品图片">
+          <template prop="imgLink" slot-scope="scope">
+            <img
+              :src="scope.row.imgLink"
+              class="item-image"
+              style="width: 150px;height: 150px"
+            />
+          </template>
+        </el-table-column>
         <el-table-column prop="description" label="商品描述"></el-table-column>
         <el-table-column prop="price" label="商品价格"></el-table-column>
         <el-table-column prop="vendorId" label="卖家ID"></el-table-column>
@@ -165,13 +179,12 @@ export default {
     getList() {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
+          token: sessionStorage.getItem("token"),
           role: "admin",
         },
         method: "GET",
         url: `/api/commodity/listall`,
         params: {
-          // username: "admin",
           pagesize: this.pageSize,
           page: this.currentPage,
           seq: this.seq,
@@ -199,7 +212,7 @@ export default {
       console.log(o.id);
       this.http({
         headers: {
-          token: localStorage["token"],
+          token: sessionStorage["token"],
           role: "admin",
         },
         method: "delete",
@@ -220,36 +233,33 @@ export default {
       });
       console.log(index, o);
     },
-    handleSubmit() {
+    handleSubmit(data) {
+      this.$message({
+        type: "success",
+        message: data,
+      });
       this.edit = false;
       this.http({
         headers: {
-          "Content-Type": "application/json;",
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "put",
         url: `/api/commodity/item`,
-        transformRequest: [
-          function(data) {
-            return JSON.stringify(data);
-          },
-        ],
         data: {
-          id: this.commodityList[this.index].id,
-          name: this.commodityList[this.index].name,
-          imgLink: this.commodityList[this.index].imgLink,
-          price: this.commodityList[this.index].price,
-          description: this.commodityList[this.index].description,
-          inventory: this.commodityList[this.index].inventory,
-          vendorName: this.commodityList[this.index].vendorName,
+          id: data.id,
+          name: data.name,
+          imgLink: data.imgLink,
+          price: data.price,
+          description: data.description,
+          inventory: data.inventory,
         },
       })
         .then((response) => {
-          if (response.data.data.code === 200) {
+          if (response.data.code === 200) {
             this.$message({
               type: "success",
-              message: "修改成功：",
+              message: "修改成功!",
             });
           }
         })
@@ -263,7 +273,7 @@ export default {
     doSearch(search) {
       this.http({
         headers: {
-          token: localStorage["token"],
+          token: sessionStorage["token"],
         },
         method: "get",
         url: `/api/commodity/search`,
@@ -291,8 +301,8 @@ export default {
       this.http({
         headers: {
           "Content-Type": "application/json;",
-          token: localStorage["token"],
-          role: localStorage["user_role"],
+          token: sessionStorage["token"],
+          role: sessionStorage["user_role"],
         },
         method: "post",
         url: `/api/commodity/item`,

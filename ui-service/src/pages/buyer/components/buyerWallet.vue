@@ -108,16 +108,16 @@ export default {
   },
   methods: {
     getUserWallet() {
-      this.userData.userName = localStorage.getItem("user_name");
-      this.userData.userRole = localStorage.getItem("user_role");
-      this.userWallet.walletId = localStorage.getItem("user_walletId");
-      this.userWallet.balance = localStorage.getItem("user_wallet");
+      this.userData.userName = sessionStorage.getItem("user_name");
+      this.userData.userRole = sessionStorage.getItem("user_role");
+      this.userWallet.walletId = sessionStorage.getItem("user_walletId");
+      this.userWallet.balance = sessionStorage.getItem("user_wallet");
     },
     doChargeMoney() {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "PUT",
         url: `/api/wallet/user`,

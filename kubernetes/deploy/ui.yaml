@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name:  us-ui-service
-          image: 75560/ultraseller-ui:k8s-deploy
+          image: 75560/ultraseller-ui:k8s-ultimate
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80

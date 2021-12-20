@@ -5,7 +5,7 @@ function getLists(name, ps, page) {
     this.axios({
         headers: {
             'Content-Type': 'application/json;',
-            'token': localStorage['token']
+            'token': sessionStorage['token']
         },
         method: "get",
         url: `/api/seller/lists`,

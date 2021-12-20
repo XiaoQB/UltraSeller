@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.soap.MimeHeaders;
 
 /**
  * The type Commodity controller.

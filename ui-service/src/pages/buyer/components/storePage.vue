@@ -1,7 +1,7 @@
 <template>
   <div id="storePage" class="storePage">
-    <el-header style="width: 30%; height: 30%; margin: auto">
-      <img class="logo" src="@/assets/store_logo.png" />
+    <el-header style="width: 300px; height: 300px; margin: auto">
+      <img class="logo" src="@/assets/ultraseller.png" />
     </el-header>
     <el-main>
       <el-input
@@ -102,8 +102,9 @@
         <el-pagination
           background
           layout="prev, pager, next, jumper"
+          :total="records"
           :page-size="pageSize"
-          :total="totalItems"
+          :current-page.sync="currentPage"
         >
         </el-pagination>
       </div>
@@ -118,12 +119,12 @@ export default {
   data() {
     return {
       curretDate: "",
-      num: 0,
       search: "",
       commodityIndex: -1, //商品索引
       disabledToBuy: true,
-      totalItems: 6,
-      pageSize: 24,
+      currentPage: 1,  // 当前页
+      records: 0,   // 总数据量
+      pageSize: 12,   // 每页显示条数
       commodityList: [],
       dialogFormVisible: false, // 弹出框
       userForm: {
@@ -140,24 +141,24 @@ export default {
     updateCommodityData() {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "GET",
         url: "/api/commodity/listall",
         params: {
-          // username: localStorage.getItem("user_name"),
-          page: 1,
-          pagesize: 10,
+          page: this.currentPage,
+          pagesize: this.pageSize,
           seq: 0,
         },
       })
         .then((resp) => {
+          this.records = resp.data.data.records;
           this.commodityList = resp.data.data.rows;
           if (
-            localStorage.getItem("user_name") !== null ||
-            localStorage.getItem("user_name") !== "" ||
-            localStorage.getItem("user_name") !== undefined
+            sessionStorage.getItem("user_name") !== null ||
+            sessionStorage.getItem("user_name") !== "" ||
+            sessionStorage.getItem("user_name") !== undefined
           ) {
             this.disabledToBuy = false;
           }
@@ -169,15 +170,15 @@ export default {
     doSearch(value) {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "get",
         url: `/api/commodity/search`,
         params: {
           q: value,
-          pagesize: 20,
-          page: 1,
+          pagesize: this.pageSize,
+          page: this.currentPage,
         },
       }).then((res) => {
         if (res.data.code === 200) {
@@ -221,13 +222,13 @@ export default {
     doBuyClick() {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "post",
         url: `/api/order/create`,
         data: {
-          buyerId: localStorage.getItem("user_id"),
+          buyerId: sessionStorage.getItem("user_id"),
           address: this.userForm.userAddress,
           status: "WAIT_TO_PAY",
           commodities: [
@@ -261,14 +262,14 @@ export default {
     doAddToCartClick() {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
+          token: sessionStorage.getItem("token"),
           // "Content-Type": "application/json",
-          role: localStorage.getItem("user_role"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "POST",
         url: "/api/testapp/shopcar/AddCart/",
         data: {
-          uid: localStorage.getItem("user_id"),
+          uid: sessionStorage.getItem("user_id"),
           good_list: [
             {
               id: this.commodityList[this.commodityIndex].id,

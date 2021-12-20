@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: us-wallet-service
-          image: 75560/ultraseller-wallet:k8s-deploy
+          image: 75560/ultraseller-wallet:k8s-ultimate
           imagePullPolicy: Always
           ports:
             - protocol: TCP

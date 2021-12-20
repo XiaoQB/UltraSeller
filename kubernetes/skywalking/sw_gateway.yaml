@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: us-commodity-service
+  name: sw-us-gateway-service
   namespace: ase-ns-12
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: us-commodity-service
+      app: sw-us-gateway-service
   template:
     metadata:
       labels:
-        app: us-commodity-service
+        app: sw-us-gateway-service
     spec:
       containers:
-        - name: us-commodity-service
-          image: 75560/ultraseller-commodity:k8s-ultimate
+        - name: sw-us-gateway-service
+          image: 75560/ultraseller-gateway:sw3
           imagePullPolicy: Always
           env:
             - name: NACOS_SERVER
@@ -28,19 +28,25 @@ spec:
               value: root
             - name: JAVA_OPTS
               value: "-Xmx1g"
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: "49.233.221.184:11800"
+            - name: SW_GRPC_LOG_SERVER_HOST
+              value: "49.233.221.184"
+            - name: SW_GRPC_LOG_SERVER_PORT
+              value: "11800"
           ports:
             - protocol: TCP
-              containerPort: 8002
+              containerPort: 8000
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: us-commodity-service
+  name: us-gateway-service
   namespace: ase-ns-12
 spec:
   type: LoadBalancer
   ports:
     - name: http
-      port: 8002
+      port: 8000
   selector:
-    app: us-commodity-service
+    app: sw-us-gateway-service

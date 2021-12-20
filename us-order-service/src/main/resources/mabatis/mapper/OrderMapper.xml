@@ -150,7 +150,8 @@
                num,
                address,
                commodity_id   as commodityId,
-               commodity_name as commodityName
+               commodity_name as commodityName,
+               status
         from sys_message
         where saler_id = #{salerId}
           and type = 'WAIT_TO_TRANSFER'
@@ -169,7 +170,8 @@
                num,
                address,
                commodity_id   as commodityId,
-               commodity_name as commodityName
+               commodity_name as commodityName,
+               status
         from sys_message
         where saler_id = #{salerId}
           and type = 'COMPLETE'

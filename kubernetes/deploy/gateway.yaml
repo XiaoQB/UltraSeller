@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: us-gateway-service
-          image: 75560/ultraseller-gateway:k8s-deploy4
+          image: 75560/ultraseller-gateway:k8s-ultimate
           imagePullPolicy: IfNotPresent
           ports:
             - protocol: TCP
@@ -54,3 +54,4 @@ spec:
        protocol: TCP
   selector:
     app: us-gateway-service
+  type: LoadBalancer

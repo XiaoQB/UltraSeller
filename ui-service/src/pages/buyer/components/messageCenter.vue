@@ -111,13 +111,13 @@ export default {
     updateMessages() {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "GET",
         url: `/api/order/notification/buyer/receive`,
         params: {
-          buyerId: localStorage.getItem("user_id"),
+          buyerId: sessionStorage.getItem("user_id"),
           page: 1,
           num: 10,
         },
@@ -160,8 +160,8 @@ export default {
     readMessage(id) {
       this.http({
         headers: {
-          token: localStorage.getItem("token"),
-          role: localStorage.getItem("user_role"),
+          token: sessionStorage.getItem("token"),
+          role: sessionStorage.getItem("user_role"),
         },
         method: "post",
         url: "/api/order/notification/change",

@@ -642,6 +642,7 @@ CREATE TABLE `us_commodity` (
                                 `description` char(32) DEFAULT NULL,
                                 `inventory` int(11) DEFAULT NULL,
                                 `vendorName` char(20) DEFAULT NULL,
+                                `vendorId` int(11) DEFAULT NULL,
                                 `keywords` char(20) DEFAULT NULL,
                                 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -650,18 +651,18 @@ CREATE TABLE `us_commodity` (
 -- Records of us_commodity
 -- ----------------------------
 BEGIN;
-INSERT INTO `us_commodity` VALUES ('2021111323171493548', '白酒', 'https://tse1-mm.cn.bing.net/th/id/OIP-C.Ysp5JXpNQ13Jpx75yhIfYAHaHa?w=214&h=214&c=7&r=0&o=5&dpr=2&pid=1.7', 2880, '酒', 10, '茅台', '酒');
-INSERT INTO `us_commodity` VALUES ('2021111414232602041', '水', 'https://tse2-mm.cn.bing.net/th/id/OIP-C.I6r-Fi3Fuv2KRhkRoM2ZMwHaFW?w=268&h=193&c=7&r=0&o=5&dpr=2&pid=1.7', 4, '喝的', 4, 'xpc', NULL);
-INSERT INTO `us_commodity` VALUES ('2021121206542729411', '狗狗', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639292056264_7cbc7d73', 100000, '小狗狗', 10, 'xpc', NULL);
-INSERT INTO `us_commodity` VALUES ('2021121407381992581', '水杯', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639467492870_f729be06', 10, '水杯', 10, 'xpc', NULL);
-INSERT INTO `us_commodity` VALUES ('2021121509154762871', '一拳超人', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639559718668_c160fc55', 188, '一拳超人海报', 100000000, 'xpc', NULL);
-INSERT INTO `us_commodity` VALUES ('2021121509172565699', '斯诺克', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639559797323_aa1a92d5', 999, '斯诺克全套用品', 33, 'xpc', NULL);
-INSERT INTO `us_commodity` VALUES ('2021121509191122753', 'VR眼镜', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639559913434_bcd254d8', 22300, '顶配VR眼镜', 11, 'xpc', NULL);
-INSERT INTO `us_commodity` VALUES ('2021121509214626412', '刺客信条：黑棋', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639560015236_44f18232', 212, '刺客信条限量版DLC', 20, 'xpc', NULL);
-INSERT INTO `us_commodity` VALUES ('2021121509275823395', '雷姆', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639560454254_a83d739b', 199999, '你老婆', 1, 'xpc', NULL);
-INSERT INTO `us_commodity` VALUES ('2021121509311008040', '？？？？', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639560649894_6fbab276', 0, '？？？？', 0, 'xpc', NULL);
-INSERT INTO `us_commodity` VALUES ('2021121709343544772', '学习英语', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639733649832_1eea957a', 100, '英语教程', 20000, '无良商家', NULL);
-INSERT INTO `us_commodity` VALUES ('2021121709344450682', '学习英语', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639733649832_1eea957a', 100, '英语教程', 20000, '无良商家', NULL);
+INSERT INTO `us_commodity` VALUES ('2021111323171493548', '白酒', 'https://tse1-mm.cn.bing.net/th/id/OIP-C.Ysp5JXpNQ13Jpx75yhIfYAHaHa?w=214&h=214&c=7&r=0&o=5&dpr=2&pid=1.7', 2880, '酒', 10, '茅台', 0,'酒');
+INSERT INTO `us_commodity` VALUES ('2021111414232602041', '水', 'https://tse2-mm.cn.bing.net/th/id/OIP-C.I6r-Fi3Fuv2KRhkRoM2ZMwHaFW?w=268&h=193&c=7&r=0&o=5&dpr=2&pid=1.7', 4, '喝的', 4, 'xpc',16, NULL);
+INSERT INTO `us_commodity` VALUES ('2021121206542729411', '狗狗', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639292056264_7cbc7d73', 100000, '小狗狗', 10, 'xpc',16, NULL);
+INSERT INTO `us_commodity` VALUES ('2021121407381992581', '水杯', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639467492870_f729be06', 10, '水杯', 10, 'xpc',16, NULL);
+INSERT INTO `us_commodity` VALUES ('2021121509154762871', '一拳超人', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639559718668_c160fc55', 188, '一拳超人海报', 100000000, 'xpc', 16,NULL);
+INSERT INTO `us_commodity` VALUES ('2021121509172565699', '斯诺克', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639559797323_aa1a92d5', 999, '斯诺克全套用品', 33, 'xpc',16, NULL);
+INSERT INTO `us_commodity` VALUES ('2021121509191122753', 'VR眼镜', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639559913434_bcd254d8', 22300, '顶配VR眼镜', 11, 'xpc',16, NULL);
+INSERT INTO `us_commodity` VALUES ('2021121509214626412', '刺客信条：黑棋', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639560015236_44f18232', 212, '刺客信条限量版DLC', 20, 'xpc',16, NULL);
+INSERT INTO `us_commodity` VALUES ('2021121509275823395', '雷姆', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639560454254_a83d739b', 199999, '你老婆', 1, 'xpc', 16,NULL);
+INSERT INTO `us_commodity` VALUES ('2021121509311008040', '？？？？', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639560649894_6fbab276', 0, '？？？？', 0, 'xpc',16, NULL);
+INSERT INTO `us_commodity` VALUES ('2021121709343544772', '学习英语', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639733649832_1eea957a', 100, '英语教程', 20000, '无良商家',30, NULL);
+INSERT INTO `us_commodity` VALUES ('2021121709344450682', '学习英语', 'http://ultra-seller.oss-cn-shanghai.aliyuncs.com/images/1639733649832_1eea957a', 100, '英语教程', 20000, '无良商家',30, NULL);
 COMMIT;
 
 -- ----------------------------
