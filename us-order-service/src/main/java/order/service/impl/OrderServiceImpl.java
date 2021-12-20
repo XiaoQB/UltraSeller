@@ -153,14 +153,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public PageResult getPaymentNotification(Integer salerId,Integer page,Integer num) {
-        List<Notification> notifications = orderDao.getPaymentNotification(salerId,page,num);
+        List<Notification> notifications = orderDao.getPaymentNotification(salerId,page-1,num);
         Integer total = orderDao.getTotalPay(salerId);
         return new PageResult(total,notifications);
     }
 
     @Override
     public PageResult getCompleteNotification(Integer salerId,Integer page,Integer num) {
-        List<Notification> notifications = orderDao.getCompleteNotication(salerId,page,num);
+        List<Notification> notifications = orderDao.getCompleteNotication(salerId,page-1,num);
         Integer total = orderDao.getTotalComplete(salerId);
         return new PageResult(total,notifications);
     }
