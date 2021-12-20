@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: sw-us-order-service
-          image: keyon2580/ultraseller-order:sw2
+          image: 75560/ultraseller-order:sw3
           imagePullPolicy: Always
           env:
             - name: NACOS_SERVER

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: sw-us-gateway-service
-          image: keyon2580/ultraseller-gateway:sw2
+          image: 75560/ultraseller-gateway:sw3
           imagePullPolicy: Always
           env:
             - name: NACOS_SERVER
@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: sw-us-gateway-service
+  name: us-gateway-service
   namespace: ase-ns-12
 spec:
   type: LoadBalancer
