@@ -113,17 +113,17 @@
             </el-card>
           </el-col>
         </el-row>
-        <el-pagination
-          background
-          layout="total, prev, pager, next, sizes,jumper"
-          :page-sizes="[5, 10, 15]"
-          :page-size="this.formInline.pageSize"
-          :total="this.dataTotalCount"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        >
-        </el-pagination>
       </div>
+      <el-pagination
+        background
+        layout="total, prev, pager, next, sizes,jumper"
+        :page-sizes="[5, 10, 15]"
+        :page-size="this.formInline.pageSize"
+        :total="this.dataTotalCount"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      >
+      </el-pagination>
     </el-main>
     <el-footer>
       <div class="customer-service"></div>
@@ -260,21 +260,20 @@ export default {
   methods: {
     handleSizeChange: function(size) {
       this.formInline.pageSize = size;
-      if(this.q != null){
-        this.doSearch()
-      }else{
-        this.getList()
+      if (this.q != null) {
+        this.doSearch();
+      } else {
+        this.getList();
       }
-
     },
 
     // 控制页面的切换
     handleCurrentChange: function(currentpage) {
       this.formInline.currentPage = currentpage;
-      if(this.q != null){
-        this.doSearch()
-      }else{
-        this.getList()
+      if (this.q != null) {
+        this.doSearch();
+      } else {
+        this.getList();
       }
     },
     handleSelect(key) {
@@ -423,7 +422,7 @@ export default {
     },
     addCommodity() {
       this.showDialog2 = true;
-      console.log("1234567896543111313")
+      console.log("1234567896543111313");
     },
     handleAdd() {
       this.showDialog2 = false;
@@ -448,7 +447,7 @@ export default {
           description: this.commodity.description,
           inventory: this.commodity.inventory,
           vendorName: sessionStorage["user_name"],
-          vendorId:sessionStorage["user_id"]
+          vendorId: sessionStorage["user_id"],
         },
       })
         .then((response) => {
