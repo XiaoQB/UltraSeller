@@ -513,7 +513,6 @@ export default {
   width: 100%;
   height: 100%;
   margin-top: 50px;
-  display: grid;
   /*  声明列的宽度  */
   grid-template-columns: repeat(5, 20%);
   /*  声明行的高度  */
