@@ -76,18 +76,18 @@
         <el-table-column label="更新时间" prop="updateTime"> </el-table-column>
         <el-table-column label="状态">
           <template slot-scope="scope">
-            <div v-if="scope.row.status === '0'">
+            <div v-if="scope.row.status === 1">
               未读
             </div>
-            <div v-else-if="scope.row.status === '1'">
+            <div v-else-if="scope.row.status === 0">
               已读
             </div>
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <div v-if="scope.row.status === '0'">
-              <el-button size="mini" @click="readPayMessage(scope.row)"
+            <div v-if="scope.row.status === 1">
+              <el-button size="mini" @click="readPayMessage(scope.row.id)"
                 >已读</el-button
               >
             </div>
@@ -138,18 +138,18 @@
         <el-table-column label="更新时间" prop="updateTime"> </el-table-column>
         <el-table-column label="状态">
           <template slot-scope="scope">
-            <div v-if="scope.row.status === '0'">
+            <div v-if="scope.row.status === 1">
               未读
             </div>
-            <div v-else-if="scope.row.status === '1'">
+            <div v-else-if="scope.row.status === 0">
               已读
             </div>
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <div v-if="scope.row.status === '未读'">
-              <el-button size="mini" @click="readCompleteMessage(scope.row)"
+            <div v-if="scope.row.status === 1">
+              <el-button size="mini" @click="readCompleteMessage(scope.row.id)"
                 >已读</el-button
               >
             </div>
@@ -210,7 +210,7 @@ export default {
 
     tableRowStyle(row) {
       let rowBackground = {};
-      if (row.row.status === "0") {
+      if (row.row.status === 1) {
         rowBackground.background = "rgba(220,180,15,0.53)";
         return rowBackground;
       }
@@ -244,8 +244,8 @@ export default {
           });
         });
     },
-    readPayMessage(row) {
-      var messageId = this.doneTableData[row.id - 1].id;
+    readPayMessage(id) {
+      var messageId = id;
       this.http({
         headers: {
           token: sessionStorage["token"],
@@ -269,8 +269,8 @@ export default {
           });
         });
     },
-    readCompleteMessage(row) {
-      var messageId = this.payTableData[row.id - 1].id;
+    readCompleteMessage(id) {
+      var messageId = id;
       this.http({
         headers: {
           token: sessionStorage["token"],
