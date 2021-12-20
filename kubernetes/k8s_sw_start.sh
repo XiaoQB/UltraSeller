@@ -8,4 +8,4 @@ kubectl apply -f skywalking/sw_wallet.yaml
 kubectl apply -f skywalking/sw_order.yaml
 kubectl apply -f skywalking/sw_cart.yaml
 
-kubectl apply -f hpa/hpa_deploy.yaml
+kubectl apply -f hpa/hpa_deploy.yml
