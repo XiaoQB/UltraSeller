@@ -211,8 +211,8 @@ export default {
         } else {
           this.$message({
             type: "error",
-            message: "无法连接到服务器"
-          })
+            message: "无法连接到服务器",
+          });
           this.noData = true;
         }
       });
@@ -317,14 +317,45 @@ export default {
                     type: "success",
                     message: "退货完成",
                   });
+                } else {
+                  this.http({
+                    headers: {
+                      token: sessionStorage.getItem("token"),
+                      role: sessionStorage.getItem("user_role"),
+                    },
+                    method: "PUT",
+                    url: `/api/wallet/deal`,
+                    data: {
+                      sellerName: rows.commodity.vendorName,
+                      buyerName: sessionStorage.getItem("user_name"),
+                      dealId: -1,
+                      price: -rows.totalPrice,
+                      dealStatus: "refund",
+                    },
+                  });
                 }
               })
-              .catch(
+              .catch(() => {
+                this.http({
+                  headers: {
+                    token: sessionStorage.getItem("token"),
+                    role: sessionStorage.getItem("user_role"),
+                  },
+                  method: "PUT",
+                  url: `/api/wallet/deal`,
+                  data: {
+                    sellerName: rows.commodity.vendorName,
+                    buyerName: sessionStorage.getItem("user_name"),
+                    dealId: -1,
+                    price: -rows.totalPrice,
+                    dealStatus: "refund",
+                  },
+                });
                 this.$message({
                   type: "error",
                   message: "退货失败" + rows.orderId + rows.subOrderId,
-                })
-              );
+                });
+              });
           }
         })
         .catch(() => {
@@ -383,16 +414,50 @@ export default {
                 ],
                 buyerId: sessionStorage.getItem("user_id"),
               },
-            }).then((response) => {
-              if (response.data.code === 200) {
-                this.$message({
-                  type: "success",
-                  message: "订单更新成功",
+            })
+              .then((response) => {
+                if (response.data.code === 200) {
+                  this.$message({
+                    type: "success",
+                    message: "订单更新成功",
+                  });
+                  this.updateUserOrderList();
+                } else {
+                  this.http({
+                    headers: {
+                      token: sessionStorage.getItem("token"),
+                      role: sessionStorage.getItem("user_role"),
+                    },
+                    method: "PUT",
+                    url: `/api/wallet/deal`,
+                    data: {
+                      sellerName: rows.commodity.vendorName,
+                      buyerName: sessionStorage.getItem("user_name"),
+                      dealId: -1,
+                      price: -rows.totalPrice,
+                      dealStatus: "pending",
+                    },
+                  });
+                }
+              })
+              .catch(() => {
+                this.http({
+                  headers: {
+                    token: sessionStorage.getItem("token"),
+                    role: sessionStorage.getItem("user_role"),
+                  },
+                  method: "PUT",
+                  url: `/api/wallet/deal`,
+                  data: {
+                    sellerName: rows.commodity.vendorName,
+                    buyerName: sessionStorage.getItem("user_name"),
+                    dealId: -1,
+                    price: -rows.totalPrice,
+                    dealStatus: "pending",
+                  },
                 });
-                this.updateUserOrderList();
-              }
-            });
-          } else if (resp.data.code === 401) {
+              });
+          } else {
             this.$message({
               type: "error",
               message: resp.data.msg,
