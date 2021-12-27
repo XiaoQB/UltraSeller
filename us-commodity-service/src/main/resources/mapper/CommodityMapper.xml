@@ -116,7 +116,7 @@
 
     <insert id="insert" parameterType="cn.edu.fudan.common.entities.dbo.Commodity">
         insert into us_commodity (id, name, imgLink, price,
-        description, inventory, vendorName,vendorId
+        description, inventory, vendorName,vendorId,
         keywords)
         values (#{id,jdbcType=CHAR}, #{name,jdbcType=CHAR}, #{imgLink,jdbcType=CHAR}, #{price,jdbcType=INTEGER},
 

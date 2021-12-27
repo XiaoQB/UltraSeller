@@ -448,6 +448,7 @@ export default {
           inventory: this.commodity.inventory,
           vendorName: sessionStorage["user_name"],
           vendorId: sessionStorage["user_id"],
+          keywords:"aa"
         },
       })
         .then((response) => {

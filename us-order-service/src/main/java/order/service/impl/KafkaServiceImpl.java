@@ -52,6 +52,7 @@ public class KafkaServiceImpl implements KafkaService {
                 .price(subOrder.getPrice())
                 .buyerId(buyerId)
                 .salerId(subOrder.getSalerId())
+
                 .status(subOrder.getStatus())
                 .logistics(subOrder.getLogistics())
                 .build();

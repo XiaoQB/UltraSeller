@@ -362,7 +362,7 @@ export default {
           method: "get",
           url: "/api/order/saler-orders-status",
           params: {
-            user_id: sessionStorage["id"],
+            user_id: sessionStorage["user_id"],
             status: this.status,
             page: this.formInline.currentPage,
             num: this.formInline.pageSize,

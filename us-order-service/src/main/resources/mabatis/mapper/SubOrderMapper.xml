@@ -17,7 +17,7 @@
 
     <sql id="order_all_columns">
         id
-        , order_id, status, total_price, address, saler_id, commodity_id, commodity_name,
+        , order_id, status, total_price, address, saler_id, commodity_id, commodity_name,logistics,
         price, num
     </sql>
 
