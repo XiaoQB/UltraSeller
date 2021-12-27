@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: sw-us-user-service
-          image: 75560/ultraseller-user:sw3
+          image: 75560/ultraseller-user:sw6
           imagePullPolicy: Always
           env:
             - name: NACOS_SERVER
@@ -44,7 +44,7 @@ metadata:
   name: sw-us-user-service
   namespace: ase-ns-12
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - name: http
       port: 8001

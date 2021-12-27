@@ -1,5 +1,5 @@
-FROM  azul/zulu-openjdk-alpine
-
+FROM registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:1.0
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 ENV SW_AGENT_NAME=ultraseller-commodity
 
 COPY target/us-commodity-service-1.0-SNAPSHOT.jar /app/us-commodity-service.jar

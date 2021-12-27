@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: sw-us-commodity-service
-          image: 75560/ultraseller-commodity:sw3
+          image: 75560/ultraseller-commodity:sw6
           imagePullPolicy: Always
           env:
             - name: NACOS_SERVER
